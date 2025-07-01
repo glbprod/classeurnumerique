@@ -1,6 +1,3 @@
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<!-- VERSION ADAPTÉE POUR MOODLE -->
 <style>
  
     .techno-container {
@@ -457,49 +454,6 @@
         }
     }
 </style>
-
-<!-- À ajouter dans la section <script> de votre index.html -->
-<script>
-// Détection iframe et optimisations
-(function() {
-  // Détecter si on est dans un iframe
-  if (window.self !== window.top) {
-    document.body.classList.add('in-iframe');
-    
-    // Optimisations pour iframe
-    document.body.style.overflow = 'hidden';
-    
-    // Communication avec le parent (optionnel)
-    window.addEventListener('load', function() {
-      // Envoyer la hauteur au parent si besoin
-      const height = document.documentElement.scrollHeight;
-      window.parent.postMessage({
-        type: 'resize',
-        height: height
-      }, '*');
-    });
-  }
-  
-  // Optimisation du scroll en iframe
-  if (window.self !== window.top) {
-    let isScrolling = false;
-    
-    window.addEventListener('wheel', function(e) {
-      if (!isScrolling) {
-        isScrolling = true;
-        setTimeout(() => { isScrolling = false; }, 100);
-        
-        // Scroll fluide personnalisé
-        const delta = e.deltaY;
-        const container = document.querySelector('.container');
-        if (container) {
-          container.scrollTop += delta * 0.5; // Scroll plus doux
-        }
-      }
-    }, { passive: true });
-  }
-})();
-</script>
 
 <div class="techno-container">
     <div class="techno-header">
