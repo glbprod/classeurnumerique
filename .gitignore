@@ -1,0 +1,27 @@
+# Fichiers système
+.DS_Store
+Thumbs.db
+*.log
+
+# Dossiers temporaires
+node_modules/
+.npm/
+.cache/
+
+# Fichiers de configuration locaux
+.env
+.env.local
+.vscode/
+.idea/
+
+# Fichiers de build (si applicable)
+dist/
+build/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+*~
+
+# Netlify
+.netlify/
