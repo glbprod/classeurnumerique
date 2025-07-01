@@ -2,38 +2,7 @@
 
 <!-- VERSION ADAPTÉE POUR MOODLE -->
 <style>
-        /* Optimisations spécifiques pour iframe */
-    html {
-      overflow-x: hidden; /* Supprime le défilement horizontal */
-      scroll-behavior: smooth;
-    }
-    
-    body {
-      overflow-x: hidden;
-      margin: 0;
-      padding: 0;
-    }
-    
-    /* Détection si la page est dans un iframe */
-    @media all and (display-mode: browser) {
-      body.in-iframe {
-        padding: 10px 5px; /* Réduire les marges en iframe */
-      }
-    }
-    
-    /* Ajustements pour iframe */
-    .container {
-      transition: all 0.3s ease;
-    }
-    
-    /* Optimisation des animations en iframe */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
+ 
     .techno-container {
         max-width: 100%;
         margin: 20px auto;
