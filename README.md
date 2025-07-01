@@ -4,7 +4,7 @@
 Présentation interactive et pédagogique du programme de technologie au collège, adapté aux élèves, parents et enseignants.
 
 ## 🌐 Voir en ligne
-👉 **[Accéder à la présentation](https://votre-site.netlify.app)**
+👉 **[Accéder à la présentation](https://latechnologieaucollege.netlify.app/)**
 
 ## 📚 Contenu
 - Vue d'ensemble du programme cycle 4
