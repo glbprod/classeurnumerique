@@ -1,0 +1,30 @@
+{
+  "name": "programme-technologie-college",
+  "version": "1.0.0",
+  "description": "Présentation interactive du programme de technologie au collège",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000 --open=/index.html",
+    "build": "echo 'Pas de build nécessaire pour un site statique'",
+    "deploy": "echo 'Déployé automatiquement via Netlify'"
+  },
+  "keywords": [
+    "technologie",
+    "collège",
+    "éducation",
+    "programme",
+    "cycle4",
+    "OST",
+    "MEI"
+  ],
+  "author": "GlbProd <glbproftech@gmail.com>",
+  "license": "CC-BY-SA-4.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/glbproftech/classeurnumerique"
+  },
+  "homepage": "https://latechnologieaucollege.netlify.app/",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
