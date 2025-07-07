@@ -2,9 +2,33 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>Évolution technologique de la trottinette</title>
     <style>
+        
+     /* Optimisations spécifiques pour iframe */
+        html {
+          overflow-x: hidden; /* Supprime le défilement horizontal */
+          scroll-behavior: smooth;
+        }
+        
+        /* Détection si la page est dans un iframe */
+        @media all and (display-mode: browser) {
+          body.in-iframe {
+            padding: 10px 5px; /* Réduire les marges en iframe */
+          }
+        }
+                
+        /* Optimisation des animations en iframe */
+        @media (prefers-reduced-motion: reduce) {
+          *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -14,6 +38,7 @@
         }
         
         .container {
+            transition: all 0.3s ease;
             max-width: 1080px;
             margin: 0 auto;
             background: white;
