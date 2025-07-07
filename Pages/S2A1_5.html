@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Évolution technologique de la trottinette</title>
+    <style>
+        
+     /* Optimisations spécifiques pour iframe */
+        html {
+          overflow-x: hidden; /* Supprime le défilement horizontal */
+          scroll-behavior: smooth;
+        }
+        
+        /* Détection si la page est dans un iframe */
+        @media all and (display-mode: browser) {
+          body.in-iframe {
+            padding: 10px 5px; /* Réduire les marges en iframe */
+          }
+        }
+                
+        /* Optimisation des animations en iframe */
+        @media (prefers-reduced-motion: reduce) {
+          *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+      
+<title>Ergonomie d'un clavier</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+        
+        .intro-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #00b894;
+        }
+        
+        .intro-text {
+            color: #2d3436;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .criteria-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #e17055;
+        }
+        
+        .criteria-section h3 {
+            color: #d63031;
+            margin-top: 0;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .criteria-section h3::before {
+            content: '🎯';
+            font-size: 0.8em;
+        }
+        
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 15px;
+            align-items: start;
+        }
+        
+        .criteria-label {
+            font-weight: bold;
+            color: #2c3e50;
+            padding: 8px 15px;
+            background: #fff;
+            border-radius: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .criteria-content {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .criteria-content ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .criteria-content li {
+            margin-bottom: 8px;
+            color: #34495e;
+            line-height: 1.4;
+        }
+        
+        .keyboard-visual {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+        }
+        
+        .keyboard-visual h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+        
+        .keyboard-illustration {
+            background: #2c3e50;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .keyboard-illustration::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .keyboard-shape {
+            background: #34495e;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 0 auto;
+            max-width: 400px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+        
+        .keyboard-keys {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 3px;
+            margin-bottom: 10px;
+        }
+        
+        .key {
+            background: #95a5a6;
+            height: 25px;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .spacebar {
+            background: #95a5a6;
+            height: 20px;
+            border-radius: 3px;
+            margin: 5px 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .feature-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border-left: 5px solid #00b894;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-card h4 {
+            color: #00b894;
+            margin-top: 0;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feature-card ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .feature-card li {
+            margin-bottom: 8px;
+            color: #34495e;
+            line-height: 1.4;
+        }
+        
+        .highlight {
+            background: #fdcb6e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .criteria-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .criteria-label {
+                text-align: left;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⌨️ L'Ergonomie d'un Clavier</h1>
+            <p class="subtitle">Conception centrée sur l'utilisateur pour le confort et l'efficacité</p>
+        </div>
+        
+        <div class="intro-box">
+            <p class="intro-text">
+                Un clavier ergonomique respecte les mouvements et positions naturelles des bras et des poignets pour éviter les troubles musculo-squelettiques lors d'une utilisation prolongée.
+            </p>
+        </div>
+        
+        <div class="main-content">
+            <div class="criteria-section">
+                <h3>Critères d'Ergonomie</h3>
+                <div class="criteria-grid">
+                    <div class="criteria-label">Formes</div>
+                    <div class="criteria-content">
+                        <ul>
+                            <li><span class="highlight">Deux parties distinctes</span> pour les mains</li>
+                            <li>Courbure naturelle suivant la position des doigts</li>
+                            <li>Angle d'ouverture adapté à la largeur des épaules</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="criteria-label">Matériaux</div>
+                    <div class="criteria-content">
+                        <ul>
+                            <li><span class="highlight">Mousse amortissante</span> pour le confort</li>
+                            <li>Surface antidérapante pour la stabilité</li>
+                            <li>Matériaux respirants pour éviter la transpiration</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="keyboard-visual">
+                <h3>🖥️ Clavier Ergonomique</h3>
+                <div class="keyboard-illustration">
+                    <div class="keyboard-shape">
+                        <div class="keyboard-keys">
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                        </div>
+                        <div class="keyboard-keys">
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                        </div>
+                        <div class="keyboard-keys">
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                        </div>
+                        <div class="spacebar"></div>
+                    </div>
+                </div>
+                <p>Design courbé pour respecter la position naturelle des mains</p>
+            </div>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <h4>🤲 Deux parties distinctes pour les mains</h4>
+                <ul>
+                    <li>Séparation physique des zones de frappe</li>
+                    <li>Angle d'ouverture personnalisable</li>
+                    <li>Réduction des mouvements latéraux des poignets</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🛡️ Mousse amortissante</h4>
+                <ul>
+                    <li>Repose-poignets intégré</li>
+                    <li>Absorption des chocs et vibrations</li>
+                    <li>Maintien de la position naturelle</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🏗️ Châssis bombé</h4>
+                <ul>
+                    <li>Forme convexe naturelle</li>
+                    <li>Adaptation à la courbure des doigts</li>
+                    <li>Réduction de l'extension des doigts</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h4>⌨️ Disposition des touches</h4>
+                <ul>
+                    <li>Espacement optimisé entre les touches</li>
+                    <li>Hauteur de touches ajustable</li>
+                    <li>Placement ergonomique des touches fréquentes</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
