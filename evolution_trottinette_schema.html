@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évolution technologique de la trottinette</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #3498db, #e74c3c);
+            border-radius: 2px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            width: 45%;
+            margin: 40px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .timeline-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            border-left: 5px solid #3498db;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 55%;
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border: 4px solid #3498db;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px #fff;
+        }
+        
+        .timeline-item:nth-child(odd)::before {
+            right: -42px;
+            border-color: #3498db;
+        }
+        
+        .timeline-item:nth-child(even)::before {
+            left: -42px;
+            border-color: #e74c3c;
+        }
+        
+        .year {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .year::before {
+            content: '📅';
+            font-size: 0.8em;
+        }
+        
+        .description {
+            color: #34495e;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .tech-features {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #9b59b6;
+        }
+        
+        .tech-features h4 {
+            color: #8e44ad;
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .tech-features ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .tech-features li {
+            margin-bottom: 5px;
+            color: #5d6d7e;
+        }
+        
+        .question-section {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        
+        .question-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .question {
+            color: #34495e;
+            font-size: 1.2em;
+            font-weight: 500;
+            font-style: italic;
+        }
+        
+        .innovation-highlight {
+            display: inline-block;
+            background: #f39c12;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin: 2px;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                width: calc(100% - 60px);
+                left: 60px !important;
+            }
+            
+            .timeline-item::before {
+                left: -42px !important;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛴 Évolution Technologique de la Trottinette</h1>
+            <p class="subtitle">De la motorisation thermique à l'électrique moderne</p>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="year">1915</div>
+                <div class="description">
+                    <strong>Première motorisation</strong> - L'Autoped révolutionne le transport personnel
+                </div>
+                <div class="tech-features">
+                    <h4>🔧 Innovations techniques :</h4>
+                    <ul>
+                        <li><span class="innovation-highlight">Motorisation thermique</span> - Premier moteur sur trottinette</li>
+                        <li><span class="innovation-highlight">Transmission par chaîne</span> - Système mécanique robuste</li>
+                        <li>Design vertical avec guidon de direction</li>
+                        <li>Plateforme stable pour l'utilisateur</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="year">Années 2010</div>
+                <div class="description">
+                    <strong>Révolution électrique</strong> - L'ère de la mobilité électrique commence
+                </div>
+                <div class="tech-features">
+                    <h4>⚡ Innovations techniques :</h4>
+                    <ul>
+                        <li><span class="innovation-highlight">Moteur électrique</span> - Propulsion silencieuse et écologique</li>
+                        <li><span class="innovation-highlight">Transmission par pignon et courroie</span> - Système plus efficace</li>
+                        <li>Batterie rechargeable intégrée</li>
+                        <li>Contrôle électronique de vitesse</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="year">Années 2020</div>
+                <div class="description">
+                    <strong>Intégration avancée</strong> - Technologie embarquée et connectivité
+                </div>
+                <div class="tech-features">
+                    <h4>🚀 Innovations techniques :</h4>
+                    <ul>
+                        <li><span class="innovation-highlight">Moteur intégré à la roue</span> - Design compact et efficace</li>
+                        <li><span class="innovation-highlight">Transmission directe</span> - Moins de pièces mobiles</li>
+                        <li>Système de pliage amélioré</li>
+                        <li>Connectivité smartphone</li>
+                        <li>Systèmes de freinage régénératif</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="question-section">
+            <h3>💡 Question de réflexion</h3>
+            <p class="question">
+                Quelles inventions ou innovations ont participé à l'évolution de la fonction technique « Mettre en mouvement » ?
+            </p>
+        </div>
+    </div>
+</body>
+</html>
