@@ -1,0 +1,19 @@
+# Configuration Netlify pour autoriser les iframes
+
+/*
+  X-Frame-Options: ALLOWALL
+  Content-Security-Policy: frame-ancestors *
+
+# Configuration spécifique pour les pages de séquences
+/pages/*
+  X-Frame-Options: ALLOWALL
+  Content-Security-Policy: frame-ancestors *
+
+# Configuration sécurisée - Autoriser seulement certains domaines
+
+/*
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy: frame-ancestors 'self' https://*.moodle.com https://*.ac-*.fr https://classeurnumerique.fr/
+
+# Si vous connaissez l'URL exacte de votre Moodle, remplacez par :
+Content-Security-Policy: frame-ancestors 'self' https://classeurnumerique.fr/
