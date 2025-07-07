@@ -24,3 +24,16 @@
   for = "*.js"
   [headers.values]
     Cache-Control = "public, max-age=31536000"
+
+# Configuration spécifique pour les pages de séquences
+[[headers]]
+  for = "/pages/*"
+  [headers.values]
+    X-Frame-Options = "ALLOWALL"
+    Content-Security-Policy = "frame-ancestors *"
+
+# Redirections si nécessaire
+[[redirects]]
+  from = "/old-page"
+  to = "/index.html"
+  status = 301
