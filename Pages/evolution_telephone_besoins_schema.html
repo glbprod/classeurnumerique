@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'évolution des besoins</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff7675 0%, #fd79a8 50%, #fdcb6e 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+        
+        .concept-section {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .concept-section h2 {
+            margin-top: 0;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .concept-section h2::before {
+            content: '💡';
+            font-size: 0.8em;
+        }
+        
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .concept-card {
+            background: rgba(255,255,255,0.15);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .concept-card h3 {
+            margin-top: 0;
+            color: #fdcb6e;
+        }
+        
+        .concept-card p {
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+        
+        .highlight {
+            background: rgba(253, 203, 110, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .evolution-section {
+            margin: 40px 0;
+        }
+        
+        .evolution-title {
+            text-align: center;
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .evolution-title h2 {
+            margin: 0;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .evolution-title h2::before {
+            content: '📞';
+            font-size: 0.8em;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #e17055, #74b9ff, #00b894);
+            border-radius: 2px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            width: 45%;
+            margin: 40px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .timeline-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            border-left: 5px solid #e17055;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 55%;
+            border-left: 5px solid #74b9ff;
+        }
+        
+        .timeline-item:last-child {
+            border-left: 5px solid #00b894;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border: 4px solid #e17055;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px #fff;
+        }
+        
+        .timeline-item:nth-child(odd)::before {
+            right: -42px;
+            border-color: #e17055;
+        }
+        
+        .timeline-item:nth-child(even)::before {
+            left: -42px;
+            border-color: #74b9ff;
+        }
+        
+        .timeline-item:last-child::before {
+            border-color: #00b894;
+        }
+        
+        .year {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .year::before {
+            content: '📅';
+            font-size: 0.8em;
+        }
+        
+        .phone-name {
+            color: #e74c3c;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            color: #34495e;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .innovations {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #9b59b6;
+        }
+        
+        .innovations h4 {
+            color: #8e44ad;
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .innovations ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .innovations li {
+            margin-bottom: 5px;
+            color: #5d6d7e;
+        }
+        
+        .innovation-tag {
+            display: inline-block;
+            background: #f39c12;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin: 2px;
+        }
+        
+        .questions-section {
+            background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+            color: white;
+        }
+        
+        .questions-section h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .questions-section h3::before {
+            content: '🤔';
+            font-size: 0.8em;
+        }
+        
+        .question {
+            background: rgba(255,255,255,0.15);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .question-number {
+            font-weight: bold;
+            color: #fdcb6e;
+        }
+        
+        .domains-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .domain-card {
+            background: rgba(255,255,255,0.9);
+            color: #2c3e50;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                width: calc(100% - 60px);
+                left: 60px !important;
+            }
+            
+            .timeline-item::before {
+                left: -42px !important;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 L'Évolution des Besoins</h1>
+            <p class="subtitle">Comment les besoins de la société façonnent l'innovation technologique</p>
+        </div>
+        
+        <div class="concept-section">
+            <h2>Les Fondements de l'Innovation</h2>
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h3>🏗️ Besoins de la Société</h3>
+                    <p>Les <span class="highlight">besoins de la société</span> évoluent continuellement, et les objets techniques suivent cette évolution. Les utilisateurs exigent des produits de plus en plus performants et adaptés à leurs habitudes.</p>
+                </div>
+                
+                <div class="concept-card">
+                    <h3>🔬 Progrès Scientifiques</h3>
+                    <p>Les progrès scientifiques et techniques permettent d'améliorer des objets existants et de satisfaire les utilisateurs. Ce sont des <span class="highlight">innovations</span>.</p>
+                </div>
+                
+                <div class="concept-card">
+                    <h3>🎯 Domaines d'Évolution</h3>
+                    <p>Les évolutions concernent principalement les domaines des <span class="highlight">matériaux</span>, des <span class="highlight">énergies</span> et des <span class="highlight">principes techniques</span> mis en œuvre.</p>
+                </div>
+                
+                <div class="concept-card">
+                    <h3>💡 Solutions Techniques</h3>
+                    <p>Ainsi, les <span class="highlight">solutions techniques</span> évoluent régulièrement pour répondre aux nouveaux défis et besoins identifiés.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="evolution-section">
+            <div class="evolution-title">
+                <h2>Exemple : L'Évolution du Téléphone</h2>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="year">1876</div>
+                    <div class="phone-name">Téléphone en bois de Graham Bell</div>
+                    <div class="description">
+                        Le premier téléphone révolutionnaire qui permet la transmission de la voix à distance
+                    </div>
+                    <div class="innovations">
+                        <h4>🔧 Innovations de l'époque :</h4>
+                        <ul>
+                            <li><span class="innovation-tag">Matériau</span> Utilisation du bois comme matériau principal</li>
+                            <li><span class="innovation-tag">Énergie</span> Transmission analogique des signaux</li>
+                            <li><span class="innovation-tag">Principe</span> Conversion son → signal électrique → son</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="year">1943</div>
+                    <div class="phone-name">Téléphone U43 à cadran en bakélite</div>
+                    <div class="description">
+                        Évolution majeure avec l'introduction du cadran rotatif et d'un nouveau matériau révolutionnaire
+                    </div>
+                    <div class="innovations">
+                        <h4>🔧 Innovations de l'époque :</h4>
+                        <ul>
+                            <li><span class="innovation-tag">Matériau</span> Bakélite (plastique très dur) - plus durable</li>
+                            <li><span class="innovation-tag">Principe</span> Système de numérotation avec cadran rotatif</li>
+                            <li><span class="innovation-tag">Ergonomie</span> Design plus compact et fonctionnel</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="year">Années 2000+</div>
+                    <div class="phone-name">Téléphone portable moderne</div>
+                    <div class="description">
+                        Révolution complète avec l'intégration du numérique, de la mobilité et des fonctionnalités multimédias
+                    </div>
+                    <div class="innovations">
+                        <h4>🔧 Innovations contemporaines :</h4>
+                        <ul>
+                            <li><span class="innovation-tag">Matériau</span> Coque en titane - résistance et légèreté</li>
+                            <li><span class="innovation-tag">Interface</span> Écran tactile - interaction intuitive</li>
+                            <li><span class="innovation-tag">Énergie</span> Batterie rechargeable longue durée</li>
+                            <li><span class="innovation-tag">Connectivité</span> Sans fil - liberté de mouvement</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="questions-section">
+            <h3>Questions de Réflexion</h3>
+            
+            <div class="question">
+                <p><span class="question-number">1.</span> Pourquoi les objets évoluent-ils constamment ?</p>
+            </div>
+            
+            <div class="question">
+                <p><span class="question-number">2.</span> Quels sont les principaux domaines d'évolution ?</p>
+                <div class="domains-grid">
+                    <div class="domain-card">🧪 Matériaux</div>
+                    <div class="domain-card">⚡ Énergies</div>
+                    <div class="domain-card">🔧 Principes Techniques</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
