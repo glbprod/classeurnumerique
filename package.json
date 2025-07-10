@@ -35,7 +35,7 @@
   "homepage": "https://latechnologieaucollege.netlify.app/",
   "devDependencies": {
     "live-server": "^1.2.2"
-  }
+  },
   "name": "mars-emergency-data",
   "version": "1.0.0",
   "dependencies": {
@@ -56,7 +56,6 @@
   "browserslist": {
     "production": [">0.2%", "not dead", "not op_mini all"],
     "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
-  }  
   
   },
   "scripts": {
@@ -75,10 +74,11 @@
       ">0.2%",
       "not dead",
       "not op_mini all"
-  ],
-  "development": [
-    "last 1 chrome version",
-    "last 1 firefox version",
-    "last 1 safari version"
-  ]
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
