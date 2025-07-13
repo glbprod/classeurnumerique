@@ -31,19 +31,4 @@
   [headers.values]
     X-Frame-Options = "ALLOWALL"
     Content-Security-Policy = "frame-ancestors *"
-
-# Redirections si nécessaire
-[[redirects]]
-  from = "/old-page"
-  to = "/index.html"
-  status = 301
-
-[build]
-  command = "npm run build"
-  publish = "build"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
   
