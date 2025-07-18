@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document ressources - Évolution des ordinateurs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 15px;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
+        }
+        .document-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border: 2px solid #333;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: #4a90e2;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .subtitle {
+            margin: 5px 0 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .computer-card {
+            border-bottom: 3px solid #ddd;
+            padding: 20px;
+            margin: 0;
+        }
+        .computer-card:last-child {
+            border-bottom: none;
+        }
+        .computer-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #4a90e2;
+        }
+        .computer-image {
+            width: 120px;
+            height: 90px;
+            background: #e9ecef;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+        .computer-title {
+            flex: 1;
+        }
+        .computer-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+        .computer-year {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+        }
+        .computer-generation {
+            background: #4a90e2;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: inline-block;
+        }
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .spec-item {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .spec-label {
+            font-weight: bold;
+            color: #4a90e2;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .spec-value {
+            font-size: 13px;
+            color: #555;
+        }
+        .usage-section {
+            margin-top: 15px;
+            background: #fff3cd;
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid #ffeaa7;
+        }
+        .usage-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 8px;
+        }
+        .innovation-box {
+            background: #e8f5e8;
+            border: 1px solid #c3e6c3;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .innovation-title {
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+        .timeline {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .timeline-title {
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 2px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="document-container">
+        <div class="header">
+            <h1>📚 Document ressources</h1>
+            <div class="subtitle">5 modèles d'ordinateurs emblématiques de l'évolution technologique</div>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-title">🕐 Frise chronologique - 80 ans d'évolution</div>
+            <strong>1946 → 1964 → 1981 → 1998 → 2023</strong><br>
+            ENIAC → IBM System/360 → IBM PC → Compaq Presario → Dell XPS 13
+        </div>
+
+        <!-- ENIAC 1946 -->
+        <div class="computer-card">
+            <div class="computer-header">
+                <div class="computer-image">
+                    [Image ENIAC]<br>
+                    Salle entière d'ordinateur
+                </div>
+                <div class="computer-title">
+                    <h2 class="computer-name">ENIAC</h2>
+                    <div class="computer-year">📅 Année : 1946</div>
+                    <span class="computer-generation">1ère génération - Tubes à vide</span>
+                </div>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-label">📏 Taille et poids</div>
+                    <div class="spec-value">• Taille : 30 mètres de long, 3 mètres de haut<br>• Poids : 30 tonnes<br>• Surface : Une salle entière (167 m²)</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">⚡ Puissance de calcul</div>
+                    <div class="spec-value">• 5000 additions par seconde<br>• 18 000 tubes à vide<br>• Mémoire : 20 nombres de 10 chiffres</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">💰 Coût</div>
+                    <div class="spec-value">• 500 000 dollars (1946)<br>• Équivalent : 7 millions d'euros aujourd'hui<br>• Consommation : 150 kW (une ville !)</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">🔧 Fonctionnement</div>
+                    <div class="spec-value">• Programmation par câblage<br>• Plusieurs heures pour changer de programme<br>• Pannes fréquentes (tubes grillés)</div>
+                </div>
+            </div>
+
+            <div class="usage-section">
+                <div class="usage-title">🎯 Usages principaux :</div>
+                • Calculs militaires (trajectoires d'obus)<br>
+                • Recherche scientifique (météorologie)<br>
+                • Utilisateurs : scientifiques et militaires uniquement
+            </div>
+
+            <div class="innovation-box">
+                <div class="innovation-title">💡 Innovation majeure :</div>
+                Premier ordinateur entièrement électronique programmable
+            </div>
+        </div>
+
+        <!-- IBM System/360 1964 -->
+        <div class="computer-card">
+            <div class="computer-header">
+                <div class="computer-image">
+                    [Image IBM System/360]<br>
+                    Ordinateur mainframe
+                </div>
+                <div class="computer-title">
+                    <h2 class="computer-name">IBM System/360 Model 30</h2>
+                    <div class="computer-year">📅 Année : 1964</div>
+                    <span class="computer-generation">2ème génération - Transistors</span>
+                </div>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-label">📏 Taille et poids</div>
+                    <div class="spec-value">• Taille : 3 mètres de long, 2 mètres de haut<br>• Poids : 1,5 tonnes<br>• Surface : Une grande pièce</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">⚡ Puissance de calcul</div>
+                    <div class="spec-value">• 30 000 additions par seconde<br>• Transistors au lieu de tubes<br>• Mémoire : 8 à 64 Ko</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">💰 Coût</div>
+                    <div class="spec-value">• 200 000 dollars (1964)<br>• Équivalent : 2 millions d'euros aujourd'hui<br>• Location possible : 5000$/mois</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">🔧 Fonctionnement</div>
+                    <div class="spec-value">• Cartes perforées pour programmer<br>• Plus fiable que les tubes<br>• Gamme compatible d'ordinateurs</div>
+                </div>
+            </div>
+
+            <div class="usage-section">
+                <div class="usage-title">🎯 Usages principaux :</div>
+                • Gestion d'entreprise (paie, comptabilité)<br>
+                • Recherche scientifique et spatiale<br>
+                • Banques et assurances<br>
+                • Utilisateurs : grandes entreprises et universités
+            </div>
+
+            <div class="innovation-box">
+                <div class="innovation-title">💡 Innovation majeure :</div>
+                Remplacement des tubes par des transistors - ordinateurs plus fiables et moins encombrants
+            </div>
+        </div>
+
+        <!-- IBM PC 1981 -->
+        <div class="computer-card">
+            <div class="computer-header">
+                <div class="computer-image">
+                    [Image IBM PC]<br>
+                    Ordinateur de bureau
+                </div>
+                <div class="computer-title">
+                    <h2 class="computer-name">IBM PC 5150</h2>
+                    <div class="computer-year">📅 Année : 1981</div>
+                    <span class="computer-generation">4ème génération - Microprocesseur</span>
+                </div>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-label">📏 Taille et poids</div>
+                    <div class="spec-value">• Taille : 50 cm x 40 cm x 14 cm<br>• Poids : 12 kg<br>• Surface : Un bureau</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">⚡ Puissance de calcul</div>
+                    <div class="spec-value">• Processeur Intel 8088 à 4,77 MHz<br>• Mémoire : 16 Ko (extensible à 256 Ko)<br>• Stockage : Disquettes 5¼ pouces</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">💰 Coût</div>
+                    <div class="spec-value">• 1 565 dollars (1981)<br>• Équivalent : 5 000 euros aujourd'hui<br>• Accessible aux entreprises</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">🔧 Fonctionnement</div>
+                    <div class="spec-value">• Système DOS en ligne de commande<br>• Programmation simplifiée<br>• Architecture ouverte</div>
+                </div>
+            </div>
+
+            <div class="usage-section">
+                <div class="usage-title">🎯 Usages principaux :</div>
+                • Bureautique (traitement de texte, tableur)<br>
+                • Gestion d'entreprise<br>
+                • Quelques jeux simples<br>
+                • Utilisateurs : professionnels et passionnés
+            </div>
+
+            <div class="innovation-box">
+                <div class="innovation-title">💡 Innovation majeure :</div>
+                Standardisation du PC et démocratisation de l'informatique personnelle
+            </div>
+        </div>
+
+        <!-- Compaq Presario 1998 -->
+        <div class="computer-card">
+            <div class="computer-header">
+                <div class="computer-image">
+                    [Image Compaq Presario]<br>
+                    Ordinateur familial
+                </div>
+                <div class="computer-title">
+                    <h2 class="computer-name">Compaq Presario 5000</h2>
+                    <div class="computer-year">📅 Année : 1998</div>
+                    <span class="computer-generation">5ème génération - Multimédia</span>
+                </div>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-label">📏 Taille et poids</div>
+                    <div class="spec-value">• Taille : 43 cm x 42 cm x 18 cm<br>• Poids : 15 kg<br>• Tour de bureau compacte</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">⚡ Puissance de calcul</div>
+                    <div class="spec-value">• Processeur Intel Pentium II à 350 MHz<br>• Mémoire : 64 Mo (extensible à 256 Mo)<br>• Stockage : Disque dur 6,4 Go</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">💰 Coût</div>
+                    <div class="spec-value">• 1 499 dollars (1998)<br>• Équivalent : 2 500 euros aujourd'hui<br>• Accessible aux familles</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">🔧 Fonctionnement</div>
+                    <div class="spec-value">• Windows 98 avec interface graphique<br>• Lecteur CD-ROM et carte son<br>• Modem 56k intégré</div>
+                </div>
+            </div>
+
+            <div class="usage-section">
+                <div class="usage-title">🎯 Usages principaux :</div>
+                • Internet domestique (navigation, email)<br>
+                • Jeux vidéo et multimédia<br>
+                • Bureautique familiale (devoirs, lettres)<br>
+                • Encyclopédies CD-ROM<br>
+                • Utilisateurs : familles avec enfants
+            </div>
+
+            <div class="innovation-box">
+                <div class="innovation-title">💡 Innovation majeure :</div>
+                Ordinateur multimédia familial avec Internet accessible au grand public
+            </div>
+        </div>
+
+        <!-- Dell XPS 13 2023 -->
+        <div class="computer-card">
+            <div class="computer-header">
+                <div class="computer-image">
+                    [Image Dell XPS 13]<br>
+                    Ordinateur portable ultra-fin
+                </div>
+                <div class="computer-title">
+                    <h2 class="computer-name">Dell XPS 13 Plus</h2>
+                    <div class="computer-year">📅 Année : 2023</div>
+                    <span class="computer-generation">IA et efficacité - Processeur Intel 13ème gen</span>
+                </div>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-label">📏 Taille et poids</div>
+                    <div class="spec-value">• Taille : 29,5 cm x 19,9 cm x 1,55 cm<br>• Poids : 1,26 kg<br>• Ultra-portable et élégant</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">⚡ Puissance de calcul</div>
+                    <div class="spec-value">• Processeur Intel Core i7-1360P (12 cœurs)<br>• Mémoire : 16 Go LPDDR5<br>• Stockage : 512 Go SSD NVMe</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">💰 Coût</div>
+                    <div class="spec-value">• 1 599 euros (2023)<br>• Accessible aux professionnels<br>• Excellent rapport qualité/prix</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">🔧 Fonctionnement</div>
+                    <div class="spec-value">• Windows 11 avec IA intégrée<br>• Écran tactile OLED 13,4"<br>• Connectivité WiFi 6E et Bluetooth 5.2</div>
+                </div>
+            </div>
+
+            <div class="usage-section">
+                <div class="usage-title">🎯 Usages principaux :</div>
+                • Travail nomade et télétravail<br>
+                • Création de contenu (vidéo, graphisme)<br>
+                • Streaming et visioconférences<br>
+                • Développement et programmation<br>
+                • Utilisateurs : professionnels et étudiants
+            </div>
+
+            <div class="innovation-box">
+                <div class="innovation-title">💡 Innovation majeure :</div>
+                Intelligence artificielle intégrée, écran OLED et design sans bordures
+            </div>
+        </div>
+
+        <div class="footer">
+            💡 <strong>Pour aller plus loin :</strong> Ces 5 ordinateurs montrent comment les innovations technologiques répondent aux besoins des utilisateurs : miniaturisation (30 tonnes → 1,3 kg), démocratisation (entreprises → familles), facilité d'usage (cartes perforées → écrans tactiles) et puissance (tubes → processeurs multi-cœurs).
+        </div>
+    </div>
+</body>
+</html>
