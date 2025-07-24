@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réglementation de la Géolocalisation au Travail</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+        
+        .intro {
+            background-color: #e8f4f8;
+            padding: 20px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+        }
+        
+        h2 {
+            color: #27ae60;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2.autorise::before {
+            content: "✅";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        h2.interdit::before {
+            content: "❌";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        h2.interdit {
+            color: #e74c3c;
+        }
+        
+        ul {
+            padding-left: 0;
+            list-style: none;
+        }
+        
+        li {
+            background: #f8f9fa;
+            margin: 10px 0;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            transition: all 0.3s ease;
+        }
+        
+        .interdit li {
+            border-left-color: #e74c3c;
+            background: #fdf2f2;
+        }
+        
+        li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        li::before {
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .autorise li::before {
+            content: "•";
+            color: #27ae60;
+        }
+        
+        .interdit li::before {
+            content: "•";
+            color: #e74c3c;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Réglementation de la Géolocalisation au Travail</h1>
+        
+        <div class="intro">
+            Les dispositifs de géolocalisation sont fréquents dans le monde du travail. Toutefois, de nombreuses règles encadrent l'utilisation de cet outil dont l'usage doit avoir connaissance.
+        </div>
+
+        <div class="autorise">
+            <h2 class="autorise">Il est réglementairement autorisé pour :</h2>
+            <ul>
+                <li>Suivre, justifier et facturer une <span class="highlight">prestation de transport</span></li>
+                <li>Assurer la <span class="highlight">sécurité de l'employé</span>, des marchandises ou des véhicules</li>
+                <li>Localiser des moyens humains pour <span class="highlight">accomplir une prestation</span></li>
+                <li>Contrôler les règles d'utilisation d'un véhicule</li>
+                <li>Suivre le <span class="highlight">temps de travail d'un salarié</span>, si et seulement si il n'est pas possible de le contrôler autrement</li>
+            </ul>
+        </div>
+
+        <div class="interdit">
+            <h2 class="interdit">Il n'est pas autorisé pour :</h2>
+            <ul>
+                <li>Vérifier le respect du <span class="highlight">code de la route</span></li>
+                <li>Contrôler en permanence, notamment <span class="highlight">en dehors du temps de travail</span></li>
+                <li>Surveiller les déplacements d'un <span class="highlight">représentant du personnel</span> dans le cadre de son mandat</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
