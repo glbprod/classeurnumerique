@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche d'activité - Création Serious Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.5;
+            color: #333;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 3px solid #6f42c1;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .sequence-box {
+            background: linear-gradient(135deg, #6f42c1, #8b5cf6);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .title-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px solid #6f42c1;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .project-info {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px solid #2196f3;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .phase-section {
+            background-color: #f8f9fa;
+            border-left: 5px solid #6f42c1;
+            border-radius: 0 8px 8px 0;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .phase-header {
+            background-color: #6f42c1;
+            color: white;
+            padding: 10px 15px;
+            margin: -20px -20px 15px -25px;
+            border-radius: 0 8px 0 0;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .time-badge {
+            background-color: rgba(255,255,255,0.2);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        
+        .task-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .task-card {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .task-card h4 {
+            color: #6f42c1;
+            margin-top: 0;
+            font-size: 16px;
+        }
+        
+        .checklist {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            padding: 5px;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        
+        .tools-section {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+            border: 2px solid #4caf50;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .tool-card {
+            background: white;
+            border: 1px solid #4caf50;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .tool-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .evaluation-section {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border: 2px solid #ff9800;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+            align-items: center;
+        }
+        
+        .criteria-header {
+            background: #ff9800;
+            color: white;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        
+        .criteria-row {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .level-box {
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .resources-section {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+            border: 2px solid #e91e63;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .resource-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .resource-item {
+            background: white;
+            border: 1px solid #e91e63;
+            border-radius: 8px;
+            padding: 12px;
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #6f42c1, #8b5cf6);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .scenario-examples {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .scenario-examples h4 {
+            color: #495057;
+            margin-top: 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        th {
+            background-color: #6f42c1;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .planning-table {
+            background: white;
+        }
+    </style>
+</head>
+<body>    
+    <div class="sequence-box">
+        PROJET DE CRÉATION
+    </div>
+    
+    <div class="title-section">
+        <h1 style="margin: 0; color: #6f42c1; font-size: 28px;">🎮 SERIOUS GAME</h1>
+        <h2 style="margin: 10px 0 0 0; color: #666; font-size: 18px;">Cybersécurité & Prévention des risques Internet</h2>
+        <p style="margin: 15px 0 0 0; font-style: italic;">Projet collaboratif - Conception d'un jeu éducatif</p>
+    </div>
+    
+    <div class="project-info">
+        <h3 style="margin-top: 0; color: #1976d2;">📋 CAHIER DES CHARGES DU PROJET</h3>
+        
+        <div class="task-grid">
+            <div class="task-card">
+                <h4>🎯 Objectif</h4>
+                <p>Créer un serious game pour sensibiliser des élèves de 6e-5e à la cybersécurité</p>
+            </div>
+            
+            <div class="task-card">
+                <h4>👥 Équipe</h4>
+                <p>Binômes ou trinômes<br>Répartition des rôles obligatoire</p>
+            </div>
+            
+            <div class="task-card">
+                <h4>⏱️ Durée</h4>
+                <p>4 séances de 1h<br>+ présentation finale</p>
+            </div>
+            
+            <div class="task-card">
+                <h4>📱 Support</h4>
+                <p>Au choix : Scratch, Python, PowerPoint, Genially, ou papier</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- PHASE 1 -->
+    <div class="phase-section">
+        <div class="phase-header">
+            <span>🧠 PHASE 1 : CONCEPTION & SCÉNARIO</span>
+            <span class="time-badge">Séance 1 - 1h</span>
+        </div>
+        
+        <div class="success-box">
+            <strong>🎯 Objectif :</strong> Définir le concept de votre jeu et créer un scénario engageant
+        </div>
+        
+        <h4>📝 Étape 1.1 : Choix du thème et du public (15 min)</h4>
+        
+        <div class="scenario-examples">
+            <h4>💡 Thèmes suggérés :</h4>
+            <div class="task-grid">
+                <div>
+                    <strong>🎣 Détective Anti-Phishing</strong><br>
+                    <small>Identifier les emails suspects</small>
+                </div>
+                <div>
+                    <strong>🔐 Gardien des Mots de Passe</strong><br>
+                    <small>Créer des protections efficaces</small>
+                </div>
+                <div>
+                    <strong>📱 Maître des Réseaux Sociaux</strong><br>
+                    <small>Paramétrer la confidentialité</small>
+                </div>
+                <div>
+                    <strong>🌐 Explorateur du Web Sûr</strong><br>
+                    <small>Naviguer sans risques</small>
+                </div>
+                <div>
+                    <strong>👥 Protecteur contre le Cyberharcèlement</strong><br>
+                    <small>Reconnaître et réagir</small>
+                </div>
+                <div>
+                    <strong>💰 Chasseur d'Arnaques</strong><br>
+                    <small>Éviter les pièges financiers</small>
+                </div>
+            </div>
+        </div>
+        
+        <h4>📋 À compléter :</h4>
+        <table class="planning-table">
+            <tr>
+                <th style="width: 30%;">Élément</th>
+                <th>Votre choix</th>
+            </tr>
+            <tr>
+                <td><strong>Thème principal</strong></td>
+                <td style="height: 40px;"></td>
+            </tr>
+            <tr>
+                <td><strong>Public cible</strong></td>
+                <td style="height: 40px;"></td>
+            </tr>
+            <tr>
+                <td><strong>Âge des joueurs</strong></td>
+                <td style="height: 40px;"></td>
+            </tr>
+            <tr>
+                <td><strong>Durée de jeu prévue</strong></td>
+                <td style="height: 40px;"></td>
+            </tr>
+        </table>
+        
+        <h4>📖 Étape 1.2 : Création du scénario (25 min)</h4>
+        
+        <div class="warning-box">
+            <strong>⚠️ Contrainte pédagogique :</strong> Votre jeu doit traiter au minimum 3 situations de cybersécurité différentes et proposer des solutions concrètes.
+        </div>
+        
+        <div class="checklist">
+            <h4>✅ Checklist du scénario :</h4>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Contexte :&ensp;</strong>Où et quand se déroule l'action ?
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Personnage principal :&ensp;</strong>Qui est le héros ? (âge, profil)
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Mission :&ensp;</strong>Quel est l'objectif à atteindre ?
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Obstacles :&ensp;</strong>Quelles menaces cyber rencontre-t-il ?
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Solutions :&ensp;</strong>Comment les surmonter ?
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Récompenses :&ensp;</strong>Comment motiver le joueur ?
+            </div>
+        </div>
+        
+        <h4>🎭 Étape 1.3 : Répartition des rôles (20 min)</h4>
+        
+        <table class="planning-table">
+            <tr>
+                <th>Rôle</th>
+                <th>Responsabilités</th>
+                <th>Nom de l'élève</th>
+            </tr>
+            <tr>
+                <td><strong>🎨 Game Designer</strong></td>
+                <td>Conception générale, mécaniques de jeu, règles</td>
+                <td style="height: 30px;"></td>
+            </tr>
+            <tr>
+                <td><strong>📝 Scénariste</strong></td>
+                <td>Histoire, dialogues, situations, personnages</td>
+                <td style="height: 30px;"></td>
+            </tr>
+            <tr>
+                <td><strong>💻 Développeur</strong></td>
+                <td>Programmation, interface, fonctionnalités techniques</td>
+                <td style="height: 30px;"></td>
+            </tr>
+            <tr>
+                <td><strong>🎨 Graphiste (si trinôme)</strong></td>
+                <td>Visuels, illustrations, design d'interface</td>
+                <td style="height: 30px;"></td>
+            </tr>
+        </table>
+    </div>
+    
+    <!-- PHASE 2 -->
+    <div class="phase-section">
+        <div class="phase-header">
+            <span>🛠️ PHASE 2 : PROTOTYPAGE & MÉCANIQUES</span>
+            <span class="time-badge">Séance 2 - 1h</span>
+        </div>
+        
+        <div class="success-box">
+            <strong>🎯 Objectif :</strong> Définir les mécaniques de jeu et créer un prototype fonctionnel
+        </div>
+        
+        <h4>🎮 Étape 2.1 : Mécaniques de jeu (20 min)</h4>
+        
+        <div class="scenario-examples">
+            <h4>🔧 Types de mécaniques possibles :</h4>
+            <div class="task-grid">
+                <div>
+                    <strong>📊 Quiz interactif</strong><br>
+                    <small>Questions à choix multiples avec scores</small>
+                </div>
+                <div>
+                    <strong>🕵️ Enquête</strong><br>
+                    <small>Trouver des indices, résoudre des énigmes</small>
+                </div>
+                <div>
+                    <strong>🎭 Jeu de rôle</strong><br>
+                    <small>Incarner un personnage, prendre des décisions</small>
+                </div>
+                <div>
+                    <strong>🏃 Aventure</strong><br>
+                    <small>Parcours avec obstacles et défis</small>
+                </div>
+                <div>
+                    <strong>🧩 Puzzle</strong><br>
+                    <small>Assembler des éléments, résoudre des problèmes</small>
+                </div>
+                <div>
+                    <strong>📚 Histoire interactive</strong><br>
+                    <small>Livre dont vous êtes le héros</small>
+                </div>
+            </div>
+        </div>
+        
+        <h4>📋 Mécaniques choisies :</h4>
+        <table class="planning-table">
+            <tr>
+                <th>Mécanique</th>
+                <th>Description</th>
+                <th>Objectif pédagogique</th>
+            </tr>
+            <tr>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+            </tr>
+            <tr>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+            </tr>
+            <tr>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+            </tr>
+        </table>
+        
+        <h4>🏗️ Étape 2.2 : Création du prototype (40 min)</h4>
+        
+        <div class="warning-box">
+            <strong>💡 Prototype :</strong> Version simplifiée mais fonctionnelle de votre jeu. L'objectif est de tester vos idées rapidement !
+        </div>
+        
+        <div class="checklist">
+            <h4>✅ Éléments du prototype :</h4>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Écran d'accueil :&ensp;</strong>Titre, consignes, bouton start
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>1 situation type :&ensp;</strong>Exemple concret de gameplay
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Navigation :&ensp;</strong>Comment passer d'un écran à l'autre
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Retours utilisateur :&ensp;</strong>Messages de réussite/échec
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Test fonctionnel :&ensp;</strong>Le prototype fonctionne sans bug
+            </div>
+        </div>
+    </div>
+    
+    <!-- PHASE 3 -->
+    <div class="phase-section">
+        <div class="phase-header">
+            <span>🎨 PHASE 3 : DÉVELOPPEMENT & CONTENU</span>
+            <span class="time-badge">Séance 3 - 1h</span>
+        </div>
+        
+        <div class="success-box">
+            <strong>🎯 Objectif :</strong> Développer le jeu complet avec tous ses contenus pédagogiques
+        </div>
+        
+        <h4>📚 Étape 3.1 : Contenu pédagogique (30 min)</h4>
+        
+        <div class="scenario-examples">
+            <h4>🛡️ Contenus cybersécurité obligatoires (choisir au moins 3) :</h4>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>Phishing :</strong> Reconnaître les emails/SMS suspects
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>Mots de passe :</strong> Créer et gérer des codes sécurisés
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>Réseaux sociaux :</strong> Paramètres de confidentialité
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>Téléchargements :</strong> Sources fiables vs dangereuses
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>WiFi public :</strong> Précautions à prendre
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>Cyberharcèlement :</strong> Prévention et réactions
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>Données personnelles :</strong> Protection et partage
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>Arnaques en ligne :</strong> Techniques et parades
+                </div>
+            </div>
+        </div>
+        
+        <h4>🎮 Étape 3.2 : Développement technique (30 min)</h4>
+        
+        <div class="task-grid">
+            <div class="task-card">
+                <h4>🖥️ Interface</h4>
+                <p>• Écrans principaux<br>• Navigation claire<br>• Boutons fonctionnels</p>
+            </div>
+            
+            <div class="task-card">
+                <h4>🎯 Gameplay</h4>
+                <p>• Mécaniques finalisées<br>• Progression logique<br>• Défis équilibrés</p>
+            </div>
+            
+            <div class="task-card">
+                <h4>📊 Scoring</h4>
+                <p>• Système de points<br>• Niveaux/badges<br>• Feedback immédiat</p>
+            </div>
+            
+            <div class="task-card">
+                <h4>🎨 Graphismes</h4>
+                <p>• Visuels cohérents<br>• Lisibilité optimale<br>• Attractivité</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- PHASE 4 -->
+    <div class="phase-section">
+        <div class="phase-header">
+            <span>🧪 PHASE 4 : TEST & FINALISATION</span>
+            <span class="time-badge">Séance 4 - 1h</span>
+        </div>
+        
+        <div class="success-box">
+            <strong>🎯 Objectif :</strong> Tester, corriger et finaliser votre serious game
+        </div>
+        
+        <h4>🔍 Étape 4.1 : Tests croisés (30 min)</h4>
+        
+        <div class="warning-box">
+            <strong>🤝 Test croisé :</strong> Chaque équipe teste le jeu d'une autre équipe et donne ses retours constructifs.
+        </div>
+        
+        <table class="planning-table">
+            <tr>
+                <th>Critère de test</th>
+                <th>✅ Fonctionnel</th>
+                <th>⚠️ À améliorer</th>
+                <th>❌ Non fonctionnel</th>
+                <th>Commentaires</th>
+            </tr>
+            <tr>
+                <td><strong>Facilité de prise en main</strong></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="height: 30px;"></td>
+            </tr>
+            <tr>
+                <td><strong>Clarté des consignes</strong></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="height: 30px;"></td>
+            </tr>
+            <tr>
+                <td><strong>Intérêt du scénario</strong></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="height: 30px;"></td>
+            </tr>
+            <tr>
+                <td><strong>Pertinence pédagogique</strong></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="height: 30px;"></td>
+            </tr>
+            <tr>
+                <td><strong>Fonctionnement technique</strong></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="height: 30px;"></td>
+            </tr>
+        </table>
+        
+        <h4>🔧 Étape 4.2 : Corrections et finitions (30 min)</h4>
+        
+        <div class="checklist">
+            <h4>✅ Checklist finale :</h4>
+            <div class="checklist-item">
+                <input type="checkbox"> Correction des bugs identifiés lors des tests
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> Amélioration de l'ergonomie si nécessaire
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> Vérification du contenu pédagogique
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> Finalisation des visuels et de l'interface
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> Test final de bout en bout
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> Préparation de la présentation
+            </div>
+        </div>
+    </div>
+    
+    <!-- OUTILS -->
+    <div class="tools-section">
+        <h3 style="margin-top: 0; color: #2e7d32;">🛠️ OUTILS À VOTRE DISPOSITION</h3>
+        
+        <div class="tools-grid">
+            <div class="tool-card">
+                <div class="tool-icon">🐱</div>
+                <strong>Scratch</strong><br>
+                <small>Programmation visuelle, idéal pour les jeux interactifs</small>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">🐍</div>
+                <strong>Python</strong><br>
+                <small>Pour les plus expérimentés, jeux en console</small>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">📊</div>
+                <strong>PowerPoint</strong><br>
+                <small>Présentation interactive avec animations</small>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">🌐</div>
+                <strong>Genially</strong><br>
+                <small>Contenus interactifs en ligne, très visuel</small>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">📝</div>
+                <strong>Papier/Carton</strong><br>
+                <small>Jeu de plateau, cartes, support physique</small>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">🎨</div>
+                <strong>Canva</strong><br>
+                <small>Création de visuels et d'interfaces attractives</small>
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <strong>💡 Conseil :</strong> Choisissez l'outil que vous maîtrisez le mieux ! Un jeu simple mais bien réalisé vaut mieux qu'un jeu complexe mais inachevé.
+        </div>
+    </div>
+    
+    <!-- ÉVALUATION -->
+    <div class="evaluation-section">
+        <h3 style="margin-top: 0; color: #e65100;">📊 GRILLE D'ÉVALUATION</h3>
+        
+        <div class="criteria-grid">
+            <div class="criteria-header">Critères d'évaluation</div>
+            <div class="criteria-header">Débutant<br>(1-2 pts)</div>
+            <div class="criteria-header">Apprenti<br>(3-4 pts)</div>
+            <div class="criteria-header">Confirmé<br>(5-6 pts)</div>
+            <div class="criteria-header">Expert<br>(7-8 pts)</div>
+            
+            <div class="criteria-row"><strong>🎯 Pertinence pédagogique</strong><br><small>Contenu cybersécurité correct et adapté</small></div>
+            <div class="level-box">Contenu partiel ou incorrectement traité</div>
+            <div class="level-box">2-3 aspects traités correctement</div>
+            <div class="level-box">Contenu complet et précis</div>
+            <div class="level-box">Contenu expert avec approfondissements</div>
+            
+            <div class="criteria-row"><strong>🎮 Conception du jeu</strong><br><small>Originalité, mécaniques, scénario</small></div>
+            <div class="level-box">Concept basique, peu d'originalité</div>
+            <div class="level-box">Bonnes idées, réalisation simple</div>
+            <div class="level-box">Concept original bien exécuté</div>
+            <div class="level-box">Innovation remarquable et gameplay fluide</div>
+            
+            <div class="criteria-row"><strong>💻 Réalisation technique</strong><br><small>Fonctionnement, interface, finition</small></div>
+            <div class="level-box">Nombreux bugs, interface peu soignée</div>
+            <div class="level-box">Quelques dysfonctionnements mineurs</div>
+            <div class="level-box">Fonctionnel et bien présenté</div>
+            <div class="level-box">Technique maîtrisée, interface professionnelle</div>
+            
+            <div class="criteria-row"><strong>👥 Travail d'équipe</strong><br><small>Collaboration, répartition des tâches</small></div>
+            <div class="level-box">Difficultés de collaboration</div>
+            <div class="level-box">Équipe fonctionnelle</div>
+            <div class="level-box">Bonne répartition des rôles</div>
+            <div class="level-box">Collaboration exemplaire et efficace</div>
+            
+            <div class="criteria-row"><strong>📊 Présentation finale</strong><br><small>Communication, démonstration</small></div>
+            <div class="level-box">Présentation confuse ou incomplète</div>
+            <div class="level-box">Présentation claire mais basique</div>
+            <div class="level-box">Démonstration bien structurée</div>
+            <div class="level-box">Présentation captivante et professionnelle</div>
+        </div>
+        
+        <div class="success-box">
+            <strong>🏆 Score total : ___/40 points</strong><br>
+            <strong>📈 Niveau atteint :</strong> 
+            • 32-40 pts : Expert 🥇 
+            • 24-31 pts : Confirmé 🥈 
+            • 16-23 pts : Apprenti 🥉 
+            • 8-15 pts : Débutant 📚
+        </div>
+    </div>
+    
+    <!-- PRÉSENTATION -->
+    <div class="phase-section">
+        <div class="phase-header">
+            <span>🎤 PHASE 5 : PRÉSENTATION FINALE</span>
+            <span class="time-badge">Séance 5 - 1h</span>
+        </div>
+        
+        <div class="success-box">
+            <strong>🎯 Objectif :</strong> Présenter votre serious game devant la classe et recueillir les retours
+        </div>
+        
+        <h4>📋 Structure de présentation (5 min par équipe) :</h4>
+        
+        <table class="planning-table">
+            <tr>
+                <th style="width: 20%;">Étape</th>
+                <th style="width: 15%;">Durée</th>
+                <th>Contenu</th>
+            </tr>
+            <tr>
+                <td><strong>1. Introduction</strong></td>
+                <td>30 sec</td>
+                <td>Nom du jeu, équipe, thème choisi</td>
+            </tr>
+            <tr>
+                <td><strong>2. Concept</strong></td>
+                <td>1 min</td>
+                <td>Scénario, objectifs pédagogiques, public cible</td>
+            </tr>
+            <tr>
+                <td><strong>3. Démonstration</strong></td>
+                <td>2 min 30</td>
+                <td>Gameplay en direct, fonctionnalités principales</td>
+            </tr>
+            <tr>
+                <td><strong>4. Bilan technique</strong></td>
+                <td>30 sec</td>
+                <td>Outils utilisés, défis relevés</td>
+            </tr>
+            <tr>
+                <td><strong>5. Questions</strong></td>
+                <td>30 sec</td>
+                <td>Réponses aux questions de la classe</td>
+            </tr>
+        </table>
+        
+        <div class="checklist">
+            <h4>✅ Checklist présentation :</h4>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Matériel testé :</strong> Ordinateur, vidéoprojecteur, jeu fonctionnel
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Répartition des prises de parole</strong> définie dans l'équipe
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Démonstration préparée :</strong> Scénario de présentation rodé
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox"> <strong>Plan B :</strong> Solutions en cas de problème technique
+            </div>
+        </div>
+    </div>
+    
+    <!-- RESSOURCES -->
+    <div class="resources-section">
+        <h3 style="margin-top: 0; color: #ad1457;">📚 RESSOURCES & INSPIRATION</h3>
+        
+        <div class="resource-list">
+            <div class="resource-item">
+                <h4>🔍 Contenus cybersécurité</h4>
+                <ul>
+                    <li>cyber.gouv.fr - ANSSI officiel</li>
+                    <li>cybermalveillance.gouv.fr</li>
+                    <li>pix.fr - Section sécurité</li>
+                    <li>internetsanscrainte.fr</li>
+                </ul>
+            </div>
+            
+            <div class="resource-item">
+                <h4>🎮 Inspiration serious games</h4>
+                <ul>
+                    <li>Cyber3000 - Escape game</li>
+                    <li>Stop la Violence - Prévention</li>
+                    <li>2025 Ex Machina - Identité numérique</li>
+                    <li>Hipcheck - Arnaques en ligne</li>
+                </ul>
+            </div>
+            
+            <div class="resource-item">
+                <h4>🛠️ Tutoriels techniques</h4>
+                <ul>
+                    <li>Scratch : scratch.mit.edu/ideas</li>
+                    <li>Genially : help.genial.ly</li>
+                    <li>Python : python.org/about/gettingstarted</li>
+                    <li>Canva : canva.com/learn</li>
+                </ul>
+            </div>
+            
+            <div class="resource-item">
+                <h4>🎨 Assets graphiques libres</h4>
+                <ul>
+                    <li>Freepik.com - Illustrations</li>
+                    <li>Pixabay.com - Images libres</li>
+                    <li>Flaticon.com - Icônes</li>
+                    <li>Unsplash.com - Photos</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- PLANNING -->
+    <div class="project-info">
+        <h3 style="margin-top: 0; color: #1976d2;">📅 PLANNING DÉTAILLÉ</h3>
+        
+        <table class="planning-table">
+            <tr>
+                <th>Séance</th>
+                <th>Durée</th>
+                <th>Activités principales</th>
+                <th>Livrables</th>
+            </tr>
+            <tr>
+                <td><strong>Séance 1</strong><br>Conception</td>
+                <td>1h</td>
+                <td>• Choix du thème et du public<br>• Création du scénario<br>• Répartition des rôles</td>
+                <td>• Document de conception<br>• Répartition des tâches</td>
+            </tr>
+            <tr>
+                <td><strong>Séance 2</strong><br>Prototypage</td>
+                <td>1h</td>
+                <td>• Définition des mécaniques<br>• Création du prototype<br>• Premier test interne</td>
+                <td>• Prototype fonctionnel<br>• Liste des fonctionnalités</td>
+            </tr>
+            <tr>
+                <td><strong>Séance 3</strong><br>Développement</td>
+                <td>1h</td>
+                <td>• Contenu pédagogique complet<br>• Développement technique<br>• Interface et visuels</td>
+                <td>• Jeu quasi-finalisé<br>• Contenus cybersécurité intégrés</td>
+            </tr>
+            <tr>
+                <td><strong>Séance 4</strong><br>Test & Finalisation</td>
+                <td>1h</td>
+                <td>• Tests croisés entre équipes<br>• Corrections des bugs<br>• Préparation présentation</td>
+                <td>• Jeu finalisé et testé<br>• Support de présentation</td>
+            </tr>
+            <tr>
+                <td><strong>Séance 5</strong><br>Présentation</td>
+                <td>1h</td>
+                <td>• Présentation de 5 min/équipe<br>• Tests par la classe<br>• Bilan et évaluation</td>
+                <td>• Présentation orale<br>• Serious game livré</td>
+            </tr>
+        </table>
+    </div>
+    
+    <!-- COMPÉTENCES -->
+    <div class="evaluation-section">
+        <h3 style="margin-top: 0; color: #e65100;">🎯 COMPÉTENCES TRAVAILLÉES</h3>
+        
+        <div class="task-grid">
+            <div class="task-card">
+                <h4>🔧 Technologie</h4>
+                <ul style="font-size: 12px; margin: 5px 0;">
+                    <li>CT2.4 : Associer solutions techniques et fonctions</li>
+                    <li>CT4.1 : Décrire le fonctionnement d'objets techniques</li>
+                    <li>MSOST1.3 : Utiliser outils de description adaptés</li>
+                </ul>
+            </div>
+            
+            <div class="task-card">
+                <h4>💻 PIX - Sécurité</h4>
+                <ul style="font-size: 12px; margin: 5px 0;">
+                    <li>4.2 : Protéger les données personnelles</li>
+                    <li>4.3 : Protéger santé et bien-être</li>
+                    <li>5.2 : Évoluer dans un environnement numérique</li>
+                </ul>
+            </div>
+            
+            <div class="task-card">
+                <h4>🗣️ Français - Oral</h4>
+                <ul style="font-size: 12px; margin: 5px 0;">
+                    <li>Présenter un projet</li>
+                    <li>Structurer un discours</li>
+                    <li>Adapter sa communication au public</li>
+                </ul>
+            </div>
+            
+            <div class="task-card">
+                <h4>🤝 Compétences transversales</h4>
+                <ul style="font-size: 12px; margin: 5px 0;">
+                    <li>Travail en équipe</li>
+                    <li>Créativité et innovation</li>
+                    <li>Résolution de problèmes</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CONSEILS -->
+    <div class="warning-box">
+        <h4>💡 CONSEILS POUR RÉUSSIR :</h4>
+        <ul>
+            <li><strong>Restez simples :</strong> Mieux vaut un jeu simple qui fonctionne qu'un jeu complexe inachevé</li>
+            <li><strong>Testez souvent :</strong> Vérifiez régulièrement que votre jeu fonctionne</li>
+            <li><strong>Pensez pédagogie :</strong> Votre jeu doit vraiment apprendre quelque chose aux joueurs</li>
+            <li><strong>Communiquez :</strong> Répartissez-vous le travail et coordonnez-vous régulièrement</li>
+            <li><strong>Sauvegardez :</strong> Faites des copies de votre travail régulièrement</li>
+        </ul>
+    </div>
+    
+    <!-- AUTOÉVALUATION -->
+    <div class="success-box">
+        <h4>📊 AUTO-ÉVALUATION DE L'ÉQUIPE :</h4>
+        
+        <table class="planning-table">
+            <tr>
+                <th>Critère</th>
+                <th>😍 Très satisfaisant</th>
+                <th>😊 Satisfaisant</th>
+                <th>😐 À améliorer</th>
+                <th>Comments</th>
+            </tr>
+            <tr>
+                <td><strong>Collaboration d'équipe</strong></td>
+                <td>☐</td>
+                <td>☐</td>
+                <td>☐</td>
+                <td style="width: 200px; height: 30px;"></td>
+            </tr>
+            <tr>
+                <td><strong>Qualité du contenu pédagogique</strong></td>
+                <td>☐</td>
+                <td>☐</td>
+                <td>☐</td>
+                <td style="height: 30px;"></td>
+            </tr>
+            <tr>
+                <td><strong>Réalisation technique</strong></td>
+                <td>☐</td>
+                <td>☐</td>
+                <td>☐</td>
+                <td style="height: 30px;"></td>
+            </tr>
+            <tr>
+                <td><strong>Originalité et créativité</strong></td>
+                <td>☐</td>
+                <td>☐</td>
+                <td>☐</td>
+                <td style="height: 30px;"></td>
+            </tr>
+            <tr>
+                <td><strong>Respect du planning</strong></td>
+                <td>☐</td>
+                <td>☐</td>
+                <td>☐</td>
+                <td style="height: 30px;"></td>
+            </tr>
+        </table>
+        
+        <div style="margin-top: 15px;">
+            <strong>🎯 Ce dont nous sommes le plus fiers :</strong><br>
+            <div style="border: 1px solid #ddd; padding: 10px; margin: 5px 0; min-height: 40px; background: white;"></div>
+            
+            <strong>📚 Ce que nous avons appris :</strong><br>
+            <div style="border: 1px solid #ddd; padding: 10px; margin: 5px 0; min-height: 40px; background: white;"></div>
+            
+            <strong>🔧 Ce que nous améliorerons la prochaine fois :</strong><br>
+            <div style="border: 1px solid #ddd; padding: 10px; margin: 5px 0; min-height: 40px; background: white;"></div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        🎮 Bonne création et que le meilleur serious game gagne ! 🏆<br>
+        Académie de Versailles - Technologie au collège - Cycle 4
+    </div>
+</body>
+</html>
