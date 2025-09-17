@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affiche - Activité pédagogique League of Legends</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .poster {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/><circle cx="20" cy="20" r="1" fill="white" opacity="0.15"/><circle cx="80" cy="30" r="1.5" fill="white" opacity="0.1"/><circle cx="30" cy="80" r="1" fill="white" opacity="0.2"/><circle cx="70" cy="70" r="2" fill="white" opacity="0.05"/></svg>') repeat;
+            animation: sparkle 20s linear infinite;
+        }
+        
+        @keyframes sparkle {
+            0% { transform: rotate(0deg) translateY(0); }
+            100% { transform: rotate(360deg) translateY(-20px); }
+        }
+        
+        .header h1 {
+            margin: 0 0 15px 0;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .academic-banner {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border: 3px solid #e74c3c;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .warning-box::before {
+            content: '⚠️';
+            font-size: 2em;
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+        }
+        
+        .warning-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #c0392b;
+            margin-bottom: 10px;
+        }
+        
+        .objectives-section {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .objectives-section::before {
+            content: '🎯';
+            font-size: 2.5em;
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            opacity: 0.7;
+        }
+        
+        .objectives-title {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .objective-item {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .objective-icon {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+        
+        .objective-content h4 {
+            margin: 0 0 8px 0;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+        
+        .objective-content p {
+            margin: 0;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .competences-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .competence-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            transform: perspective(1000px) rotateY(0deg);
+            transition: transform 0.3s ease;
+        }
+        
+        .competence-card:hover {
+            transform: perspective(1000px) rotateY(5deg) translateY(-5px);
+        }
+        
+        .competence-code {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .competence-desc {
+            font-size: 0.95em;
+            opacity: 0.95;
+        }
+        
+        .rules-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 3px solid #28a745;
+        }
+        
+        .rules-title {
+            font-size: 1.5em;
+            color: #155724;
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .rule-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .rule-number {
+            background: #28a745;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .technical-specs {
+            background: #2c3e50;
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        .technical-title {
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            color: #ecf0f1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .spec-item {
+            background: #34495e;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .spec-label {
+            color: #bdc3c7;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        
+        .spec-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #ecf0f1;
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            font-size: 0.95em;
+        }
+        
+        .institution {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .date {
+            color: #bdc3c7;
+        }
+        
+        @media (max-width: 768px) {
+            .poster {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .competences-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <div class="header">
+            <h1>🎮 ACTIVITÉ PÉDAGOGIQUE</h1>
+            <div class="subtitle">League of Legends : Étude des systèmes informatiques</div>
+        </div>        
+        <div class="content">
+            
+            <div class="objectives-section">
+                <div class="objectives-title">Objectifs pédagogiques</div>
+                
+                <div class="objective-item">
+                    <div class="objective-icon">🌐</div>
+                    <div class="objective-content">
+                        <h4>Comprendre les réseaux informatiques</h4>
+                        <p>Analyser l'architecture client-serveur, mesurer la latence, comprendre les échanges de données en temps réel</p>
+                    </div>
+                </div>
+                
+                <div class="objective-item">
+                    <div class="objective-icon">🤖</div>
+                    <div class="objective-content">
+                        <h4>Découvrir l'intelligence artificielle</h4>
+                        <p>Observer les comportements des PNJ, comprendre les algorithmes de décision, analyser le système de matchmaking</p>
+                    </div>
+                </div>
+                
+                <div class="objective-item">
+                    <div class="objective-icon">📊</div>
+                    <div class="objective-content">
+                        <h4>Étudier la gestion des données</h4>
+                        <p>Analyser la collecte de données utilisateur, comprendre leur traitement et leur utilisation par le système</p>
+                    </div>
+                </div>
+                
+                <div class="objective-item">
+                    <div class="objective-icon">🎨</div>
+                    <div class="objective-content">
+                        <h4>Analyser l'interface utilisateur</h4>
+                        <p>Étudier l'ergonomie, l'expérience utilisateur et les choix de design dans un logiciel complexe</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="competences-grid">
+                <div class="competence-card">
+                    <div class="competence-code">CT 2.3</div>
+                    <div class="competence-desc">Analyser le fonctionnement et la structure d'un objet technique</div>
+                </div>
+                <div class="competence-card">
+                    <div class="competence-code">CT 4.1</div>
+                    <div class="competence-desc">Décrire les échanges d'informations au sein d'un réseau</div>
+                </div>
+                <div class="competence-card">
+                    <div class="competence-code">CT 5.1</div>
+                    <div class="competence-desc">Simuler numériquement la structure d'un système technique</div>
+                </div>
+            </div>
+            
+            <div class="rules-section">
+                <div class="rules-title">
+                    📋 Règles d'utilisation
+                </div>
+                
+                <div class="rule-item">
+                    <div class="rule-number">1</div>
+                    <div>Accès uniquement sur le poste dédié avec autorisation préalable de l'enseignant</div>
+                </div>
+                
+                <div class="rule-item">
+                    <div class="rule-number">2</div>
+                    <div>Utilisation du compte classe sécurisé - Aucune création de compte personnel</div>
+                </div>
+                
+                <div class="rule-item">
+                    <div class="rule-number">3</div>
+                    <div>Mode ARAM uniquement - Parties courtes à visée pédagogique</div>
+                </div>
+                
+                <div class="rule-item">
+                    <div class="rule-number">4</div>
+                    <div>Observations techniques notées sur la fiche d'activité fournie</div>
+                </div>
+                
+                <div class="rule-item">
+                    <div class="rule-number">5</div>
+                    <div>Respect du temps imparti - Retour immédiat aux activités après observation</div>
+                </div>
+                
+                <div class="rule-item">
+                    <div class="rule-number">6</div>
+                    <div>Communication respectueuse - Aucun chat avec d'autres joueurs</div>
+                </div>
+            </div>
+            
+            <div class="technical-specs">
+                <div class="technical-title">
+                    ⚙️ Spécifications techniques
+                </div>
+                <div class="spec-grid">
+                    <div class="spec-item">
+                        <div class="spec-label">Durée</div>
+                        <div class="spec-value">15 minutes-)</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Mode de jeu</div>
+                        <div class="spec-value">ARAM</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Nombre d'élèves</div>
+                        <div class="spec-value">2 par session</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Sécurité</div>
+                        <div class="spec-value">Compte dédié</div>
+                    </div>
+                </div>
+            </div>            
+            <div style="background: #e8f5e8; padding: 20px; border-radius: 10px; border-left: 5px solid #28a745; margin: 20px 0;">
+                <strong style="color: #155724;">📝 Validation pédagogique :</strong><br>
+                <span style="color: #2c3e50;">Activité conforme aux programmes officiels 2024 - Cycle 4 - Technologie<br>
+                Développement des compétences numériques et de la culture technologique</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="institution">Collège Moulin à Vent - Académie de Versailles</div>
+            <div class="date">Année scolaire 2025-2026</div>
+        </div>
+    </div>
+</body>
+</html>
