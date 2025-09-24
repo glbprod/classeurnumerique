@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider pour Moodle</title>
+    <style>
+        .slider-container {
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .slider-wrapper {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .slide {
+            min-width: 100%;
+            position: relative;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        
+        .slide-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .slide:hover .slide-overlay {
+            opacity: 1;
+        }
+        
+        .slide-content {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 8px;
+            max-width: 80%;
+            color: white;
+        }
+        
+        .slide-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .slide-text {
+            font-size: 16px;
+            line-height: 1.4;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        /* Style pour images manquantes */
+        .slide-placeholder {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        /* Navigation dots */
+        .slider-dots {
+            text-align: center;
+            padding: 15px 0;
+            background: #f8f9fa;
+        }
+        
+        .dot {
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: #bdc3c7;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .dot.active,
+        .dot:hover {
+            background-color: #3498db;
+        }
+        
+        /* Flèches de navigation */
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .slider-nav:hover {
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .prev {
+            left: 10px;
+        }
+        
+        .next {
+            right: 10px;
+        }
+        
+        /* Slides individuelles avec couleurs de démonstration */
+        .slide-demo-1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .slide-demo-2 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .slide-demo-3 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .slide-demo-4 {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">        
+        <div class="slider-wrapper" id="sliderWrapper">
+            <!-- Slide 1 - MODIFIEZ L'URL ICI -->
+            <div class="slide">
+                <img src="https://classeurnumerique.fr/pluginfile.php/16093/course/section/790/collection%20de%20bifaces.png" 
+                     alt="Slide 1" 
+                     onerror="this.parentNode.classList.add('slide-placeholder'); this.style.display='none';">
+                <div class="slide-overlay">
+                    <div class="slide-content">
+                        <div class="slide-title">Bienvenue en Technologie</div>
+                        <div class="slide-text">Découvrez les règles pour réussir vos séances</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 2 - MODIFIEZ L'URL ICI -->
+            <div class="slide">
+                <img src="https://via.placeholder.com/800x300/f093fb/ffffff?text=REMPLACEZ+CETTE+URL" 
+                     alt="Slide 2" 
+                     onerror="this.parentNode.classList.add('slide-placeholder'); this.style.display='none';">
+                <div class="slide-overlay">
+                    <div class="slide-content">
+                        <div class="slide-title">Préparez votre matériel</div>
+                        <div class="slide-text">Classeur, feuilles, stylos... Tout est important !</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 3 - MODIFIEZ L'URL ICI -->
+            <div class="slide">
+                <img src="https://via.placeholder.com/800x300/4facfe/ffffff?text=REMPLACEZ+CETTE+URL" 
+                     alt="Slide 3" 
+                     onerror="this.parentNode.classList.add('slide-placeholder'); this.style.display='none';">
+                <div class="slide-overlay">
+                    <div class="slide-content">
+                        <div class="slide-title">Participez activement</div>
+                        <div class="slide-text">Posez des questions, donnez vos idées, collaborez</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 4 - MODIFIEZ L'URL ICI -->
+            <div class="slide">
+                <img src="https://via.placeholder.com/800x300/43e97b/ffffff?text=REMPLACEZ+CETTE+URL" 
+                     alt="Slide 4" 
+                     onerror="this.parentNode.classList.add('image-error'); this.style.display='none';">
+                <div class="slide-overlay">
+                    <div class="slide-content">
+                        <div class="slide-title">Respectez le matériel</div>
+                        <div class="slide-text">Prenez soin des équipements et de l'espace de travail</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="slider-nav prev" onclick="changeSlide(-1)">❮</button>
+        <button class="slider-nav next" onclick="changeSlide(1)">❯</button>
+        
+        <div class="slider-dots">
+            <span class="dot active" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
+        </div>
+    </div>
+
+    <!-- Instructions pour personnaliser les images -->
+    <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db;">
+        <h3 style="color: #2c3e50; margin-bottom: 10px;">📝 Comment personnaliser vos images :</h3>
+        <ol style="line-height: 1.6;">
+            <li><strong>Téléchargez vos images</strong> dans les fichiers de votre cours Moodle</li>
+            <li><strong>Copiez l'URL</strong> de chaque image (clic droit → "Copier l'adresse du lien")</li>
+            <li><strong>Remplacez les URLs</strong> dans le code HTML :<br>
+                <code style="background: #e8e8e8; padding: 2px 4px;">src="https://via.placeholder.com/..."</code><br>
+                par votre URL : <code style="background: #e8e8e8; padding: 2px 4px;">src="votre_url_image.jpg"</code>
+            </li>
+            <li><strong>Formats recommandés :</strong> JPG, PNG (800x300px idéal)</li>
+            <li><strong>Modifiez les textes</strong> dans les balises <code style="background: #e8e8e8; padding: 2px 4px;">slide-title</code> et <code style="background: #e8e8e8; padding: 2px 4px;">slide-text</code></li>
+        </ol>
+        
+        <h4 style="color: #2c3e50; margin: 15px 0 5px 0;">🎨 Fonctionnalités :</h4>
+        <ul style="line-height: 1.6; margin-bottom: 0;">
+            <li><strong>Overlay au survol :</strong> Le texte apparaît quand on survole l'image</li>
+            <li><strong>Navigation :</strong> Flèches et points de navigation</li>
+            <li><strong>Responsive :</strong> S'adapte à toutes les tailles d'écran</li>
+            <li><strong>Gestion d'erreur :</strong> Affichage de secours si une image ne charge pas</li>
+        </ul>
+    </div>
+
+    <script>
+        let slideIndex = 1;
+        const totalSlides = 4;
+        
+        function showSlide(n) {
+            const slider = document.getElementById('sliderWrapper');
+            const dots = document.querySelectorAll('.dot');
+            
+            if (n > totalSlides) slideIndex = 1;
+            if (n < 1) slideIndex = totalSlides;
+            
+            // Déplacer le slider
+            const translateX = -((slideIndex - 1) * 100);
+            slider.style.transform = `translateX(${translateX}%)`;
+            
+            // Mettre à jour les dots
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[slideIndex - 1].classList.add('active');
+        }
+        
+        function changeSlide(n) {
+            slideIndex += n;
+            showSlide(slideIndex);
+        }
+        
+        function currentSlide(n) {
+            slideIndex = n;
+            showSlide(slideIndex);
+        }
+        
+        // Auto-play (optionnel)
+        function autoSlide() {
+            slideIndex++;
+            showSlide(slideIndex);
+        }
+        
+        // Démarrer l'auto-play (décommentez la ligne suivante si souhaité)
+        // setInterval(autoSlide, 5000); // Change toutes les 5 secondes
+        
+        // Initialiser
+        showSlide(slideIndex);
+    </script>
+</body>
+</html>
