@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ressources Numériques Autorisées</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 3px solid #f59e0b;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .warning-icon {
+            font-size: 3em;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .warning-content h3 {
+            color: #92400e;
+            margin-bottom: 10px;
+        }
+
+        .warning-content p {
+            color: #78350f;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .resource-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .resource-icon {
+            font-size: 2.5em;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .resource-title {
+            flex: 1;
+        }
+
+        .resource-title h3 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+
+        .resource-title .tag {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #4c1d95;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .resource-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .resource-features {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .resource-features h4 {
+            color: #495057;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .resource-features ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .resource-features li {
+            padding: 5px 0;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .resource-features li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .resource-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .resource-link:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .how-to-use {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .how-to-use h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .step {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .step h4 {
+            color: #495057;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .forbidden-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 3px solid #ef4444;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .forbidden-box h3 {
+            color: #991b1b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .forbidden-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .forbidden-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            color: #991b1b;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .footer-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+        }
+
+        .footer-icon {
+            font-size: 2em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85em;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header">
+            <h1>🎓 Ressources Numériques Autorisées</h1>
+            <p>Pour vos recherches en Technologie - Collège</p>
+        </div>
+
+        <!-- Avertissement -->
+        <div class="warning-box">
+            <div class="warning-icon">⚠️</div>
+            <div class="warning-content">
+                <h3>IMPORTANT - Règle de la classe</h3>
+                <p><strong>Seules les ressources listées ci-dessous sont autorisées pour vos recherches.</strong><br>
+                Toute utilisation d'autres sources doit être validée par le professeur.</p>
+            </div>
+        </div>
+
+        <!-- Grille des ressources -->
+        <div class="resources-grid">
+            <!-- Moteur de recherche éducatif -->
+            <div class="resource-card">
+                <div class="resource-header">
+                    <div class="resource-icon">🔍</div>
+                    <div class="resource-title">
+                        <h3>Qwant Junior</h3>
+                        <span class="tag">MOTEUR DE RECHERCHE</span>
+                    </div>
+                </div>
+                <div class="resource-description">
+                    Moteur de recherche français sécurisé spécialement conçu pour les 6-18 ans. Sans publicité et sans traçage.
+                </div>
+                <div class="resource-features">
+                    <h4>✨ Avantages :</h4>
+                    <ul>
+                        <li>Résultats filtrés et adaptés</li>
+                        <li>Respect de la vie privée</li>
+                        <li>Interface simple et claire</li>
+                        <li>Pas de contenus inappropriés</li>
+                    </ul>
+                </div>
+                <a href="https://www.qwantjunior.com" target="_blank" class="resource-link">
+                    <span>Accéder à Qwant Junior</span>
+                    <span>→</span>
+                </a>
+            </div>
+
+            <!-- Encyclopédie en ligne -->
+            <div class="resource-card">
+                <div class="resource-header">
+                    <div class="resource-icon">📚</div>
+                    <div class="resource-title">
+                        <h3>Vikidia</h3>
+                        <span class="tag">ENCYCLOPÉDIE</span>
+                    </div>
+                </div>
+                <div class="resource-description">
+                    L'encyclopédie collaborative des 8-13 ans. Version junior de Wikipédia avec un contenu adapté et vérifié.
+                </div>
+                <div class="resource-features">
+                    <h4>✨ Avantages :</h4>
+                    <ul>
+                        <li>Contenu pédagogique adapté</li>
+                        <li>Articles clairs et illustrés</li>
+                        <li>Informations vérifiées</li>
+                        <li>Contributions encadrées</li>
+                    </ul>
+                </div>
+                <a href="https://fr.vikidia.org" target="_blank" class="resource-link">
+                    <span>Accéder à Vikidia</span>
+                    <span>→</span>
+                </a>
+            </div>
+
+            <!-- Wikipédia -->
+            <div class="resource-card">
+                <div class="resource-header">
+                    <div class="resource-icon">🌐</div>
+                    <div class="resource-title">
+                        <h3>Wikipédia</h3>
+                        <span class="tag">ENCYCLOPÉDIE</span>
+                    </div>
+                </div>
+                <div class="resource-description">
+                    Encyclopédie collaborative mondiale. À utiliser avec esprit critique en vérifiant toujours les sources.
+                </div>
+                <div class="resource-features">
+                    <h4>✨ Comment l'utiliser :</h4>
+                    <ul>
+                        <li>Vérifier les sources en bas d'article</li>
+                        <li>Croiser avec d'autres ressources</li>
+                        <li>Privilégier articles "de qualité"</li>
+                        <li>Noter la date de mise à jour</li>
+                    </ul>
+                </div>
+                <a href="https://fr.wikipedia.org" target="_blank" class="resource-link">
+                    <span>Accéder à Wikipédia</span>
+                    <span>→</span>
+                </a>
+            </div>
+
+            <!-- Lumni -->
+            <div class="resource-card">
+                <div class="resource-header">
+                    <div class="resource-icon">📺</div>
+                    <div class="resource-title">
+                        <h3>Lumni</h3>
+                        <span class="tag">VIDÉOS ÉDUCATIVES</span>
+                    </div>
+                </div>
+                <div class="resource-description">
+                    Plateforme éducative de l'audiovisuel public français. Vidéos, articles et jeux pour apprendre.
+                </div>
+                <div class="resource-features">
+                    <h4>✨ Avantages :</h4>
+                    <ul>
+                        <li>Contenus validés par l'Éducation Nationale</li>
+                        <li>Vidéos courtes et claires</li>
+                        <li>Classement par niveau scolaire</li>
+                        <li>Fiches pédagogiques associées</li>
+                    </ul>
+                </div>
+                <a href="https://www.lumni.fr" target="_blank" class="resource-link">
+                    <span>Accéder à Lumni</span>
+                    <span>→</span>
+                </a>
+            </div>
+
+            <!-- ENT / Ressources du collège -->
+            <div class="resource-card">
+                <div class="resource-header">
+                    <div class="resource-icon">🏫</div>
+                    <div class="resource-title">
+                        <h3>ENT Collège</h3>
+                        <span class="tag">RESSOURCES INTERNES</span>
+                    </div>
+                </div>
+                <div class="resource-description">
+                    Espace numérique de travail du collège avec documents de cours, ressources et outils pédagogiques.
+                </div>
+                <div class="resource-features">
+                    <h4>✨ Contenu disponible :</h4>
+                    <ul>
+                        <li>Documents du professeur</li>
+                        <li>Manuels numériques</li>
+                        <li>Ressources partagées</li>
+                        <li>Travaux de classe</li>
+                    </ul>
+                </div>
+                <a href="#" class="resource-link" onclick="alert('Connectez-vous via votre ENT habituel'); return false;">
+                    <span>Accéder à l'ENT</span>
+                    <span>→</span>
+                </a>
+            </div>
+
+            <!-- Sites officiels -->
+            <div class="resource-card">
+                <div class="resource-header">
+                    <div class="resource-icon">🏛️</div>
+                    <div class="resource-title">
+                        <h3>Sites Officiels</h3>
+                        <span class="tag">SOURCES FIABLES</span>
+                    </div>
+                </div>
+                <div class="resource-description">
+                    Sites institutionnels et organismes officiels (.gouv.fr, .edu, musées, universités).
+                </div>
+                <div class="resource-features">
+                    <h4>✨ Exemples autorisés :</h4>
+                    <ul>
+                        <li>education.gouv.fr</li>
+                        <li>culture.gouv.fr</li>
+                        <li>Sites des musées nationaux</li>
+                        <li>CNES, CERN, INRIA...</li>
+                    </ul>
+                </div>
+                <div class="resource-link" style="background: #6c757d; cursor: default;">
+                    <span>À valider avec le professeur</span>
+                    <span>✓</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guide d'utilisation -->
+        <div class="how-to-use">
+            <h2>📖 Comment utiliser ces ressources efficacement ?</h2>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>🎯 Définir ma recherche</h4>
+                    <p>Je formule clairement ma question et je note les mots-clés importants avant de commencer.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>🔍 Choisir la bonne ressource</h4>
+                    <p>Moteur pour une recherche large, encyclopédie pour un sujet précis, vidéos pour comprendre visuellement.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>📝 Prendre des notes</h4>
+                    <p>Je note les informations importantes avec la source (nom du site, date de consultation).</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h4>✅ Vérifier l'information</h4>
+                    <p>Je croise mes sources : au moins 2 ressources différentes pour confirmer une information.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <h4>📚 Citer mes sources</h4>
+                    <p>J'indique toujours d'où viennent mes informations dans mon travail (bibliographie).</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <h4>🤔 Rester critique</h4>
+                    <p>Je me demande : qui a écrit ça ? Quand ? Dans quel but ? L'info est-elle à jour ?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ressources interdites -->
+        <div class="forbidden-box">
+            <h3>
+                <span style="font-size: 1.5em;">🚫</span>
+                RESSOURCES NON AUTORISÉES
+            </h3>
+            <p style="color: #7f1d1d; margin-bottom: 15px;">
+                Pour garantir la qualité de vos recherches et votre sécurité en ligne, ces ressources sont interdites :
+            </p>
+            
+            <div class="forbidden-list">
+                <div class="forbidden-item">
+                    <span>❌</span>
+                    <span>IA génératives (ChatGPT, Claude...)</span>
+                </div>
+                <div class="forbidden-item">
+                    <span>❌</span>
+                    <span>Réseaux sociaux (TikTok, Instagram...)</span>
+                </div>
+                <div class="forbidden-item">
+                    <span>❌</span>
+                    <span>Forums non modérés</span>
+                </div>
+                <div class="forbidden-item">
+                    <span>❌</span>
+                    <span>Sites sans sources vérifiables</span>
+                </div>
+                <div class="forbidden-item">
+                    <span>❌</span>
+                    <span>Blogs personnels non référencés</span>
+                </div>
+                <div class="forbidden-item">
+                    <span>❌</span>
+                    <span>Sites de partage type Yahoo Answers</span>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <p style="color: #991b1b; font-weight: bold;">
+                    💡 Pourquoi ces restrictions ?
+                </p>
+                <p style="color: #7f1d1d; font-size: 0.9em; margin-top: 8px;">
+                    Pour vous apprendre à distinguer les sources fiables des sources douteuses, 
+                    développer votre esprit critique et garantir la qualité de vos travaux.
+                </p>
+            </div>
+        </div>
+
+        <!-- Pied de page -->
+        <div class="footer">
+            <h3 style="color: #667eea; margin-bottom: 10px;">
+                📌 À retenir
+            </h3>
+            <p style="color: #666; margin-bottom: 15px;">
+                <strong>En cas de doute sur une ressource, demandez TOUJOURS au professeur avant de l'utiliser !</strong>
+            </p>
+            <div class="footer-icons">
+                <div class="tooltip">
+                    <span class="footer-icon">🔍</span>
+                    <span class="tooltiptext">Chercher efficacement</span>
+                </div>
+                <div class="tooltip">
+                    <span class="footer-icon">✅</span>
+                    <span class="tooltiptext">Vérifier les sources</span>
+                </div>
+                <div class="tooltip">
+                    <span class="footer-icon">📝</span>
+                    <span class="tooltiptext">Citer ses sources</span>
+                </div>
+                <div class="tooltip">
+                    <span class="footer-icon">🤔</span>
+                    <span class="tooltiptext">Garder son esprit critique</span>
+                </div>
+            </div>
+            <p style="color: #999; font-size: 0.9em; margin-top: 15px;">
+                📚 Technologie Collège - Académie de Versailles
+            </p>
+        </div>
+    </div>
+</body>
+</html>
