@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider pour Moodle - Histoire de la Technologie</title>
+    <style>
+        .slider-container {
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .slider-wrapper {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .slide {
+            min-width: 100%;
+            position: relative;
+            height: 0;
+            padding-bottom: 75%; /* 4:3 ratio (3/4 = 0.75 = 75%) */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .slide img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Changé de 'cover' à 'contain' pour voir l'image entière */
+            background-color: #f8f9fa; /* Couleur de fond pour les espaces vides */
+            border-radius: 4px;
+        }
+        
+        /* Style alternatif pour les images qui doivent remplir complètement */
+        .slide.fill-image img {
+            object-fit: cover; /* Pour les images qui peuvent être rognées */
+        }
+        
+        .slide-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+        }
+        
+        .slide:hover .slide-overlay {
+            opacity: 1;
+        }
+        
+        .slide-content {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.8);
+            border-radius: 8px;
+            max-width: 80%;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .slide-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            line-height: 1.2;
+        }
+        
+        .slide-text {
+            font-size: 14px;
+            line-height: 1.4;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            font-style: italic;
+        }
+        
+        .slide-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        /* Navigation dots */
+        .slider-dots {
+            text-align: center;
+            padding: 15px 0;
+            background: #f8f9fa;
+        }
+        
+        .dot {
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: #bdc3c7;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .dot.active,
+        .dot:hover {
+            background-color: #3498db;
+        }
+        
+        /* Flèches de navigation */
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            z-index: 3;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slider-nav:hover {
+            background: rgba(0,0,0,0.8);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .prev {
+            left: 15px;
+        }
+        
+        .next {
+            right: 15px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: 18px;
+            }
+            
+            .slide-text {
+                font-size: 12px;
+            }
+            
+            .slide-content {
+                padding: 15px;
+                max-width: 90%;
+            }
+            
+            .slider-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+                padding: 8px;
+            }
+            
+            .prev {
+                left: 10px;
+            }
+            
+            .next {
+                right: 10px;
+            }
+        }
+        
+        /* Style pour les différents types d'images */
+        .slide-historic {
+            background-color: #f5f5dc; /* Couleur beige pour les images historiques */
+        }
+        
+        .slide-modern {
+            background-color: #f0f8ff; /* Couleur bleu clair pour les images modernes */
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">        
+        <div class="slider-wrapper" id="sliderWrapper">
+            <!-- Slide 1 - Collection de bifaces -->
+            <div class="slide slide-historic">
+                <img src="https://classeurnumerique.fr/pluginfile.php/16093/course/section/790/collection%20de%20bifaces.png" 
+                     alt="Collection de bifaces préhistoriques" 
+                     onerror="this.parentNode.classList.add('slide-placeholder'); this.style.display='none';">
+                <div class="slide-overlay">
+                    <div class="slide-content">
+                        <div class="slide-title">Les premiers outils</div>
+                        <div class="slide-text">Collection de bifaces - Préhistoire</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 2 - Bifaces du musée de Picardie -->
+            <div class="slide slide-historic">
+                <img src="https://classeurnumerique.fr/pluginfile.php/16093/course/section/790/Mus%C3%A9e_de_Picardie%2C_bifaces_provenant_du_quartier_Saint-Acheul_1.png" 
+                     alt="Bifaces du musée de Picardie" 
+                     onerror="this.parentNode.classList.add('slide-placeholder'); this.style.display='none';">
+                <div class="slide-overlay">
+                    <div class="slide-content">
+                        <div class="slide-title">Les pierres taillées (bifaces, haches, pointes de flèche...)</div>
+                        <div class="slide-text">Entre 700 000 et 200 000 ans</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 3 - Femmes opérant l'ENIAC -->
+            <div class="slide slide-modern">
+                <img src="https://classeurnumerique.fr/pluginfile.php/16093/course/section/790/Two_women_operating_ENIAC-scaled.png?time=1757440671503" 
+                     alt="Femmes programmant l'ENIAC" 
+                     onerror="this.parentNode.classList.add('slide-placeholder'); this.style.display='none';">
+                <div class="slide-overlay">
+                    <div class="slide-content">
+                        <div class="slide-title">Les pionnières de l'informatique</div>
+                        <div class="slide-text">Programmation de l'ENIAC - 1946</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 4 - Programmation de l'ENIAC -->
+            <div class="slide slide-modern">
+                <img src="https://classeurnumerique.fr/pluginfile.php/16093/course/section/790/Glen_Beck_and_Betty_Snyder_program_the_ENIAC_in_building_328_at_the_Ballistic_Research_Laboratory.png" 
+                     alt="Programmation de l'ENIAC" 
+                     onerror="this.parentNode.classList.add('slide-placeholder'); this.style.display='none';">
+                <div class="slide-overlay">
+                    <div class="slide-content">
+                        <div class="slide-title">L'ENIAC : Le premier ordinateur</div>
+                        <div class="slide-text">1946</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="slider-nav prev" onclick="changeSlide(-1)" aria-label="Slide précédent">‹</button>
+        <button class="slider-nav next" onclick="changeSlide(1)" aria-label="Slide suivant">›</button>
+        
+        <div class="slider-dots">
+            <span class="dot active" onclick="currentSlide(1)" aria-label="Slide 1"></span>
+            <span class="dot" onclick="currentSlide(2)" aria-label="Slide 2"></span>
+            <span class="dot" onclick="currentSlide(3)" aria-label="Slide 3"></span>
+            <span class="dot" onclick="currentSlide(4)" aria-label="Slide 4"></span>
+        </div>
+    </div>
+
+    <script>
+        let slideIndex = 1;
+        const totalSlides = 4;
+        
+        function showSlide(n) {
+            const slider = document.getElementById('sliderWrapper');
+            const dots = document.querySelectorAll('.dot');
+            
+            if (n > totalSlides) slideIndex = 1;
+            if (n < 1) slideIndex = totalSlides;
+            
+            // Déplacer le slider
+            const translateX = -((slideIndex - 1) * 100);
+            slider.style.transform = `translateX(${translateX}%)`;
+            
+            // Mettre à jour les dots
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[slideIndex - 1].classList.add('active');
+        }
+        
+        function changeSlide(n) {
+            slideIndex += n;
+            showSlide(slideIndex);
+        }
+        
+        function currentSlide(n) {
+            slideIndex = n;
+            showSlide(slideIndex);
+        }
+        
+        // Navigation au clavier
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight') {
+                changeSlide(1);
+            }
+        });
+        
+        // Auto-play (optionnel - décommentez si souhaité)
+        /*
+        function autoSlide() {
+            slideIndex++;
+            showSlide(slideIndex);
+        }
+        setInterval(autoSlide, 6000); // Change toutes les 6 secondes
+        */
+        
+        // Initialiser
+        showSlide(slideIndex);
+        
+        // Pause auto-play au survol (si activé)
+        const container = document.querySelector('.slider-container');
+        container.addEventListener('mouseenter', () => {
+            // Code pour pausar l'auto-play si activé
+        });
+    </script>
+</body>
+</html>
