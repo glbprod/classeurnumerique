@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activités LLM et Cybersécurité</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.5;
+            color: #333;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 3px solid #8b5cf6;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .sequence-box {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .title-section {
+            background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px solid #8b5cf6;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .intro-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .activity-section {
+            background-color: #f8f9fa;
+            border-left: 5px solid #8b5cf6;
+            border-radius: 0 8px 8px 0;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .activity-header {
+            background-color: #8b5cf6;
+            color: white;
+            padding: 10px 15px;
+            margin: -20px -20px 15px -25px;
+            border-radius: 0 8px 0 0;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .time-badge {
+            background-color: rgba(255,255,255,0.2);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        
+        .scenario-box {
+            background: #fff;
+            border: 2px solid #8b5cf6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .danger-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .comparison-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .example-chat {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        
+        .user-message {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .ai-message {
+            background: #f3e8ff;
+            border-left: 4px solid #8b5cf6;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        th {
+            background-color: #8b5cf6;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .checklist {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin: 8px 0;
+            padding: 5px;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            margin-top: 3px;
+            transform: scale(1.2);
+        }
+        
+        .risk-level {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .risk-high { background: #fee2e2; color: #991b1b; }
+        .risk-medium { background: #fef3c7; color: #92400e; }
+        .risk-low { background: #d1fae5; color: #065f46; }
+        
+        .footer {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <div>Prénom : ________________</div>
+            <div>Nom : ________________</div>
+        </div>
+        <div>Classe : ________________</div>
+    </div>
+    
+    <div class="sequence-box">
+        Séquence 4 - CYBERSÉCURITÉ ET INTELLIGENCE ARTIFICIELLE
+    </div>
+    
+    <div class="title-section">
+        <h1 style="margin: 0; color: #7c3aed; font-size: 28px;">🤖 LES LLM ET LA CYBERSÉCURITÉ</h1>
+        <h2 style="margin: 10px 0 0 0; color: #666; font-size: 18px;">ChatGPT, Claude & Co : Opportunités et Risques</h2>
+        <p style="margin: 15px 0 0 0; font-style: italic;">Comprendre les enjeux de l'IA générative pour mieux se protéger</p>
+    </div>
+    
+    <!-- INTRODUCTION -->
+    <div class="intro-box">
+        <h3 style="margin-top: 0; color: #1e40af;">🧠 QU'EST-CE QU'UN LLM ?</h3>
+        
+        <p><strong>LLM = Large Language Model (Grand Modèle de Langage)</strong></p>
+        
+        <p>Ce sont des intelligences artificielles capables de :</p>
+        <ul>
+            <li>💬 <strong>Comprendre et générer du texte</strong> comme un humain</li>
+            <li>🔍 <strong>Répondre à des questions</strong> sur presque tous les sujets</li>
+            <li>✍️ <strong>Créer du contenu</strong> : textes, codes, résumés, traductions</li>
+            <li>🤝 <strong>Assister dans diverses tâches</strong> : devoirs, recherches, création</li>
+        </ul>
+        
+        <div class="comparison-grid">
+            <div class="comparison-card">
+                <h4 style="color: #7c3aed;">✅ EXEMPLES POPULAIRES :</h4>
+                <ul style="font-size: 12px;">
+                    <li><strong>ChatGPT</strong> (OpenAI)</li>
+                    <li><strong>Claude</strong> (Anthropic)</li>
+                    <li><strong>Gemini</strong> (Google)</li>
+                    <li><strong>Copilot</strong> (Microsoft)</li>
+                    <li><strong>Mistral</strong> (français)</li>
+                </ul>
+            </div>
+            
+            <div class="comparison-card">
+                <h4 style="color: #7c3aed;">📊 CHIFFRES CLÉS :</h4>
+                <ul style="font-size: 12px;">
+                    <li>+100 millions d'utilisateurs ChatGPT</li>
+                    <li>Utilisé par 65% des collégiens</li>
+                    <li>Marché de 15 milliards $ en 2025</li>
+                    <li>Accessible dès 13 ans avec accord parental</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ACTIVITÉ 1 -->
+    <div class="activity-section">
+        <div class="activity-header">
+            <span>🔍 ACTIVITÉ 1 : DÉCOUVERTE ET DÉMONSTRATION</span>
+            <span class="time-badge">20 min</span>
+        </div>
+        
+        <h4>🎯 Objectif : Comprendre ce que sont les LLM et ce qu'ils peuvent faire</h4>
+        
+        <div class="scenario-box">
+            <h4>🎬 Démonstration en direct par le professeur</h4>
+            <p>Votre professeur va utiliser un LLM (ChatGPT ou Claude) en direct. Observez attentivement.</p>
+        </div>
+        
+        <h4>📝 Questions à se poser pendant la démonstration :</h4>
+        
+        <table>
+            <tr>
+                <th style="width: 50%;">Question</th>
+                <th>Votre réponse</th>
+            </tr>
+            <tr>
+                <td><strong>1. Comment l'IA répond-elle ?</strong><br>(instantanément, avec réflexion, de façon structurée...)</td>
+                <td style="height: 50px;"></td>
+            </tr>
+            <tr>
+                <td><strong>2. L'IA comprend-elle vraiment votre question ?</strong><br>(Oui / Non / Ça dépend)</td>
+                <td style="height: 50px;"></td>
+            </tr>
+            <tr>
+                <td><strong>3. Peut-on lui faire totalement confiance ?</strong><br>Justifiez votre réponse</td>
+                <td style="height: 50px;"></td>
+            </tr>
+            <tr>
+                <td><strong>4. Quelles informations personnelles le professeur a-t-il partagées avec l'IA ?</strong></td>
+                <td style="height: 50px;"></td>
+            </tr>
+        </table>
+        
+        <div class="warning-box">
+            <h4>⚠️ PREMIÈRE RÈGLE DE SÉCURITÉ :</h4>
+            <p><strong>Ne JAMAIS partager d'informations personnelles avec une IA !</strong></p>
+            <ul>
+                <li>❌ Nom complet, adresse, numéro de téléphone</li>
+                <li>❌ Mots de passe, codes bancaires</li>
+                <li>❌ Photos personnelles ou de proches</li>
+                <li>❌ Informations sur votre école, emploi du temps</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- ACTIVITÉ 2 -->
+    <div class="activity-section">
+        <div class="activity-header">
+            <span>⚠️ ACTIVITÉ 2 : IDENTIFIER LES RISQUES</span>
+            <span class="time-badge">30 min</span>
+        </div>
+        
+        <h4>🎯 Objectif : Comprendre les nouveaux risques liés aux LLM</h4>
+        
+        <h4>📊 Tableau des risques à compléter en groupe</h4>
+        
+        <table>
+            <tr>
+                <th>Risque</th>
+                <th>Explication</th>
+                <th>Exemple concret</th>
+                <th>Niveau</th>
+            </tr>
+            <tr>
+                <td><strong>🎭 Deepfake et usurpation d'identité</strong></td>
+                <td>L'IA peut créer de faux contenus très réalistes (textes, voix, images)</td>
+                <td style="height: 60px;"></td>
+                <td><span class="risk-level risk-high">ÉLEVÉ</span></td>
+            </tr>
+            <tr>
+                <td><strong>🎣 Phishing amélioré</strong></td>
+                <td>Emails ou messages d'hameçonnage plus convaincants générés par IA</td>
+                <td style="height: 60px;"></td>
+                <td><span class="risk-level risk-high">ÉLEVÉ</span></td>
+            </tr>
+            <tr>
+                <td><strong>📚 Désinformation</strong></td>
+                <td>Création massive de fausses informations difficiles à détecter</td>
+                <td style="height: 60px;"></td>
+                <td><span class="risk-level risk-high">ÉLEVÉ</span></td>
+            </tr>
+            <tr>
+                <td><strong>🔓 Vol de données</strong></td>
+                <td>L'IA mémorise parfois ce qu'on lui dit et peut le réutiliser</td>
+                <td style="height: 60px;"></td>
+                <td><span class="risk-level risk-medium">MOYEN</span></td>
+            </tr>
+            <tr>
+                <td><strong>🤖 Automatisation d'attaques</strong></td>
+                <td>Les pirates peuvent utiliser l'IA pour multiplier leurs attaques</td>
+                <td style="height: 60px;"></td>
+                <td><span class="risk-level risk-high">ÉLEVÉ</span></td>
+            </tr>
+            <tr>
+                <td><strong>💡 Manipulation psychologique</strong></td>
+                <td>L'IA peut adapter son discours pour influencer ou tromper</td>
+                <td style="height: 60px;"></td>
+                <td><span class="risk-level risk-medium">MOYEN</span></td>
+            </tr>
+            <tr>
+                <td><strong>📝 Plagiat et tricherie</strong></td>
+                <td>Utilisation abusive pour les devoirs sans apprentissage réel</td>
+                <td style="height: 60px;"></td>
+                <td><span class="risk-level risk-low">FAIBLE</span></td>
+            </tr>
+        </table>
+        
+        <h4>🔬 CAS PRATIQUES - Analyser ces situations :</h4>
+        
+        <div class="scenario-box">
+            <h4>Situation 1 : Le faux message du principal</h4>
+            <div class="example-chat">Vous recevez ce message sur l'ENT :
+
+"Bonjour [Votre prénom],
+
+Suite à un incident technique, nous avons besoin que tu confirmes 
+ton identité. Clique sur ce lien et saisis ton mot de passe ENT 
+pour valider ton compte : http://ent-college-validation.tk
+
+Cordialement,
+M. Dupont, Principal"</div>
+            
+            <p><strong>❓ Questions :</strong></p>
+            <div style="background: white; padding: 10px; border-radius: 5px;">
+                <p><strong>a) Ce message peut-il avoir été généré par une IA ?</strong></p>
+                <p style="height: 30px; border-bottom: 1px solid #ddd;"></p>
+                
+                <p><strong>b) Quels sont les signaux d'alerte ?</strong></p>
+                <p style="height: 40px; border-bottom: 1px solid #ddd;"></p>
+                
+                <p><strong>c) Que devez-vous faire ?</strong></p>
+                <p style="height: 30px;"></p>
+            </div>
+        </div>
+        
+        <div class="scenario-box">
+            <h4>Situation 2 : Le devoir "parfait"</h4>
+            <p>Emma a demandé à ChatGPT de lui faire entièrement son exposé d'histoire sur la Seconde Guerre mondiale. L'IA a produit un texte de 3 pages, bien structuré, sans fautes.</p>
+            
+            <p><strong>❓ Questions :</strong></p>
+            <div style="background: white; padding: 10px; border-radius: 5px;">
+                <p><strong>a) Emma a-t-elle bien utilisé l'IA ?</strong></p>
+                <p style="height: 30px; border-bottom: 1px solid #ddd;"></p>
+                
+                <p><strong>b) Quels sont les risques pour Emma ?</strong></p>
+                <p style="height: 40px; border-bottom: 1px solid #ddd;"></p>
+                
+                <p><strong>c) Comment utiliser l'IA de façon éthique pour un devoir ?</strong></p>
+                <p style="height: 40px;"></p>
+            </div>
+        </div>
+        
+        <div class="scenario-box">
+            <h4>Situation 3 : La vidéo virale</h4>
+            <p>Une vidéo circule montrant le président de la République dire des choses choquantes. La vidéo semble authentique : même voix, mêmes gestes. Mais c'est un deepfake créé par IA.</p>
+            
+            <p><strong>❓ Questions :</strong></p>
+            <div style="background: white; padding: 10px; border-radius: 5px;">
+                <p><strong>a) Comment détecter un deepfake ?</strong></p>
+                <p style="height: 40px; border-bottom: 1px solid #ddd;"></p>
+                
+                <p><strong>b) Que faire si vous tombez sur ce type de contenu ?</strong></p>
+                <p style="height: 30px; border-bottom: 1px solid #ddd;"></p>
+                
+                <p><strong>c) Quelles sont les conséquences de partager un deepfake ?</strong></p>
+                <p style="height: 40px;"></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ACTIVITÉ 3 -->
+    <div class="activity-section">
+        <div class="activity-header">
+            <span>🛡️ ACTIVITÉ 3 : SE PROTÉGER ET BIEN UTILISER</span>
+            <span class="time-badge">25 min</span>
+        </div>
+        
+        <h4>🎯 Objectif : Adopter les bonnes pratiques face aux LLM</h4>
+        
+        <div class="success-box">
+            <h4>✅ LES 10 RÈGLES D'OR DE L'UTILISATION SÉCURISÉE DES LLM</h4>
+            
+            <div class="checklist">
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>1. Protéger sa vie privée :</strong> Ne jamais donner d'informations personnelles
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>2. Vérifier les informations :</strong> L'IA peut se tromper ou inventer (hallucinations)
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>3. Croiser les sources :</strong> Ne jamais se fier à une seule réponse de l'IA
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>4. Rester critique :</strong> L'IA n'a pas de conscience, elle ne "comprend" pas vraiment
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>5. Usage éthique :</strong> Pas de triche, l'IA doit être un assistant, pas un remplaçant
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>6. Attention aux deepfakes :</strong> Vérifier l'authenticité des contenus suspects
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>7. Signaler les abus :</strong> Si l'IA génère du contenu dangereux ou illégal
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>8. Respecter les autres :</strong> Ne pas utiliser l'IA pour harceler ou nuire
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>9. Garder son esprit critique :</strong> L'IA peut avoir des biais ou être manipulée
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox"> <strong>10. En parler avec des adultes :</strong> Parents, profs en cas de doute ou problème
+                </div>
+            </div>
+        </div>
+        
+        <h4>💡 EXERCICE PRATIQUE : Bonne ou mauvaise utilisation ?</h4>
+        
+        <table>
+            <tr>
+                <th>Utilisation</th>
+                <th style="width: 15%;">✅ Bonne<br>❌ Mauvaise</th>
+                <th>Justification</th>
+            </tr>
+            <tr>
+                <td>Demander à l'IA d'expliquer un cours de maths difficile</td>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+            </tr>
+            <tr>
+                <td>Faire écrire entièrement une rédaction de français par l'IA</td>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+            </tr>
+            <tr>
+                <td>Partager son adresse avec l'IA pour avoir des infos locales</td>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+            </tr>
+            <tr>
+                <td>Utiliser l'IA pour avoir des idées de plan pour un exposé</td>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+            </tr>
+            <tr>
+                <td>Demander à l'IA de créer un faux certificat médical</td>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+            </tr>
+            <tr>
+                <td>Faire corriger son brouillon de devoir par l'IA</td>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+            </tr>
+            <tr>
+                <td>Demander à l'IA de générer des insultes contre un camarade</td>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+            </tr>
+            <tr>
+                <td>Utiliser l'IA pour apprendre du vocabulaire anglais</td>
+                <td style="height: 40px;"></td>
+                <td style="height: 40px;"></td>
+            </tr>
+        </table>
+    </div>
+    
+    <!-- ACTIVITÉ 4 -->
+    <div class="activity-section">
+        <div class="activity-header">
+            <span>🔬 ACTIVITÉ 4 : DÉTECTER LE CONTENU GÉNÉRÉ PAR IA</span>
+            <span class="time-badge">20 min</span>
+        </div>
+        
+        <h4>🎯 Objectif : Apprendre à reconnaître un contenu créé par une IA</h4>
+        
+        <div class="info-box">
+            <h4>🔍 INDICES POUR DÉTECTER UN TEXTE GÉNÉRÉ PAR IA :</h4>
+            <ul>
+                <li>✍️ <strong>Style trop parfait</strong> : Pas de fautes, phrases très structurées</li>
+                <li>🤖 <strong>Formulations génériques</strong> : "Il est important de noter que...", "En conclusion..."</li>
+                <li>📊 <strong>Informations vagues</strong> : Peu de détails précis, dates, noms</li>
+                <li>🔄 <strong>Répétitions</strong> : Les mêmes idées reformulées différemment</li>
+                <li>❓ <strong>Erreurs factuelles</strong> : Dates incorrectes, événements inventés</li>
+                <li>🎭 <strong>Manque de personnalité</strong> : Aucune opinion personnelle, expérience vécue</li>
+            </ul>
+        </div>
+        
+        <h4>🕵️ EXERCICE : Humain ou IA ? Devinez l'auteur de ces textes</h4>
+        
+        <div class="scenario-box">
+            <h4>Texte A : Mon expérience au collège</h4>
+            <div class="example-chat">Le collège est une période importante de la vie d'un jeune. C'est une étape de transition entre l'école primaire et le lycée. Il est essentiel de bien s'organiser et de respecter les règles. Les enseignants sont là pour accompagner les élèves dans leur apprentissage. Il est important de noter que la vie au collège permet aussi de développer des compétences sociales.</div>
+            
+            <p><strong>Votre diagnostic :</strong></p>
+            <p>☐ Écrit par un humain &nbsp;&nbsp;&nbsp; ☐ Généré par IA</p>
+            <p><strong>Justification :</strong> ___________________________________________</p>
+        </div>
+        
+        <div class="scenario-box">
+            <h4>Texte B : Mon expérience au collège</h4>
+            <div class="example-chat">J'avoue que le collège, au début, ça m'a fait flipper ! Le premier jour, j'ai eu du mal à trouver ma salle de maths et je suis arrivé en retard. Super l'image ! 😅 Mais maintenant j'ai mes potes, on traîne ensemble à la récré, et en fait c'est plutôt cool. Bon, les contrôles c'est toujours stressant, surtout en maths où je suis pas une flèche... Mais madame Dubois est sympa, elle explique bien.</div>
+            
+            <p><strong>Votre diagnostic :</strong></p>
+            <p>☐ Écrit par un humain &nbsp;&nbsp;&nbsp; ☐ Généré par IA</p>
+            <p><strong>Justification :</strong> ___________________________________________</p>
+        </div>
+        
+        <div class="scenario-box">
+            <h4>Texte C : L'impact du réchauffement climatique</h4>
+            <div class="example-chat">Le réchauffement climatique représente l'un des défis majeurs du XXIe siècle. Les scientifiques s'accordent à dire que les activités humaines sont la cause principale de ce phénomène. Il est crucial de prendre des mesures pour réduire les émissions de gaz à effet de serre. Les gouvernements et les citoyens doivent agir ensemble pour préserver notre planète pour les générations futures.</div>
+            
+            <p><strong>Votre diagnostic :</strong></p>
+            <p>☐ Écrit par un humain &nbsp;&nbsp;&nbsp; ☐ Généré par IA</p>
+            <p><strong>Justification :</strong> ___________________________________________</p>
+        </div>
+        
+        <div class="warning-box">
+            <h4>💡 ASTUCE POUR VÉRIFIER UN TEXTE :</h4>
+            <ul>
+                <li>🔍 Utiliser des détecteurs en ligne (GPTZero, ZeroGPT) - mais pas fiables à 100%</li>
+                <li>🧠 Se fier à son intuition : manque de personnalité, style trop parfait</li>
+                <li>📝 Demander des précisions : une IA aura du mal avec des détails personnels</li>
+                <li>🎯 Chercher des incohérences factuelles ou temporelles</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- ACTIVITÉ 5 -->
+    <div class="activity-section">
+        <div class="activity-header">
+            <span>🎯 ACTIVITÉ 5 : CRÉER UNE CHARTE D'USAGE RESPONSABLE</span>
+            <span class="time-badge">25 min</span>
+        </div>
+        
+        <h4>🎯 Objectif : Définir collectivement les règles d'usage des LLM au collège</h4>
+        
+        <div class="info-box">
+            <h4>📋 TRAVAIL EN GROUPE (4 élèves)</h4>
+            <p>Vous allez créer ensemble une charte pour utiliser les LLM de façon responsable et sécurisée au collège.</p>
+        </div>
+        
+        <h4>✍️ NOTRE CHARTE D'USAGE RESPONSABLE DES LLM</h4>
+        
+        <table>
+            <tr>
+                <th>Catégorie</th>
+                <th>Nos règles</th>
+            </tr>
+            <tr>
+                <td><strong>🔒 Protection des données personnelles</strong></td>
+                <td style="height: 80px;"></td>
+            </tr>
+            <tr>
+                <td><strong>📚 Usage scolaire éthique</strong><br><small>(devoirs, exposés, apprentissage)</small></td>
+                <td style="height: 80px;"></td>
+            </tr>
+            <tr>
+                <td><strong>🤝 Respect d'autrui</strong><br><small>(pas de cyberharcèlement, manipulation)</small></td>
+                <td style="height: 80px;"></td>
+            </tr>
+            <tr>
+                <td><strong>🔍 Vérification de l'information</strong><br><small>(fact-checking, sources)</small></td>
+                <td style="height: 80px;"></td>
+            </tr>
+            <tr>
+                <td><strong>⚠️ Détection des contenus suspects</strong><br><small>(deepfakes, phishing IA)</small></td>
+                <td style="height: 80px;"></td>
+            </tr>
+            <tr>
+                <td><strong>🆘 Signalement et aide</strong><br><small>(quand et à qui en parler)</small></td>
+                <td style="height: 80px;"></td>
+            </tr>
+        </table>
+        
+        <div class="success-box">
+            <h4>🏆 ENGAGEMENT DE L'ÉQUIPE :</h4>
+            <p>Nous, soussignés, nous engageons à respecter cette charte et à promouvoir un usage responsable des LLM.</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+                <div>
+                    <p>Élève 1 : ___________________________</p>
+                    <p>Élève 2 : ___________________________</p>
+                </div>
+                <div>
+                    <p>Élève 3 : ___________________________</p>
+                    <p>Élève 4 : ___________________________</p>
+                </div>
+            </div>
+            
+            <p style="margin-top: 15px;"><strong>Date :</strong> _______________</p>
+        </div>
+    </div>
+    
+    <!-- ACTIVITÉ BONUS -->
+    <div class="activity-section">
+        <div class="activity-header">
+            <span>🚀 ACTIVITÉ BONUS : DÉBAT CITOYEN</span>
+            <span class="time-badge">30 min (optionnel)</span>
+        </div>
+        
+        <h4>🎯 Objectif : Réfléchir aux enjeux éthiques et sociétaux des LLM</h4>
+        
+        <div class="info-box">
+            <h4>💭 SUJETS DE DÉBAT (choisir 1 ou 2) :</h4>
+        </div>
+        
+        <div class="scenario-box">
+            <h4>Sujet 1 : Faut-il interdire les LLM au collège ?</h4>
+            
+            <div class="comparison-grid">
+                <div>
+                    <h5 style="color: #10b981;">✅ POUR (arguments à développer) :</h5>
+                    <ul style="font-size: 12px;">
+                        <li>Risque de triche généralisée</li>
+                        <li>Perte de l'apprentissage réel</li>
+                        <li>Dépendance à la technologie</li>
+                        <li>Risques de manipulation</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h5 style="color: #ef4444;">❌ CONTRE (arguments à développer) :</h5>
+                    <ul style="font-size: 12px;">
+                        <li>Outil d'aide à l'apprentissage</li>
+                        <li>Préparation au monde professionnel</li>
+                        <li>Accessibilité des connaissances</li>
+                        <li>Impossible à contrôler totalement</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <p><strong>📝 Position de notre groupe :</strong></p>
+            <div style="border: 1px solid #ddd; padding: 10px; margin: 10px 0; min-height: 60px; background: white;"></div>
+        </div>
+        
+        <div class="scenario-box">
+            <h4>Sujet 2 : Les LLM menacent-ils notre vie privée ?</h4>
+            
+            <div class="comparison-grid">
+                <div>
+                    <h5 style="color: #10b981;">✅ OUI, car :</h5>
+                    <ul style="font-size: 12px;">
+                        <li>Collecte massive de données</li>
+                        <li>Mémorisation des conversations</li>
+                        <li>Risque de piratage des serveurs</li>
+                        <li>Profilage des utilisateurs</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h5 style="color: #ef4444;">❌ NON, car :</h5>
+                    <ul style="font-size: 12px;">
+                        <li>Anonymisation des données</li>
+                        <li>Réglementations strictes (RGPD)</li>
+                        <li>Choix de l'utilisateur</li>
+                        <li>Sécurisation des plateformes</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <p><strong>📝 Position de notre groupe :</strong></p>
+            <div style="border: 1px solid #ddd; padding: 10px; margin: 10px 0; min-height: 60px; background: white;"></div>
+        </div>
+        
+        <div class="scenario-box">
+            <h4>Sujet 3 : Peut-on faire confiance à une IA pour des décisions importantes ?</h4>
+            
+            <p><strong>Exemples de situations :</strong></p>
+            <ul style="font-size: 12px;">
+                <li>Orientation scolaire conseillée par une IA</li>
+                <li>Diagnostic médical assisté par IA</li>
+                <li>Décisions judiciaires influencées par IA</li>
+                <li>Modération de contenus en ligne par IA</li>
+            </ul>
+            
+            <p><strong>📝 Notre réflexion :</strong></p>
+            <div style="border: 1px solid #ddd; padding: 10px; margin: 10px 0; min-height: 80px; background: white;"></div>
+        </div>
+    </div>
+    
+    <!-- ÉVALUATION -->
+    <div class="activity-section">
+        <div class="activity-header">
+            <span>📊 ÉVALUATION DES CONNAISSANCES</span>
+            <span class="time-badge">15 min</span>
+        </div>
+        
+        <h4>🎯 Quiz de synthèse : Testez vos connaissances !</h4>
+        
+        <table>
+            <tr>
+                <th style="width: 60%;">Question</th>
+                <th>Votre réponse</th>
+                <th style="width: 10%;">Score<br>/2 pts</th>
+            </tr>
+            <tr>
+                <td><strong>1. Qu'est-ce qu'un LLM ?</strong><br>Définition en 1-2 phrases</td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>2. Citez 3 risques liés à l'usage des LLM</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>3. Qu'est-ce qu'un deepfake ?</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>4. Donnez 3 informations à NE JAMAIS partager avec une IA</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>5. Comment utiliser un LLM de façon éthique pour un devoir ?</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>6. Comment détecter un texte généré par IA ?</strong><br>Citez 3 indices</td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>7. Que faire si vous repérez un deepfake ou du contenu suspect ?</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>8. Vrai ou Faux : "Les informations données par un LLM sont toujours fiables"</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>9. Quel est le principal danger d'un phishing amélioré par IA ?</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>10. Rédigez UNE règle d'or pour utiliser les LLM en sécurité</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+        </table>
+        
+        <div class="success-box">
+            <h4>🏆 SCORE TOTAL : _____ / 20 points</h4>
+            <ul>
+                <li><strong>18-20 pts :</strong> 🥇 Expert LLM & Cybersécurité</li>
+                <li><strong>15-17 pts :</strong> 🥈 Très bonnes connaissances</li>
+                <li><strong>12-14 pts :</strong> 🥉 Connaissances solides</li>
+                <li><strong>< 12 pts :</strong> 📚 À réviser avec les fiches</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- RESSOURCES -->
+    <div class="info-box">
+        <h3 style="margin-top: 0; color: #1e40af;">🔗 RESSOURCES POUR ALLER PLUS LOIN</h3>
+        
+        <div class="comparison-grid">
+            <div>
+                <h4 style="color: #7c3aed;">📚 S'informer :</h4>
+                <ul style="font-size: 12px;">
+                    <li><strong>CNIL :</strong> cnil.fr (IA et données personnelles)</li>
+                    <li><strong>Internet Sans Crainte :</strong> Guides sur l'IA</li>
+                    <li><strong>ANSSI :</strong> cyber.gouv.fr (sécurité IA)</li>
+                    <li><strong>PIX :</strong> Compétences numériques</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 style="color: #7c3aed;">🛠️ Outils de détection :</h4>
+                <ul style="font-size: 12px;">
+                    <li><strong>GPTZero :</strong> Détecteur de textes IA</li>
+                    <li><strong>ZeroGPT :</strong> Vérification contenus</li>
+                    <li><strong>Sensity :</strong> Détection deepfakes</li>
+                    <li><strong>InVID :</strong> Vérification vidéos</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="margin-top: 15px;">
+            <h4 style="color: #7c3aed;">🆘 En cas de problème :</h4>
+            <ul style="font-size: 12px;">
+                <li><strong>3018 :</strong> Numéro national contre cyberharcèlement (gratuit, anonyme)</li>
+                <li><strong>e-Enfance :</strong> Association de protection de l'enfance en ligne</li>
+                <li><strong>Cybermalveillance.gouv.fr :</strong> Signalement et assistance</li>
+                <li><strong>Pharos :</strong> Signalement contenus illicites (pharos.gouv.fr)</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- BILAN PERSONNEL -->
+    <div class="success-box">
+        <h3 style="margin-top: 0; color: #065f46;">📝 MON BILAN PERSONNEL</h3>
+        
+        <p><strong>💡 Ce que j'ai appris sur les LLM :</strong></p>
+        <div style="border: 1px solid #10b981; padding: 10px; margin: 10px 0; min-height: 60px; background: white;"></div>
+        
+        <p><strong>⚠️ Le risque qui m'inquiète le plus :</strong></p>
+        <div style="border: 1px solid #10b981; padding: 10px; margin: 10px 0; min-height: 40px; background: white;"></div>
+        
+        <p><strong>🛡️ Les 3 règles que je vais appliquer dès maintenant :</strong></p>
+        <div style="border: 1px solid #10b981; padding: 10px; margin: 10px 0; min-height: 60px; background: white;">
+            <p>1. _________________________________________________</p>
+            <p>2. _________________________________________________</p>
+            <p>3. _________________________________________________</p>
+        </div>
+        
+        <p><strong>🤔 Une question que je me pose encore :</strong></p>
+        <div style="border: 1px solid #10b981; padding: 10px; margin: 10px 0; min-height: 40px; background: white;"></div>
+    </div>
+    
+    <!-- COMPÉTENCES -->
+    <div class="info-box">
+        <h3 style="margin-top: 0; color: #1e40af;">🎯 COMPÉTENCES TRAVAILLÉES</h3>
+        
+        <div class="comparison-grid">
+            <div>
+                <h4 style="color: #7c3aed;">💻 Technologie & PIX :</h4>
+                <ul style="font-size: 11px;">
+                    <li>Sécurité numérique (4.2, 4.3)</li>
+                    <li>Évolution dans un environnement numérique</li>
+                    <li>Développer l'esprit critique</li>
+                    <li>Protéger ses données personnelles</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 style="color: #7c3aed;">📚 Compétences transversales :</h4>
+                <ul style="font-size: 11px;">
+                    <li>Argumentation et débat citoyen</li>
+                    <li>Travail collaboratif</li>
+                    <li>Analyse critique de l'information</li>
+                    <li>Éthique et responsabilité numérique</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        🤖 L'IA est un outil puissant : utilisons-le avec sagesse et responsabilité ! 🛡️<br>
+        Académie de Versailles - Technologie au collège - Séquence Cybersécurité & IA
+    </div>
+</body>
+</html>
