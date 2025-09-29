@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activités LLM et Cybersécurité</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.5;
+            color: #333;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 3px solid #8b5cf6;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .sequence-box {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .title-section {
+            background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px solid #8b5cf6;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .intro-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .activity-section {
+            background-color: #f8f9fa;
+            border-left: 5px solid #8b5cf6;
+            border-radius: 0 8px 8px 0;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .activity-header {
+            background-color: #8b5cf6;
+            color: white;
+            padding: 10px 15px;
+            margin: -20px -20px 15px -25px;
+            border-radius: 0 8px 0 0;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .time-badge {
+            background-color: rgba(255,255,255,0.2);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        
+        .scenario-box {
+            background: #fff;
+            border: 2px solid #8b5cf6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .danger-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .comparison-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .example-chat {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        
+        .user-message {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .ai-message {
+            background: #f3e8ff;
+            border-left: 4px solid #8b5cf6;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        th {
+            background-color: #8b5cf6;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .checklist {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin: 8px 0;
+            padding: 5px;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            margin-top: 3px;
+            transform: scale(1.2);
+        }
+        
+        .risk-level {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .risk-high { background: #fee2e2; color: #991b1b; }
+        .risk-medium { background: #fef3c7; color: #92400e; }
+        .risk-low { background: #d1fae5; color: #065f46; }
+        
+        .footer {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="activity-section">
+        <div class="activity-header">
+            <span>📊 ÉVALUATION DES CONNAISSANCES</span>
+            <span class="time-badge">15 min</span>
+        </div>
+        
+        <h4>🎯 Quiz de synthèse : Testez vos connaissances !</h4>
+        
+        <table>
+            <tr>
+                <th style="width: 60%;">Question</th>
+                <th>Votre réponse</th>
+                <th style="width: 10%;">Score<br>/2 pts</th>
+            </tr>
+            <tr>
+                <td><strong>1. Qu'est-ce qu'un LLM ?</strong><br>Définition en 1-2 phrases</td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>2. Citez 3 risques liés à l'usage des LLM</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>3. Qu'est-ce qu'un deepfake ?</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>4. Donnez 3 informations à NE JAMAIS partager avec une IA</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>5. Comment utiliser un LLM de façon éthique pour un devoir ?</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>6. Comment détecter un texte généré par IA ?</strong><br>Citez 3 indices</td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>7. Que faire si vous repérez un deepfake ou du contenu suspect ?</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>8. Vrai ou Faux : "Les informations données par un LLM sont toujours fiables"</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>9. Quel est le principal danger d'un phishing amélioré par IA ?</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>10. Rédigez UNE règle d'or pour utiliser les LLM en sécurité</strong></td>
+                <td style="height: 50px;"></td>
+                <td></td>
+            </tr>
+        </table>
+        
+        <div class="success-box">
+            <h4>🏆 SCORE TOTAL : _____ / 20 points</h4>
+            <ul>
+                <li><strong>18-20 pts :</strong> 🥇 Expert LLM & Cybersécurité</li>
+                <li><strong>15-17 pts :</strong> 🥈 Très bonnes connaissances</li>
+                <li><strong>12-14 pts :</strong> 🥉 Connaissances solides</li>
+                <li><strong>< 12 pts :</strong> 📚 À réviser avec les fiches</li>
+            </ul>
+        </div>
+</body>
+</html>
+    </div>
