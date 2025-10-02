@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline - Évolution des ordinateurs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+            padding: 20px 0;
+        }
+        
+        .timeline-container {
+            background: white;
+            margin: 0 auto;
+            max-width: 95%;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #4a90e2;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .timeline-wrapper {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 40px 20px;
+            background: #f8f9fa;
+        }
+        
+        /* Personnalisation de la scrollbar */
+        .timeline-wrapper::-webkit-scrollbar {
+            height: 12px;
+        }
+        
+        .timeline-wrapper::-webkit-scrollbar-track {
+            background: #e9ecef;
+            border-radius: 10px;
+        }
+        
+        .timeline-wrapper::-webkit-scrollbar-thumb {
+            background: #4a90e2;
+            border-radius: 10px;
+        }
+        
+        .timeline-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #357abd;
+        }
+        
+        .timeline {
+            display: flex;
+            position: relative;
+            min-width: max-content;
+            padding: 20px 0;
+        }
+        
+        /* Ligne centrale */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #4a90e2, #667eea, #764ba2);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding: 0 30px;
+            min-width: 350px;
+            z-index: 2;
+        }
+        
+        .timeline-item:first-child {
+            padding-left: 50px;
+        }
+        
+        .timeline-item:last-child {
+            padding-right: 50px;
+        }
+        
+        /* Point sur la timeline */
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            background: white;
+            border: 4px solid #4a90e2;
+            border-radius: 50%;
+            z-index: 3;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-dot:hover {
+            transform: translate(-50%, -50%) scale(1.3);
+            border-color: #357abd;
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+        }
+        
+        /* Carte d'information */
+        .timeline-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 80px;
+            transition: all 0.3s ease;
+            border: 2px solid #e9ecef;
+        }
+        
+        .timeline-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-color: #4a90e2;
+        }
+        
+        .timeline-year {
+            display: inline-block;
+            background: #4a90e2;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-image {
+            width: 100%;
+            height: 180px;
+            background: #e9ecef;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            border: 2px dashed #ced4da;
+            color: #6c757d;
+            font-size: 14px;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        .timeline-specs {
+            margin-top: 15px;
+        }
+        
+        .spec-item {
+            display: flex;
+            align-items: flex-start;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        
+        .spec-icon {
+            color: #4a90e2;
+            margin-right: 8px;
+            font-weight: bold;
+            min-width: 20px;
+        }
+        
+        .spec-text {
+            color: #555;
+            line-height: 1.4;
+        }
+        
+        .innovation-badge {
+            background: #e8f5e8;
+            border: 1px solid #c3e6c3;
+            color: #2e7d32;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+        
+        .scroll-hint {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .scroll-hint::before {
+            content: '👉 ';
+        }
+        
+        .scroll-hint::after {
+            content: ' 👈';
+        }
+        
+        /* Animation au chargement */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .timeline-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .timeline-item:nth-child(1) .timeline-card { animation-delay: 0.1s; }
+        .timeline-item:nth-child(2) .timeline-card { animation-delay: 0.2s; }
+        .timeline-item:nth-child(3) .timeline-card { animation-delay: 0.3s; }
+        .timeline-item:nth-child(4) .timeline-card { animation-delay: 0.4s; }
+        .timeline-item:nth-child(5) .timeline-card { animation-delay: 0.5s; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .timeline-item {
+                min-width: 280px;
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="timeline-container">
+        <div class="header">
+            <h1>📊 Timeline - Évolution des ordinateurs</h1>
+            <p>De 1946 à 2023 : 80 ans d'innovations technologiques</p>
+        </div>
+        
+        <div class="timeline-wrapper">
+            <div class="timeline">
+                
+                <!-- 1946 - ENIAC -->
+                <div class="timeline-item">
+                    <div class="timeline-card">
+                        <span class="timeline-year">1946</span>
+                        <h3 class="timeline-title">ENIAC</h3>
+                        <div class="timeline-image">
+                            [Image ENIAC]<br>
+                            Ordinateur géant à tubes
+                        </div>
+                        <div class="timeline-specs">
+                            <div class="spec-item">
+                                <span class="spec-icon">📏</span>
+                                <span class="spec-text"><strong>Taille :</strong> 30 tonnes, une salle entière</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">⚡</span>
+                                <span class="spec-text"><strong>Puissance :</strong> 5000 calculs/seconde</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">💰</span>
+                                <span class="spec-text"><strong>Coût :</strong> 7 millions € équivalent</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">🎯</span>
+                                <span class="spec-text"><strong>Usage :</strong> Calculs militaires</span>
+                            </div>
+                        </div>
+                        <div class="innovation-badge">
+                            💡 Premier ordinateur électronique programmable
+                        </div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+                <!-- 1964 - IBM System/360 -->
+                <div class="timeline-item">
+                    <div class="timeline-card">
+                        <span class="timeline-year">1964</span>
+                        <h3 class="timeline-title">IBM System/360</h3>
+                        <div class="timeline-image">
+                            [Image IBM System/360]<br>
+                            Ordinateur mainframe
+                        </div>
+                        <div class="timeline-specs">
+                            <div class="spec-item">
+                                <span class="spec-icon">📏</span>
+                                <span class="spec-text"><strong>Taille :</strong> 1,5 tonnes, une pièce</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">⚡</span>
+                                <span class="spec-text"><strong>Puissance :</strong> 30 000 calculs/seconde</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">💰</span>
+                                <span class="spec-text"><strong>Coût :</strong> 2 millions € équivalent</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">🎯</span>
+                                <span class="spec-text"><strong>Usage :</strong> Gestion d'entreprise</span>
+                            </div>
+                        </div>
+                        <div class="innovation-badge">
+                            💡 Transistors remplacent les tubes à vide
+                        </div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+                <!-- 1981 - IBM PC -->
+                <div class="timeline-item">
+                    <div class="timeline-card">
+                        <span class="timeline-year">1981</span>
+                        <h3 class="timeline-title">IBM PC 5150</h3>
+                        <div class="timeline-image">
+                            [Image IBM PC]<br>
+                            Ordinateur personnel
+                        </div>
+                        <div class="timeline-specs">
+                            <div class="spec-item">
+                                <span class="spec-icon">📏</span>
+                                <span class="spec-text"><strong>Taille :</strong> 12 kg, un bureau</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">⚡</span>
+                                <span class="spec-text"><strong>Puissance :</strong> Intel 8088 à 4,77 MHz</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">💰</span>
+                                <span class="spec-text"><strong>Coût :</strong> 5 000 € équivalent</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">🎯</span>
+                                <span class="spec-text"><strong>Usage :</strong> Bureautique professionnelle</span>
+                            </div>
+                        </div>
+                        <div class="innovation-badge">
+                            💡 Standardisation du PC personnel
+                        </div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+                <!-- 1998 - Compaq Presario -->
+                <div class="timeline-item">
+                    <div class="timeline-card">
+                        <span class="timeline-year">1998</span>
+                        <h3 class="timeline-title">Compaq Presario 5000</h3>
+                        <div class="timeline-image">
+                            [Image Compaq Presario]<br>
+                            Ordinateur familial
+                        </div>
+                        <div class="timeline-specs">
+                            <div class="spec-item">
+                                <span class="spec-icon">📏</span>
+                                <span class="spec-text"><strong>Taille :</strong> 15 kg, tour compacte</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">⚡</span>
+                                <span class="spec-text"><strong>Puissance :</strong> Pentium II à 350 MHz</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">💰</span>
+                                <span class="spec-text"><strong>Coût :</strong> 2 500 € équivalent</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">🎯</span>
+                                <span class="spec-text"><strong>Usage :</strong> Internet et multimédia familial</span>
+                            </div>
+                        </div>
+                        <div class="innovation-badge">
+                            💡 Démocratisation d'Internet à la maison
+                        </div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+                <!-- 2023 - Dell XPS 13 -->
+                <div class="timeline-item">
+                    <div class="timeline-card">
+                        <span class="timeline-year">2023</span>
+                        <h3 class="timeline-title">Dell XPS 13 Plus</h3>
+                        <div class="timeline-image">
+                            [Image Dell XPS 13]<br>
+                            Ordinateur portable ultra-fin
+                        </div>
+                        <div class="timeline-specs">
+                            <div class="spec-item">
+                                <span class="spec-icon">📏</span>
+                                <span class="spec-text"><strong>Taille :</strong> 1,26 kg, ultra-portable</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">⚡</span>
+                                <span class="spec-text"><strong>Puissance :</strong> Intel i7 12 cœurs + IA</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">💰</span>
+                                <span class="spec-text"><strong>Coût :</strong> 1 599 €</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-icon">🎯</span>
+                                <span class="spec-text"><strong>Usage :</strong> Travail nomade et création</span>
+                            </div>
+                        </div>
+                        <div class="innovation-badge">
+                            💡 Intelligence artificielle intégrée et écran OLED
+                        </div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="scroll-hint">
+            Faites défiler horizontalement pour explorer l'évolution
+        </div>
+    </div>
+    
+    <script>
+        // Smooth scroll avec la molette de la souris
+        const timelineWrapper = document.querySelector('.timeline-wrapper');
+        
+        timelineWrapper.addEventListener('wheel', (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                timelineWrapper.scrollLeft += e.deltaY;
+            }
+        });
+        
+        // Animation des points au survol
+        const dots = document.querySelectorAll('.timeline-dot');
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                const card = dot.previousElementSibling;
+                card.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    card.style.transform = 'translateY(-5px)';
+                }, 300);
+            });
+        });
+        
+        // Auto-scroll au centre au chargement
+        window.addEventListener('load', () => {
+            const wrapper = document.querySelector('.timeline-wrapper');
+            const timeline = document.querySelector('.timeline');
+            wrapper.scrollLeft = (timeline.scrollWidth - wrapper.clientWidth) / 2;
+        });
+    </script>
+</body>
+</html>
