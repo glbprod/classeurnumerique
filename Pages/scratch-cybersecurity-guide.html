@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Scratch - Serious Game Cybersécurité</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section h2 {
+            color: #2a5298;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .concept-card {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .concept-card h3 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .tip {
+            background: #e7f3ff;
+            border-left: 5px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .tip strong {
+            color: #1976D2;
+        }
+        
+        .step {
+            background: white;
+            border: 2px solid #667eea;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Créer un Quiz de Cybersécurité sur Scratch</h1>
+            <p>Guide des bases de la programmation pour votre serious game</p>
+        </header>
+        
+        <div class="content">
+            <div class="section">
+                <h2>📋 Introduction au Projet</h2>
+                <p>Ce guide vous accompagne dans la création d'un serious game éducatif sur la cybersécurité sous forme de quiz. Vous apprendrez les concepts Scratch essentiels pour construire un jeu interactif et pédagogique.</p>
+            </div>
+            
+            <div class="section">
+                <h2>🎯 Concepts Scratch Essentiels</h2>
+                
+                <div class="concept-card">
+                    <h3>1. Les Sprites (Lutins)</h3>
+                    <p>Les sprites sont les personnages et objets de votre jeu. Pour un quiz, vous aurez besoin de :</p>
+                    <ul>
+                        <li><strong>Un sprite présentateur</strong> : personnage qui pose les questions</li>
+                        <li><strong>Des boutons de réponse</strong> : sprites cliquables pour chaque option</li>
+                        <li><strong>Un sprite de score</strong> : pour afficher les points</li>
+                    </ul>
+                    <div class="tip">
+                        <strong>💡 Astuce :</strong> Utilisez l'éditeur de costumes pour créer différentes expressions du présentateur (content, déçu, neutre).
+                    </div>
+                </div>
+                
+                <div class="concept-card">
+                    <h3>2. Les Variables</h3>
+                    <p>Les variables stockent des informations importantes pendant le jeu :</p>
+                    <ul>
+                        <li><span class="highlight">score</span> : nombre de bonnes réponses</li>
+                        <li><span class="highlight">question_actuelle</span> : numéro de la question en cours</li>
+                        <li><span class="highlight">nombre_questions</span> : total de questions du quiz</li>
+                        <li><span class="highlight">reponse_correcte</span> : pour vérifier si la réponse est bonne</li>
+                    </ul>
+                    <div class="code-block">
+Créer les variables :
+- Aller dans "Variables"
+- Cliquer sur "Créer une variable"
+- Cocher "Pour tous les sprites"
+                    </div>
+                </div>
+                
+                <div class="concept-card">
+                    <h3>3. Les Listes</h3>
+                    <p>Les listes permettent de stocker plusieurs questions et réponses :</p>
+                    <ul>
+                        <li><span class="highlight">questions</span> : toutes les questions du quiz</li>
+                        <li><span class="highlight">reponse_A</span>, <span class="highlight">reponse_B</span>, <span class="highlight">reponse_C</span> : les différentes options</li>
+                        <li><span class="highlight">bonnes_reponses</span> : les lettres des bonnes réponses (A, B ou C)</li>
+                    </ul>
+                </div>
+                
+                <div class="concept-card">
+                    <h3>4. Les Messages (Broadcast)</h3>
+                    <p>Les messages permettent aux sprites de communiquer entre eux :</p>
+                    <ul>
+                        <li><span class="highlight">commencer_quiz</span> : lance le jeu</li>
+                        <li><span class="highlight">poser_question</span> : affiche une nouvelle question</li>
+                        <li><span class="highlight">bonne_reponse</span> : quand la réponse est correcte</li>
+                        <li><span class="highlight">mauvaise_reponse</span> : quand la réponse est incorrecte</li>
+                        <li><span class="highlight">fin_quiz</span> : termine le jeu et affiche le score final</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🏗️ Structure du Programme</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Initialisation du Jeu</strong>
+                    <div class="code-block">
+Quand [drapeau vert] est cliqué
+    mettre [score] à (0)
+    mettre [question_actuelle] à (1)
+    cacher tous les sprites de réponse
+    envoyer à tous [commencer_quiz]
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Afficher une Question</strong>
+                    <div class="code-block">
+Quand je reçois [poser_question]
+    dire (élément (question_actuelle) de [questions]) pendant (2) secondes
+    dire (rejoindre [A: ] (élément (question_actuelle) de [reponse_A]))
+    dire (rejoindre [B: ] (élément (question_actuelle) de [reponse_B]))
+    dire (rejoindre [C: ] (élément (question_actuelle) de [reponse_C]))
+    montrer les boutons de réponse
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Vérifier la Réponse (sur un bouton de réponse)</strong>
+                    <div class="code-block">
+Quand ce sprite est cliqué
+    si (élément (question_actuelle) de [bonnes_reponses]) = [A] alors
+        ajouter (1) à [score]
+        envoyer à tous [bonne_reponse]
+    sinon
+        envoyer à tous [mauvaise_reponse]
+    fin
+    ajouter (1) à [question_actuelle]
+    si (question_actuelle) > (nombre_questions) alors
+        envoyer à tous [fin_quiz]
+    sinon
+        envoyer à tous [poser_question]
+    fin
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Gérer les Feedbacks</strong>
+                    <div class="code-block">
+Quand je reçois [bonne_reponse]
+    basculer sur le costume [content]
+    jouer le son [Correct]
+    dire [Bravo ! Bonne réponse !] pendant (2) secondes
+
+Quand je reçois [mauvaise_reponse]
+    basculer sur le costume [déçu]
+    jouer le son [Incorrect]
+    dire [Dommage... Ce n'est pas la bonne réponse.] pendant (2) secondes
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Afficher le Score Final</strong>
+                    <div class="code-block">
+Quand je reçois [fin_quiz]
+    cacher tous les boutons
+    dire (rejoindre [Quiz terminé ! Score: ] (rejoindre (score) (rejoindre [/] (nombre_questions))))
+    si (score) = (nombre_questions) alors
+        dire [Parfait ! Vous êtes un expert en cybersécurité !]
+    sinon si (score) > ((nombre_questions) / (2)) alors
+        dire [Bon travail ! Continuez à apprendre !]
+    sinon
+        dire [Il faut réviser vos bases en cybersécurité !]
+    fin
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🔐 Exemples de Questions de Cybersécurité</h2>
+                <div class="concept-card">
+                    <h3>Questions pour votre liste</h3>
+                    <ul>
+                        <li><strong>Question 1 :</strong> Qu'est-ce qu'un mot de passe fort ?</li>
+                        <li><strong>Question 2 :</strong> Que signifie le cadenas dans la barre d'adresse ?</li>
+                        <li><strong>Question 3 :</strong> Que faire si vous recevez un email suspect ?</li>
+                        <li><strong>Question 4 :</strong> Qu'est-ce que le phishing ?</li>
+                        <li><strong>Question 5 :</strong> Pourquoi faut-il mettre à jour ses logiciels ?</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🎨 Améliorations Possibles</h2>
+                <ul>
+                    <li><strong>Chronomètre :</strong> Ajouter une variable temps et utiliser un timer</li>
+                    <li><strong>Niveaux de difficulté :</strong> Créer différentes listes de questions</li>
+                    <li><strong>Animations :</strong> Faire bouger les sprites avec des effets visuels</li>
+                    <li><strong>Sons :</strong> Ajouter une musique de fond et des effets sonores</li>
+                    <li><strong>Arrière-plans :</strong> Changer le décor selon les questions ou le score</li>
+                    <li><strong>Explications :</strong> Afficher des informations pédagogiques après chaque réponse</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>✅ Checklist de Développement</h2>
+                <div class="tip">
+                    <strong>Avant de commencer :</strong>
+                    <ul>
+                        <li>☐ Créer tous les sprites nécessaires</li>
+                        <li>☐ Créer toutes les variables</li>
+                        <li>☐ Créer toutes les listes et les remplir</li>
+                        <li>☐ Préparer les costumes et sons</li>
+                    </ul>
+                    <strong>Pendant le développement :</strong>
+                    <ul>
+                        <li>☐ Tester chaque fonctionnalité séparément</li>
+                        <li>☐ Vérifier que les messages fonctionnent</li>
+                        <li>☐ S'assurer que le score s'incrémente correctement</li>
+                    </ul>
+                    <strong>Finalisation :</strong>
+                    <ul>
+                        <li>☐ Tester le jeu du début à la fin</li>
+                        <li>☐ Vérifier toutes les questions et réponses</li>
+                        <li>☐ Ajouter des instructions pour le joueur</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>🎓 Guide créé pour l'apprentissage de Scratch et la sensibilisation à la cybersécurité</p>
+            <p>Bon développement et amusez-vous bien !</p>
+        </footer>
+    </div>
+</body>
+</html>
