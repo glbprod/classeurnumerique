@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Programmation par Blocs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+        
+        .section {
+            padding: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            color: #1e293b;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        
+        /* Grille des blocs */
+        .blocks-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .block-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .block-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        /* Styles des blocs Scratch */
+        .scratch-block {
+            padding: 12px 20px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: inline-block;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .block-event {
+            background: #FFAB19;
+            padding-left: 30px;
+            clip-path: polygon(0 0, 10px 0, 15px 50%, 10px 100%, 0 100%, 0 0, 0 100%, 100% 100%, 100% 0);
+        }
+        
+        .block-motion { background: #4C97FF; }
+        .block-looks { background: #9966FF; }
+        .block-variable { background: #FF8C1A; }
+        
+        .block-control {
+            background: #FFAB19;
+            padding: 12px 20px;
+            border-radius: 8px;
+            position: relative;
+            min-height: 80px;
+            padding-right: 40px;
+        }
+        
+        .block-control::after {
+            content: '';
+            position: absolute;
+            right: 10px;
+            top: 20px;
+            width: 20px;
+            height: 40px;
+            background: white;
+            opacity: 0.3;
+            border-radius: 3px;
+        }
+        
+        .block-condition {
+            background: #FFAB19;
+            padding: 12px 20px;
+            border-radius: 8px;
+            position: relative;
+            min-height: 100px;
+            padding-right: 40px;
+        }
+        
+        .block-condition::after {
+            content: '';
+            position: absolute;
+            right: 10px;
+            top: 20px;
+            width: 20px;
+            height: 60px;
+            background: white;
+            opacity: 0.3;
+            border-radius: 3px;
+        }
+        
+        .condition-diamond {
+            display: inline-block;
+            background: #5CB1D6;
+            padding: 5px 15px;
+            font-size: 11px;
+            transform: skew(-20deg);
+            margin: 0 5px;
+        }
+        
+        .condition-diamond span {
+            display: inline-block;
+            transform: skew(20deg);
+        }
+        
+        .block-label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+        
+        .block-description {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        
+        /* Section conseils */
+        .conseils-section {
+            background: #f8f9fa;
+            padding: 40px;
+        }
+        
+        .conseils-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .conseil-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .conseil-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        
+        .conseil-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        
+        .conseil-1 { background: #10b981; }
+        .conseil-2 { background: #f59e0b; }
+        .conseil-3 { background: #3b82f6; }
+        .conseil-4 { background: #8b5cf6; }
+        .conseil-5 { background: #ec4899; }
+        .conseil-6 { background: #14b8a6; }
+        
+        .conseil-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        
+        .conseil-text {
+            font-size: 14px;
+            color: #64748b;
+        }
+        
+        footer {
+            background: #1e293b;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .note-box {
+            background: #e0e7ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .note-box strong {
+            color: #1e40af;
+            font-size: 16px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .blocks-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .conseils-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .blocks-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .conseils-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧱 La PROGRAMMATION PAR BLOCS</h1>
+            <p style="font-size: 1.2em; margin-top: 10px; opacity: 0.9;">
+                Apprendre à programmer en assemblant des blocs comme des LEGO
+            </p>
+        </header>
+        
+        <!-- Section Types de blocs -->
+        <div class="section">
+            <h2 class="section-title">LES TYPES DE BLOCS</h2>
+            
+            <div class="blocks-grid">
+                <!-- Événement -->
+                <div class="block-item">
+                    <div class="scratch-block block-event">
+                        Quand 🏁 drapeau cliqué
+                    </div>
+                    <div class="block-label">ÉVÉNEMENT</div>
+                    <div class="block-description">Démarre le programme</div>
+                </div>
+                
+                <!-- Mouvement -->
+                <div class="block-item">
+                    <div class="scratch-block block-motion">
+                        avancer de 10 pas
+                    </div>
+                    <div class="block-label">MOUVEMENT</div>
+                    <div class="block-description">Déplace le sprite</div>
+                </div>
+                
+                <!-- Apparence -->
+                <div class="block-item">
+                    <div class="scratch-block block-looks">
+                        dire "Bonjour !" pendant 2 s
+                    </div>
+                    <div class="block-label">APPARENCE</div>
+                    <div class="block-description">Affiche du texte ou des images</div>
+                </div>
+                
+                <!-- Variable -->
+                <div class="block-item">
+                    <div class="scratch-block block-variable">
+                        mettre score à 0
+                    </div>
+                    <div class="block-label">VARIABLE</div>
+                    <div class="block-description">Mémorise une valeur</div>
+                </div>
+                
+                <!-- Boucle -->
+                <div class="block-item">
+                    <div class="scratch-block block-control">
+                        répéter 10 fois<br>
+                        <span style="font-size: 11px; opacity: 0.7;">(blocs à l'intérieur)</span>
+                    </div>
+                    <div class="block-label">BOUCLE</div>
+                    <div class="block-description">Répète des actions plusieurs fois</div>
+                </div>
+                
+                <!-- Condition -->
+                <div class="block-item">
+                    <div class="scratch-block block-condition">
+                        si <span class="condition-diamond"><span>condition</span></span> alors<br>
+                        <span style="font-size: 11px; opacity: 0.7;">(action si OUI)</span><br>
+                        sinon<br>
+                        <span style="font-size: 11px; opacity: 0.7;">(action si NON)</span>
+                    </div>
+                    <div class="block-label">CONDITION</div>
+                    <div class="block-description">Fait des choix selon une situation</div>
+                </div>
+            </div>
+            
+            <div class="note-box">
+                <strong>💡 Les blocs s'emboîtent les uns dans les autres pour créer ton programme !</strong>
+            </div>
+        </div>
+        
+        <!-- Section Conseils -->
+        <div class="conseils-section">
+            <h2 class="section-title" style="text-align: center;">💡 CONSEILS POUR BIEN PROGRAMMER</h2>
+            
+            <div class="conseils-grid">
+                <!-- Conseil 1 -->
+                <div class="conseil-card">
+                    <div class="conseil-number conseil-1">1</div>
+                    <div class="conseil-title">Commence simple</div>
+                    <div class="conseil-text">Teste ton programme avec peu de blocs d'abord, puis ajoute progressivement.</div>
+                </div>
+                
+                <!-- Conseil 2 -->
+                <div class="conseil-card">
+                    <div class="conseil-number conseil-2">2</div>
+                    <div class="conseil-title">Teste souvent</div>
+                    <div class="conseil-text">Clique sur le drapeau 🏁 régulièrement pour vérifier que ça fonctionne.</div>
+                </div>
+                
+                <!-- Conseil 3 -->
+                <div class="conseil-card">
+                    <div class="conseil-number conseil-3">3</div>
+                    <div class="conseil-title">Décompose le problème</div>
+                    <div class="conseil-text">Divise ton projet en plusieurs petites étapes faciles à réaliser.</div>
+                </div>
+                
+                <!-- Conseil 4 -->
+                <div class="conseil-card">
+                    <div class="conseil-number conseil-4">4</div>
+                    <div class="conseil-title">Réutilise tes blocs</div>
+                    <div class="conseil-text">Duplique les parties qui fonctionnent bien pour gagner du temps.</div>
+                </div>
+                
+                <!-- Conseil 5 -->
+                <div class="conseil-card">
+                    <div class="conseil-number conseil-5">5</div>
+                    <div class="conseil-title">Expérimente !</div>
+                    <div class="conseil-text">N'aie pas peur de te tromper, c'est comme ça qu'on apprend le mieux.</div>
+                </div>
+                
+                <!-- Conseil 6 -->
+                <div class="conseil-card">
+                    <div class="conseil-number conseil-6">6</div>
+                    <div class="conseil-title">Range bien ton code</div>
+                    <div class="conseil-text">Un programme bien organisé est plus facile à comprendre et à corriger.</div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p style="font-size: 14px; margin-bottom: 5px;">🎓 Technologie au Collège • Cycle 4</p>
+            <p style="font-size: 12px; opacity: 0.7;">Programmation par blocs avec Scratch</p>
+        </footer>
+    </div>
+</body>
+</html>
