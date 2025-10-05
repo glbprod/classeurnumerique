@@ -1,0 +1,16 @@
+[
+  {
+    "year": "1946",
+    "title": "ENIAC",
+    "generation": "1ère génération - Tubes à vide",
+    "image": {
+      "name": "eniac.jpg",
+      "path": "images/eniac.jpg"
+    },
+    "size": "30 tonnes, une salle entière",
+    "power": "5000 calculs/seconde",
+    "cost": "7 millions € équivalent",
+    "usage": "Calculs militaires et scientifiques",
+    "innovation": "Premier ordinateur électronique programmable"
+  }
+]
