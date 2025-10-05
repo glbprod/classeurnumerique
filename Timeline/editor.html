@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éditeur de Timeline - Administration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #4a90e2;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+        }
+        
+        .nav-links {
+            background: #357abd;
+            padding: 10px 25px;
+            text-align: center;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        
+        .editor-panel {
+            padding: 30px;
+            border-right: 2px solid #e9ecef;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .preview-panel {
+            padding: 30px;
+            background: #f8f9fa;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            color: #4a90e2;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4a90e2;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .file-upload {
+            border: 2px dashed #4a90e2;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8f9ff;
+        }
+        
+        .file-upload:hover {
+            background: #e3f2fd;
+            border-color: #357abd;
+        }
+        
+        .file-upload input {
+            display: none;
+        }
+        
+        .file-upload-label {
+            cursor: pointer;
+            color: #4a90e2;
+            font-weight: bold;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            margin-top: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background: #4a90e2;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #357abd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .actions {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .items-list {
+            margin-top: 20px;
+        }
+        
+        .item-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .item-card:hover {
+            border-color: #4a90e2;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .item-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .item-year {
+            background: #4a90e2;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+        
+        .item-title {
+            font-weight: bold;
+            color: #333;
+            margin: 8px 0;
+        }
+        
+        .item-specs {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        @media (max-width: 968px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            .editor-panel {
+                border-right: none;
+                border-bottom: 2px solid #e9ecef;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Éditeur de Timeline</h1>
+            <p>Créez et gérez les éléments de votre frise chronologique</p>
+        </div>
+        
+        <div class="nav-links">
+            <a href="index.html">🏠 Accueil</a>
+            <a href="timeline.html">👁️ Voir la Timeline</a>
+            <a href="#" style="background: rgba(255,255,255,0.2);">✏️ Éditeur</a>
+        </div>
+        
+        <div class="content">
+            <!-- Panneau d'édition -->
+            <div class="editor-panel">
+                <h2 class="section-title">➕ Ajouter un élément</h2>
+                
+                <form id="itemForm">
+                    <div class="form-group">
+                        <label for="year">Année *</label>
+                        <input type="number" id="year" required min="1900" max="2100" placeholder="Ex: 1946">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="title">Titre *</label>
+                        <input type="text" id="title" required placeholder="Ex: ENIAC">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="generation">Génération / Catégorie</label>
+                        <input type="text" id="generation" placeholder="Ex: 1ère génération - Tubes à vide">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Image</label>
+                        <div class="file-upload" id="fileUpload">
+                            <input type="file" id="imageInput" accept="image/*">
+                            <label for="imageInput" class="file-upload-label">
+                                📁 Cliquez pour choisir une image<br>
+                                <span style="font-size: 12px; color: #666;">ou glissez-déposez ici (JPG, PNG max 5MB)</span>
+                            </label>
+                        </div>
+                        <img id="previewImage" class="preview-image" alt="Aperçu">
+                        <div id="imageName" style="font-size: 12px; color: #666; margin-top: 5px;"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="size">Taille / Poids</label>
+                        <input type="text" id="size" placeholder="Ex: 30 tonnes, une salle entière">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="power">Puissance de calcul</label>
+                        <input type="text" id="power" placeholder="Ex: 5000 calculs/seconde">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cost">Coût</label>
+                        <input type="text" id="cost" placeholder="Ex: 7 millions € équivalent">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="usage">Usage principal</label>
+                        <textarea id="usage" placeholder="Ex: Calculs militaires et recherche scientifique"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="innovation">Innovation majeure</label>
+                        <textarea id="innovation" placeholder="Ex: Premier ordinateur électronique programmable"></textarea>
+                    </div>
+                    
+                    <div class="actions">
+                        <button type="submit" class="btn btn-primary">➕ Ajouter à la timeline</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Réinitialiser</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Panneau de prévisualisation -->
+            <div class="preview-panel">
+                <h2 class="section-title">👁️ Aperçu des éléments (<span id="itemCount">0</span>)</h2>
+                
+                <div class="alert alert-info">
+                    <strong>💡 Conseils :</strong><br>
+                    • Les éléments sont triés automatiquement par année<br>
+                    • Sauvegardez vos images avec des noms simples (ex: eniac.jpg)<br>
+                    • Téléchargez le JSON et placez-le dans <code>data/</code>
+                </div>
+                
+                <div class="items-list" id="itemsList">
+                    <p style="text-align: center; color: #666; padding: 40px;">Aucun élément ajouté pour le moment</p>
+                </div>
+                
+                <div class="actions">
+                    <button class="btn btn-success" onclick="downloadJSON()">💾 Télécharger timeline.json</button>
+                    <button class="btn btn-danger" onclick="clearAll()">🗑️ Tout effacer</button>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <h3 style="color: #4a90e2; margin-bottom: 15px;">📋 Instructions</h3>
+                    <div class="alert alert-warning">
+                        <strong>Après téléchargement :</strong><br>
+                        1️⃣ Placez <code>timeline.json</code> dans le dossier <code>data/</code><br>
+                        2️⃣ Enregistrez vos images dans <code>images/</code><br>
+                        3️⃣ Nommez vos images comme indiqué ci-dessus<br>
+                        4️⃣ Ouvrez <code>timeline.html</code> pour voir le résultat !
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let timelineItems = [];
+        let currentImageData = null;
+        
+        // Charger les données sauvegardées au démarrage
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('timelineItems');
+            if (saved) {
+                timelineItems = JSON.parse(saved);
+                renderItems();
+            }
+        });
+        
+        // Gestion du formulaire
+        document.getElementById('itemForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            addItem();
+        });
+        
+        // Gestion de l'upload d'image
+        const imageInput = document.getElementById('imageInput');
+        const previewImage = document.getElementById('previewImage');
+        const fileUpload = document.getElementById('fileUpload');
+        const imageName = document.getElementById('imageName');
+        
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                // Vérifier la taille (5MB max)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('⚠️ L\'image est trop volumineuse (max 5MB)');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    currentImageData = {
+                        name: file.name,
+                        data: e.target.result
+                    };
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                    imageName.textContent = `📷 ${file.name}`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Drag & drop
+        fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.style.background = '#e3f2fd';
+        });
+        
+        fileUpload.addEventListener('dragleave', () => {
+            fileUpload.style.background = '#f8f9ff';
+        });
+        
+        fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUpload.style.background = '#f8f9ff';
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                imageInput.files = dt.files;
+                imageInput.dispatchEvent(new Event('change'));
+            }
+        });
+        
+        function addItem() {
+            const item = {
+                year: document.getElementById('year').value,
+                title: document.getElementById('title').value,
+                generation: document.getElementById('generation').value,
+                image: currentImageData ? {
+                    name: currentImageData.name,
+                    path: `images/${currentImageData.name}`,
+                    data: currentImageData.data
+                } : null,
+                size: document.getElementById('size').value,
+                power: document.getElementById('power').value,
+                cost: document.getElementById('cost').value,
+                usage: document.getElementById('usage').value,
+                innovation: document.getElementById('innovation').value
+            };
+            
+            timelineItems.push(item);
+            timelineItems.sort((a, b) => a.year - b.year);
+            
+            // Sauvegarder dans localStorage
+            saveToLocalStorage();
+            
+            renderItems();
+            resetForm();
+            
+            // Message de confirmation
+            alert('✅ Élément ajouté avec succès !');
+        }
+        
+        function renderItems() {
+            const list = document.getElementById('itemsList');
+            const count = document.getElementById('itemCount');
+            count.textContent = timelineItems.length;
+            
+            if (timelineItems.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">Aucun élément ajouté pour le moment</p>';
+                return;
+            }
+            
+            list.innerHTML = timelineItems.map((item, index) => `
+                <div class="item-card">
+                    <div class="item-card-header">
+                        <span class="item-year">${item.year}</span>
+                        <button class="btn btn-danger btn-small" onclick="removeItem(${index})">🗑️ Supprimer</button>
+                    </div>
+                    <div class="item-title">${item.title}</div>
+                    ${item.generation ? `<div style="font-size: 12px; color: #666; margin: 4px 0;">${item.generation}</div>` : ''}
+                    ${item.image ? `<div style="margin: 10px 0; font-size: 12px; color: #4a90e2;">📷 ${item.image.name}</div>` : ''}
+                    <div class="item-specs">
+                        ${item.size ? `📏 ${item.size}<br>` : ''}
+                        ${item.power ? `⚡ ${item.power}<br>` : ''}
+                        ${item.cost ? `💰 ${item.cost}<br>` : ''}
+                        ${item.usage ? `🎯 ${item.usage}<br>` : ''}
+                        ${item.innovation ? `<div style="margin-top: 8px; padding: 8px; background: #e8f5e8; border-radius: 4px;">💡 ${item.innovation}</div>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function removeItem(index) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')) {
+                timelineItems.splice(index, 1);
+                saveToLocalStorage();
+                renderItems();
+            }
+        }
+        
+        function resetForm() {
+            document.getElementById('itemForm').reset();
+            previewImage.style.display = 'none';
+            currentImageData = null;
+            imageName.textContent = '';
+        }
+        
+        function clearAll() {
+            if (confirm('⚠️ Êtes-vous sûr de vouloir supprimer TOUS les éléments ?\n\nCette action est irréversible !')) {
+                timelineItems = [];
+                saveToLocalStorage();
+                renderItems();
+            }
+        }
+        
+        function saveToLocalStorage() {
+            localStorage.setItem('timelineItems', JSON.stringify(timelineItems));
+        }
+        
+        function downloadJSON() {
+            if (timelineItems.length === 0) {
+                alert('❌ Aucun élément à télécharger !');
+                return;
+            }
+            
+            // Créer une copie sans les données Base64 pour le fichier de production
+            const productionData = timelineItems.map(item => {
+                const newItem = { ...item };
+                if (newItem.image) {
+                    // Garder seulement le nom et le chemin, retirer les données Base64
+                    newItem.image = {
+                        name: newItem.image.name,
+                        path: newItem.image.path
+                    };
+                }
+                return newItem;
+            });
+            
+            const dataStr = JSON.stringify(productionData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'timeline.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            alert('✅ Fichier timeline.json téléchargé !\n\n📋 Prochaines étapes :\n1. Placez ce fichier dans data/\n2. Enregistrez vos images dans images/\n3. Ouvrez timeline.html');
+        }
+    </script>
+</body>
+</html>
