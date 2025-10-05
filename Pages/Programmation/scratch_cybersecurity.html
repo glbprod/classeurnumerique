@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Minimal - Serious Game Cybersécurité</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header .subtitle {
+            font-size: 1.3em;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .step {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 8px solid #f59e0b;
+        }
+        
+        .step-number {
+            background: #f59e0b;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 15px;
+            vertical-align: middle;
+        }
+        
+        .step h2 {
+            color: #1e3c72;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            display: inline;
+        }
+        
+        .block-code {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: white;
+        }
+        
+        .block {
+            margin: 8px 0;
+            padding: 10px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .block-event { background: #FFAB19; }
+        .block-control { background: #FFAB19; }
+        .block-motion { background: #4C97FF; }
+        .block-looks { background: #9966FF; }
+        .block-variable { background: #FF8C1A; }
+        .block-sensing { background: #5CB1D6; }
+        
+        .indent {
+            margin-left: 30px;
+            border-left: 3px solid #475569;
+            padding-left: 15px;
+            margin-top: 8px;
+        }
+        
+        .simple-list {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 2px solid #fbbf24;
+        }
+        
+        .simple-list li {
+            padding: 10px;
+            margin: 8px 0;
+            background: #fef3c7;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #78350f;
+        }
+        
+        .tip-box {
+            background: #dbeafe;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #3b82f6;
+            margin: 20px 0;
+        }
+        
+        .tip-box strong {
+            color: #1e40af;
+            font-size: 1.1em;
+        }
+        
+        .time-badge {
+            background: #10b981;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        footer {
+            background: #1e293b;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .quick-ref {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .quick-ref-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .quick-ref-item h4 {
+            color: #f59e0b;
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .quick-ref {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ LA STRUCTURE DE BASE DU JEU</h1>
+            <div class="subtitle">Serious Game Cybersécurité</div>
+        </header>
+        
+        <div class="content">
+            
+            <!-- Objectif -->
+            <div class="tip-box">
+                <strong>🎯 OBJECTIF :</strong> Créer la structure de base d'un jeu avec :
+                <ul style="margin-top: 10px;">
+                    <li>✅ Un menu de démarrage</li>
+                    <li>✅ Un système de score</li>
+                    <li>✅ UN défi simple (question/réponse)</li>
+                    <li>✅ Un écran de fin</li>
+                </ul>
+                <div class="time-badge">⏱️ Temps estimé : 10-15 minutes</div>
+            </div>
+            
+            <!-- Étape 1 -->
+            <div class="step">
+                <span class="step-number">1</span>
+                <h2>Préparation rapide</h2>
+                
+                <h3 style="color: #2a5298; margin-top: 20px;">📦 Créer 2 variables :</h3>
+                <div class="simple-list">
+                    <ul>
+                        <li>📍 SceneActuelle → mettre à 0</li>
+                        <li>⭐ Score → mettre à 0</li>
+                    </ul>
+                </div>
+                
+                <h3 style="color: #2a5298; margin-top: 20px;">🎨 Créer 3 arrière-plans :</h3>
+                <div class="simple-list">
+                    <ul>
+                        <li>Menu (texte : "Clique pour commencer")</li>
+                        <li>Defi (ton défi de cybersécurité)</li>
+                        <li>Fin (texte : "Bravo !")</li>
+                    </ul>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>💡 Astuce :</strong> Utilise l'outil Texte dans Scratch pour écrire directement sur les arrière-plans !
+                </div>
+            </div>
+            
+            <!-- Étape 2 -->
+            <div class="step">
+                <span class="step-number">2</span>
+                <h2>Sprite principal (Scène)</h2>
+                <p style="margin: 15px 0;">Garde le chat Scratch ou choisis un sprite. C'est lui qui gère tout le jeu !</p>
+                
+                <h3 style="color: #2a5298; margin-top: 20px;">🎬 Script INITIALISATION :</h3>
+                <div class="block-code">
+                    <div class="block block-event">quand 🏁 cliqué</div>
+                    <div class="indent">
+                        <div class="block block-variable">mettre [SceneActuelle] à [0]</div>
+                        <div class="block block-variable">mettre [Score] à [0]</div>
+                        <div class="block block-looks">basculer sur l'arrière-plan [Menu]</div>
+                    </div>
+                </div>
+                
+                <h3 style="color: #2a5298; margin-top: 20px;">👆 Script DÉMARRER LE JEU :</h3>
+                <div class="block-code">
+                    <div class="block block-event">quand ce sprite est cliqué</div>
+                    <div class="indent">
+                        <div class="block block-control">si &lt;(SceneActuelle) = [0]&gt; alors</div>
+                        <div class="indent">
+                            <div class="block block-variable">mettre [SceneActuelle] à [1]</div>
+                            <div class="block block-looks">basculer sur l'arrière-plan [Defi]</div>
+                            <div class="block block-looks">envoyer à tous [Commencer]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Étape 3 -->
+            <div class="step">
+                <span class="step-number">3</span>
+                <h2>Le Défi (nouveau sprite)</h2>
+                <p style="margin: 15px 0;">Crée un nouveau sprite pour ton défi (exemple : un email, un cadenas, etc.)</p>
+                
+                <h3 style="color: #2a5298; margin-top: 20px;">❓ Script du DÉFI :</h3>
+                <div class="block-code">
+                    <div class="block block-event">quand je reçois [Commencer]</div>
+                    <div class="indent">
+                        <div class="block block-looks">montrer</div>
+                        <div class="block block-sensing">demander [Ta question ici ? (Oui/Non)] et attendre</div>
+                        <br>
+                        <div class="block block-control">si &lt;(réponse) = [Oui]&gt; alors</div>
+                        <div class="indent">
+                            <div class="block block-variable">ajouter [10] à [Score]</div>
+                            <div class="block block-looks">dire [✅ Bravo !] pendant [2] secondes</div>
+                            <div class="block block-looks">envoyer à tous [Terminer]</div>
+                        </div>
+                        <div class="block block-control">sinon</div>
+                        <div class="indent">
+                            <div class="block block-looks">dire [❌ Essaie encore !] pendant [2] secondes</div>
+                        </div>
+                        <div class="block block-looks">cacher</div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>📝 Personnalise :</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>Change la question</li>
+                        <li>Change la bonne réponse ([Oui] → ton choix)</li>
+                        <li>Change les messages ✅ et ❌</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Étape 4 -->
+            <div class="step">
+                <span class="step-number">4</span>
+                <h2>Écran de fin</h2>
+                <p style="margin: 15px 0;">Retour sur le sprite principal (celui de l'étape 2)</p>
+                
+                <h3 style="color: #2a5298; margin-top: 20px;">🏁 Script FIN DU JEU :</h3>
+                <div class="block-code">
+                    <div class="block block-event">quand je reçois [Terminer]</div>
+                    <div class="indent">
+                        <div class="block block-looks">basculer sur l'arrière-plan [Fin]</div>
+                        <div class="block block-looks">dire (regrouper [Score final : ] (Score)) pendant [3] secondes</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Guide rapide -->
+            <div class="step">
+                <h2 style="text-align: center; color: #1e3c72; font-size: 2em;">🚀 C'EST TOUT !</h2>
+                <p style="text-align: center; font-size: 1.2em; margin: 20px 0;">Clique sur le drapeau vert pour tester ton jeu !</p>
+                
+                <div class="quick-ref">
+                    <div class="quick-ref-item">
+                        <h4>✅ Ce qui marche déjà :</h4>
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>Menu de départ</li>
+                            <li>Une question</li>
+                            <li>Score qui s'affiche</li>
+                            <li>Écran de fin</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="quick-ref-item">
+                        <h4>➕ Pour aller plus loin :</h4>
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>Ajouter plus de questions</li>
+                            <li>Ajouter des vies</li>
+                            <li>Ajouter des sons</li>
+                            <li>Améliorer les graphismes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Exemples de questions -->
+            <div class="step">
+                <h2>💡 Exemples de questions simples</h2>
+                <p style="margin: 15px 0;">Choisis un thème et pose une question simple :</p>
+                
+                <div class="simple-list">
+                    <ul>
+                        <li>🎣 PHISHING : "Cet email est-il suspect ? (Oui/Non)"</li>
+                        <li>🔐 MOT DE PASSE : "123456 est-il un bon mot de passe ? (Oui/Non)"</li>
+                        <li>🌐 HTTPS : "Ce site a un cadenas 🔒, est-il sécurisé ? (Oui/Non)"</li>
+                        <li>📱 RÉSEAUX SOCIAUX : "Dois-je accepter cette demande d'ami inconnue ? (Oui/Non)"</li>
+                        <li>📥 TÉLÉCHARGEMENT : "Dois-je télécharger ce fichier d'un email inconnu ? (Oui/Non)"</li>
+                    </ul>
+                </div>
+            </div>
+        <footer>
+            <h3 style="margin-bottom: 15px;">🎯 Prochaines étapes</h3>
+            <div style="text-align: left; max-width: 600px; margin: 0 auto;">
+                <p style="margin: 10px 0;">✅ <strong>Niveau 1 :</strong> Fais fonctionner cette version minimale</p>
+                <p style="margin: 10px 0;">✅ <strong>Niveau 2 :</strong> Ajoute 2-3 questions de plus</p>
+                <p style="margin: 10px 0;">✅ <strong>Niveau 3 :</strong> Ajoute un système de vies</p>
+                <p style="margin: 10px 0;">✅ <strong>Niveau 4 :</strong> Consulte le template complet pour plus de mécaniques !</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
