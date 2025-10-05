@@ -262,7 +262,43 @@
             }
         }
     </style>
+    <script>
+        // À ajouter avant la balise dans timeline.html
+    fetch('data/timeline.json')
+        .then(response => response.json())
+        .then(data => {
+            renderTimeline(data);
+        })
+        .catch(error => console.error('Erreur:', error));
+    
+    function renderTimeline(items) {
+        const timeline = document.querySelector('.timeline');
+        timeline.innerHTML = items.map(item => `
+            <div class="timeline-item">
+                <div class="timeline-card">
+                    <span class="timeline-year">${item.year}</span>
+                    <h3 class="timeline-title">${item.title}</h3>
+                    <div class="timeline-image">
+                        ${item.image ? 
+                            `<img src="${item.image.path}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">` :
+                            `[Image ${item.title}]`
+                        }
+                    </div>
+                    <div class="timeline-specs">
+                        ${item.size ? `<div class="spec-item"><span class="spec-icon">📏</span><span class="spec-text"><strong>Taille :</strong> ${item.size}</span></div>` : ''}
+                        ${item.power ? `<div class="spec-item"><span class="spec-icon">⚡</span><span class="spec-text"><strong>Puissance :</strong> ${item.power}</span></div>` : ''}
+                        ${item.cost ? `<div class="spec-item"><span class="spec-icon">💰</span><span class="spec-text"><strong>Coût :</strong> ${item.cost}</span></div>` : ''}
+                        ${item.usage ? `<div class="spec-item"><span class="spec-icon">🎯</span><span class="spec-text"><strong>Usage :</strong> ${item.usage}</span></div>` : ''}
+                    </div>
+                    ${item.innovation ? `<div class="innovation-badge">💡 ${item.innovation}</div>` : ''}
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+        `).join('');
+    }
+    </script>
 </head>
+    
 <body>
     <div class="timeline-container">
         <div class="header">
