@@ -13,9 +13,17 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+           font-size: 16px;          /* Au lieu de la taille par défaut */
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
             line-height: 1.6;
+        }
+
+    /* Paragraphes */
+        p {
+            font-size: 16px;
+            line-height: 1.7;         /* Meilleure lisibilité */
+            margin-bottom: 15px;
         }
         
         .container {
@@ -182,80 +190,64 @@
             margin-bottom: 8px;
         }
 
-        /* ============================================
+   /* ============================================
    AMÉLIORATION DES LISTES
    ============================================ */
-
-/* Marges générales des listes */
-ul, ol {
-    margin-left: 30px;        /* Indentation depuis la gauche */
-    margin-top: 15px;         /* Espace au-dessus */
-    margin-bottom: 15px;      /* Espace en-dessous */
-}
-
-/* Style des éléments de liste */
-li {
-    margin-bottom: 12px;      /* Espace entre chaque item */
-    line-height: 1.8;         /* Hauteur de ligne pour la lisibilité */
-    font-size: 15px;          /* Taille de police */
-}
-
-/* Supprime la marge du dernier élément */
-li:last-child {
-    margin-bottom: 0;
-}
-
-/* ============================================
-   AUGMENTATION GLOBALE DES POLICES
-   ============================================ */
-
-/* Taille de base du body */
-body {
-    font-size: 16px;          /* Au lieu de la taille par défaut */
-}
-
-/* Paragraphes */
-p {
-    font-size: 16px;
-    line-height: 1.7;         /* Meilleure lisibilité */
-    margin-bottom: 15px;
-}
-
-/* Titres de section */
-.section-title {
-    font-size: 2em;           /* 32px (au lieu de 1.8em) */
-}
-
-/* Labels des blocs */
-.block-label {
-    font-size: 18px;          /* Au lieu de 16px */
-}
-
-/* Descriptions des blocs */
-.block-description {
-    font-size: 15px;          /* Au lieu de 13px */
-}
-
-/* Titres des conseils */
-.conseil-title {
-    font-size: 20px;          /* Au lieu de 18px */
-}
-
-/* Texte des conseils */
-.conseil-text {
-    font-size: 16px;          /* Au lieu de 14px */
-    line-height: 1.6;
-}
-
-/* Blocs Scratch */
-.scratch-block {
-    font-size: 16px;          /* Au lieu de 14px */
-}
-
-/* Note box */
-.note-box strong {
-    font-size: 18px;          /* Au lieu de 16px */
-}
+        
+        /* Marges générales des listes */
+        ul, ol {
+            margin-left: 30px;        /* Indentation depuis la gauche */
+            margin-top: 15px;         /* Espace au-dessus */
+            margin-bottom: 15px;      /* Espace en-dessous */
+        }
+        
+        /* Style des éléments de liste */
+        li {
+            margin-bottom: 12px;      /* Espace entre chaque item */
+            line-height: 1.8;         /* Hauteur de ligne pour la lisibilité */
+            font-size: 15px;          /* Taille de police */
+        }
+        
+        /* Supprime la marge du dernier élément */
+        li:last-child {
+            margin-bottom: 0;
+        }
+              
+        /* Titres de section */
+        .section-title {
+            font-size: 2em;           /* 32px (au lieu de 1.8em) */
+        }
+        
+        /* Labels des blocs */
+        .block-label {
+            font-size: 18px;          /* Au lieu de 16px */
+        }
+        
+        /* Descriptions des blocs */
+        .block-description {
+            font-size: 15px;          /* Au lieu de 13px */
+        }
+        
+        /* Titres des conseils */
+        .conseil-title {
+            font-size: 20px;          /* Au lieu de 18px */
+        }
+        
+        /* Texte des conseils */
+        .conseil-text {
+            font-size: 16px;          /* Au lieu de 14px */
+            line-height: 1.6;
+        }
+        
+        /* Blocs Scratch */
+        .scratch-block {
+            font-size: 16px;          /* Au lieu de 14px */
+        }
+        
+        /* Note box */
+        .note-box strong {
+            font-size: 18px;          /* Au lieu de 16px */
+        }
         
         @media (max-width: 768px) {
             .quick-ref {
@@ -267,7 +259,6 @@ p {
 <body>
     <div class="container">        
         <div class="content">
-            
             <!-- Objectif -->
             <div class="tip-box">
                 <strong>🎯 OBJECTIF :</strong> Créer la structure de base d'un jeu avec :
