@@ -344,6 +344,30 @@ p {
             }
         }
     </style>
+    <script>
+        // Fonction pour envoyer la hauteur au parent
+        function sendHeight() {
+            const height = document.documentElement.scrollHeight;
+            window.parent.postMessage({
+                type: 'resize',
+                height: height
+            }, '*');
+        }
+        
+        // Envoyer la hauteur au chargement
+        window.addEventListener('load', sendHeight);
+        
+        // Surveiller les changements de taille
+        window.addEventListener('resize', sendHeight);
+        
+        // Observer les changements de contenu
+        const observer = new MutationObserver(sendHeight);
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true
+        });
+    </script>
 </head>
 <body>
     <div class="container">
