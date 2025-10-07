@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Éditeur de Timeline Simplifié</title>
-    <style>
+     <style>
         * {
             margin: 0;
             padding: 0;
@@ -44,23 +44,44 @@
             padding: 40px 20px;
             background: #f8f9fa;
             min-height: 300px;
-            overflow-x: auto;
         }
         
         .timeline-wrapper {
             position: relative;
             min-height: 400px;
             padding: 20px 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        
+        /* Personnalisation de la scrollbar */
+        .timeline-wrapper::-webkit-scrollbar {
+            height: 12px;
+        }
+        
+        .timeline-wrapper::-webkit-scrollbar-track {
+            background: #e9ecef;
+            border-radius: 10px;
+        }
+        
+        .timeline-wrapper::-webkit-scrollbar-thumb {
+            background: #4a90e2;
+            border-radius: 10px;
+        }
+        
+        .timeline-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #357abd;
         }
         
         .timeline-line {
             position: absolute;
             top: 50%;
-            left: 50px;
-            right: 50px;
+            left: 0;
+            right: 0;
             height: 4px;
-            background: linear-gradient(to right, #4a90e2, #667eea);
+            background: linear-gradient(to right, #4a90e2, #667eea, #764ba2);
             transform: translateY(-50%);
+            z-index: 1;
         }
         
         .timeline-item {
@@ -69,7 +90,8 @@
             transform: translate(-50%, -50%);
             cursor: pointer;
             transition: all 0.3s;
-            width: 200px;
+            min-width: 200px;
+            z-index: 2;
         }
         
         .timeline-item:hover {
