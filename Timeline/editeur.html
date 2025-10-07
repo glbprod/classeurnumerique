@@ -66,13 +66,14 @@
         .timeline-item {
             position: absolute;
             top: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             cursor: pointer;
             transition: all 0.3s;
+            width: 200px;
         }
         
         .timeline-item:hover {
-            transform: translateX(-50%) scale(1.05);
+            transform: translate(-50%, -50%) scale(1.05);
         }
         
         .timeline-dot {
@@ -97,14 +98,10 @@
             background: white;
             border-radius: 10px;
             padding: 12px;
-            width: 180px;
+            width: 100%;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border: 2px solid #e9ecef;
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            margin-top: 10px;
+            margin-top: 20px;
         }
         
         .timeline-item:hover .timeline-card {
@@ -562,6 +559,14 @@
         window.addEventListener('resize', () => {
             if (timelineItems.length > 0) {
                 renderTimeline();
+            }
+        });
+        
+        // Confirmation avant fermeture de la fenêtre
+        window.addEventListener('beforeunload', (e) => {
+            if (timelineItems.length > 0) {
+                e.preventDefault();
+                e.returnValue = '';
             }
         });
     </script>
