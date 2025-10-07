@@ -302,15 +302,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>⏱️ Éditeur de Timeline Simplifié</h1>
+            <h1>Éditeur de Timeline</h1>
             <p>Créez votre frise chronologique en temps réel</p>
         </div>
         
         <!-- Timeline Preview -->
         <div class="timeline-preview">
-            <h2 style="text-align: center; color: #4a90e2; margin-bottom: 30px;">
-                📊 Aperçu de votre Timeline (<span id="itemCount">0</span> élément<span id="itemPlural">s</span>)
-            </h2>
             <div class="timeline-wrapper" id="timelineWrapper">
                 <div class="empty-state" id="emptyState">
                     <div class="empty-state-icon">📭</div>
@@ -327,12 +324,12 @@
             <form id="itemForm">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="year">Année d'invention *</label>
+                        <label for="year">Numéro de la Scène *</label>
                         <input type="number" id="year" required min="1800" max="2100" placeholder="Ex: 1946">
                     </div>
                     
                     <div class="form-group">
-                        <label for="name">Nom de l'objet *</label>
+                        <label for="name">Thème du Défi *</label>
                         <input type="text" id="name" required placeholder="Ex: ENIAC">
                     </div>
                     
