@@ -49,7 +49,7 @@
         
         .timeline-wrapper {
             position: relative;
-            min-height: 250px;
+            min-height: 400px;
             padding: 20px 0;
         }
         
@@ -66,13 +66,13 @@
         .timeline-item {
             position: absolute;
             top: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             cursor: pointer;
             transition: all 0.3s;
         }
         
         .timeline-item:hover {
-            transform: translate(-50%, -50%) scale(1.05);
+            transform: translateX(-50%) scale(1.05);
         }
         
         .timeline-dot {
@@ -97,7 +97,11 @@
             width: 180px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border: 2px solid #e9ecef;
-            margin-top: 20px;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 10px;
         }
         
         .timeline-item:hover .timeline-card {
