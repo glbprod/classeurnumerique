@@ -556,6 +556,14 @@
                 renderTimeline();
             } 
         });
+        
+        // Confirmation avant fermeture de la fenêtre
+        window.addEventListener('beforeunload', (e) => {
+            if (timelineItems.length > 0) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
     </script>
 </body>
 </html>
