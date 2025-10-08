@@ -49,8 +49,10 @@
         
         .timeline-wrapper {
             position: relative;
-            min-height: 250px;
+            min-height: 400px;
             padding: 20px 0;
+            overflow-x: auto;
+            overflow-y: hidden;
         }
         
         .timeline-line {
@@ -461,7 +463,13 @@
             const emptyState = document.getElementById('emptyState');
             const count = document.getElementById('itemCount');
             const plural = document.getElementById('itemPlural');
+
+            const marginLeft = 150;
+            const marginRight = 150;
+            const timelineWidth = Math.max(wrapper.offsetWidth - marginLeft - marginRight, timelineItems.length * 250);
             
+            // Définir largeur minimale pour le scroll
+            wrapper.style.minWidth = (timelineWidth + marginLeft + marginRight) + 'px';
             count.textContent = timelineItems.length;
             plural.textContent = timelineItems.length > 1 ? 's' : '';
             
@@ -496,7 +504,9 @@
                 itemEl.className = 'timeline-item';
                 
                 // Calculer la position
-                const position = ((item.year - minYear) / yearRange) * timelineWidth + 50;
+                const position = ((item.year - minYear) / yearRange) * timelineWidth + marginLeft;
+                line.style.left = marginLeft + 'px';
+                line.style.right = marginRight + 'px';
                 itemEl.style.left = `${position}px`;
                 
                 itemEl.innerHTML = `
