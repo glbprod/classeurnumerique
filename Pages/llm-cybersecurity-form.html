@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activités LLM et Cybersécurité</title>
+    <style>
+        html {
+            font-size: 1.2rem;
+        }
+        
+        p, li {
+            font-size: 1.2rem;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.5;
+            color: #333;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 3px solid #8b5cf6;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .header-left {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .sequence-box {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .title-section {
+            background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px solid #8b5cf6;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .intro-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .activity-section {
+            background-color: #f8f9fa;
+            border-left: 5px solid #8b5cf6;
+            border-radius: 0 8px 8px 0;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .activity-header {
+            background-color: #8b5cf6;
+            color: white;
+            padding: 10px 15px;
+            margin: -20px -20px 15px -25px;
+            border-radius: 0 8px 0 0;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .time-badge {
+            background-color: rgba(255,255,255,0.2);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        
+        .scenario-box {
+            background: #fff;
+            border: 2px solid #8b5cf6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .danger-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .comparison-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .example-chat {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        
+        .user-message {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .ai-message {
+            background: #f3e8ff;
+            border-left: 4px solid #8b5cf6;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        th {
+            background-color: #8b5cf6;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .checklist {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin: 8px 0;
+            padding: 5px;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            margin-top: 3px;
+            transform: scale(1.2);
+        }
+        
+        .risk-level {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .risk-high { background: #fee2e2; color: #991b1b; }
+        .risk-medium { background: #fef3c7; color: #92400e; }
+        .risk-low { background: #d1fae5; color: #065f46; }
+        
+        .footer {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+
+        .download-button {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+            display: block;
+            margin: 30px auto;
+        }
+
+        .download-button:hover {
+            transform: scale(1.05);
+        }
+
+        .download-button:active {
+            transform: scale(0.95);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="title-section">
+        <h1 style="margin: 0; color: #7c3aed; font-size: 28px;">🤖 LES LLM ET LA CYBERSÉCURITÉ</h1>
+        <h2 style="margin: 10px 0 0 0; color: #666; font-size: 18px;">ChatGPT, Claude & Co : Opportunités et Risques</h2>
+        <p style="margin: 15px 0 0 0; font-style: italic;">Comprendre les enjeux de l'IA générative pour mieux se protéger</p>
+    </div>
+    
+    <!-- INTRODUCTION -->
+    <div class="intro-box">
+        <h3 style="margin-top: 0; color: #1e40af;">🧠 QU'EST-CE QU'UN LLM ?</h3>
+        
+        <p><strong>LLM = Large Language Model (Grand Modèle de Langage)</strong></p>
+        
+        <p>Ce sont des intelligences artificielles capables de :</p>
+        <ul>
+            <li>💬 <strong>Comprendre et générer du texte</strong> comme un humain</li>
+            <li>🔍 <strong>Répondre à des questions</strong> sur presque tous les sujets</li>
+            <li>✍️ <strong>Créer du contenu</strong> : textes, codes, résumés, traductions</li>
+            <li>🤝 <strong>Assister dans diverses tâches</strong> : devoirs, recherches, création</li>
+        </ul>
+        
+        <div class="comparison-grid">
+            <div class="comparison-card">
+                <h4 style="color: #7c3aed;">✅ EXEMPLES POPULAIRES :</h4>
+                <ul style="font-size: 12px;">
+                    <li><strong>ChatGPT</strong> (OpenAI)</li>
+                    <li><strong>Claude</strong> (Anthropic)</li>
+                    <li><strong>Gemini</strong> (Google)</li>
+                    <li><strong>Copilot</strong> (Microsoft)</li>
+                    <li><strong>Mistral</strong> (français)</li>
+                </ul>
+            </div>
+            
+            <div class="comparison-card">
+                <h4 style="color: #7c3aed;">📊 CHIFFRES CLÉS :</h4>
+                <ul style="font-size: 12px;">
+                    <li>+100 millions d'utilisateurs ChatGPT</li>
+                    <li>Utilisé par 65% des collégiens</li>
+                    <li>Marché de 15 milliards $ en 2025</li>
+                    <li>Accessible dès 13 ans avec accord parental</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <form id="activitiesForm">
+        <!-- ACTIVITÉ 3 -->
+        <div class="activity-section">
+            <div class="activity-header">
+                <span>🛡️ ACTIVITÉ : SE PROTÉGER ET BIEN UTILISER</span>
+                <span class="time-badge">25 min</span>
+            </div>
+            
+            <h4>🎯 Objectif : Adopter les bonnes pratiques face aux LLM</h4>
+            
+            <div class="success-box">
+                <h4>✅ LES 10 RÈGLES D'OR DE L'UTILISATION SÉCURISÉE DES LLM</h4>
+                
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule1" name="rule1"> <label for="rule1"><strong>1. Protéger sa vie privée : </strong> Ne jamais donner d'informations personnelles</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule2" name="rule2"> <label for="rule2"><strong>2. Vérifier les informations :</strong> L'IA peut se tromper ou inventer (hallucinations)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule3" name="rule3"> <label for="rule3"><strong>3. Croiser les sources : </strong> Ne jamais se fier à une seule réponse de l'IA</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule4" name="rule4"> <label for="rule4"><strong>4. Rester critique : </strong> L'IA n'a pas de conscience, elle ne "comprend" pas vraiment</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule5" name="rule5"> <label for="rule5"><strong>5. Usage éthique : </strong> Pas de triche, l'IA doit être un assistant, pas un remplaçant</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule6" name="rule6"> <label for="rule6"><strong>6. Attention aux deepfakes : </strong> Vérifier l'authenticité des contenus suspects</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule7" name="rule7"> <label for="rule7"><strong>7. Signaler les abus : </strong> Si l'IA génère du contenu dangereux ou illégal</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule8" name="rule8"> <label for="rule8"><strong>8. Respecter les autres : </strong> Ne pas utiliser l'IA pour harceler ou nuire</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule9" name="rule9"> <label for="rule9"><strong>9. Garder son esprit critique : </strong> L'IA peut avoir des biais ou être manipulée</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule10" name="rule10"> <label for="rule10"><strong>10. En parler avec des adultes : </strong> Parents, profs en cas de doute ou problème</label>
+                    </div>
+                </div>
+            </div>
+            
+            <h4>💡 EXERCICE PRATIQUE : Bonne ou mauvaise utilisation ?</h4>
+            
+            <table>
+                <tr>
+                    <th>Utilisation</th>
+                    <th style="width: 15%;">✅ Bonne<br>❌ Mauvaise</th>
+                    <th>Justification</th>
+                </tr>
+                <tr>
+                    <td>Demander à l'IA d'expliquer un cours de maths difficile</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage1" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage1" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage1_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Faire écrire entièrement une rédaction de français par l'IA</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage2" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage2" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage2_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Partager son adresse avec l'IA pour avoir des infos locales</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage3" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage3" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage3_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Utiliser l'IA pour avoir des idées de plan pour un exposé</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage4" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage4" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage4_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Demander à l'IA de créer un faux certificat médical</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage5" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage5" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage5_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Faire corriger son brouillon de devoir par l'IA</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage6" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage6" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage6_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Demander à l'IA de générer des insultes contre un camarade</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage7" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage7" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage7_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Utiliser l'IA pour apprendre du vocabulaire anglais</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage8" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage8" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage8_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- ACTIVITÉ 4 -->
+        <div class="activity-section">
+            <div class="activity-header">
+                <span>🔬 ACTIVITÉ : DÉTECTER LE CONTENU GÉNÉRÉ PAR IA</span>
+                <span class="time-badge">20 min</span>
+            </div>
+            
+            <h4>🎯 Objectif : Apprendre à reconnaître un contenu créé par une IA</h4>
+            
+            <div class="info-box">
+                <h4>🔍 INDICES POUR DÉTECTER UN TEXTE GÉNÉRÉ PAR IA :</h4>
+                <ul>
+                    <li>✍️ <strong>Style trop parfait</strong> : Pas de fautes, phrases très structurées</li>
+                    <li>🤖 <strong>Formulations génériques</strong> : "Il est important de noter que...", "En conclusion..."</li>
+                    <li>📊 <strong>Informations vagues</strong> : Peu de détails précis, dates, noms</li>
+                    <li>🔄 <strong>Répétitions</strong> : Les mêmes idées reformulées différemment</li>
+                    <li>❓ <strong>Erreurs factuelles</strong> : Dates incorrectes, événements inventés</li>
+                    <li>🎭 <strong>Manque de personnalité</strong> : Aucune opinion personnelle, expérience vécue</li>
+                </ul>
+            </div>
+            
+            <h4>🕵️ EXERCICE : Humain ou IA ? Devinez l'auteur de ces textes</h4>
+            
+            <div class="scenario-box">
+                <h4>Texte A : Mon expérience au collège</h4>
+                <div class="example-chat">Le collège est une période importante de la vie d'un jeune. C'est une étape de transition entre l'école primaire et le lycée. Il est essentiel de bien s'organiser et de respecter les règles. Les enseignants sont là pour accompagner les élèves dans leur apprentissage. Il est important de noter que la vie au collège permet aussi de développer des compétences sociales.</div>
+                
+                <p><strong>Votre diagnostic :</strong></p>
+                <div class="radio-group">
+                    <label><input type="radio" name="texteA" value="humain"> Écrit par un humain</label>
+                    <label><input type="radio" name="texteA" value="ia"> Généré par IA</label>
+                </div>
+                <p><strong>Justification :</strong></p>
+                <textarea name="texteA_justif" placeholder="Expliquez votre choix..."></textarea>
+            </div>
+            
+            <div class="scenario-box">
+                <h4>Texte B : Mon expérience au collège</h4>
+                <div class="example-chat">J'avoue que le collège, au début, ça m'a fait flipper ! Le premier jour, j'ai eu du mal à trouver ma salle de maths et je suis arrivé en retard. Super l'image ! 😅 Mais maintenant j'ai mes potes, on traîne ensemble à la récré, et en fait c'est plutôt cool. Bon, les contrôles c'est toujours stressant, surtout en maths où je suis pas une flèche... Mais madame Dubois est sympa, elle explique bien.</div>
+                
+                <p><strong>Votre diagnostic :</strong></p>
+                <div class="radio-group">
+                    <label><input type="radio" name="texteB" value="humain"> Écrit par un humain</label>
+                    <label><input type="radio" name="texteB" value="ia"> Généré par IA</label>
+                </div>
+                <p><strong>Justification :</strong></p>
+                <textarea name="texteB_justif" placeholder="Expliquez votre choix..."></textarea>
+            </div>
+            
+            <div class="scenario-box">
+                <h4>Texte C : L'impact du réchauffement climatique</h4>
+                <div class="example-chat">Le réchauffement climatique représente l'un des défis majeurs du XXIe siècle. Les scientifiques s'accordent à dire que les activités humaines sont la cause principale de ce phénomène. Il est crucial de prendre des mesures pour réduire les émissions de gaz à effet de serre. Les gouvernements et les citoyens doivent agir ensemble pour préserver notre planète pour les générations futures.</div>
+                
+                <p><strong>Votre diagnostic :</strong></p>
+                <div class="radio-group">
+                    <label><input type="radio" name="texteC" value="humain"> Écrit par un humain</label>
+                    <label><input type="radio" name="texteC" value="ia"> Généré par IA</label>
+                </div>
+                <p><strong>Justification :</strong></p>
+                <textarea name="texteC_justif" placeholder="Expliquez votre choix..."></textarea>
+            </div>
+            
+            <div class="warning-box">
+                <h4>💡 ASTUCE POUR VÉRIFIER UN TEXTE :</h4>
+                <ul>
+                    <li>🔎 Utiliser des détecteurs en ligne (GPTZero, ZeroGPT) - mais pas fiables à 100%</li>
+                    <li>🧠 Se fier à son intuition : manque de personnalité, style trop parfait</li>
+                    <li>📝 Demander des précisions : une IA aura du mal avec des détails personnels</li>
+                    <li>🎯 Chercher des incohérences factuelles ou temporelles</li>
+                </ul>
+            </div>
+        </div>
+    </form>
+
+    <button class="download-button" onclick="downloadResponses()">📥 Télécharger mes réponses</button>
+    
+    <!-- RESSOURCES -->
+    <div class="info-box">
+        <h3 style="margin-top: 0; color: #1e40af;">🔗 RESSOURCES POUR ALLER PLUS LOIN</h3>
+        
+        <div class="comparison-grid">
+            <div>
+                <h4 style="color: #7c3aed;">📚 S'informer :</h4>
+                <ul style="font-size: 12px;">
+                    <li><strong>CNIL :</strong> cnil.fr (IA et données personnelles)</li>
+                    <li><strong>Internet Sans Crainte :</strong> Guides sur l'IA</li>
+                    <li><strong>ANSSI :</strong> cyber.gouv.fr (sécurité IA)</li>
+                    <li><strong>PIX :</strong> Compétences numériques</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 style="color: #7c3aed;">🛠️ Outils de détection :</h4>
+                <ul style="font-size: 12px;">
+                    <li><strong>GPTZero :</strong> Détecteur de textes IA</li>
+                    <li><strong>ZeroGPT :</strong> Vérification contenus</li>
+                    <li><strong>Sensity :</strong> Détection deepfakes</li>
+                    <li><strong>InVID :</strong> Vérification vidéos</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="margin-top: 15px;">
+            <h4 style="color: #7c3aed;">🆘 En cas de problème :</h4>
+            <ul style="font-size: 12px;">
+                <li><strong>3018 :</strong> Numéro national contre cyberharcèlement (gratuit, anonyme)</li>
+                <li><strong>e-Enfance :</strong> Association de protection de l'enfance en ligne</li>
+                <li><strong>Cybermalveillance.gouv.fr :</strong> Signalement et assistance</li>
+                <li><strong>Pharos :</strong> Signalement contenus illicites (pharos.gouv.fr)</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function downloadResponses() {
+            const form = document.getElementById('activitiesForm');
+            const formData = new FormData(form);
+            
+            // Structurer les données
+            const responses = {
+                date: new Date().toISOString(),
+                activite1_regles_or: {
+                    regle1: formData.get('rule1') === 'on',
+                    regle2: formData.get('rule2') === 'on',
+                    regle3: formData.get('rule3') === 'on',
+                    regle4: formData.get('rule4') === 'on',
+                    regle5: formData.get('rule5') === 'on',
+                    regle6: formData.get('rule6') === 'on',
+                    regle7: formData.get('rule7') === 'on',
+                    regle8: formData.get('rule8') === 'on',
+                    regle9: formData.get('rule9') === 'on',
+                    regle10: formData.get('rule10') === 'on'
+                },
+                activite2_bonnes_pratiques: {
+                    exercice1: {
+                        question: "Demander à l'IA d'expliquer un cours de maths difficile",
+                        reponse: formData.get('usage1') || null,
+                        justification: formData.get('usage1_justif') || ""
+                    },
+                    exercice2: {
+                        question: "Faire écrire entièrement une rédaction de français par l'IA",
+                        reponse: formData.get('usage2') || null,
+                        justification: formData.get('usage2_justif') || ""
+                    },
+                    exercice3: {
+                        question: "Partager son adresse avec l'IA pour avoir des infos locales",
+                        reponse: formData.get('usage3') || null,
+                        justification: formData.get('usage3_justif') || ""
+                    },
+                    exercice4: {
+                        question: "Utiliser l'IA pour avoir des idées de plan pour un exposé",
+                        reponse: formData.get('usage4') || null,
+                        justification: formData.get('usage4_justif') || ""
+                    },
+                    exercice5: {
+                        question: "Demander à l'IA de créer un faux certificat médical",
+                        reponse: formData.get('usage5') || null,
+                        justification: formData.get('usage5_justif') || ""
+                    },
+                    exercice6: {
+                        question: "Faire corriger son brouillon de devoir par l'IA",
+                        reponse: formData.get('usage6') || null,
+                        justification: formData.get('usage6_justif') || ""
+                    },
+                    exercice7: {
+                        question: "Demander à l'IA de générer des insultes contre un camarade",
+                        reponse: formData.get('usage7') || null,
+                        justification: formData.get('usage7_justif') || ""
+                    },
+                    exercice8: {
+                        question: "Utiliser l'IA pour apprendre du vocabulaire anglais",
+                        reponse: formData.get('usage8') || null,
+                        justification: formData.get('usage8_justif') || ""
+                    }
+                },
+                activite3_detection_ia: {
+                    texteA: {
+                        diagnostic: formData.get('texteA') || null,
+                        justification: formData.get('texteA_justif') || ""
+                    },
+                    texteB: {
+                        diagnostic: formData.get('texteB') || null,
+                        justification: formData.get('texteB_justif') || ""
+                    },
+                    texteC: {
+                        diagnostic: formData.get('texteC') || null,
+                        justification: formData.get('texteC_justif') || ""
+                    }
+                }
+            };
+            
+            // Créer le fichier JSON
+            const dataStr = JSON.stringify(responses, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            // Créer un lien de téléchargement
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `reponses_llm_cybersecurite_${new Date().toISOString().split('T')[0]}.json`;
+            
+            // Déclencher le téléchargement
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            alert('✅ Vos réponses ont été téléchargées avec succès !');
+        }
+    </script>
+</body>
+</html>
