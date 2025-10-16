@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercices - Fonction d'usage et Fonction d'estime</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        .exercise {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        .exercise h2 {
+            color: #764ba2;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        .question {
+            margin: 15px 0;
+        }
+        .question label {
+            display: block;
+            margin: 8px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .question label:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .student-info {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        .student-info input {
+            margin-bottom: 10px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .info-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .info-box strong {
+            color: #856404;
+        }
+        .definition {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .definition strong {
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Fonction d'usage et Fonction d'estime</h1>
+        <p class="subtitle">Niveau 6ème - Technologie</p>
+        
+        <div class="info-box">
+            <strong>Instructions :</strong> Complète les trois exercices ci-dessous. Une fois terminé, clique sur le bouton pour télécharger tes réponses au format JSON.
+        </div>
+
+        <div class="definition">
+            <strong>📖 Rappel :</strong><br>
+            • <strong>Fonction d'usage</strong> : le service rendu par l'objet technique. On la trouve en répondant à la question "À quoi sert cet objet ?"<br>
+            • <strong>Fonction d'estime</strong> : liée aux goûts des utilisateurs et peut être ressentie différemment d'une personne à l'autre.
+        </div>
+
+        <form id="quizForm">
+            <div class="student-info">
+                <h3>👤 Informations élève</h3>
+                <input type="text" id="studentName" placeholder="Prénom et Nom" required>
+                <input type="text" id="studentClass" placeholder="Classe (ex: 6èmeA)" required>
+            </div>
+
+            <!-- Exercice 1 -->
+            <div class="exercise">
+                <h2>Exercice 1 : Identifier la fonction d'usage</h2>
+                <p>Pour chaque objet technique, identifie sa fonction d'usage principale :</p>
+                
+                <div class="question">
+                    <p><strong>1.1 - Un vélo :</strong></p>
+                    <label><input type="radio" name="q1_1" value="deplacement" required> Permettre de se déplacer</label>
+                    <label><input type="radio" name="q1_1" value="sport"> Faire du sport</label>
+                    <label><input type="radio" name="q1_1" value="decoration"> Décorer un espace</label>
+                    <label><input type="radio" name="q1_1" value="communiquer"> Communiquer</label>
+                </div>
+
+                <div class="question">
+                    <p><strong>1.2 - Un smartphone :</strong></p>
+                    <label><input type="radio" name="q1_2" value="eclairer" required> Éclairer</label>
+                    <label><input type="radio" name="q1_2" value="communiquer"> Communiquer et accéder à l'information</label>
+                    <label><input type="radio" name="q1_2" value="chauffer"> Chauffer</label>
+                    <label><input type="radio" name="q1_2" value="ranger"> Ranger des objets</label>
+                </div>
+
+                <div class="question">
+                    <p><strong>1.3 - Un réfrigérateur :</strong></p>
+                    <label><input type="radio" name="q1_3" value="eclairer" required> Éclairer la cuisine</label>
+                    <label><input type="radio" name="q1_3" value="conserver"> Conserver les aliments au frais</label>
+                    <label><input type="radio" name="q1_3" value="cuire"> Cuire les aliments</label>
+                    <label><input type="radio" name="q1_3" value="decorer"> Décorer la cuisine</label>
+                </div>
+            </div>
+
+            <!-- Exercice 2 -->
+            <div class="exercise">
+                <h2>Exercice 2 : Distinguer fonction d'usage et fonction d'estime</h2>
+                <p>Pour chaque affirmation, indique s'il s'agit d'une fonction d'usage ou d'une fonction d'estime :</p>
+                
+                <div class="question">
+                    <p><strong>2.1 - "Cette montre est de couleur rouge, j'adore !"</strong></p>
+                    <label><input type="radio" name="q2_1" value="usage" required> Fonction d'usage</label>
+                    <label><input type="radio" name="q2_1" value="estime"> Fonction d'estime</label>
+                </div>
+
+                <div class="question">
+                    <p><strong>2.2 - "Cette montre me permet de connaître l'heure"</strong></p>
+                    <label><input type="radio" name="q2_2" value="usage" required> Fonction d'usage</label>
+                    <label><input type="radio" name="q2_2" value="estime"> Fonction d'estime</label>
+                </div>
+
+                <div class="question">
+                    <p><strong>2.3 - "Ce sac à dos est très tendance cette année"</strong></p>
+                    <label><input type="radio" name="q2_3" value="usage" required> Fonction d'usage</label>
+                    <label><input type="radio" name="q2_3" value="estime"> Fonction d'estime</label>
+                </div>
+
+                <div class="question">
+                    <p><strong>2.4 - "Ce sac à dos permet de transporter mes affaires scolaires"</strong></p>
+                    <label><input type="radio" name="q2_4" value="usage" required> Fonction d'usage</label>
+                    <label><input type="radio" name="q2_4" value="estime"> Fonction d'estime</label>
+                </div>
+
+                <div class="question">
+                    <p><strong>2.5 - "Cette voiture a un design magnifique"</strong></p>
+                    <label><input type="radio" name="q2_5" value="usage" required> Fonction d'usage</label>
+                    <label><input type="radio" name="q2_5" value="estime"> Fonction d'estime</label>
+                </div>
+
+                <div class="question">
+                    <p><strong>2.6 - "Cette voiture permet de transporter 5 personnes"</strong></p>
+                    <label><input type="radio" name="q2_6" value="usage" required> Fonction d'usage</label>
+                    <label><input type="radio" name="q2_6" value="estime"> Fonction d'estime</label>
+                </div>
+            </div>
+
+            <!-- Exercice 3 -->
+            <div class="exercise">
+                <h2>Exercice 3 : Analyse personnelle</h2>
+                <p>Choisis un objet technique que tu possèdes et analyse-le :</p>
+                
+                <div class="question">
+                    <p><strong>3.1 - Quel objet technique as-tu choisi ?</strong></p>
+                    <input type="text" name="q3_1" placeholder="Ex: ma trousse, mon casque audio, ma console..." required>
+                </div>
+
+                <div class="question">
+                    <p><strong>3.2 - Quelle est sa fonction d'usage ? (À quoi sert-il ?)</strong></p>
+                    <textarea name="q3_2" placeholder="Décris le service rendu par cet objet..." required></textarea>
+                </div>
+
+                <div class="question">
+                    <p><strong>3.3 - Pourquoi as-tu choisi cet objet plutôt qu'un autre de la même famille ? (Fonction d'estime)</strong></p>
+                    <textarea name="q3_3" placeholder="Ex: la couleur, la marque, le design, la popularité..." required></textarea>
+                </div>
+
+                <div class="question">
+                    <p><strong>3.4 - Donne un exemple d'un autre objet qui a la même fonction d'usage :</strong></p>
+                    <input type="text" name="q3_4" placeholder="Un objet de la même famille..." required>
+                </div>
+            </div>
+
+            <button type="submit">📥 Télécharger mes réponses (JSON)</button>
+        </form>
+    </div>
+
+    <script>
+        // Confirmation avant fermeture de la page
+        let formModified = false;
+
+        // Détecter les modifications du formulaire
+        document.getElementById('quizForm').addEventListener('input', function() {
+            formModified = true;
+        });
+
+        // Empêcher la fermeture si le formulaire a été modifié
+        window.addEventListener('beforeunload', function(e) {
+            if (formModified) {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+
+        // Gestion de la soumission du formulaire
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Désactiver la confirmation après soumission
+            formModified = false;
+            
+            const formData = new FormData(e.target);
+            const responses = {
+                metadata: {
+                    nom_eleve: document.getElementById('studentName').value,
+                    classe: document.getElementById('studentClass').value,
+                    date_soumission: new Date().toISOString(),
+                    sujet: "Fonction d'usage et Fonction d'estime"
+                },
+                exercice1: {
+                    titre: "Identifier la fonction d'usage",
+                    q1_1_velo: formData.get('q1_1'),
+                    q1_2_smartphone: formData.get('q1_2'),
+                    q1_3_refrigerateur: formData.get('q1_3')
+                },
+                exercice2: {
+                    titre: "Distinguer fonction d'usage et fonction d'estime",
+                    q2_1_montre_couleur: formData.get('q2_1'),
+                    q2_2_montre_heure: formData.get('q2_2'),
+                    q2_3_sac_tendance: formData.get('q2_3'),
+                    q2_4_sac_transport: formData.get('q2_4'),
+                    q2_5_voiture_design: formData.get('q2_5'),
+                    q2_6_voiture_transport: formData.get('q2_6')
+                },
+                exercice3: {
+                    titre: "Analyse personnelle",
+                    objet_choisi: formData.get('q3_1'),
+                    fonction_usage: formData.get('q3_2'),
+                    fonction_estime: formData.get('q3_3'),
+                    objet_meme_famille: formData.get('q3_4')
+                }
+            };
+            
+            const jsonString = JSON.stringify(responses, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            const studentName = document.getElementById('studentName').value.replace(/\s+/g, '_');
+            a.href = url;
+            a.download = `fonction_usage_estime_${studentName}_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('✅ Tes réponses ont été téléchargées avec succès !');
+        });
+    </script>
+</body>
+</html>
