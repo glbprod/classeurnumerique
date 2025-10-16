@@ -290,7 +290,7 @@
             console.log('📤 Envoi des données:', responses);
             
             // Envoyer à Firebase
-            const docRef = await db.collection('fonction_usage_estime').add(responses);
+            const docRef = await db.collection('evolution_objets').add(responses);
             
             console.log('✅ Document enregistré avec ID:', docRef.id);
             
