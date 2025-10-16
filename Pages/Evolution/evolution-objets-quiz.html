@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exercices - Évolution des objets techniques</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -125,7 +130,7 @@
         <p class="subtitle">Niveau 5ème - Technologie</p>
         
         <div class="info-box">
-            <strong>Instructions :</strong> Complète les trois exercices ci-dessous. Une fois terminé, clique sur le bouton pour télécharger tes réponses au format JSON.
+            <strong>Instructions :</strong> Complète les trois exercices ci-dessous, puis envoie tes réponses.
         </div>
 
         <form id="quizForm">
@@ -195,83 +200,122 @@
                     <label><input type="checkbox" name="q2_3" value="environnemental"> Environnemental</label>
                 </div>
             </div>
-
-            <button type="submit">📥 Télécharger mes réponses</button>
+                <button type="button" id="sendToFirebase" class="btn-sheets">📤 Envoyer au professeur</button>
         </form>
     </div>
 
-    <script>
+   <script>
+    // ============================================
+    // CONFIGURATION FIREBASE
+    // ============================================
+    const firebaseConfig = {
+        apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+        authDomain: "form-results-b285b.firebaseapp.com",
+        projectId: "form-results-b285b",
+        storageBucket: "form-results-b285b.firebasestorage.app",
+        messagingSenderId: "662462446647",
+        appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+    };
 
-                // Confirmation avant fermeture de la page
-        let formModified = false;
+    // Initialiser Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-        // Détecter les modifications du formulaire
-        document.getElementById('quizForm').addEventListener('input', function() {
-            formModified = true;
-        });
+    console.log('✅ Firebase initialisé');
 
-        // Empêcher la fermeture si le formulaire a été modifié
-        window.addEventListener('beforeunload', function(e) {
-            if (formModified) {
-                e.preventDefault();
-                e.returnValue = ''; // Nécessaire pour Chrome
-                return ''; // Pour les anciens navigateurs
-            }
-        });
+    // ============================================
+    // CONFIRMATION AVANT FERMETURE
+    // ============================================
+    let formModified = false;
 
-        // Réinitialiser le flag après soumission réussie
-        document.getElementById('quizForm').addEventListener('submit', function(e) {
-            formModified = false; // Permettre la fermeture après téléchargement
-            // ... reste du code de soumission
-        });
+    document.getElementById('quizForm').addEventListener('input', function() {
+        formModified = true;
+    });
 
-        document.getElementById('quizForm').addEventListener('submit', function(e) {
+    window.addEventListener('beforeunload', function(e) {
+        if (formModified) {
             e.preventDefault();
+            e.returnValue = '';
+            return '';
+        }
+    });
+
+    // ============================================
+    // BOUTON D'ENVOI
+    // ============================================
+    document.getElementById('sendToFirebase').addEventListener('click', async function() {
+        const form = document.getElementById('quizForm');
+        
+        // Vérifier la validité du formulaire
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+        
+        // Désactiver le bouton
+        const originalText = this.textContent;
+        this.disabled = true;
+        this.textContent = '⏳ Envoi en cours...';
+        
+        try {
+            // Collecter les données
+            const formData = new FormData(form);
             
-            const formData = new FormData(e.target);
             const responses = {
-                metadata: {
-                    nom_eleve: document.getElementById('studentName').value,
-                    classe: document.getElementById('studentClass').value,
-                    date_soumission: new Date().toISOString(),
-                    sujet: "Évolution des objets techniques"
-                },
-                exercice1: {
-                    titre: "Identifier les types d'évolutions",
-                    q1_1: formData.get('q1_1'),
-                    q1_2: formData.get('q1_2'),
-                    q1_3: formData.get('q1_3')
-                },
-                exercice2: {
-                    titre: "Comprendre les raisons des évolutions",
-                    q2_1: formData.getAll('q2_1'),
-                    q2_2: formData.getAll('q2_2'),
-                    q2_3: formData.getAll('q2_3')
-                },
-                exercice3: {
-                    titre: "Analyse d'un cas pratique",
-                    objet_choisi: formData.get('q3_1'),
-                    description_evolution: formData.get('q3_2'),
-                    type_evolution: formData.get('q3_3'),
-                    explication_pourquoi: formData.get('q3_4')
-                }
+                nom_eleve: document.getElementById('studentName').value,
+                classe: document.getElementById('studentClass').value,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                date_soumission: new Date().toISOString(),
+                
+                // Exercice 1
+                ex1_q1: formData.get('q1_1'),
+                ex1_q2: formData.get('q1_2'),
+                ex1_q3: formData.get('q1_3'),
+                
+                // Exercice 2
+                ex2_q1: formData.get('q2_1'),
+                ex2_q2: formData.get('q2_2'),
+                ex2_q3: formData.get('q2_3'),
+                ex2_q4: formData.get('q2_4'),
+                ex2_q5: formData.get('q2_5'),
+                ex2_q6: formData.get('q2_6'),
+                
+                // Exercice 3
+                ex3_objet: formData.get('q3_1'),
+                ex3_fonction_usage: formData.get('q3_2'),
+                ex3_fonction_estime: formData.get('q3_3'),
+                ex3_meme_famille: formData.get('q3_4')
             };
             
-            const jsonString = JSON.stringify(responses, null, 2);
-            const blob = new Blob([jsonString], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
+            console.log('📤 Envoi des données:', responses);
             
-            const a = document.createElement('a');
-            const studentName = document.getElementById('studentName').value.replace(/\s+/g, '_');
-            a.href = url;
-            a.download = `evolution_objets_${studentName}_${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            // Envoyer à Firebase
+            const docRef = await db.collection('fonction_usage_estime').add(responses);
             
-            alert('✅ Tes réponses ont été téléchargées avec succès !');
-        });
+            console.log('✅ Document enregistré avec ID:', docRef.id);
+            
+            // Réactiver le bouton
+            this.disabled = false;
+            this.textContent = originalText;
+            
+            // Notification de succès
+            alert('✅ Tes réponses ont été envoyées avec succès !');
+            
+            // Réinitialiser le formulaire
+            form.reset();
+            formModified = false;
+            
+        } catch (error) {
+            console.error('❌ Erreur Firebase:', error);
+            
+            // Réactiver le bouton
+            this.disabled = false;
+            this.textContent = originalText;
+            
+            // Notification d'erreur
+            alert('❌ Erreur lors de l\'envoi : ' + error.message);
+        }
+    });
     </script>
 </body>
 </html>
