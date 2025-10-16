@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évolution des objets techniques</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+        
+        .intro-box {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .intro-box h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .intro-box p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 0.5rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(650px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .comparison-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .comparison-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .card-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .comparison-content {
+            display: flex;
+            padding: 0;
+        }
+        
+        .comparison-item {
+            flex: 1;
+            padding: 2rem 1.5rem;
+            border-right: 2px solid #f0f0f0;
+        }
+        
+        .comparison-item:last-child {
+            border-right: none;
+        }
+        
+        .comparison-item h4 {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .icon-placeholder {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .details {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .details h5 {
+            color: #764ba2;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        
+        .details p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .legend {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .legend h3 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .legend-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .legend-item h4 {
+            color: #764ba2;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .legend-item p {
+            color: #666;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-content {
+                flex-direction: column;
+            }
+            
+            .comparison-item {
+                border-right: none;
+                border-bottom: 2px solid #f0f0f0;
+            }
+            
+            .comparison-item:last-child {
+                border-bottom: none;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>L'Évolution des Objets Techniques</h1>
+            <p>Comparaison des innovations technologiques à travers le temps</p>
+        </header>
+        
+        <div class="intro-box">
+            <h2>📚 Introduction</h2>
+            <p><strong>Au fil des années, les objets qui assurent le confort des êtres humains ont évolué en fonction des moyens disponibles :</strong></p>
+            <p>• L'esthétique et l'ergonomie ont évolué pour mieux s'adapter aux besoins des utilisateurs.</p>
+            <p>• Les énergies utilisées sont passées de la force musculaire aux énergies électriques et automatisées.</p>
+            <p>• Les matériaux ont évolué du bois et métal vers les plastiques et matériaux composites.</p>
+            <p>• Les systèmes sont passés de non-mécanisés à informatisés grâce aux innovations technologiques.</p>
+        </div>
+        
+        <div class="grid">
+            <!-- Les Aspirateurs -->
+            <div class="comparison-card">
+                <div class="card-header">
+                    <h3>🌪️ Les Aspirateurs</h3>
+                    <p>De la force musculaire à l'automatisation</p>
+                </div>
+                <div class="comparison-content">
+                    <div class="comparison-item">
+                        <h4>Daisy Vacuum (1907)</h4>
+                        <div class="icon-placeholder">🧹</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Musculaire (2 personnes)<br>
+                            <strong>Matériaux :</strong> Bois, métal, tissu<br>
+                            <strong>Système :</strong> Non-mécanisé<br>
+                            <strong>Ergonomie :</strong> Effort physique important</p>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Aspirateur Electrolux</h4>
+                        <div class="icon-placeholder">🔌</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Électrique<br>
+                            <strong>Matériaux :</strong> Métal, plastique<br>
+                            <strong>Système :</strong> Mécanisé<br>
+                            <strong>Innovation :</strong> Moteur électrique, sac collecteur</p>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Roomba (2002)</h4>
+                        <div class="icon-placeholder">🤖</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Batterie rechargeable<br>
+                            <strong>Matériaux :</strong> Plastique ABS<br>
+                            <strong>Système :</strong> Automatisé/Informatisé<br>
+                            <strong>Innovation :</strong> Navigation autonome, capteurs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Les Téléphones -->
+            <div class="comparison-card">
+                <div class="card-header">
+                    <h3>📞 Les Téléphones Fixes</h3>
+                    <p>Du standard manuel au sans-fil</p>
+                </div>
+                <div class="comparison-content">
+                    <div class="comparison-item">
+                        <h4>Téléphone à manivelle (1900)</h4>
+                        <div class="icon-placeholder">☎️</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Matériaux :</strong> Bois, métal<br>
+                            <strong>Connexion :</strong> Via opératrice<br>
+                            <strong>Ergonomie :</strong> Combiné séparé<br>
+                            <strong>Design :</strong> Mural avec manivelle</p>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Téléphone "Crapaud" (1950)</h4>
+                        <div class="icon-placeholder">📠</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Matériaux :</strong> Bakélite<br>
+                            <strong>Innovation :</strong> Cadran rotatif<br>
+                            <strong>Connexion :</strong> Directe<br>
+                            <strong>Design :</strong> Compact, posé sur socle</p>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Philips SE7 (2000)</h4>
+                        <div class="icon-placeholder">📱</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Matériaux :</strong> Plastique moderne<br>
+                            <strong>Innovation :</strong> Sans fil, répondeur<br>
+                            <strong>Portée :</strong> 300 mètres<br>
+                            <strong>Fonctions :</strong> Haut-parleur, mains libres</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Les Lave-linges -->
+            <div class="comparison-card">
+                <div class="card-header">
+                    <h3>🧺 Les Lave-linges</h3>
+                    <p>Des lavandières aux machines intelligentes</p>
+                </div>
+                <div class="comparison-content">
+                    <div class="comparison-item">
+                        <h4>Lavandières (1800)</h4>
+                        <div class="icon-placeholder">👩</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Musculaire<br>
+                            <strong>Lieu :</strong> Rivière ou lavoir<br>
+                            <strong>Système :</strong> Non-mécanisé<br>
+                            <strong>Effort :</strong> Très important</p>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Lessiveuse (1900)</h4>
+                        <div class="icon-placeholder">🔥</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Thermique (charbon)<br>
+                            <strong>Matériaux :</strong> Métal galvanisé<br>
+                            <strong>Système :</strong> Mécanisé simple<br>
+                            <strong>Innovation :</strong> Eau chauffée en interne</p>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Lave-linge moderne</h4>
+                        <div class="icon-placeholder">⚡</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Électrique<br>
+                            <strong>Système :</strong> Automatisé<br>
+                            <strong>Innovation :</strong> Programmateur, essorage<br>
+                            <strong>Écologie :</strong> Économie d'eau et énergie</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Les Tondeuses -->
+            <div class="comparison-card">
+                <div class="card-header">
+                    <h3>🌱 Les Tondeuses</h3>
+                    <p>De la faux au robot autonome</p>
+                </div>
+                <div class="comparison-content">
+                    <div class="comparison-item">
+                        <h4>Faux manuelle</h4>
+                        <div class="icon-placeholder">🪓</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Musculaire<br>
+                            <strong>Matériaux :</strong> Bois et acier<br>
+                            <strong>Système :</strong> Non-mécanisé<br>
+                            <strong>Effort :</strong> Très physique</p>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Tondeuse thermique</h4>
+                        <div class="icon-placeholder">⛽</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Essence<br>
+                            <strong>Système :</strong> Mécanisé<br>
+                            <strong>Innovation :</strong> Moteur thermique<br>
+                            <strong>Ergonomie :</strong> Guidage manuel</p>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Robot tondeuse</h4>
+                        <div class="icon-placeholder">🤖</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Batterie électrique<br>
+                            <strong>Système :</strong> Automatisé<br>
+                            <strong>Innovation :</strong> GPS, capteurs<br>
+                            <strong>Autonomie :</strong> Programmation automatique</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- L'Éclairage -->
+            <div class="comparison-card">
+                <div class="card-header">
+                    <h3>💡 L'Éclairage</h3>
+                    <p>De la flamme aux LED connectées</p>
+                </div>
+                <div class="comparison-content">
+                    <div class="comparison-item">
+                        <h4>Bougie (Antiquité)</h4>
+                        <div class="icon-placeholder">🕯️</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Combustion (cire)<br>
+                            <strong>Système :</strong> Non-mécanisé<br>
+                            <strong>Durée :</strong> Limitée<br>
+                            <strong>Sécurité :</strong> Flamme nue dangereuse</p>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Ampoule incandescente (1879)</h4>
+                        <div class="icon-placeholder">💡</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Électrique<br>
+                            <strong>Innovation :</strong> Filament incandescent<br>
+                            <strong>Consommation :</strong> 60-100W<br>
+                            <strong>Durée :</strong> 1000 heures</p>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>LED connectée (2020)</h4>
+                        <div class="icon-placeholder">🌈</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Électrique (LED)<br>
+                            <strong>Consommation :</strong> 5-10W<br>
+                            <strong>Durée :</strong> 25 000 heures<br>
+                            <strong>Innovation :</strong> Couleurs, connectivité</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Les Volets -->
+            <div class="comparison-card">
+                <div class="card-header">
+                    <h3>🪟 Les Volets</h3>
+                    <p>Du manuel au domotique</p>
+                </div>
+                <div class="comparison-content">
+                    <div class="comparison-item">
+                        <h4>Volets battants (1800)</h4>
+                        <div class="icon-placeholder">🚪</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Musculaire<br>
+                            <strong>Matériaux :</strong> Bois massif<br>
+                            <strong>Système :</strong> Non-mécanisé<br>
+                            <strong>Maintenance :</strong> Peinture régulière</p>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Volets roulants manuels</h4>
+                        <div class="icon-placeholder">🎚️</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Musculaire (manivelle)<br>
+                            <strong>Matériaux :</strong> Aluminium, PVC<br>
+                            <strong>Système :</strong> Mécanisé<br>
+                            <strong>Innovation :</strong> Enroulement vertical</p>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Volets connectés</h4>
+                        <div class="icon-placeholder">📲</div>
+                        <div class="details">
+                            <h5>Caractéristiques</h5>
+                            <p><strong>Énergie :</strong> Électrique<br>
+                            <strong>Système :</strong> Automatisé/Informatisé<br>
+                            <strong>Innovation :</strong> Moteur, programmation<br>
+                            <strong>Domotique :</strong> Contrôle à distance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Légende des types de systèmes -->
+        <div class="legend">
+            <h3>📊 Classification des systèmes techniques</h3>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <h4>Non-mécanisé</h4>
+                    <p>L'objet est simple, sans mécanisme. Contrôlé entièrement par l'utilisateur. Énergie musculaire uniquement.</p>
+                </div>
+                <div class="legend-item">
+                    <h4>Mécanisé</h4>
+                    <p>L'objet comporte un mécanisme avec pièces en mouvement. Contrôlé par l'utilisateur. Énergies variées (hydraulique, thermique...).</p>
+                </div>
+                <div class="legend-item">
+                    <h4>Automatisé</h4>
+                    <p>L'objet comporte une partie opérative et une partie commande. Le système peut accomplir des actions de manière autonome.</p>
+                </div>
+                <div class="legend-item">
+                    <h4>Informatisé</h4>
+                    <p>L'électronique et l'informatique permettent miniaturisation, traitement réactif des données et interconnexion des équipements.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
