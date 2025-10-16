@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exercices - Fonction d'usage et Fonction d'estime</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -303,100 +308,125 @@
     </div>
 
     <script>
-        // ⚠️ CONFIGURATION : Remplacez par votre URL Google Apps Script
-        const SCRIPT_URL = 'VOTRE_URL_ICI';
+        // ============================================
+        // CONFIGURATION FIREBASE - À PERSONNALISER
+        // ============================================
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "firebase/app";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
         
-        // Confirmation avant fermeture de la page
-        let formModified = false;
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+          authDomain: "form-results-b285b.firebaseapp.com",
+          projectId: "form-results-b285b",
+          storageBucket: "form-results-b285b.firebasestorage.app",
+          messagingSenderId: "662462446647",
+          appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
 
-        document.getElementById('quizForm').addEventListener('input', function() {
-            formModified = true;
-        });
-
-        window.addEventListener('beforeunload', function(e) {
-            if (formModified) {
-                e.preventDefault();
-                e.returnValue = '';
-                return '';
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        // ============================================
+        // FONCTION D'ENVOI GÉNÉRIQUE FIREBASE
+        // ============================================
+        async function sendToFirebase(collectionName, formData, buttonElement) {
+            try {
+                // Désactiver le bouton pendant l'envoi
+                const originalText = buttonElement.textContent;
+                buttonElement.disabled = true;
+                buttonElement.textContent = '⏳ Envoi en cours...';
+                
+                // Ajouter un timestamp automatique
+                formData.timestamp = firebase.firestore.FieldValue.serverTimestamp();
+                formData.date_soumission = new Date().toISOString();
+                
+                // Envoyer à Firebase
+                const docRef = await db.collection(collectionName).add(formData);
+                
+                console.log('Document enregistré avec ID:', docRef.id);
+                
+                // Réactiver le bouton
+                buttonElement.disabled = false;
+                buttonElement.textContent = originalText;
+                
+                // Notification de succès
+                alert('✅ Tes réponses ont été envoyées avec succès !');
+                
+                // Retourner true pour indiquer le succès
+                return true;
+                
+            } catch (error) {
+                console.error('Erreur Firebase:', error);
+                
+                // Réactiver le bouton
+                buttonElement.disabled = false;
+                buttonElement.textContent = originalText;
+                
+                // Notification d'erreur
+                alert('❌ Erreur lors de l\'envoi : ' + error.message);
+                
+                // Retourner false pour indiquer l'échec
+                return false;
             }
-        });
-
-        // Fonction pour collecter les données du formulaire
-        function collectFormData() {
-            const formData = new FormData(document.getElementById('quizForm'));
-            
-            return {
-                metadata: {
-                    nom_eleve: document.getElementById('studentName').value,
-                    classe: document.getElementById('studentClass').value,
-                    date_soumission: new Date().toISOString(),
-                    sujet: "Fonction d'usage et Fonction d'estime"
-                },
-                exercice1: {
-                    q1_1_velo: formData.get('q1_1'),
-                    q1_2_smartphone: formData.get('q1_2'),
-                    q1_3_refrigerateur: formData.get('q1_3')
-                },
-                exercice2: {
-                    q2_1_montre_couleur: formData.get('q2_1'),
-                    q2_2_montre_heure: formData.get('q2_2'),
-                    q2_3_sac_tendance: formData.get('q2_3'),
-                    q2_4_sac_transport: formData.get('q2_4'),
-                    q2_5_voiture_design: formData.get('q2_5'),
-                    q2_6_voiture_transport: formData.get('q2_6')
-                },
-                exercice3: {
-                    objet_choisi: formData.get('q3_1'),
-                    fonction_usage: formData.get('q3_2'),
-                    fonction_estime: formData.get('q3_3'),
-                    objet_meme_famille: formData.get('q3_4')
-                }
-            };
         }
-
-        // Bouton : Envoyer au professeur (Google Sheets)
-        document.getElementById('sendToSheets').addEventListener('click', function() {
+        
+        // ============================================
+        // EXEMPLE D'UTILISATION POUR VOTRE FORMULAIRE
+        // ============================================
+        
+        // Bouton d'envoi
+        document.getElementById('sendToFirebase').addEventListener('click', async function() {
             const form = document.getElementById('quizForm');
             
-            // Vérifier que le formulaire est valide
+            // Vérifier la validité du formulaire
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
             }
-
-            // Vérifier que l'URL est configurée
-            if (SCRIPT_URL === 'VOTRE_URL_ICI') {
-                alert('⚠️ L\'envoi vers Google Sheets n\'est pas configuré. Veuillez configurer SCRIPT_URL dans le code ou utilisez le téléchargement JSON.');
-                return;
-            }
-
-            const button = this;
-            button.disabled = true;
-            button.textContent = '⏳ Envoi en cours...';
             
-            const responses = collectFormData();
+            // Collecter les données du formulaire
+            const formData = new FormData(form);
             
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(responses)
-            })
-            .then(() => {
-                formModified = false;
-                button.disabled = false;
-                button.textContent = '📤 Envoyer au professeur';
-                alert('✅ Tes réponses ont été envoyées avec succès au professeur !');
+            // Préparer l'objet de données
+            const responses = {
+                // Métadonnées
+                nom_eleve: document.getElementById('studentName').value,
+                classe: document.getElementById('studentClass').value,
+                
+                // Exercice 1
+                ex1_q1: formData.get('q1_1'),
+                ex1_q2: formData.get('q1_2'),
+                ex1_q3: formData.get('q1_3'),
+                
+                // Exercice 2
+                ex2_q1: formData.get('q2_1'),
+                ex2_q2: formData.get('q2_2'),
+                ex2_q3: formData.get('q2_3'),
+                ex2_q4: formData.get('q2_4'),
+                ex2_q5: formData.get('q2_5'),
+                ex2_q6: formData.get('q2_6'),
+                
+                // Exercice 3
+                ex3_objet: formData.get('q3_1'),
+                ex3_fonction_usage: formData.get('q3_2'),
+                ex3_fonction_estime: formData.get('q3_3'),
+                ex3_meme_famille: formData.get('q3_4')
+            };
+            
+            // Envoyer à Firebase
+            const success = await sendToFirebase('fonction_usage_estime', responses, this);
+            
+            // Si succès, réinitialiser le formulaire
+            if (success) {
                 form.reset();
-            })
-            .catch(error => {
-                button.disabled = false;
-                button.textContent = '📤 Envoyer au professeur';
-                alert('❌ Erreur lors de l\'envoi. Vérifie ta connexion internet et réessaie.');
-                console.error('Erreur:', error);
-            });
+                formModified = false; // Pour la confirmation de fermeture
+            }
         });
 
         // Bouton : Télécharger JSON
