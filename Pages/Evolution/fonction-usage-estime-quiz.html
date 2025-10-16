@@ -271,60 +271,92 @@
             }
         });
 
-        // Gestion de la soumission du formulaire
-        document.getElementById('quizForm').addEventListener('submit', function(e) {
+         // REMPLACEZ PAR VOTRE URL D'APPS SCRIPT
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqlX-Gk7CDo-uRxs51w3XI7oMw1qoclnqo3iO1vO0EaNpjfjjbzDviNymU10RbLyG9/exec';
+    
+    // Confirmation avant fermeture de la page
+    let formModified = false;
+
+    document.getElementById('quizForm').addEventListener('input', function() {
+        formModified = true;
+    });
+
+    window.addEventListener('beforeunload', function(e) {
+        if (formModified) {
             e.preventDefault();
-            
-            // Désactiver la confirmation après soumission
+            e.returnValue = '';
+            return '';
+        }
+    });
+
+    // Gestion de la soumission
+    document.getElementById('quizForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(e.target);
+        const submitButton = e.target.querySelector('button[type="submit"]');
+        
+        // Désactiver le bouton pendant l'envoi
+        submitButton.disabled = true;
+        submitButton.textContent = '⏳ Envoi en cours...';
+        
+        const responses = {
+            metadata: {
+                nom_eleve: document.getElementById('studentName').value,
+                classe: document.getElementById('studentClass').value,
+                date_soumission: new Date().toISOString(),
+                sujet: "Fonction d'usage et Fonction d'estime"
+            },
+            exercice1: {
+                q1_1_velo: formData.get('q1_1'),
+                q1_2_smartphone: formData.get('q1_2'),
+                q1_3_refrigerateur: formData.get('q1_3')
+            },
+            exercice2: {
+                q2_1_montre_couleur: formData.get('q2_1'),
+                q2_2_montre_heure: formData.get('q2_2'),
+                q2_3_sac_tendance: formData.get('q2_3'),
+                q2_4_sac_transport: formData.get('q2_4'),
+                q2_5_voiture_design: formData.get('q2_5'),
+                q2_6_voiture_transport: formData.get('q2_6')
+            },
+            exercice3: {
+                objet_choisi: formData.get('q3_1'),
+                fonction_usage: formData.get('q3_2'),
+                fonction_estime: formData.get('q3_3'),
+                objet_meme_famille: formData.get('q3_4')
+            }
+        };
+        
+        // Envoyer à Google Sheets
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(responses)
+        })
+        .then(() => {
+            // Désactiver la confirmation de fermeture
             formModified = false;
             
-            const formData = new FormData(e.target);
-            const responses = {
-                metadata: {
-                    nom_eleve: document.getElementById('studentName').value,
-                    classe: document.getElementById('studentClass').value,
-                    date_soumission: new Date().toISOString(),
-                    sujet: "Fonction d'usage et Fonction d'estime"
-                },
-                exercice1: {
-                    titre: "Identifier la fonction d'usage",
-                    q1_1_velo: formData.get('q1_1'),
-                    q1_2_smartphone: formData.get('q1_2'),
-                    q1_3_refrigerateur: formData.get('q1_3')
-                },
-                exercice2: {
-                    titre: "Distinguer fonction d'usage et fonction d'estime",
-                    q2_1_montre_couleur: formData.get('q2_1'),
-                    q2_2_montre_heure: formData.get('q2_2'),
-                    q2_3_sac_tendance: formData.get('q2_3'),
-                    q2_4_sac_transport: formData.get('q2_4'),
-                    q2_5_voiture_design: formData.get('q2_5'),
-                    q2_6_voiture_transport: formData.get('q2_6')
-                },
-                exercice3: {
-                    titre: "Analyse personnelle",
-                    objet_choisi: formData.get('q3_1'),
-                    fonction_usage: formData.get('q3_2'),
-                    fonction_estime: formData.get('q3_3'),
-                    objet_meme_famille: formData.get('q3_4')
-                }
-            };
+            // Réactiver le bouton
+            submitButton.disabled = false;
+            submitButton.textContent = '📥 Télécharger mes réponses (JSON)';
             
-            const jsonString = JSON.stringify(responses, null, 2);
-            const blob = new Blob([jsonString], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
+            alert('✅ Tes réponses ont été envoyées avec succès !');
             
-            const a = document.createElement('a');
-            const studentName = document.getElementById('studentName').value.replace(/\s+/g, '_');
-            a.href = url;
-            a.download = `fonction_usage_estime_${studentName}_${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            alert('✅ Tes réponses ont été téléchargées avec succès !');
+            // Optionnel : réinitialiser le formulaire
+            e.target.reset();
+        })
+        .catch(error => {
+            submitButton.disabled = false;
+            submitButton.textContent = '📥 Télécharger mes réponses (JSON)';
+            alert('❌ Erreur lors de l\'envoi. Vérifie ta connexion internet et réessaie.');
+            console.error('Erreur:', error);
         });
+    });
     </script>
 </body>
 </html>
