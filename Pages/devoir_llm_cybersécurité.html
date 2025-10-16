@@ -3,454 +3,752 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fiche de conception - Serious Game Cybersécurité</title>
+    <title>Activités LLM et Cybersécurité</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        html {
+            font-size: 1.2rem;
+        }
+        
+        p, li {
+            font-size: 1.2rem;
         }
         
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background: #f5f5f5;
-            padding: 20px;
+            margin: 20px;
+            line-height: 1.5;
+            color: #333;
         }
         
-        .page {
-            max-width: 210mm;
-            margin: 0 auto;
-            background: white;
-            padding: 20mm;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        header {
-            border-bottom: 4px solid #ececec;
-            padding-bottom: 15px;
+        .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 3px solid #8b5cf6;
+            padding-bottom: 10px;
             margin-bottom: 25px;
         }
         
-        .header-top {
+        .header-left {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .sequence-box {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .title-section {
+            background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px solid #8b5cf6;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .intro-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .activity-section {
+            background-color: #f8f9fa;
+            border-left: 5px solid #8b5cf6;
+            border-radius: 0 8px 8px 0;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .activity-header {
+            background-color: #8b5cf6;
+            color: white;
+            padding: 10px 15px;
+            margin: -20px -20px 15px -25px;
+            border-radius: 0 8px 0 0;
+            font-weight: bold;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
         }
         
-        .logo {
+        .time-badge {
+            background-color: rgba(255,255,255,0.2);
+            padding: 3px 8px;
+            border-radius: 10px;
             font-size: 12px;
-            color: #666;
         }
         
-        .classe-info {
-            text-align: right;
-            font-size: 14px;
+        .scenario-box {
+            background: #fff;
+            border: 2px solid #8b5cf6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
         }
         
-        h1 {
-            color: #1e3c72;
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 5px;
+        .danger-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
         }
         
-        .subtitle {
-            text-align: center;
-            color: #666;
-            font-size: 16px;
-            font-weight: bold;
+        .warning-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
         }
         
-        .section {
-            margin-bottom: 25px;
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
         }
         
-        .section-title {
-            background: #ececec;
-            padding: 8px 15px;
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            border-radius: 5px;
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
         }
         
-        .question {
-            margin-bottom: 20px;
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
         }
         
-        .question-label {
-            font-weight: bold;
-            color: #1e3c72;
-            margin-bottom: 8px;
-            font-size: 15px;
+        .comparison-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
         }
         
-        .answer-line {
-            border-bottom: 1px solid #ccc;
-            min-height: 30px;
-            padding: 5px 0;
-            margin-bottom: 5px;
+        .example-chat {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
         }
         
-        .answer-box {
-            border: 2px solid #e0e0e0;
-            border-radius: 5px;
-            min-height: 80px;
+        .user-message {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
             padding: 10px;
-            background: #fafafa;
+            margin: 5px 0;
+            border-radius: 0 8px 8px 0;
         }
         
-        .answer-box-large {
-            min-height: 120px;
+        .ai-message {
+            background: #f3e8ff;
+            border-left: 4px solid #8b5cf6;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 0 8px 8px 0;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 14px;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
         }
         
         th {
-            background: #e0e7ff;
-            color: #1e3c72;
-            padding: 10px;
-            border: 1px solid #cbd5e1;
+            background-color: #8b5cf6;
+            color: white;
             font-weight: bold;
-            text-align: left;
         }
         
-        td {
-            padding: 12px 10px;
-            border: 1px solid #cbd5e1;
-            vertical-align: top;
+        .checklist-item {
+            display: flex;
+            align-items: center;  /* ← center au lieu de flex-start */
+            margin: 8px 0;
+            padding: 5px;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            margin-top: 0;  /* ← Retirer le margin-top */
+            transform: scale(1.2);
+            flex-shrink: 0;
+        }
+
+        .checklist-item label {
+            flex: 1;
+            line-height: 1.5;  /* ← Améliore l'alignement du texte */
         }
         
-        tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-        
-        .info-box {
-            background: #fef3c7;
-            border-left: 4px solid #f59e0b;
-            padding: 12px;
-            margin: 15px 0;
-            font-size: 14px;
-        }
-        
-        .tip-box {
-            background: #dbeafe;
-            border-left: 4px solid #3b82f6;
-            padding: 12px;
-            margin: 15px 0;
-            font-size: 14px;
-        }
-        
-        .checkbox-list {
-            list-style: none;
-            margin-left: 0;
-            padding-left: 0;
-        }
-        
-        .checkbox-list li {
-            margin-bottom: 8px;
-            padding-left: 25px;
-            position: relative;
-        }
-        
-        .checkbox-list li::before {
-            content: "☐";
-            position: absolute;
-            left: 0;
-            font-size: 18px;
-            color: #3b82f6;
-        }
-        
-        .eleves-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .eleve-box {
-            border: 2px solid #e0e0e0;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        
-        .eleve-box label {
+        .risk-level {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
             font-weight: bold;
-            color: #1e3c72;
-            font-size: 14px;
         }
         
-        footer {
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 2px solid #e0e0e0;
+        .risk-high { background: #fee2e2; color: #991b1b; }
+        .risk-medium { background: #fef3c7; color: #92400e; }
+        .risk-low { background: #d1fae5; color: #065f46; }
+        
+        .footer {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 15px;
             text-align: center;
-            font-size: 12px;
-            color: #666;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-weight: bold;
         }
-        
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            
-            .page {
-                box-shadow: none;
-                padding: 15mm;
-            }
+
+        .download-button {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+            display: block;
+            margin: 30px auto;
+        }
+
+        .download-button:hover {
+            transform: scale(1.05);
+        }
+
+        .download-button:active {
+            transform: scale(0.95);
+        }
+
+        textarea {
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            font-family: Roboto, sans-serif;
+            font-size: 20px;
+            resize: vertical;
+            min-height: 100px;
+            min-width: 300px;
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;  /* ← Cette ligne est cruciale ! */
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;  /* ← Assure l'alignement vertical */
+            cursor: pointer;
+            line-height: 1.5;  /* ← Améliore l'alignement du texte */
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 8px;
+            margin-top: 0;  /* ← Retire tout décalage vertical */
+            transform: scale(1.2);
+            cursor: pointer;
+            flex-shrink: 0;  /* ← Empêche le bouton de rétrécir */
         }
     </style>
 </head>
 <body>
-    <div class="page">
-        <header>
-            <div class="header-top">
-                <div class="logo">Technologie - Cycle 4</div>
-                <div class="classe-info">
-                    Classe : ....................<br>
-                    Date : ...................
+    
+    <div class="title-section">
+        <h1 style="margin: 0; color: #7c3aed; font-size: 28px;">🤖 LES LLM ET LA CYBERSÉCURITÉ</h1>
+        <h2 style="margin: 10px 0 0 0; color: #666; font-size: 18px;">ChatGPT, Claude & Co : Opportunités et Risques</h2>
+        <p style="margin: 15px 0 0 0; font-style: italic;">Comprendre les enjeux de l'IA générative pour mieux se protéger</p>
+    </div>
+    
+    <!-- INTRODUCTION -->
+    <div class="intro-box">
+        <h3 style="margin-top: 0; color: #1e40af;">🧠 QU'EST-CE QU'UN LLM ?</h3>
+        
+        <p><strong>LLM = Large Language Model (Grand Modèle de Langage)</strong></p>
+        
+        <p>Ce sont des intelligences artificielles capables de :</p>
+        <ul>
+            <li>💬 <strong>Comprendre et générer du texte</strong> comme un humain</li>
+            <li>🔍 <strong>Répondre à des questions</strong> sur presque tous les sujets</li>
+            <li>✍️ <strong>Créer du contenu</strong> : textes, codes, résumés, traductions</li>
+            <li>🤝 <strong>Assister dans diverses tâches</strong> : devoirs, recherches, création</li>
+        </ul>
+        
+        <div class="comparison-grid">
+            <div class="comparison-card">
+                <h4 style="color: #7c3aed;">✅ EXEMPLES POPULAIRES :</h4>
+                <ul style="font-size: 12px;">
+                    <li><strong>ChatGPT</strong> (OpenAI)</li>
+                    <li><strong>Claude</strong> (Anthropic)</li>
+                    <li><strong>Gemini</strong> (Google)</li>
+                    <li><strong>Copilot</strong> (Microsoft)</li>
+                    <li><strong>Mistral</strong> (français)</li>
+                </ul>
+            </div>
+            
+            <div class="comparison-card">
+                <h4 style="color: #7c3aed;">📊 CHIFFRES CLÉS :</h4>
+                <ul style="font-size: 12px;">
+                    <li>+100 millions d'utilisateurs ChatGPT</li>
+                    <li>Utilisé par 65% des collégiens</li>
+                    <li>Marché de 15 milliards $ en 2025</li>
+                    <li>Accessible dès 13 ans avec accord parental</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <form id="activitiesForm">
+        <!-- ACTIVITÉ 3 -->
+        <div class="activity-section">
+            <div class="activity-header">
+                <span>🛡️ ACTIVITÉ : SE PROTÉGER ET BIEN UTILISER</span>
+                <span class="time-badge">25 min</span>
+            </div>
+            
+            <h4>🎯 Objectif : Adopter les bonnes pratiques face aux LLM</h4>
+            
+            <div class="success-box">
+                <h4>✅ LES 10 RÈGLES D'OR DE L'UTILISATION SÉCURISÉE DES LLM</h4>
+                
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule1" name="rule1"> <label for="rule1"><strong>1. Protéger sa vie privée : </strong> Ne jamais donner d'informations personnelles</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule2" name="rule2"> <label for="rule2"><strong>2. Vérifier les informations :</strong> L'IA peut se tromper ou inventer (hallucinations)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule3" name="rule3"> <label for="rule3"><strong>3. Croiser les sources : </strong> Ne jamais se fier à une seule réponse de l'IA</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule4" name="rule4"> <label for="rule4"><strong>4. Rester critique : </strong> L'IA n'a pas de conscience, elle ne "comprend" pas vraiment</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule5" name="rule5"> <label for="rule5"><strong>5. Usage éthique : </strong> Pas de triche, l'IA doit être un assistant, pas un remplaçant</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule6" name="rule6"> <label for="rule6"><strong>6. Attention aux deepfakes : </strong> Vérifier l'authenticité des contenus suspects</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule7" name="rule7"> <label for="rule7"><strong>7. Signaler les abus : </strong> Si l'IA génère du contenu dangereux ou illégal</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule8" name="rule8"> <label for="rule8"><strong>8. Respecter les autres : </strong> Ne pas utiliser l'IA pour harceler ou nuire</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule9" name="rule9"> <label for="rule9"><strong>9. Garder son esprit critique : </strong> L'IA peut avoir des biais ou être manipulée</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="rule10" name="rule10"> <label for="rule10"><strong>10. En parler avec des adultes : </strong> Parents, profs en cas de doute ou problème</label>
+                    </div>
                 </div>
             </div>
-            <h1>🔐 FICHE DE CONCEPTION</h1>
-            <div class="subtitle">Serious Game Cybersécurité - Programmation par blocs</div>
-        </header>
-        
-        <!-- Informations élèves -->
-        <div class="eleves-info">
-            <div class="eleve-box">
-                <label>Élève 1 :</label>
-                <div class="answer-line"></div>
-            </div>
-            <div class="eleve-box">
-                <label>Élève 2 (si binôme) :</label>
-                <div class="answer-line"></div>
-            </div>
+            
+            <h4>💡 EXERCICE PRATIQUE : Bonne ou mauvaise utilisation ?</h4>
+            
+            <table>
+                <tr>
+                    <th>Utilisation</th>
+                    <th style="width: 15%;">✅ Bonne<br>❌ Mauvaise</th>
+                    <th>Justification</th>
+                </tr>
+                <tr>
+                    <td>Demander à l'IA d'expliquer un cours de maths difficile</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage1" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage1" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage1_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Faire écrire entièrement une rédaction de français par l'IA</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage2" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage2" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage2_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Partager son adresse avec l'IA pour avoir des infos locales</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage3" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage3" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage3_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Utiliser l'IA pour avoir des idées de plan pour un exposé</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage4" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage4" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage4_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Demander à l'IA de créer un faux certificat médical</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage5" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage5" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage5_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Faire corriger son brouillon de devoir par l'IA</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage6" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage6" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage6_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Demander à l'IA de générer des insultes contre un camarade</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage7" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage7" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage7_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Utiliser l'IA pour apprendre du vocabulaire anglais</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="usage8" value="bonne"> Bonne</label>
+                            <label><input type="radio" name="usage8" value="mauvaise"> Mauvaise</label>
+                        </div>
+                    </td>
+                    <td>
+                        <textarea name="usage8_justif" placeholder="Votre justification..."></textarea>
+                    </td>
+                </tr>
+            </table>
         </div>
         
-        <!-- Section 2 : Éléments du jeu -->
-        <div class="section">
-            <div class="section-title">1️⃣ ÉLÉMENTS DU JEU</div>
-            
-            <div class="question">
-                <div class="question-label">2.1 - Liste des SPRITES (personnages/objets) nécessaires</div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 30%">Nom du sprite</th>
-                            <th style="width: 50%">Rôle/Description</th>
-                            <th style="width: 20%">Source</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- ACTIVITÉ 4 -->
+        <div class="activity-section">
+            <div class="activity-header">
+                <span>🔬 ACTIVITÉ : DÉTECTER LE CONTENU GÉNÉRÉ PAR IA</span>
+                <span class="time-badge">20 min</span>
             </div>
             
-            <div class="question">
-                <div class="question-label">2.2 - Liste des ARRIÈRE-PLANS (scènes)</div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 35%">Nom de la scène</th>
-                            <th style="width: 65%">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Menu principal</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Défi 1</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Défi 2 (optionnel)</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Écran de fin</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <h4>🎯 Objectif : Apprendre à reconnaître un contenu créé par une IA</h4>
+            
+            <div class="info-box">
+                <h4>🔍 INDICES POUR DÉTECTER UN TEXTE GÉNÉRÉ PAR IA :</h4>
+                <ul>
+                    <li>✍️ <strong>Style trop parfait</strong> : Pas de fautes, phrases très structurées</li>
+                    <li>🤖 <strong>Formulations génériques</strong> : "Il est important de noter que...", "En conclusion..."</li>
+                    <li>📊 <strong>Informations vagues</strong> : Peu de détails précis, dates, noms</li>
+                    <li>🔄 <strong>Répétitions</strong> : Les mêmes idées reformulées différemment</li>
+                    <li>❓ <strong>Erreurs factuelles</strong> : Dates incorrectes, événements inventés</li>
+                    <li>🎭 <strong>Manque de personnalité</strong> : Aucune opinion personnelle, expérience vécue</li>
+                </ul>
             </div>
             
-            <div class="question">
-                <div class="question-label">2.3 - VARIABLES nécessaires</div>
-                <div class="tip-box">
-                    💡 Rappel : Une variable sert à mémoriser une information (score, vies, niveau...)
+            <h4>🕵️ EXERCICE : Humain ou IA ? Devinez l'auteur de ces textes</h4>
+            
+            <div class="scenario-box">
+                <h4>Texte A : Mon expérience au collège</h4>
+                <div class="example-chat">Le collège est une période importante de la vie d'un jeune. C'est une étape de transition entre l'école primaire et le lycée. Il est essentiel de bien s'organiser et de respecter les règles. Les enseignants sont là pour accompagner les élèves dans leur apprentissage. Il est important de noter que la vie au collège permet aussi de développer des compétences sociales.</div>
+                
+                <p><strong>Votre diagnostic :</strong></p>
+                <div class="radio-group">
+                    <label><input type="radio" name="texteA" value="humain"> Écrit par un humain</label>
+                    <label><input type="radio" name="texteA" value="ia"> Généré par IA</label>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 35%">Nom de la variable</th>
-                            <th style="width: 65%">À quoi sert-elle ?</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>SceneActuelle</td>
-                            <td>Savoir sur quelle scène on est (0=menu, 1=défi1...)</td>
-                        </tr>
-                        <tr>
-                            <td>Score</td>
-                            <td>Compter les points du joueur</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- Section 3 : Conception du défi principal -->
-        <div class="section">
-            <div class="section-title">2️⃣ CONCEPTION DU DÉFI PRINCIPAL</div>
-            
-            <div class="question">
-                <div class="question-label">3.1 - Décris ton défi principal (scénario, situation)</div>
-                <div class="answer-box-large"></div>
+                <p><strong>Justification :</strong></p>
+                <textarea name="texteA_justif" placeholder="Expliquez votre choix..."></textarea>
             </div>
             
-            <div class="question">
-                <div class="question-label">3.2 - Question(s) ou énigme(s) à poser au joueur</div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 60%">Question / Énigme</th>
-                            <th style="width: 40%">Bonne réponse</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="question">
-                <div class="question-label">3.3 - Messages à afficher</div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 30%">Situation</th>
-                            <th style="width: 70%">Message à afficher</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Bonne réponse ✅</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Mauvaise réponse ❌</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Explication pédagogique</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- Section 4 : Algorithme -->
-        <div class="section">
-            <div class="section-title">4️3️⃣ ALGORITHME EN PSEUDO-CODE</div>
-            
-            <div class="question">
-                <div class="question-label">4.1 - Écris l'algorithme de ton défi principal en français (pseudo-code)</div>
-                <div class="info-box">
-                    💡 Exemple :<br>
-                    QUAND drapeau cliqué<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;METTRE Score à 0<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;PASSER à l'arrière-plan Menu<br>
-                    <br>
-                    QUAND sprite Email cliqué<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;DEMANDER "Est-ce du phishing ? (Oui/Non)"<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;SI réponse = "Oui" ALORS<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AJOUTER 10 à Score<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DIRE "Bravo !"<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;SINON<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DIRE "Réessaie !"<br>
+            <div class="scenario-box">
+                <h4>Texte B : Mon expérience au collège</h4>
+                <div class="example-chat">J'avoue que le collège, au début, ça m'a fait flipper ! Le premier jour, j'ai eu du mal à trouver ma salle de maths et je suis arrivé en retard. Super l'image ! 😅 Mais maintenant j'ai mes potes, on traîne ensemble à la récré, et en fait c'est plutôt cool. Bon, les contrôles c'est toujours stressant, surtout en maths où je suis pas une flèche... Mais madame Dubois est sympa, elle explique bien.</div>
+                
+                <p><strong>Votre diagnostic :</strong></p>
+                <div class="radio-group">
+                    <label><input type="radio" name="texteB" value="humain"> Écrit par un humain</label>
+                    <label><input type="radio" name="texteB" value="ia"> Généré par IA</label>
                 </div>
-                <div class="answer-box-large" style="min-height: 180px;"></div>
+                <p><strong>Justification :</strong></p>
+                <textarea name="texteB_justif" placeholder="Expliquez votre choix..."></textarea>
+            </div>
+            
+            <div class="scenario-box">
+                <h4>Texte C : L'impact du réchauffement climatique</h4>
+                <div class="example-chat">Le réchauffement climatique représente l'un des défis majeurs du XXIe siècle. Les scientifiques s'accordent à dire que les activités humaines sont la cause principale de ce phénomène. Il est crucial de prendre des mesures pour réduire les émissions de gaz à effet de serre. Les gouvernements et les citoyens doivent agir ensemble pour préserver notre planète pour les générations futures.</div>
+                
+                <p><strong>Votre diagnostic :</strong></p>
+                <div class="radio-group">
+                    <label><input type="radio" name="texteC" value="humain"> Écrit par un humain</label>
+                    <label><input type="radio" name="texteC" value="ia"> Généré par IA</label>
+                </div>
+                <p><strong>Justification :</strong></p>
+                <textarea name="texteC_justif" placeholder="Expliquez votre choix..."></textarea>
+            </div>
+            
+            <div class="warning-box">
+                <h4>💡 ASTUCE POUR VÉRIFIER UN TEXTE :</h4>
+                <ul>
+                    <li>🔎 Utiliser des détecteurs en ligne (GPTZero, ZeroGPT) - mais pas fiables à 100%</li>
+                    <li>🧠 Se fier à son intuition : manque de personnalité, style trop parfait</li>
+                    <li>📝 Demander des précisions : une IA aura du mal avec des détails personnels</li>
+                    <li>🎯 Chercher des incohérences factuelles ou temporelles</li>
+                </ul>
             </div>
         </div>
+    </form>
+
+    <button class="download-button" type="button" onclick="downloadResponses(); return false;">📥 Télécharger mes réponses</button>
+   
+    <!-- RESSOURCES -->
+    <div class="info-box">
+        <h3 style="margin-top: 0; color: #1e40af;">🔗 RESSOURCES POUR ALLER PLUS LOIN</h3>
         
-        <!-- Section 5 : Planification -->
-        <div class="section">
-            <div class="section-title">5️4️⃣ PLANIFICATION & ANTICIPATION</div>
-            
-            <div class="question">
-                <div class="question-label">5.1 - Quelles difficultés techniques anticipes-tu ?</div>
-                <div class="answer-box"></div>
+        <div class="comparison-grid">
+            <div>
+                <h4 style="color: #7c3aed;">📚 S'informer :</h4>
+                <ul style="font-size: 12px;">
+                    <li><strong>CNIL :</strong> cnil.fr (IA et données personnelles)</li>
+                    <li><strong>Internet Sans Crainte :</strong> Guides sur l'IA</li>
+                    <li><strong>ANSSI :</strong> cyber.gouv.fr (sécurité IA)</li>
+                    <li><strong>PIX :</strong> Compétences numériques</li>
+                </ul>
             </div>
             
-            <div class="question">
-                <div class="question-label">5.2 - Checklist de réalisation (coche au fur et à mesure)</div>
-                <ul class="checkbox-list">
-                    <li>Créer les sprites et arrière-plans</li>
-                    <li>Créer les variables</li>
-                    <li>Programmer le menu de démarrage</li>
-                    <li>Programmer le défi principal</li>
-                    <li>Tester et corriger les bugs</li>
-                    <li>Ajouter les sons</li>
-                    <li>Améliorer les graphismes</li>
-                    <li>Tester le jeu complet</li>
+            <div>
+                <h4 style="color: #7c3aed;">🛠️ Outils de détection :</h4>
+                <ul style="font-size: 12px;">
+                    <li><strong>GPTZero :</strong> Détecteur de textes IA</li>
+                    <li><strong>ZeroGPT :</strong> Vérification contenus</li>
+                    <li><strong>Sensity :</strong> Détection deepfakes</li>
+                    <li><strong>InVID :</strong> Vérification vidéos</li>
                 </ul>
             </div>
         </div>
         
-        <footer>
-            Fiche de conception - Serious Game Cybersécurité • Technologie Cycle 4 • Programmation par blocs
-        </footer>
+        <div style="margin-top: 15px;">
+            <h4 style="color: #7c3aed;">🆘 En cas de problème :</h4>
+            <ul style="font-size: 12px;">
+                <li><strong>3018 :</strong> Numéro national contre cyberharcèlement (gratuit, anonyme)</li>
+                <li><strong>e-Enfance :</strong> Association de protection de l'enfance en ligne</li>
+                <li><strong>Cybermalveillance.gouv.fr :</strong> Signalement et assistance</li>
+                <li><strong>Pharos :</strong> Signalement contenus illicites (pharos.gouv.fr)</li>
+            </ul>
+        </div>
     </div>
+
+<!-- Juste AVANT la balise </body>, ajoutez CE SEUL SCRIPT : -->
+
+    <script>
+        // Variable pour tracker si le formulaire a été modifié
+        let formModified = false;
+        
+        // Détecter les modifications du formulaire
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('activitiesForm');
+            
+            if (form) {
+                // Écouter tous les changements dans le formulaire
+                form.addEventListener('change', function() {
+                    formModified = true;
+                });
+                
+                // Écouter aussi les saisies dans les textarea
+                const textareas = form.querySelectorAll('textarea');
+                textareas.forEach(textarea => {
+                    textarea.addEventListener('input', function() {
+                        formModified = true;
+                    });
+                });
+            }
+        });
+        
+        // Afficher la confirmation avant de quitter
+        window.addEventListener('beforeunload', function(e) {
+            if (formModified) {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+        
+        // Fonction de téléchargement
+        function downloadResponses() {
+            try {
+                const form = document.getElementById('activitiesForm');
+                if (!form) {
+                    alert('❌ Formulaire non trouvé !');
+                    return;
+                }
+                
+                const formData = new FormData(form);
+                
+                // Structurer les données
+                const responses = {
+                    date: new Date().toISOString(),
+                    activite1_regles_or: {
+                        regle1: document.getElementById('rule1')?.checked || false,
+                        regle2: document.getElementById('rule2')?.checked || false,
+                        regle3: document.getElementById('rule3')?.checked || false,
+                        regle4: document.getElementById('rule4')?.checked || false,
+                        regle5: document.getElementById('rule5')?.checked || false,
+                        regle6: document.getElementById('rule6')?.checked || false,
+                        regle7: document.getElementById('rule7')?.checked || false,
+                        regle8: document.getElementById('rule8')?.checked || false,
+                        regle9: document.getElementById('rule9')?.checked || false,
+                        regle10: document.getElementById('rule10')?.checked || false
+                    },
+                    activite2_bonnes_pratiques: {
+                        exercice1: {
+                            question: "Demander à l'IA d'expliquer un cours de maths difficile",
+                            reponse: formData.get('usage1') || null,
+                            justification: formData.get('usage1_justif') || ""
+                        },
+                        exercice2: {
+                            question: "Faire écrire entièrement une rédaction de français par l'IA",
+                            reponse: formData.get('usage2') || null,
+                            justification: formData.get('usage2_justif') || ""
+                        },
+                        exercice3: {
+                            question: "Partager son adresse avec l'IA pour avoir des infos locales",
+                            reponse: formData.get('usage3') || null,
+                            justification: formData.get('usage3_justif') || ""
+                        },
+                        exercice4: {
+                            question: "Utiliser l'IA pour avoir des idées de plan pour un exposé",
+                            reponse: formData.get('usage4') || null,
+                            justification: formData.get('usage4_justif') || ""
+                        },
+                        exercice5: {
+                            question: "Demander à l'IA de créer un faux certificat médical",
+                            reponse: formData.get('usage5') || null,
+                            justification: formData.get('usage5_justif') || ""
+                        },
+                        exercice6: {
+                            question: "Faire corriger son brouillon de devoir par l'IA",
+                            reponse: formData.get('usage6') || null,
+                            justification: formData.get('usage6_justif') || ""
+                        },
+                        exercice7: {
+                            question: "Demander à l'IA de générer des insultes contre un camarade",
+                            reponse: formData.get('usage7') || null,
+                            justification: formData.get('usage7_justif') || ""
+                        },
+                        exercice8: {
+                            question: "Utiliser l'IA pour apprendre du vocabulaire anglais",
+                            reponse: formData.get('usage8') || null,
+                            justification: formData.get('usage8_justif') || ""
+                        }
+                    },
+                    activite3_detection_ia: {
+                        texteA: {
+                            diagnostic: formData.get('texteA') || null,
+                            justification: formData.get('texteA_justif') || ""
+                        },
+                        texteB: {
+                            diagnostic: formData.get('texteB') || null,
+                            justification: formData.get('texteB_justif') || ""
+                        },
+                        texteC: {
+                            diagnostic: formData.get('texteC') || null,
+                            justification: formData.get('texteC_justif') || ""
+                        }
+                    }
+                };
+                
+                // Créer le fichier JSON
+                const dataStr = JSON.stringify(responses, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'reponses_llm_cybersecurite_' + new Date().toISOString().split('T')[0] + '.json';
+                
+                // Déclencher le téléchargement
+                document.body.appendChild(link);
+                link.click();
+                
+                // Nettoyer
+                setTimeout(function() {
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                // Réinitialiser pour permettre la sortie sans alerte
+                formModified = false;
+                
+                alert('✅ Vos réponses ont été téléchargées avec succès !');
+                
+            } catch (error) {
+                console.error('Erreur lors du téléchargement:', error);
+                alert('❌ Erreur : ' + error.message);
+            }
+        }
+    </script>
 </body>
 </html>
