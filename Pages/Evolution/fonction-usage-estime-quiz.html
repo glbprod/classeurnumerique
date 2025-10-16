@@ -285,8 +285,7 @@
             </div>
 
             <div class="button-container">
-                <button type="button" id="sendToSheets" class="btn-sheets">📤 Envoyer au professeur</button>
-                <button type="button" id="downloadJson" class="btn-json">💾 Télécharger</button>
+                <button type="button" id="sendToFirebase" class="btn-sheets">📤 Envoyer au professeur</button>
             </div>
         </form>
     </div>
@@ -408,35 +407,6 @@
                 form.reset();
                 formModified = false; // Pour la confirmation de fermeture
             }
-        });
-
-        // Bouton : Télécharger JSON
-        document.getElementById('downloadJson').addEventListener('click', function() {
-            const form = document.getElementById('quizForm');
-            
-            // Vérifier que le formulaire est valide
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            const responses = collectFormData();
-            
-            const jsonString = JSON.stringify(responses, null, 2);
-            const blob = new Blob([jsonString], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            
-            const a = document.createElement('a');
-            const studentName = document.getElementById('studentName').value.replace(/\s+/g, '_');
-            a.href = url;
-            a.download = `fonction_usage_estime_${studentName}_${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            formModified = false;
-            alert('✅ Tes réponses ont été téléchargées avec succès !');
         });
     </script>
 </body>
