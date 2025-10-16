@@ -157,6 +157,61 @@
             border-radius: 3px;
             font-weight: bold;
         }
+            /* Règles spécifiques pour l'impression */
+    @media print {
+        /* Éviter les sauts de page au milieu des éléments */
+        .activity-section,
+        .answer-box,
+        .rule-card,
+        .explanation-box,
+        .correct-answer,
+        .wrong-answer,
+        .text-example,
+        table {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+        
+        /* Garder les titres avec leur contenu */
+        h1, h2, h3, h4 {
+            page-break-after: avoid;
+            break-after: avoid;
+        }
+        
+        /* Éviter les sauts de page après certains éléments */
+        .activity-header {
+            page-break-after: avoid;
+            break-after: avoid;
+        }
+        
+        /* Éviter les lignes orphelines/veuves */
+        p {
+            orphans: 3;
+            widows: 3;
+        }
+        
+        /* Ajuster les marges pour l'impression */
+        body {
+            margin: 1cm;
+        }
+        
+        /* Réduire légèrement les espacements pour l'impression */
+        .activity-section {
+            margin: 10px 0;
+            padding: 15px;
+        }
+        
+        /* Forcer les grilles à s'adapter */
+        .rules-grid {
+            display: block;
+        }
+        
+        .rule-card {
+            page-break-inside: avoid;
+            break-inside: avoid;
+            margin-bottom: 10px;
+        }
+    }
     </style>
 </head>
 <body>
