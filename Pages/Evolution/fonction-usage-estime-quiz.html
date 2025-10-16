@@ -291,24 +291,6 @@
     </div>
 
    <script>
-
-    // TEST SIMPLE - Ajoutez ça temporairement
-    document.getElementById('sendToFirebase').addEventListener('click', async function() {
-        console.log('Bouton cliqué !');
-        
-        try {
-            const testDoc = await db.collection('test').add({
-                message: 'Test de connexion',
-                date: new Date().toISOString()
-            });
-            console.log('✅ Connexion Firebase OK ! ID:', testDoc.id);
-            alert('✅ Firebase fonctionne !');
-        } catch (error) {
-            console.error('❌ Erreur:', error);
-            alert('❌ Erreur : ' + error.message);
-        }
-    });
-       
     // ============================================
     // CONFIGURATION FIREBASE
     // ============================================
@@ -321,11 +303,11 @@
         appId: "1:662462446647:web:0fe6315cc0c189185513b2"
     };
 
-    // Initialiser Firebase (syntaxe compat)
+    // Initialiser Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    console.log('Firebase initialisé avec succès');
+    console.log('✅ Firebase initialisé');
 
     // ============================================
     // CONFIRMATION AVANT FERMETURE
@@ -345,48 +327,6 @@
     });
 
     // ============================================
-    // FONCTION D'ENVOI FIREBASE
-    // ============================================
-    async function sendToFirebase(collectionName, formData, buttonElement) {
-        try {
-            // Désactiver le bouton pendant l'envoi
-            const originalText = buttonElement.textContent;
-            buttonElement.disabled = true;
-            buttonElement.textContent = '⏳ Envoi en cours...';
-            
-            // Ajouter un timestamp automatique
-            formData.timestamp = firebase.firestore.FieldValue.serverTimestamp();
-            formData.date_soumission = new Date().toISOString();
-            
-            // Envoyer à Firebase
-            const docRef = await db.collection(collectionName).add(formData);
-            
-            console.log('Document enregistré avec ID:', docRef.id);
-            
-            // Réactiver le bouton
-            buttonElement.disabled = false;
-            buttonElement.textContent = originalText;
-            
-            // Notification de succès
-            alert('✅ Tes réponses ont été envoyées avec succès !');
-            
-            return true;
-            
-        } catch (error) {
-            console.error('Erreur Firebase:', error);
-            
-            // Réactiver le bouton
-            buttonElement.disabled = false;
-            buttonElement.textContent = originalText;
-            
-            // Notification d'erreur détaillée
-            alert('❌ Erreur lors de l\'envoi : ' + error.message);
-            
-            return false;
-        }
-    }
-    
-    // ============================================
     // BOUTON D'ENVOI
     // ============================================
     document.getElementById('sendToFirebase').addEventListener('click', async function() {
@@ -398,69 +338,70 @@
             return;
         }
         
-        // Collecter les données du formulaire
-        const formData = new FormData(form);
+        // Désactiver le bouton
+        const originalText = this.textContent;
+        this.disabled = true;
+        this.textContent = '⏳ Envoi en cours...';
         
-        // Préparer l'objet de données
-        const responses = {
-            // Métadonnées
-            nom_eleve: document.getElementById('studentName').value,
-            classe: document.getElementById('studentClass').value,
+        try {
+            // Collecter les données
+            const formData = new FormData(form);
             
-            // Exercice 1
-            ex1_q1: formData.get('q1_1'),
-            ex1_q2: formData.get('q1_2'),
-            ex1_q3: formData.get('q1_3'),
+            const responses = {
+                nom_eleve: document.getElementById('studentName').value,
+                classe: document.getElementById('studentClass').value,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                date_soumission: new Date().toISOString(),
+                
+                // Exercice 1
+                ex1_q1: formData.get('q1_1'),
+                ex1_q2: formData.get('q1_2'),
+                ex1_q3: formData.get('q1_3'),
+                
+                // Exercice 2
+                ex2_q1: formData.get('q2_1'),
+                ex2_q2: formData.get('q2_2'),
+                ex2_q3: formData.get('q2_3'),
+                ex2_q4: formData.get('q2_4'),
+                ex2_q5: formData.get('q2_5'),
+                ex2_q6: formData.get('q2_6'),
+                
+                // Exercice 3
+                ex3_objet: formData.get('q3_1'),
+                ex3_fonction_usage: formData.get('q3_2'),
+                ex3_fonction_estime: formData.get('q3_3'),
+                ex3_meme_famille: formData.get('q3_4')
+            };
             
-            // Exercice 2
-            ex2_q1: formData.get('q2_1'),
-            ex2_q2: formData.get('q2_2'),
-            ex2_q3: formData.get('q2_3'),
-            ex2_q4: formData.get('q2_4'),
-            ex2_q5: formData.get('q2_5'),
-            ex2_q6: formData.get('q2_6'),
+            console.log('📤 Envoi des données:', responses);
             
-            // Exercice 3
-            ex3_objet: formData.get('q3_1'),
-            ex3_fonction_usage: formData.get('q3_2'),
-            ex3_fonction_estime: formData.get('q3_3'),
-            ex3_meme_famille: formData.get('q3_4')
-        };
-        
-        console.log('Données à envoyer:', responses);
-        
-        // Envoyer à Firebase
-        const success = await sendToFirebase('fonction_usage_estime', responses, this);
-        
-        // Si succès, réinitialiser le formulaire
-        if (success) {
+            // Envoyer à Firebase
+            const docRef = await db.collection('fonction_usage_estime').add(responses);
+            
+            console.log('✅ Document enregistré avec ID:', docRef.id);
+            
+            // Réactiver le bouton
+            this.disabled = false;
+            this.textContent = originalText;
+            
+            // Notification de succès
+            alert('✅ Tes réponses ont été envoyées avec succès !');
+            
+            // Réinitialiser le formulaire
             form.reset();
             formModified = false;
+            
+        } catch (error) {
+            console.error('❌ Erreur Firebase:', error);
+            
+            // Réactiver le bouton
+            this.disabled = false;
+            this.textContent = originalText;
+            
+            // Notification d'erreur
+            alert('❌ Erreur lors de l\'envoi : ' + error.message);
         }
     });
-
-        // Confirmation avant fermeture de la page
-        let formModified = false;
-
-        // Détecter les modifications du formulaire
-        document.getElementById('quizForm').addEventListener('input', function() {
-            formModified = true;
-        });
-
-        // Empêcher la fermeture si le formulaire a été modifié
-        window.addEventListener('beforeunload', function(e) {
-            if (formModified) {
-                e.preventDefault();
-                e.returnValue = ''; // Nécessaire pour Chrome
-                return ''; // Pour les anciens navigateurs
-            }
-        });
-
-        // Réinitialiser le flag après soumission réussie
-        document.getElementById('quizForm').addEventListener('submit', function(e) {
-            formModified = false; // Permettre la fermeture après téléchargement
-            // ... reste du code de soumission
-        });
     </script>
 </body>
 </html>
