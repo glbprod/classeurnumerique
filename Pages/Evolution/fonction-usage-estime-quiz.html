@@ -291,6 +291,24 @@
     </div>
 
    <script>
+
+    // TEST SIMPLE - Ajoutez ça temporairement
+    document.getElementById('sendToFirebase').addEventListener('click', async function() {
+        console.log('Bouton cliqué !');
+        
+        try {
+            const testDoc = await db.collection('test').add({
+                message: 'Test de connexion',
+                date: new Date().toISOString()
+            });
+            console.log('✅ Connexion Firebase OK ! ID:', testDoc.id);
+            alert('✅ Firebase fonctionne !');
+        } catch (error) {
+            console.error('❌ Erreur:', error);
+            alert('❌ Erreur : ' + error.message);
+        }
+    });
+       
     // ============================================
     // CONFIGURATION FIREBASE
     // ============================================
