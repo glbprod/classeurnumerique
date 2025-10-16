@@ -749,6 +749,44 @@
                 alert('❌ Erreur : ' + error.message);
             }
         }
+            // Variable pour tracker si le formulaire a été modifié
+            let formModified = false;
+            
+            // Détecter les modifications du formulaire
+            document.addEventListener('DOMContentLoaded', function() {
+                const form = document.getElementById('activitiesForm');
+                
+                // Écouter tous les changements dans le formulaire
+                form.addEventListener('change', function() {
+                    formModified = true;
+                });
+                
+                // Écouter aussi les saisies dans les textarea
+                const textareas = form.querySelectorAll('textarea');
+                textareas.forEach(textarea => {
+                    textarea.addEventListener('input', function() {
+                        formModified = true;
+                    });
+                });
+            });
+            
+            // Afficher la confirmation avant de quitter
+            window.addEventListener('beforeunload', function(e) {
+                if (formModified) {
+                    e.preventDefault();
+                    e.returnValue = ''; // Nécessaire pour Chrome
+                    return ''; // Pour les navigateurs plus anciens
+                }
+            });
+            
+            // Désactiver l'alerte après téléchargement réussi
+            // Modifiez votre fonction downloadResponses() en ajoutant ceci à la fin :
+            function downloadResponses() {
+                // ... votre code existant ...
+                
+                // À la toute fin, après le alert de succès :
+                formModified = false; // Réinitialiser pour permettre la sortie sans alerte
+            }
     </script>
 </body>
 </html>
