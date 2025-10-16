@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correction - LLM et Cybersécurité</title>
+    <style>
+        html {
+            font-size: 1.2rem;
+        }
+        
+        p, li {
+            font-size: 1.2rem;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.5;
+            color: #333;
+        }
+        
+        .title-section {
+            background: linear-gradient(135deg, #10b981, #059669);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px solid #059669;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            color: white;
+        }
+        
+        .activity-section {
+            background-color: #f8f9fa;
+            border-left: 5px solid #10b981;
+            border-radius: 0 8px 8px 0;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .activity-header {
+            background-color: #10b981;
+            color: white;
+            padding: 10px 15px;
+            margin: -20px -20px 15px -25px;
+            border-radius: 0 8px 0 0;
+            font-weight: bold;
+        }
+        
+        .answer-box {
+            background: #fff;
+            border: 3px solid #10b981;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .correct-answer {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 3px solid #10b981;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .wrong-answer {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 3px solid #ef4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .explanation-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .rule-card {
+            background: white;
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        th {
+            background-color: #10b981;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        .badge-correct {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .badge-wrong {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .key-point {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .text-example {
+            background: #f3f4f6;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+        
+        .highlight {
+            background: #fef08a;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="title-section">
+        <h1 style="margin: 0; font-size: 28px;">✅ CORRECTION - LLM ET CYBERSÉCURITÉ</h1>
+        <h2 style="margin: 10px 0 0 0; font-size: 18px; font-weight: normal;">ChatGPT, Claude & Co : Réponses et Explications</h2>
+    </div>
+    
+    <!-- ACTIVITÉ 1 : LES 10 RÈGLES D'OR -->
+    <div class="activity-section">
+        <div class="activity-header">
+            🛡️ ACTIVITÉ 1 : LES 10 RÈGLES D'OR - EXPLICATIONS
+        </div>
+        
+        <p><strong>Toutes les règles sont importantes et doivent être cochées !</strong></p>
+        
+        <div class="rules-grid">
+            <div class="rule-card">
+                <h4 style="color: #059669;">✅ Règle 1 : Protéger sa vie privée</h4>
+                <p><strong>Pourquoi ?</strong> Les LLM peuvent stocker vos conversations. Ne partagez jamais : nom complet, adresse, téléphone, email, numéro de sécurité sociale, mots de passe.</p>
+            </div>
+            
+            <div class="rule-card">
+                <h4 style="color: #059669;">✅ Règle 2 : Vérifier les informations</h4>
+                <p><strong>Pourquoi ?</strong> Les IA peuvent "halluciner" et inventer des faits, dates ou sources. Toujours vérifier avec des sources fiables.</p>
+            </div>
+            
+            <div class="rule-card">
+                <h4 style="color: #059669;">✅ Règle 3 : Croiser les sources</h4>
+                <p><strong>Pourquoi ?</strong> Une seule source peut être biaisée ou erronée. Comparez plusieurs sources d'informations.</p>
+            </div>
+            
+            <div class="rule-card">
+                <h4 style="color: #059669;">✅ Règle 4 : Rester critique</h4>
+                <p><strong>Pourquoi ?</strong> L'IA ne "comprend" pas vraiment, elle prédit des mots. Elle n'a pas de conscience ni de jugement moral.</p>
+            </div>
+            
+            <div class="rule-card">
+                <h4 style="color: #059669;">✅ Règle 5 : Usage éthique</h4>
+                <p><strong>Pourquoi ?</strong> Utiliser l'IA pour tricher vous empêche d'apprendre et c'est une forme de malhonnêteté intellectuelle.</p>
+            </div>
+            
+            <div class="rule-card">
+                <h4 style="color: #059669;">✅ Règle 6 : Attention aux deepfakes</h4>
+                <p><strong>Pourquoi ?</strong> Les deepfakes deviennent de plus en plus réalistes et peuvent tromper même des adultes avertis.</p>
+            </div>
+            
+            <div class="rule-card">
+                <h4 style="color: #059669;">✅ Règle 7 : Signaler les abus</h4>
+                <p><strong>Pourquoi ?</strong> Si l'IA génère du contenu dangereux malgré les protections, il faut le signaler pour améliorer la sécurité.</p>
+            </div>
+            
+            <div class="rule-card">
+                <h4 style="color: #059669;">✅ Règle 8 : Respecter les autres</h4>
+                <p><strong>Pourquoi ?</strong> Utiliser l'IA pour harceler, créer de fausses accusations ou nuire est illégal et peut avoir des conséquences graves.</p>
+            </div>
+            
+            <div class="rule-card">
+                <h4 style="color: #059669;">✅ Règle 9 : Garder son esprit critique</h4>
+                <p><strong>Pourquoi ?</strong> Les IA reflètent les biais de leurs données d'entraînement. Elles peuvent perpétuer des stéréotypes.</p>
+            </div>
+            
+            <div class="rule-card">
+                <h4 style="color: #059669;">✅ Règle 10 : En parler avec des adultes</h4>
+                <p><strong>Pourquoi ?</strong> Les adultes ont l'expérience pour vous aider à naviguer les situations complexes ou problématiques.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ACTIVITÉ 2 : BONNES ET MAUVAISES UTILISATIONS -->
+    <div class="activity-section">
+        <div class="activity-header">
+            💡 ACTIVITÉ 2 : BONNE OU MAUVAISE UTILISATION ?
+        </div>
+        
+        <table>
+            <tr>
+                <th>Situation</th>
+                <th style="width: 15%;">Réponse</th>
+                <th>Justification</th>
+            </tr>
+            
+            <tr>
+                <td>Demander à l'IA d'expliquer un cours de maths difficile</td>
+                <td><span class="badge badge-correct">✅ BONNE</span></td>
+                <td>
+                    <strong>Pourquoi c'est bon :</strong> L'IA aide à <strong>comprendre</strong> un concept, pas à faire le travail à votre place. C'est comme avoir un tuteur qui explique différemment.
+                    <div class="key-point">
+                        💡 <strong>Point clé :</strong> Utiliser l'IA pour apprendre = bon usage. Mais vérifiez toujours la méthode avec votre prof !
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>Faire écrire entièrement une rédaction de français par l'IA</td>
+                <td><span class="badge badge-wrong">❌ MAUVAISE</span></td>
+                <td>
+                    <strong>Pourquoi c'est mauvais :</strong> C'est de la <strong>triche pure et simple</strong>. Vous ne développez pas vos compétences d'écriture et risquez des sanctions.
+                    <div class="key-point">
+                        💡 <strong>Point clé :</strong> Les profs peuvent détecter les textes d'IA. De plus, vous passez à côté de l'apprentissage.
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>Partager son adresse avec l'IA pour avoir des infos locales</td>
+                <td><span class="badge badge-wrong">❌ MAUVAISE</span></td>
+                <td>
+                    <strong>Pourquoi c'est mauvais :</strong> <strong>Danger pour la vie privée</strong>. Votre adresse peut être stockée, piratée ou utilisée à mauvais escient.
+                    <div class="key-point">
+                        💡 <strong>Point clé :</strong> Donnez plutôt le nom de votre ville sans préciser l'adresse exacte. "Je cherche une bibliothèque à Pontoise" suffit !
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>Utiliser l'IA pour avoir des idées de plan pour un exposé</td>
+                <td><span class="badge badge-correct">✅ BONNE</span></td>
+                <td>
+                    <strong>Pourquoi c'est bon :</strong> L'IA vous aide à <strong>structurer votre pensée</strong>, mais vous restez l'auteur. C'est comme un brainstorming avec un assistant.
+                    <div class="key-point">
+                        💡 <strong>Point clé :</strong> Utilisez les idées comme point de départ, puis personnalisez avec vos recherches et votre style.
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>Demander à l'IA de créer un faux certificat médical</td>
+                <td><span class="badge badge-wrong">❌ MAUVAISE</span></td>
+                <td>
+                    <strong>Pourquoi c'est mauvais :</strong> <strong>C'EST ILLÉGAL !</strong> Créer un faux document est un délit de faux et usage de faux, passible de prison.
+                    <div class="key-point">
+                        ⚠️ <strong>DANGER :</strong> Ceci est un crime qui peut avoir des conséquences judiciaires très graves, même pour un mineur.
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>Faire corriger son brouillon de devoir par l'IA</td>
+                <td><span class="badge badge-correct">✅ BONNE</span></td>
+                <td>
+                    <strong>Pourquoi c'est bon :</strong> Corriger des erreurs de grammaire/orthographe est acceptable si <strong>le contenu reste le vôtre</strong>.
+                    <div class="key-point">
+                        💡 <strong>Nuance importante :</strong> L'IA peut suggérer des corrections, mais ne doit pas réécrire complètement vos phrases. Restez l'auteur !
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>Demander à l'IA de générer des insultes contre un camarade</td>
+                <td><span class="badge badge-wrong">❌ MAUVAISE</span></td>
+                <td>
+                    <strong>Pourquoi c'est mauvais :</strong> <strong>Cyberharcèlement</strong>. C'est illégal et cause des dommages psychologiques graves aux victimes.
+                    <div class="key-point">
+                        ⚠️ <strong>DANGER :</strong> Le cyberharcèlement est puni par la loi. Numéro d'aide : 3018 (gratuit, confidentiel).
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>Utiliser l'IA pour apprendre du vocabulaire anglais</td>
+                <td><span class="badge badge-correct">✅ BONNE</span></td>
+                <td>
+                    <strong>Pourquoi c'est bon :</strong> L'IA peut être un excellent <strong>outil d'apprentissage</strong>, créer des exercices, pratiquer la conversation, etc.
+                    <div class="key-point">
+                        💡 <strong>Astuce :</strong> Vous pouvez demander à l'IA de jouer un rôle et de converser avec vous en anglais pour pratiquer !
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <!-- ACTIVITÉ 3 : DÉTECTION IA -->
+    <div class="activity-section">
+        <div class="activity-header">
+            🔬 ACTIVITÉ 3 : DÉTECTER LE CONTENU GÉNÉRÉ PAR IA
+        </div>
+        
+        <div class="answer-box">
+            <h3 style="color: #059669;">📝 Texte A : Mon expérience au collège</h3>
+            <div class="text-example">Le collège est une période importante de la vie d'un jeune. C'est une étape de transition entre l'école primaire et le lycée. Il est essentiel de bien s'organiser et de respecter les règles. Les enseignants sont là pour accompagner les élèves dans leur apprentissage. Il est important de noter que la vie au collège permet aussi de développer des compétences sociales.</div>
+            
+            <div class="wrong-answer">
+                <h4>❌ Diagnostic : GÉNÉRÉ PAR IA</h4>
+            </div>
+            
+            <div class="explanation-box">
+                <h4>🔍 Indices qui le trahissent :</h4>
+                <ul>
+                    <li>📖 <strong>Style trop formel et générique</strong> : "période importante", "étape de transition"</li>
+                    <li>🤖 <strong>Expression typique de l'IA</strong> : <span class="highlight">"Il est important de noter que..."</span></li>
+                    <li>🎭 <strong>Aucune personnalité</strong> : Pas d'émotions, d'anecdotes personnelles, de langage familier</li>
+                    <li>📊 <strong>Informations très vagues</strong> : Aucun détail concret, nom d'enseignant, événement précis</li>
+                    <li>✍️ <strong>Trop parfait</strong> : Structure impeccable, pas de fautes, phrases très académiques</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="answer-box">
+            <h3 style="color: #059669;">📝 Texte B : Mon expérience au collège</h3>
+            <div class="text-example">J'avoue que le collège, au début, ça m'a fait flipper ! Le premier jour, j'ai eu du mal à trouver ma salle de maths et je suis arrivé en retard. Super l'image ! 😅 Mais maintenant j'ai mes potes, on traîne ensemble à la récré, et en fait c'est plutôt cool. Bon, les contrôles c'est toujours stressant, surtout en maths où je suis pas une flèche... Mais madame Dubois est sympa, elle explique bien.</div>
+            
+            <div class="correct-answer">
+                <h4>✅ Diagnostic : ÉCRIT PAR UN HUMAIN</h4>
+            </div>
+            
+            <div class="explanation-box">
+                <h4>🔍 Indices d'authenticité :</h4>
+                <ul>
+                    <li>😊 <strong>Langage naturel et familier</strong> : "flipper", "potes", "traîne", "pas une flèche"</li>
+                    <li>📖 <strong>Anecdote personnelle précise</strong> : Premier jour, retard en maths, salle perdue</li>
+                    <li>🎭 <strong>Émotions authentiques</strong> : Stress, soulagement, humour (emoji, "Super l'image !")</li>
+                    <li>👤 <strong>Détails concrets</strong> : Nom de prof (Madame Dubois), matière spécifique</li>
+                    <li>✍️ <strong>Style imparfait</strong> : Phrases courtes, pas toujours grammaticalement parfaites ("je suis pas")</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="answer-box">
+            <h3 style="color: #059669;">📝 Texte C : L'impact du réchauffement climatique</h3>
+            <div class="text-example">Le réchauffement climatique représente l'un des défis majeurs du XXIe siècle. Les scientifiques s'accordent à dire que les activités humaines sont la cause principale de ce phénomène. Il est crucial de prendre des mesures pour réduire les émissions de gaz à effet de serre. Les gouvernements et les citoyens doivent agir ensemble pour préserver notre planète pour les générations futures.</div>
+            
+            <div class="wrong-answer">
+                <h4>❌ Diagnostic : GÉNÉRÉ PAR IA</h4>
+            </div>
+            
+            <div class="explanation-box">
+                <h4>🔍 Indices qui le trahissent :</h4>
+                <ul>
+                    <li>🤖 <strong>Formulations ultra-génériques</strong> : "défis majeurs", "il est crucial", "générations futures"</li>
+                    <li>📊 <strong>Aucun chiffre, date ou fait précis</strong> : Pas de données concrètes</li>
+                    <li>🎭 <strong>Absence totale d'opinion personnelle</strong> : Discours neutre et impersonnel</li>
+                    <li>📖 <strong>Structure de dissertation classique</strong> : Constat → Cause → Solution</li>
+                    <li>🔄 <strong>Phrases "passe-partout"</strong> : Pourrait s'appliquer à n'importe quel problème global</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="explanation-box" style="margin-top: 30px;">
+            <h3 style="color: #1e40af;">💡 RÉSUMÉ : COMMENT RECONNAÎTRE UN TEXTE D'IA ?</h3>
+            
+            <table>
+                <tr>
+                    <th>Texte HUMAIN</th>
+                    <th>Texte IA</th>
+                </tr>
+                <tr>
+                    <td>
+                        ✅ Langage familier, naturel<br>
+                        ✅ Anecdotes personnelles<br>
+                        ✅ Émotions, humour<br>
+                        ✅ Détails concrets et précis<br>
+                        ✅ "Imperfections" naturelles<br>
+                        ✅ Style unique, personnalité
+                    </td>
+                    <td>
+                        ❌ Langage formel, académique<br>
+                        ❌ Informations génériques<br>
+                        ❌ Neutre, sans émotion<br>
+                        ❌ Vague, peu de détails<br>
+                        ❌ Trop parfait, structuré<br>
+                        ❌ Phrases passe-partout
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+    <!-- CONSEILS FINAUX -->
+    <div class="activity-section">
+        <div class="activity-header">
+            🎯 POINTS CLÉS À RETENIR
+        </div>
+        
+        <div class="rules-grid">
+            <div class="rule-card">
+                <h4 style="color: #dc2626;">🚫 NE JAMAIS :</h4>
+                <ul>
+                    <li>Partager d'infos personnelles</li>
+                    <li>Utiliser l'IA pour tricher</li>
+                    <li>Créer de faux documents</li>
+                    <li>Harceler ou nuire aux autres</li>
+                    <li>Croire aveuglément l'IA</li>
+                </ul>
+            </div>
+            
+            <div class="rule-card">
+                <h4 style="color: #059669;">✅ TOUJOURS :</h4>
+                <ul>
+                    <li>Vérifier les informations</li>
+                    <li>Garder son esprit critique</li>
+                    <li>Utiliser l'IA comme assistant</li>
+                    <li>Respecter l'éthique</li>
+                    <li>En parler aux adultes si besoin</li>
+                </ul>
+            </div>
+            
+            <div class="rule-card">
+                <h4 style="color: #2563eb;">🎓 BONS USAGES :</h4>
+                <ul>
+                    <li>Apprendre et comprendre</li>
+                    <li>Avoir des idées de départ</li>
+                    <li>Pratiquer une langue</li>
+                    <li>Corriger ses erreurs</li>
+                    <li>Explorer de nouveaux sujets</li>
+                </ul>
+            </div>
+            
+            <div class="rule-card">
+                <h4 style="color: #d97706;">📞 EN CAS DE PROBLÈME :</h4>
+                <ul>
+                    <li><strong>3018</strong> - Cyberharcèlement</li>
+                    <li><strong>e-Enfance</strong> - Protection en ligne</li>
+                    <li><strong>Cybermalveillance.gouv.fr</strong></li>
+                    <li><strong>Vos parents/profs</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="title-section">
+        <h2 style="margin: 0;">🌟 Bravo d'avoir complété ces activités !</h2>
+        <p style="margin: 10px 0 0 0;">Vous êtes maintenant mieux préparés pour utiliser l'IA de manière sûre et responsable.</p>
+    </div>
+
+</body>
+</html>
