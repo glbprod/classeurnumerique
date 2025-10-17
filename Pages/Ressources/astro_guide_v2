@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide d'Astronomie & Cosmologie</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f4e 50%, #2d1b4e 100%);
+            color: #e0e6ed;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #4f46e5, #06b6d4, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #94a3b8;
+            margin-top: 10px;
+        }
+
+        .section {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(100, 116, 139, 0.2);
+        }
+
+        h2 {
+            color: #60a5fa;
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: #a78bfa;
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        .info-card {
+            background: rgba(30, 41, 59, 0.5);
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .highlight {
+            color: #fbbf24;
+            font-weight: bold;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .resource-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(100, 116, 139, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .resource-card h4 {
+            color: #60a5fa;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .resource-card a {
+            color: #38bdf8;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .resource-card a:hover {
+            color: #7dd3fc;
+            text-decoration: underline;
+        }
+
+        .fact-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #a78bfa;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #60a5fa;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #94a3b8;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <header>
+            <h1>🌌 Guide d'Astronomie & Cosmologie</h1>
+            <p class="subtitle">Pour les collégiens passionnés par l'Univers</p>
+        </header>
+
+        <div class="section">
+            <h2><span class="icon">🔭</span> L'Astronomie : Observer l'Univers</h2>
+            
+            <p>L'astronomie est la science qui étudie les astres, leur mouvement, leur composition et leur évolution. C'est une discipline fascinante qui nous permet de comprendre notre place dans l'Univers !</p>
+
+            <h3>Les Objets Célestes</h3>
+            <div class="info-card">
+                <strong>Les Étoiles :</strong> Boules de gaz incandescent produisant de l'énergie par fusion nucléaire. Notre Soleil est une étoile de taille moyenne. Les étoiles naissent dans des nébuleuses, vivent des millions ou milliards d'années, et finissent en naines blanches, étoiles à neutrons ou trous noirs.
+            </div>
+
+            <div class="info-card">
+                <strong>Les Planètes :</strong> Corps célestes orbitant autour d'une étoile. Notre système solaire compte <span class="highlight">8 planètes</span> : 4 telluriques (rocheuses) et 4 gazeuses. Les astronomes ont découvert des milliers d'exoplanètes autour d'autres étoiles !
+            </div>
+
+            <div class="info-card">
+                <strong>Les Galaxies :</strong> Immenses regroupements d'étoiles, de gaz et de poussières. Notre galaxie, la <span class="highlight">Voie lactée</span>, contient environ 200 à 400 milliards d'étoiles. L'Univers observable compte plus de 2000 milliards de galaxies !
+            </div>
+
+            <h3>Concepts Clés</h3>
+            <ul>
+                <li><strong>Année-lumière :</strong> Distance parcourue par la lumière en un an (environ 9 460 milliards de km)</li>
+                <li><strong>Système solaire :</strong> Ensemble formé par le Soleil et les objets gravitant autour de lui</li>
+                <li><strong>Magnitude :</strong> Mesure de la luminosité apparente d'un astre</li>
+                <li><strong>Spectre lumineux :</strong> Décomposition de la lumière qui révèle la composition chimique des étoiles</li>
+            </ul>
+
+            <div class="fact-box">
+                <strong>💡 Le savais-tu ?</strong> La lumière du Soleil met environ 8 minutes pour nous parvenir. Quand tu observes les étoiles la nuit, tu voyages dans le temps : certaines ont émis leur lumière il y a des milliers d'années !
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">🌠</span> La Cosmologie : Comprendre l'Univers</h2>
+            
+            <p>La cosmologie étudie l'origine, l'évolution et la structure de l'Univers dans son ensemble. C'est la science qui tente de répondre aux plus grandes questions : comment l'Univers est-il né ? Comment va-t-il évoluer ?</p>
+
+            <h3>Le Big Bang</h3>
+            <div class="info-card">
+                L'Univers serait né il y a environ <span class="highlight">13,8 milliards d'années</span> d'une singularité extrêmement chaude et dense qui s'est brutalement dilatée. Cette théorie est confirmée par plusieurs observations : l'expansion de l'Univers, le rayonnement cosmologique fossile, et l'abondance des éléments légers.
+            </div>
+
+            <h3>Concepts Fascinants</h3>
+            <div class="info-card">
+                <strong>Matière noire :</strong> Forme de matière invisible qui ne peut être détectée que par ses effets gravitationnels. Elle représenterait environ <span class="highlight">27% de l'Univers</span> !
+            </div>
+
+            <div class="info-card">
+                <strong>Énergie sombre :</strong> Force mystérieuse responsable de l'accélération de l'expansion de l'Univers. Elle constituerait environ <span class="highlight">68% de l'Univers</span>. On ne sait presque rien sur sa nature !
+            </div>
+
+            <div class="info-card">
+                <strong>Trous noirs :</strong> Régions de l'espace-temps où la gravité est si intense que rien ne peut s'en échapper, pas même la lumière. On en a photographié un pour la première fois en 2019 !
+            </div>
+
+            <h3>L'Expansion de l'Univers</h3>
+            <ul>
+                <li>L'Univers est en expansion constante depuis le Big Bang</li>
+                <li>Les galaxies s'éloignent les unes des autres</li>
+                <li>Plus une galaxie est lointaine, plus elle s'éloigne rapidement (loi de Hubble)</li>
+                <li>L'expansion s'accélère sous l'effet de l'énergie sombre</li>
+            </ul>
+
+            <div class="fact-box">
+                <strong>💡 Le savais-tu ?</strong> L'Univers observable a un rayon d'environ 46 milliards d'années-lumière, mais continue de s'étendre. Nous ne pouvons voir qu'une partie de l'Univers total, qui pourrait être infini !
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">📚</span> Ressources pour Approfondir</h2>
+
+            <h3>Sites Web Éducatifs</h3>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h4>🌍 Cité de l'Espace</h4>
+                    <p>Musée et centre de culture scientifique à Toulouse avec de nombreuses ressources en ligne.</p>
+                    <a href="https://www.cite-espace.com" target="_blank">www.cite-espace.com</a>
+                </div>
+
+                <div class="resource-card">
+                    <h4>🔭 Observatoire de Paris</h4>
+                    <p>Contenus scientifiques de qualité, actualités astronomiques et ressources pédagogiques.</p>
+                    <a href="https://www.obspm.fr" target="_blank">www.obspm.fr</a>
+                </div>
+
+                <div class="resource-card">
+                    <h4>🚀 CNES (Agence Spatiale)</h4>
+                    <p>Découvre les missions spatiales françaises et européennes.</p>
+                    <a href="https://www.cnes.fr" target="_blank">www.cnes.fr</a>
+                </div>
+
+                <div class="resource-card">
+                    <h4>🌌 ESA (Agence Spatiale Européenne)</h4>
+                    <p>Site en français avec images spectaculaires et actualités spatiales.</p>
+                    <a href="https://www.esa.int/fre" target="_blank">www.esa.int/fre</a>
+                </div>
+
+                <div class="resource-card">
+                    <h4>📡 NASA (version française)</h4>
+                    <p>Images du jour, missions spatiales, découvertes astronomiques.</p>
+                    <a href="https://www.nasa.gov" target="_blank">www.nasa.gov</a>
+                </div>
+
+                <div class="resource-card">
+                    <h4>🌙 Stelvision</h4>
+                    <p>Cartes du ciel, éphémérides et conseils pour observer.</p>
+                    <a href="https://www.stelvision.com" target="_blank">www.stelvision.com</a>
+                </div>
+            </div>
+
+            <h3>Applications Mobiles</h3>
+            <ul>
+                <li><strong>Stellarium Mobile :</strong> Planétarium virtuel pour identifier étoiles et constellations</li>
+                <li><strong>Star Walk 2 :</strong> Carte du ciel interactive en réalité augmentée</li>
+                <li><strong>NASA App :</strong> Actualités, images et vidéos de la NASA</li>
+                <li><strong>SkySafari :</strong> Atlas astronomique complet avec simulation du ciel</li>
+            </ul>
+
+            <h3>Clubs et Associations</h3>
+            <div class="info-card">
+                <strong>Société Astronomique de France (SAF) :</strong> La plus ancienne association d'astronomie en France. Organise des conférences, observations et propose une revue mensuelle.<br>
+                <a href="https://saf-astronomie.fr" target="_blank">saf-astronomie.fr</a>
+            </div>
+
+            <div class="info-card">
+                <strong>Clubs d'astronomie locaux :</strong> Recherche un club près de chez toi ! Ils organisent des soirées d'observation, des ateliers et peuvent te prêter du matériel. C'est le meilleur moyen de rencontrer d'autres passionnés !
+            </div>
+
+            <h3>Orientation Scientifique</h3>
+            <div class="fact-box">
+                <strong>📖 Parcours recommandés :</strong>
+                <ul>
+                    <li>Au lycée : choisir la spécialité <strong>Physique-Chimie</strong> et idéalement <strong>Mathématiques</strong></li>
+                    <li>Après le bac : Classes préparatoires (MPSI/PCSI), Licences de Physique ou Physique-Chimie</li>
+                    <li>Études supérieures : Masters en Astrophysique, Planétologie, Cosmologie</li>
+                    <li>Métiers possibles : Astrophysicien, ingénieur spatial, planétologue, enseignant-chercheur</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>✨ Continue à lever les yeux vers les étoiles et à te poser des questions sur l'Univers ! ✨</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">L'astronomie est accessible à tous. Nul besoin de matériel coûteux pour commencer : observez le ciel nocturne, posez des questions, lisez, et surtout, restez curieux !</p>
+        </footer>
+    </div>
+
+    <script>
+        // Génération d'étoiles aléatoires
+        const starsContainer = document.getElementById('stars');
+        const numStars = 200;
+
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.opacity = Math.random() * 0.7 + 0.3;
+            starsContainer.appendChild(star);
+        }
+    </script>
+</body>
+</html>
