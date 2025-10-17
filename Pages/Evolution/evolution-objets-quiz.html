@@ -205,6 +205,24 @@
     </div>
 
    <script>
+       
+    // ============================================
+    // CONFIRMATION AVANT FERMETURE
+    // ============================================
+    let formModified = false;
+
+    document.getElementById('quizForm').addEventListener('input', function() {
+        formModified = true;
+    });
+
+    window.addEventListener('beforeunload', function(e) {
+        if (formModified) {
+            e.preventDefault();
+            e.returnValue = '';
+            return '';
+        }
+    });
+       
     // ============================================
     // CONFIGURATION FIREBASE
     // ============================================
