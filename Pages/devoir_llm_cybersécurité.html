@@ -563,7 +563,7 @@
         </div>
     </form>
 
-    <button class="download-button" type="button" onclick="downloadResponses(); return false;">📥 Télécharger mes réponses</button>
+    <button class="download-button" type="button" onclick="sendToFirebase(); return false;">📥 Envoyer mes réponses</button>
    
     <!-- RESSOURCES -->
     <div class="info-box">
@@ -602,153 +602,109 @@
         </div>
     </div>
 
-<!-- Juste AVANT la balise </body>, ajoutez CE SEUL SCRIPT : -->
-
     <script>
-        // Variable pour tracker si le formulaire a été modifié
-        let formModified = false;
-        
-        // Détecter les modifications du formulaire
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('activitiesForm');
-            
-            if (form) {
-                // Écouter tous les changements dans le formulaire
-                form.addEventListener('change', function() {
-                    formModified = true;
-                });
-                
-                // Écouter aussi les saisies dans les textarea
-                const textareas = form.querySelectorAll('textarea');
-                textareas.forEach(textarea => {
-                    textarea.addEventListener('input', function() {
-                        formModified = true;
-                    });
-                });
-            }
-        });
-        
-        // Afficher la confirmation avant de quitter
-        window.addEventListener('beforeunload', function(e) {
-            if (formModified) {
-                e.preventDefault();
-                e.returnValue = '';
-                return '';
-            }
-        });
-        
-        // Fonction de téléchargement
-        function downloadResponses() {
-            try {
-                const form = document.getElementById('activitiesForm');
-                if (!form) {
-                    alert('❌ Formulaire non trouvé !');
-                    return;
-                }
-                
-                const formData = new FormData(form);
-                
-                // Structurer les données
-                const responses = {
-                    date: new Date().toISOString(),
-                    activite1_regles_or: {
-                        regle1: document.getElementById('rule1')?.checked || false,
-                        regle2: document.getElementById('rule2')?.checked || false,
-                        regle3: document.getElementById('rule3')?.checked || false,
-                        regle4: document.getElementById('rule4')?.checked || false,
-                        regle5: document.getElementById('rule5')?.checked || false,
-                        regle6: document.getElementById('rule6')?.checked || false,
-                        regle7: document.getElementById('rule7')?.checked || false,
-                        regle8: document.getElementById('rule8')?.checked || false,
-                        regle9: document.getElementById('rule9')?.checked || false,
-                        regle10: document.getElementById('rule10')?.checked || false
-                    },
-                    activite2_bonnes_pratiques: {
-                        exercice1: {
-                            question: "Demander à l'IA d'expliquer un cours de maths difficile",
-                            reponse: formData.get('usage1') || null,
-                            justification: formData.get('usage1_justif') || ""
-                        },
-                        exercice2: {
-                            question: "Faire écrire entièrement une rédaction de français par l'IA",
-                            reponse: formData.get('usage2') || null,
-                            justification: formData.get('usage2_justif') || ""
-                        },
-                        exercice3: {
-                            question: "Partager son adresse avec l'IA pour avoir des infos locales",
-                            reponse: formData.get('usage3') || null,
-                            justification: formData.get('usage3_justif') || ""
-                        },
-                        exercice4: {
-                            question: "Utiliser l'IA pour avoir des idées de plan pour un exposé",
-                            reponse: formData.get('usage4') || null,
-                            justification: formData.get('usage4_justif') || ""
-                        },
-                        exercice5: {
-                            question: "Demander à l'IA de créer un faux certificat médical",
-                            reponse: formData.get('usage5') || null,
-                            justification: formData.get('usage5_justif') || ""
-                        },
-                        exercice6: {
-                            question: "Faire corriger son brouillon de devoir par l'IA",
-                            reponse: formData.get('usage6') || null,
-                            justification: formData.get('usage6_justif') || ""
-                        },
-                        exercice7: {
-                            question: "Demander à l'IA de générer des insultes contre un camarade",
-                            reponse: formData.get('usage7') || null,
-                            justification: formData.get('usage7_justif') || ""
-                        },
-                        exercice8: {
-                            question: "Utiliser l'IA pour apprendre du vocabulaire anglais",
-                            reponse: formData.get('usage8') || null,
-                            justification: formData.get('usage8_justif') || ""
-                        }
-                    },
-                    activite3_detection_ia: {
-                        texteA: {
-                            diagnostic: formData.get('texteA') || null,
-                            justification: formData.get('texteA_justif') || ""
-                        },
-                        texteB: {
-                            diagnostic: formData.get('texteB') || null,
-                            justification: formData.get('texteB_justif') || ""
-                        },
-                        texteC: {
-                            diagnostic: formData.get('texteC') || null,
-                            justification: formData.get('texteC_justif') || ""
-                        }
-                    }
-                };
-                
-                // Créer le fichier JSON
-                const dataStr = JSON.stringify(responses, null, 2);
-                const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                const url = URL.createObjectURL(dataBlob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'reponses_llm_cybersecurite_' + new Date().toISOString().split('T')[0] + '.json';
-                
-                // Déclencher le téléchargement
-                document.body.appendChild(link);
-                link.click();
-                
-                // Nettoyer
-                setTimeout(function() {
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(url);
-                }, 100);
-                
-                // Réinitialiser pour permettre la sortie sans alerte
-                formModified = false;
-                
-                alert('✅ Vos réponses ont été téléchargées avec succès !');
-                
-            } catch (error) {
-                console.error('Erreur lors du téléchargement:', error);
-                alert('❌ Erreur : ' + error.message);
-            }
+       // ============================================
+    // CONFIGURATION FIREBASE
+    // ============================================
+    const firebaseConfig = {
+        apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+        authDomain: "form-results-b285b.firebaseapp.com",
+        projectId: "form-results-b285b",
+        storageBucket: "form-results-b285b.firebasestorage.app",
+        messagingSenderId: "662462446647",
+        appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+    };
+
+    // Initialiser Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    console.log('✅ Firebase initialisé');
+
+    // ============================================
+    // CONFIRMATION AVANT FERMETURE
+    // ============================================
+    let formModified = false;
+
+    document.getElementById('quizForm').addEventListener('input', function() {
+        formModified = true;
+    });
+
+    window.addEventListener('beforeunload', function(e) {
+        if (formModified) {
+            e.preventDefault();
+            e.returnValue = '';
+            return '';
         }
+    });
+
+    // ============================================
+    // BOUTON D'ENVOI
+    // ============================================
+    document.getElementById('sendToFirebase').addEventListener('click', async function() {
+        const form = document.getElementById('quizForm');
+        
+        // Vérifier la validité du formulaire
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+        
+        // Désactiver le bouton
+        const originalText = this.textContent;
+        this.disabled = true;
+        this.textContent = '⏳ Envoi en cours...';
+        
+        try {
+            // Collecter les données
+            const formData = new FormData(form);
+            
+            const responses = {
+                nom_eleve: document.getElementById('studentName').value,
+                classe: document.getElementById('studentClass').value,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                date_soumission: new Date().toISOString(),
+                
+                // Exercice 1
+                ex1_q1: formData.get('q1_1'),
+                ex1_q2: formData.get('q1_2'),
+                ex1_q3: formData.get('q1_3'),
+                
+                // Exercice 2
+                ex2_q1: formData.get('q2_1'),
+                ex2_q2: formData.get('q2_2'),
+                ex2_q3: formData.get('q2_3'),
+            };
+            
+            console.log('📤 Envoi des données:', responses);
+            
+            // Envoyer à Firebase
+            const docRef = await db.collection('evolution_objets').add(responses);
+            
+            console.log('✅ Document enregistré avec ID:', docRef.id);
+            
+            // Réactiver le bouton
+            this.disabled = false;
+            this.textContent = originalText;
+            
+            // Notification de succès
+            alert('✅ Tes réponses ont été envoyées avec succès !');
+            
+            // Réinitialiser le formulaire
+            form.reset();
+            formModified = false;
+            
+        } catch (error) {
+            console.error('❌ Erreur Firebase:', error);
+            
+            // Réactiver le bouton
+            this.disabled = false;
+            this.textContent = originalText;
+            
+            // Notification d'erreur
+            alert('❌ Erreur lors de l\'envoi : ' + error.message);
+        }
+    });
     </script>
 </body>
 </html>
