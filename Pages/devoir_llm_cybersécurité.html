@@ -679,7 +679,7 @@
             console.log('📤 Envoi des données:', responses);
             
             // Envoyer à Firebase
-            const docRef = await db.collection('evolution_objets').add(responses);
+            const docRef = await db.collection('llm_cybersecurite').add(responses);
             
             console.log('✅ Document enregistré avec ID:', docRef.id);
             
