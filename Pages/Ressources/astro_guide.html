@@ -393,7 +393,7 @@
 <body>
     <button class="accessibility-toggle" id="dyslexiaToggle" onclick="toggleDyslexiaMode()">
         <span id="toggleIcon">👁️</span>
-        <span id="toggleText">Mode Contrasté</span>
+        <span id="toggleText">Affichage différent</span>
     </button>
 
     <div class="stars" id="stars"></div>
@@ -579,7 +579,7 @@
                 toggleIcon.textContent = '📖';
             } else {
                 localStorage.setItem('dyslexiaMode', 'disabled');
-                toggleText.textContent = 'Mode Dyslexie';
+                toggleText.textContent = 'Affichage différent';
                 toggleIcon.textContent = '👁️';
             }
         }
