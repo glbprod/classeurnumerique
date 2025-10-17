@@ -573,11 +573,11 @@
             // Sauvegarder la préférence dans le navigateur
             if (body.classList.contains('dyslexia-mode')) {
                 localStorage.setItem('dyslexiaMode', 'enabled');
-                toggleText.textContent = 'Mode Normal';
+                toggleText.textContent = 'Affichage 1';
                 toggleIcon.textContent = '📖';
             } else {
                 localStorage.setItem('dyslexiaMode', 'disabled');
-                toggleText.textContent = 'Affichage différent';
+                toggleText.textContent = 'Affichage 2';
                 toggleIcon.textContent = '👁️';
             }
         }
@@ -590,7 +590,7 @@
             
             if (savedMode === 'enabled') {
                 document.body.classList.add('dyslexia-mode');
-                toggleText.textContent = 'Mode Normal';
+                toggleText.textContent = 'Affichage 1';
                 toggleIcon.textContent = '📖';
             }
         });
