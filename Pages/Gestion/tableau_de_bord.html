@@ -218,9 +218,47 @@
         <div id="statsOverview" class="stats-overview" style="display: none;"></div>
         
         <div id="formsGrid" class="forms-grid"></div>
+
+        <button onclick="logout()" style="background: #ff4444; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+            🚪 Déconnexion
+        </button>
+        
     </div>
 
     <script>
+        
+        // Configuration Firebase (la même)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        
+        // Vérifier l'authentification
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                // Pas connecté : rediriger vers login
+                window.location.href = '/login.html';
+            } else {
+                // Connecté : afficher le contenu
+                console.log('Utilisateur connecté:', user.email);
+                // Le reste de votre code ici...
+            }
+        });
+        
+        // Bouton de déconnexion (à ajouter dans votre HTML)
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = '/login.html';
+            });
+        }  
+        
         // ============================================
         // CONFIGURATION FIREBASE
         // ============================================
