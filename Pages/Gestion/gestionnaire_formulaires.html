@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord - Gestion des formulaires</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card .number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .label {
+            color: #666;
+            font-size: 1em;
+        }
+        
+        .forms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .form-card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .form-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+        
+        .form-card .description {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        
+        .form-card .info {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .form-card .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .form-card .info-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .form-card .info-label {
+            color: #666;
+        }
+        
+        .form-card .info-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .form-card .actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            background: #e0e0e0;
+        }
+        
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            margin: 50px 0;
+        }
+        
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .forms-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-card .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Tableau de bord</h1>
+        <p>Gestion des formulaires et exports</p>
+    </div>
+    
+    <div class="container">
+        <div id="loading" class="loading">⏳ Chargement des statistiques...</div>
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <div id="statsOverview" class="stats-overview" style="display: none;"></div>
+        
+        <div id="formsGrid" class="forms-grid"></div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION FIREBASE
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // ============================================
+        // CONFIGURATION DES FORMULAIRES
+        // ============================================
+        const formulaires = [
+            {
+                id: 'fonction_usage_estime',
+                nom: 'Fonction d\'usage et Fonction d\'estime',
+                description: 'Exercices sur les fonctions d\'usage et d\'estime des objets techniques',
+                niveau: '6ème',
+                icon: '🔧',
+                url: 'https://votre-site.netlify.app/fonction-usage-estime.html',
+                headers: [
+                    'Date/Heure',
+                    'Nom Élève',
+                    'Classe',
+                    'Ex1 - Vélo',
+                    'Ex1 - Smartphone',
+                    'Ex1 - Réfrigérateur',
+                    'Ex2 - Montre couleur',
+                    'Ex2 - Montre heure',
+                    'Ex2 - Sac tendance',
+                    'Ex2 - Sac transport',
+                    'Ex2 - Voiture design',
+                    'Ex2 - Voiture transport',
+                    'Ex3 - Objet choisi',
+                    'Ex3 - Fonction usage',
+                    'Ex3 - Fonction estime',
+                    'Ex3 - Même famille'
+                ],
+                fields: ['nom_eleve', 'classe', 'ex1_q1', 'ex1_q2', 'ex1_q3', 'ex2_q1', 'ex2_q2', 'ex2_q3', 'ex2_q4', 'ex2_q5', 'ex2_q6', 'ex3_objet', 'ex3_fonction_usage', 'ex3_fonction_estime', 'ex3_meme_famille']
+            },
+            {
+                id: 'evolution_objets',
+                nom: 'Évolution des objets techniques',
+                description: 'Exercices sur l\'évolution des objets techniques et leurs innovations',
+                niveau: '4ème',
+                icon: '📱',
+                url: 'https://votre-site.netlify.app/evolution-objets.html',
+                headers: [
+                    'Date/Heure',
+                    'Nom Élève',
+                    'Classe',
+                    'Ex1 - Q1.1 Téléphone poids',
+                    'Ex1 - Q1.2 Téléphone fonctions',
+                    'Ex1 - Q1.3 Téléphone matériaux',
+                    'Ex2 - Q2.1 Bouteilles recyclées',
+                    'Ex2 - Q2.2 Voitures connectées',
+                    'Ex2 - Q2.3 Sacs réutilisables',
+                    'Ex3 - Objet choisi',
+                    'Ex3 - Description évolution',
+                    'Ex3 - Type évolution',
+                    'Ex3 - Explication pourquoi'
+                ],
+                fields: ['nom_eleve', 'classe', 'ex1_q1', 'ex1_q2', 'ex1_q3', 'ex2_q1', 'ex2_q2', 'ex2_q3', 'objet_choisi', 'description_evolution', 'type_evolution', 'explication_pourquoi']
+            }
+            // Ajoutez vos autres formulaires ici
+        ];
+
+        // ============================================
+        // CHARGEMENT DES STATISTIQUES
+        // ============================================
+        async function loadStatistics() {
+            try {
+                let totalReponses = 0;
+                let totalEleves = new Set();
+                let derniereReponse = null;
+
+                for (const form of formulaires) {
+                    const snapshot = await db.collection(form.id).get();
+                    form.count = snapshot.size;
+                    totalReponses += snapshot.size;
+                    
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        if (data.nom_eleve) {
+                            totalEleves.add(data.nom_eleve);
+                        }
+                        
+                        const timestamp = data.timestamp?.toDate() || new Date(data.date_soumission);
+                        if (!derniereReponse || timestamp > derniereReponse) {
+                            derniereReponse = timestamp;
+                        }
+                    });
+                }
+
+                displayStatistics(totalReponses, totalEleves.size, derniereReponse);
+                displayForms();
+                
+                document.getElementById('loading').style.display = 'none';
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = '❌ Erreur de connexion à Firebase : ' + error.message;
+            }
+        }
+
+        // ============================================
+        // AFFICHAGE DES STATISTIQUES
+        // ============================================
+        function displayStatistics(total, eleves, derniere) {
+            const statsDiv = document.getElementById('statsOverview');
+            statsDiv.style.display = 'grid';
+            
+            const derniereStr = derniere ? derniere.toLocaleDateString('fr-FR', { 
+                day: 'numeric', 
+                month: 'short',
+                hour: '2-digit',
+                minute: '2-digit'
+            }) : 'Aucune';
+            
+            statsDiv.innerHTML = `
+                <div class="stat-card">
+                    <div class="number">${total}</div>
+                    <div class="label">Réponses totales</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">${formulaires.length}</div>
+                    <div class="label">Formulaires actifs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">${eleves}</div>
+                    <div class="label">Élèves uniques</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" style="font-size: 1.5em;">${derniereStr}</div>
+                    <div class="label">Dernière réponse</div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // AFFICHAGE DES FORMULAIRES
+        // ============================================
+        function displayForms() {
+            const grid = document.getElementById('formsGrid');
+            grid.innerHTML = '';
+            
+            formulaires.forEach(form => {
+                const card = document.createElement('div');
+                card.className = 'form-card';
+                card.innerHTML = `
+                    <div class="icon">${form.icon}</div>
+                    <h3>${form.nom}</h3>
+                    <div class="description">${form.description}</div>
+                    <div class="info">
+                        <div class="info-row">
+                            <span class="info-label">Niveau :</span>
+                            <span class="info-value">${form.niveau}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Réponses :</span>
+                            <span class="info-value">${form.count || 0}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Collection :</span>
+                            <span class="info-value" style="font-size: 0.85em;">${form.id}</span>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <a href="${form.url}" target="_blank" class="btn btn-secondary">🔗 Ouvrir</a>
+                        <button class="btn btn-primary" onclick="exportFormToCSV('${form.id}')">
+                            📥 Exporter CSV
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // ============================================
+        // EXPORT CSV
+        // ============================================
+        async function exportFormToCSV(formId) {
+            const form = formulaires.find(f => f.id === formId);
+            if (!form) return;
+            
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            try {
+                button.disabled = true;
+                button.textContent = '⏳ Export...';
+                
+                const snapshot = await db.collection(formId).get();
+                
+                if (snapshot.empty) {
+                    alert('⚠️ Aucune donnée à exporter pour ce formulaire.');
+                    button.disabled = false;
+                    button.textContent = originalText;
+                    return;
+                }
+                
+                let csvContent = form.headers.join(';') + '\n';
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    
+                    let dateStr = '';
+                    if (data.timestamp) {
+                        dateStr = data.timestamp.toDate().toLocaleString('fr-FR');
+                    } else if (data.date_soumission) {
+                        dateStr = new Date(data.date_soumission).toLocaleString('fr-FR');
+                    }
+                    
+                    const clean = (str) => {
+                        if (!str) return '';
+                        if (Array.isArray(str)) return '"' + str.join(', ') + '"';
+                        return '"' + String(str).replace(/"/g, '""').replace(/\n/g, ' ') + '"';
+                    };
+                    
+                    const row = [clean(dateStr)];
+                    form.fields.forEach(field => {
+                        row.push(clean(data[field]));
+                    });
+                    
+                    csvContent += row.join(';') + '\n';
+                });
+                
+                const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `${formId}_${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                alert(`✅ Export réussi ! ${snapshot.size} réponse(s) exportée(s).`);
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('❌ Erreur lors de l\'export : ' + error.message);
+            } finally {
+                button.disabled = false;
+                button.textContent = originalText;
+            }
+        }
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        window.addEventListener('load', loadStatistics);
+    </script>
+</body>
+</html>
