@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Firebase vers CSV</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            font-weight: bold;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        #status {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        .info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Export Firebase → CSV</h1>
+        
+        <div class="info">
+            <strong>Instructions :</strong><br>
+            Cliquez sur le bouton ci-dessous pour exporter toutes les réponses des élèves au format CSV.
+        </div>
+        
+        <button id="exportBtn" onclick="exportToCSV()">
+            📥 Exporter les réponses en CSV
+        </button>
+        
+        <div id="status"></div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION FIREBASE (LA MÊME QUE VOTRE FORMULAIRE)
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // ============================================
+        // FONCTION D'EXPORT CSV
+        // ============================================
+        async function exportToCSV() {
+            const btn = document.getElementById('exportBtn');
+            const status = document.getElementById('status');
+            
+            try {
+                btn.disabled = true;
+                btn.textContent = '⏳ Récupération des données...';
+                status.textContent = '';
+                
+                // Récupérer toutes les données
+                const snapshot = await db.collection('evolution_objets').get();
+                
+                if (snapshot.empty) {
+                    status.innerHTML = '⚠️ Aucune donnée trouvée dans Firebase.';
+                    btn.disabled = false;
+                    btn.textContent = '📥 Exporter les réponses en CSV';
+                    return;
+                }
+                
+                status.textContent = `✅ ${snapshot.size} réponse(s) trouvée(s). Génération du CSV...`;
+                
+                // En-têtes du CSV
+                const headers = [
+                    'Date/Heure',
+                    'Nom Élève',
+                    'Classe',
+                    'Ex1 - Q1.1 Téléphone poids',
+                    'Ex1 - Q1.2 Téléphone fonctions',
+                    'Ex1 - Q1.3 Téléphone matériaux',
+                    'Ex2 - Q2.1 Bouteilles recyclées',
+                    'Ex2 - Q2.2 Voitures connectées',
+                    'Ex2 - Q2.3 Sacs réutilisables',
+                    'Ex3 - Objet choisi',
+                    'Ex3 - Description évolution',
+                    'Ex3 - Type évolution',
+                    'Ex3 - Explication pourquoi'
+                ];
+                
+                // Créer le contenu CSV
+                let csvContent = headers.join(';') + '\n';
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    
+                    // Formater la date
+                    let dateStr = '';
+                    if (data.timestamp) {
+                        const date = data.timestamp.toDate();
+                        dateStr = date.toLocaleString('fr-FR');
+                    } else if (data.date_soumission) {
+                        dateStr = new Date(data.date_soumission).toLocaleString('fr-FR');
+                    }
+                    
+                    // Nettoyer les données (enlever les retours à la ligne et guillemets)
+                    const clean = (str) => {
+                        if (!str) return '';
+                        return '"' + String(str).replace(/"/g, '""').replace(/\n/g, ' ') + '"';
+                    };
+                    
+                const row = [
+                    clean(dateStr),
+                    clean(data.nom_eleve),
+                    clean(data.classe),
+                    clean(data.q1_1),
+                    clean(data.q1_2),
+                    clean(data.q1_3),
+                    clean(data.q2_1 ? data.q2_1.join(', ') : ''),
+                    clean(data.q2_2 ? data.q2_2.join(', ') : ''),
+                    clean(data.q2_3 ? data.q2_3.join(', ') : ''),
+                    clean(data.objet_choisi),
+                    clean(data.description_evolution),
+                    clean(data.type_evolution),
+                    clean(data.explication_pourquoi)
+                ];
+                    
+                    csvContent += row.join(';') + '\n';
+                });
+                
+                // Télécharger le fichier CSV
+                const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `evolution_objets_${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                status.innerHTML = `✅ Export réussi ! <strong>${snapshot.size} réponse(s)</strong> exportée(s).`;
+                btn.disabled = false;
+                btn.textContent = '📥 Exporter les réponses en CSV';
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                status.innerHTML = `❌ Erreur : ${error.message}`;
+                btn.disabled = false;
+                btn.textContent = '📥 Exporter les réponses en CSV';
+            }
+        }
+    </script>
+</body>
+</html>
