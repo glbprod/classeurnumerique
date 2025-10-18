@@ -158,16 +158,12 @@
                     clean(dateStr),
                     clean(data.nom_eleve),
                     clean(data.classe),
-                    clean(data.q1_1),
-                    clean(data.q1_2),
-                    clean(data.q1_3),
-                    clean(data.q2_1 ? data.q2_1.join(', ') : ''),
-                    clean(data.q2_2 ? data.q2_2.join(', ') : ''),
-                    clean(data.q2_3 ? data.q2_3.join(', ') : ''),
-                    clean(data.objet_choisi),
-                    clean(data.description_evolution),
-                    clean(data.type_evolution),
-                    clean(data.explication_pourquoi)
+                    clean(data.ex1_q1),
+                    clean(data.ex1_q2),
+                    clean(data.ex1_q3),
+                    clean(data.ex2_q1),
+                    clean(data.ex2_q2),
+                    clean(data.ex2_q3)
                 ];
                     
                     csvContent += row.join(';') + '\n';
