@@ -218,12 +218,12 @@
         <div id="statsOverview" class="stats-overview" style="display: none;"></div>
         
         <div id="formsGrid" class="forms-grid"></div>
-        
     </div>
 
     <script>
-        
-        // Configuration Firebase (la même)
+        // ============================================
+        // CONFIGURATION FIREBASE
+        // ============================================
         const firebaseConfig = {
             apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
             authDomain: "form-results-b285b.firebaseapp.com",
@@ -232,10 +232,9 @@
             messagingSenderId: "662462446647",
             appId: "1:662462446647:web:0fe6315cc0c189185513b2"
         };
-        
+
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        
+        const db = firebase.firestore();
 
         // ============================================
         // CONFIGURATION DES FORMULAIRES
@@ -247,7 +246,7 @@
                 description: 'Exercices sur les fonctions d\'usage et d\'estime des objets techniques',
                 niveau: '6ème',
                 icon: '🔧',
-                url: 'https://latechnologieaucollege.netlify.app/pages/evolution/fonction-usage-estime-quiz.html',
+                url: 'https://votre-site.netlify.app/fonction-usage-estime.html',
                 headers: [
                     'Date/Heure',
                     'Nom Élève',
@@ -274,7 +273,7 @@
                 description: 'Exercices sur l\'évolution des objets techniques et leurs innovations',
                 niveau: '4ème',
                 icon: '📱',
-                url: 'https://latechnologieaucollege.netlify.app/pages/evolution/evolution-objets-quiz.html',
+                url: 'https://votre-site.netlify.app/evolution-objets.html',
                 headers: [
                     'Date/Heure',
                     'Nom Élève',
@@ -285,12 +284,16 @@
                     'Ex2 - Q2.1 Bouteilles recyclées',
                     'Ex2 - Q2.2 Voitures connectées',
                     'Ex2 - Q2.3 Sacs réutilisables',
+                    'Ex3 - Objet choisi',
+                    'Ex3 - Description évolution',
+                    'Ex3 - Type évolution',
+                    'Ex3 - Explication pourquoi'
                 ],
                 fields: ['nom_eleve', 'classe', 'ex1_q1', 'ex1_q2', 'ex1_q3', 'ex2_q1', 'ex2_q2', 'ex2_q3', 'objet_choisi', 'description_evolution', 'type_evolution', 'explication_pourquoi']
             }
             // Ajoutez vos autres formulaires ici
         ];
-        
+
         // ============================================
         // CHARGEMENT DES STATISTIQUES
         // ============================================
