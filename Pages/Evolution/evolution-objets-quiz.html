@@ -242,23 +242,6 @@
     console.log('✅ Firebase initialisé');
 
     // ============================================
-    // CONFIRMATION AVANT FERMETURE
-    // ============================================
-    let formModified = false;
-
-    document.getElementById('quizForm').addEventListener('input', function() {
-        formModified = true;
-    });
-
-    window.addEventListener('beforeunload', function(e) {
-        if (formModified) {
-            e.preventDefault();
-            e.returnValue = '';
-            return '';
-        }
-    });
-
-    // ============================================
     // BOUTON D'ENVOI
     // ============================================
     document.getElementById('sendToFirebase').addEventListener('click', async function() {
