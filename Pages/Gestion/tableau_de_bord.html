@@ -248,30 +248,6 @@
             }
         });
         
-        // Bouton de déconnexion (à ajouter dans votre HTML)
-        function logout() {
-            auth.signOut().then(() => {
-                window.location.href = '/login.html';
-            });
-        }  
-
-                // Vérifier l'authentification AVANT tout le reste
-        firebase.auth().onAuthStateChanged((user) => {
-        if (!user) {
-        // Pas connecté : rediriger vers login
-        window.location.href = '/login.html';
-        } else {
-        // Connecté : le reste du code continue normalement
-        console.log('✅ Utilisateur connecté:', user.email);
-        }
-        });
-        
-        // Fonction de déconnexion
-        function logout() {
-        firebase.auth().signOut().then(() => {
-        window.location.href = '/login.html';
-        });
-        }
 
         // ============================================
         // CONFIGURATION DES FORMULAIRES
