@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Correcteur automatique</title>
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    
     <style>
         * {
             margin: 0;
@@ -107,6 +103,7 @@
             background: white;
             cursor: pointer;
             transition: all 0.3s;
+            margin-bottom: 20px;
         }
         
         .upload-zone:hover {
@@ -299,12 +296,28 @@
             color: #dc3545;
             font-weight: bold;
         }
+
+        .file-list {
+            margin-top: 15px;
+        }
+
+        .file-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .file-item strong {
+            color: #667eea;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>📊 Correcteur automatique</h1>
-        <p class="subtitle">Correction des quiz avec fichier de référence CSV</p>
+        <p class="subtitle">Correction des quiz avec fichiers CSV</p>
         
         <!-- ÉTAPE 1 : Sélection du quiz -->
         <div class="section">
@@ -323,23 +336,34 @@
             </div>
         </div>
         
-        <!-- ÉTAPE 2 : Upload du CSV -->
+        <!-- ÉTAPE 2 : Upload des CSV -->
         <div class="section" id="uploadSection" style="display: none;">
-            <h2>📄 Étape 2 : Importez le fichier de correction (CSV)</h2>
+            <h2>📄 Étape 2 : Importez les fichiers CSV</h2>
             <div class="alert alert-info">
-                <strong>Format attendu :</strong> Un CSV avec une ligne d'en-têtes (noms des questions) et une ligne "Correction" avec les bonnes réponses.
+                <strong>Fichiers nécessaires :</strong><br>
+                1️⃣ CSV des réponses élèves (exporté depuis Firebase)<br>
+                2️⃣ CSV des corrections (avec les bonnes réponses)
             </div>
-            <div class="upload-zone" id="uploadZone">
+            
+            <!-- Upload CSV élèves -->
+            <h3 style="margin: 20px 0 10px 0; color: #667eea;">📥 Fichier des réponses élèves</h3>
+            <div class="upload-zone" id="uploadZoneStudents">
                 <div class="upload-icon">📤</div>
-                <h3>Glissez votre fichier CSV ici</h3>
-                <p>ou cliquez pour sélectionner</p>
-                <input type="file" id="csvFile" accept=".csv">
+                <h3>Glissez le CSV Firebase ici</h3>
+                <p>Format : Date/Heure, Nom Élève, Classe, réponses...</p>
+                <input type="file" id="csvStudents" accept=".csv">
             </div>
-            <div id="fileInfo" style="margin-top: 20px; display: none;">
-                <div class="alert alert-success">
-                    ✅ Fichier chargé : <strong id="fileName"></strong>
-                </div>
+            
+            <!-- Upload CSV corrections -->
+            <h3 style="margin: 20px 0 10px 0; color: #667eea;">✅ Fichier des corrections</h3>
+            <div class="upload-zone" id="uploadZoneCorrections">
+                <div class="upload-icon">📤</div>
+                <h3>Glissez le CSV de correction ici</h3>
+                <p>Format : Noms des questions en en-têtes, réponses correctes sur la 2ème ligne</p>
+                <input type="file" id="csvCorrections" accept=".csv">
             </div>
+
+            <div id="fileInfo" class="file-list" style="display: none;"></div>
         </div>
         
         <!-- ÉTAPE 3 : Correction -->
@@ -393,24 +417,13 @@
     </div>
     
     <script>
-        // Configuration Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
-            authDomain: "form-results-b285b.firebaseapp.com",
-            projectId: "form-results-b285b",
-            storageBucket: "form-results-b285b.firebasestorage.app",
-            messagingSenderId: "662462446647",
-            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        
         // Variables globales
         let selectedQuiz = null;
-        let csvCorrections = {};
-        let studentResponses = [];
+        let studentsData = [];
+        let correctionsData = {};
         let correctedResults = [];
+        let studentsFileName = '';
+        let correctionsFileName = '';
         
         // Sélection du quiz
         document.querySelectorAll('.quiz-card').forEach(card => {
@@ -421,100 +434,181 @@
                 document.getElementById('uploadSection').style.display = 'block';
                 document.getElementById('correctionSection').style.display = 'none';
                 document.getElementById('resultsSection').style.display = 'none';
+                document.getElementById('fileInfo').style.display = 'none';
+                studentsData = [];
+                correctionsData = {};
             });
         });
         
-        // Gestion de l'upload
-        const uploadZone = document.getElementById('uploadZone');
-        const fileInput = document.getElementById('csvFile');
+        // Configuration upload zone pour les élèves
+        setupUploadZone('uploadZoneStudents', 'csvStudents', handleStudentsFile);
         
-        uploadZone.addEventListener('click', () => fileInput.click());
+        // Configuration upload zone pour les corrections
+        setupUploadZone('uploadZoneCorrections', 'csvCorrections', handleCorrectionsFile);
         
-        uploadZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadZone.classList.add('active');
-        });
+        function setupUploadZone(zoneId, inputId, handler) {
+            const zone = document.getElementById(zoneId);
+            const input = document.getElementById(inputId);
+            
+            zone.addEventListener('click', () => input.click());
+            
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                zone.classList.add('active');
+            });
+            
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('active');
+            });
+            
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('active');
+                const file = e.dataTransfer.files[0];
+                if (file && file.name.endsWith('.csv')) {
+                    handler(file);
+                }
+            });
+            
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) handler(file);
+            });
+        }
         
-        uploadZone.addEventListener('dragleave', () => {
-            uploadZone.classList.remove('active');
-        });
-        
-        uploadZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadZone.classList.remove('active');
-            const file = e.dataTransfer.files[0];
-            if (file && file.name.endsWith('.csv')) {
-                handleFile(file);
-            }
-        });
-        
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) handleFile(file);
-        });
-        
-        function handleFile(file) {
+        function handleStudentsFile(file) {
+            studentsFileName = file.name;
             const reader = new FileReader();
             reader.onload = function(e) {
-                parseCSV(e.target.result);
-                document.getElementById('fileName').textContent = file.name;
-                document.getElementById('fileInfo').style.display = 'block';
-                document.getElementById('correctionSection').style.display = 'block';
+                studentsData = parseCSV(e.target.result);
+                console.log('✅ Données élèves chargées:', studentsData.length, 'élèves');
+                updateFileInfo();
+                checkIfReadyToCorrect();
             };
-            reader.readAsText(file);
+            reader.readAsText(file, 'UTF-8');
+        }
+        
+        function handleCorrectionsFile(file) {
+            correctionsFileName = file.name;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                correctionsData = parseCorrectionsCSV(e.target.result);
+                console.log('✅ Corrections chargées:', correctionsData);
+                updateFileInfo();
+                checkIfReadyToCorrect();
+            };
+            reader.readAsText(file, 'UTF-8');
         }
         
         function parseCSV(csvText) {
             const lines = csvText.split('\n').filter(line => line.trim());
-            const headers = lines[0].split(',').map(h => h.trim());
+            if (lines.length < 2) return [];
             
-            csvCorrections = {};
+            const headers = lines[0].split(',').map(h => h.trim());
+            const data = [];
             
             for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].split(',').map(v => v.trim());
-                for (let j = 0; j < headers.length; j++) {
-                    if (!csvCorrections[headers[j]]) {
-                        csvCorrections[headers[j]] = values[j];
-                    }
-                }
+                const values = parseCSVLine(lines[i]);
+                const row = {};
+                headers.forEach((header, index) => {
+                    row[header] = values[index] ? values[index].trim() : '';
+                });
+                data.push(row);
             }
             
-            console.log('✅ Corrections chargées:', csvCorrections);
+            return data;
+        }
+        
+        function parseCorrectionsCSV(csvText) {
+            const lines = csvText.split('\n').filter(line => line.trim());
+            if (lines.length < 2) return {};
+            
+            const headers = lines[0].split(',').map(h => h.trim());
+            const values = parseCSVLine(lines[1]);
+            
+            const corrections = {};
+            headers.forEach((header, index) => {
+                if (values[index]) {
+                    corrections[header] = values[index].trim();
+                }
+            });
+            
+            return corrections;
+        }
+        
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current);
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current);
+            
+            return result.map(val => val.replace(/^"|"$/g, '').trim());
+        }
+        
+        function updateFileInfo() {
+            const fileInfo = document.getElementById('fileInfo');
+            let html = '';
+            
+            if (studentsFileName) {
+                html += `
+                    <div class="file-item">
+                        <strong>📥 Réponses élèves :</strong> ${studentsFileName} 
+                        <span style="color: #28a745;">(${studentsData.length} élèves)</span>
+                    </div>
+                `;
+            }
+            
+            if (correctionsFileName) {
+                const questionsCount = Object.keys(correctionsData).length;
+                html += `
+                    <div class="file-item">
+                        <strong>✅ Corrections :</strong> ${correctionsFileName}
+                        <span style="color: #28a745;">(${questionsCount} questions)</span>
+                    </div>
+                `;
+            }
+            
+            if (html) {
+                fileInfo.innerHTML = html;
+                fileInfo.style.display = 'block';
+            }
+        }
+        
+        function checkIfReadyToCorrect() {
+            if (studentsData.length > 0 && Object.keys(correctionsData).length > 0) {
+                document.getElementById('correctionSection').style.display = 'block';
+            }
         }
         
         // Lancer la correction
-        document.getElementById('btnCorrect').addEventListener('click', async function() {
-            if (!selectedQuiz) {
-                alert('Veuillez sélectionner un quiz');
+        document.getElementById('btnCorrect').addEventListener('click', function() {
+            if (studentsData.length === 0 || Object.keys(correctionsData).length === 0) {
+                alert('Veuillez charger les deux fichiers CSV');
                 return;
             }
             
             this.disabled = true;
-            this.innerHTML = '<div class="spinner"></div> Correction en cours...';
+            this.innerHTML = '⏳ Correction en cours...';
             
             try {
-                // Récupérer les réponses depuis Firebase
-                const snapshot = await db.collection(selectedQuiz).get();
-                studentResponses = [];
-                
-                snapshot.forEach(doc => {
-                    studentResponses.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-                
-                // Corriger chaque élève
-                correctedResults = studentResponses.map(student => {
-                    return correctStudent(student);
-                });
-                
-                // Afficher les résultats
+                correctedResults = studentsData.map(student => correctStudent(student));
                 displayResults();
                 
                 this.disabled = false;
                 this.innerHTML = '✅ Correction terminée';
-                
             } catch (error) {
                 console.error('Erreur:', error);
                 alert('Erreur lors de la correction: ' + error.message);
@@ -528,31 +622,45 @@
             let total = 0;
             const details = {};
             
-            // Parcourir toutes les questions
-            for (let key in csvCorrections) {
-                if (key !== 'Correction' && student[key] !== undefined) {
+            // Parcourir toutes les colonnes de correction
+            for (let questionColumn in correctionsData) {
+                // Ignorer les colonnes métadonnées
+                if (['Date/Heure', 'Nom Élève', 'Classe'].includes(questionColumn)) {
+                    continue;
+                }
+                
+                // Vérifier si la question existe dans les réponses de l'élève
+                if (student[questionColumn] !== undefined && student[questionColumn] !== '') {
                     total++;
-                    const studentAnswer = String(student[key]).toLowerCase().trim();
-                    const correctAnswer = String(csvCorrections[key]).toLowerCase().trim();
+                    
+                    const studentAnswer = normalizeAnswer(student[questionColumn]);
+                    const correctAnswer = normalizeAnswer(correctionsData[questionColumn]);
                     
                     const isCorrect = studentAnswer === correctAnswer;
                     if (isCorrect) correct++;
                     
-                    details[key] = {
-                        studentAnswer: student[key],
-                        correctAnswer: csvCorrections[key],
+                    details[questionColumn] = {
+                        studentAnswer: student[questionColumn],
+                        correctAnswer: correctionsData[questionColumn],
                         isCorrect: isCorrect
                     };
                 }
             }
             
             return {
-                ...student,
+                nom: student['Nom Élève'] || 'Anonyme',
+                classe: student['Classe'] || 'N/A',
+                date: student['Date/Heure'] || 'N/A',
                 score: correct,
                 total: total,
                 percentage: total > 0 ? Math.round((correct / total) * 100) : 0,
                 details: details
             };
+        }
+        
+        function normalizeAnswer(answer) {
+            if (!answer) return '';
+            return String(answer).toLowerCase().trim();
         }
         
         function displayResults() {
@@ -574,17 +682,13 @@
                 const scoreClass = result.percentage >= 75 ? 'good' : 
                                   result.percentage >= 50 ? 'medium' : 'bad';
                 
-                const date = result.date_soumission ? 
-                    new Date(result.date_soumission).toLocaleDateString('fr-FR') : 
-                    'N/A';
-                
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${result.nom_eleve || 'Anonyme'}</td>
-                    <td>${result.classe || 'N/A'}</td>
+                    <td>${result.nom}</td>
+                    <td>${result.classe}</td>
                     <td class="score ${scoreClass}">${result.score}/${result.total}</td>
                     <td class="score ${scoreClass}">${result.percentage}%</td>
-                    <td>${date}</td>
+                    <td>${result.date}</td>
                     <td>
                         <button class="btn" style="padding: 8px 15px; margin: 0;" 
                                 onclick="toggleDetails(${index})">
@@ -594,7 +698,7 @@
                 `;
                 tbody.appendChild(row);
                 
-                // Ligne de détails (cachée par défaut)
+                // Ligne de détails
                 const detailRow = document.createElement('tr');
                 detailRow.className = 'detail-row';
                 detailRow.style.display = 'none';
@@ -610,15 +714,15 @@
         
         function generateDetailHTML(details) {
             let html = '<div style="padding: 10px;">';
-            for (let key in details) {
-                const detail = details[key];
+            for (let question in details) {
+                const detail = details[question];
                 const icon = detail.isCorrect ? '✅' : '❌';
                 const className = detail.isCorrect ? 'correct' : 'incorrect';
                 
                 html += `
                     <div class="question-detail">
-                        <strong>${icon} ${key}:</strong><br>
-                        Réponse élève: <span class="${className}">${detail.studentAnswer}</span><br>
+                        <strong>${icon} ${question}:</strong><br>
+                        Réponse élève: <span class="${className}">${detail.studentAnswer || '(vide)'}</span><br>
                         Réponse attendue: <span class="correct">${detail.correctAnswer}</span>
                     </div>
                 `;
@@ -637,13 +741,10 @@
             let csv = 'Nom,Classe,Score,Total,Pourcentage,Date\n';
             
             correctedResults.forEach(result => {
-                const date = result.date_soumission ? 
-                    new Date(result.date_soumission).toLocaleDateString('fr-FR') : 
-                    'N/A';
-                csv += `${result.nom_eleve},${result.classe},${result.score},${result.total},${result.percentage}%,${date}\n`;
+                csv += `"${result.nom}","${result.classe}",${result.score},${result.total},${result.percentage}%,"${result.date}"\n`;
             });
             
-            const blob = new Blob([csv], { type: 'text/csv' });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
