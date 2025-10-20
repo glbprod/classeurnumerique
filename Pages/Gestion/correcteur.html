@@ -738,13 +738,35 @@
         
         // Export CSV
         document.getElementById('btnExport').addEventListener('click', function() {
-            let csv = 'Nom,Classe,Score,Total,Pourcentage,Date\n';
+            // En-tête avec toutes les colonnes de détail
+            let csv = 'Nom,Classe,Score,Total,Pourcentage,Date';
             
+            // Ajouter les colonnes de questions
+            if (correctedResults.length > 0) {
+                const firstResult = correctedResults[0];
+                for (let question in firstResult.details) {
+                    csv += `,"${question} - Réponse","${question} - Correct"`;
+                }
+            }
+            csv += '\n';
+            
+            // Données
             correctedResults.forEach(result => {
-                csv += `"${result.nom}","${result.classe}",${result.score},${result.total},${result.percentage}%,"${result.date}"\n`;
+                // Colonnes de base
+                csv += `"${result.nom}","${result.classe}",${result.score},${result.total},${result.percentage}%,"${result.date}"`;
+                
+                // Détails des questions
+                for (let question in result.details) {
+                    const detail = result.details[question];
+                    const correctIcon = detail.isCorrect ? 'OUI' : 'NON';
+                    csv += `,"${detail.studentAnswer}","${correctIcon}"`;
+                }
+                csv += '\n';
             });
             
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            // Création du Blob avec BOM UTF-8 pour Excel
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
