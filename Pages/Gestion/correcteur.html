@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correcteur automatique</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.2em;
+        }
+        
+        .section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quiz-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .quiz-card {
+            background: white;
+            border: 3px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .quiz-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .quiz-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .quiz-card .icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        .quiz-card h3 {
+            margin-bottom: 5px;
+        }
+        
+        .upload-zone {
+            border: 3px dashed #667eea;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-zone:hover {
+            background: #f0f4ff;
+            border-color: #764ba2;
+        }
+        
+        .upload-zone.active {
+            background: #e7f3ff;
+            border-color: #28a745;
+        }
+        
+        .upload-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-block;
+            margin: 10px;
+        }
+        
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        
+        .btn-export {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        
+        .stat-card .label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .results-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        .results-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .results-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .score {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .score.good {
+            color: #28a745;
+        }
+        
+        .score.medium {
+            color: #ffc107;
+        }
+        
+        .score.bad {
+            color: #dc3545;
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .detail-row {
+            background: #f8f9fa;
+            font-size: 0.9em;
+        }
+        
+        .detail-row td {
+            padding: 20px !important;
+        }
+        
+        .question-detail {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+        
+        .correct {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .incorrect {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Correcteur automatique</h1>
+        <p class="subtitle">Correction des quiz avec fichier de référence CSV</p>
+        
+        <!-- ÉTAPE 1 : Sélection du quiz -->
+        <div class="section">
+            <h2>🎯 Étape 1 : Sélectionnez le quiz</h2>
+            <div class="quiz-selector">
+                <div class="quiz-card" data-quiz="fonction_usage_estime">
+                    <div class="icon">🔧</div>
+                    <h3>Fonction d'usage/estime</h3>
+                    <p>6ème - 10 questions</p>
+                </div>
+                <div class="quiz-card" data-quiz="evolution_objets">
+                    <div class="icon">📱</div>
+                    <h3>Évolution des objets</h3>
+                    <p>4ème - 6 questions</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ÉTAPE 2 : Upload du CSV -->
+        <div class="section" id="uploadSection" style="display: none;">
+            <h2>📄 Étape 2 : Importez le fichier de correction (CSV)</h2>
+            <div class="alert alert-info">
+                <strong>Format attendu :</strong> Un CSV avec une ligne d'en-têtes (noms des questions) et une ligne "Correction" avec les bonnes réponses.
+            </div>
+            <div class="upload-zone" id="uploadZone">
+                <div class="upload-icon">📤</div>
+                <h3>Glissez votre fichier CSV ici</h3>
+                <p>ou cliquez pour sélectionner</p>
+                <input type="file" id="csvFile" accept=".csv">
+            </div>
+            <div id="fileInfo" style="margin-top: 20px; display: none;">
+                <div class="alert alert-success">
+                    ✅ Fichier chargé : <strong id="fileName"></strong>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ÉTAPE 3 : Correction -->
+        <div class="section" id="correctionSection" style="display: none;">
+            <h2>⚡ Étape 3 : Lancer la correction</h2>
+            <button class="btn btn-success" id="btnCorrect">🚀 Corriger les réponses</button>
+        </div>
+        
+        <!-- RÉSULTATS -->
+        <div class="section" id="resultsSection" style="display: none;">
+            <h2>📈 Résultats de la correction</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="label">Élèves corrigés</div>
+                    <div class="value" id="statStudents">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Score moyen</div>
+                    <div class="value" id="statAverage">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Meilleur score</div>
+                    <div class="value" id="statBest">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Score le plus bas</div>
+                    <div class="value" id="statWorst">0%</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px; text-align: center;">
+                <button class="btn btn-export" id="btnExport">💾 Exporter les résultats (CSV)</button>
+            </div>
+            
+            <table class="results-table" id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>Élève</th>
+                        <th>Classe</th>
+                        <th>Score</th>
+                        <th>Pourcentage</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        // Variables globales
+        let selectedQuiz = null;
+        let csvCorrections = {};
+        let studentResponses = [];
+        let correctedResults = [];
+        
+        // Sélection du quiz
+        document.querySelectorAll('.quiz-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.quiz-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedQuiz = this.dataset.quiz;
+                document.getElementById('uploadSection').style.display = 'block';
+                document.getElementById('correctionSection').style.display = 'none';
+                document.getElementById('resultsSection').style.display = 'none';
+            });
+        });
+        
+        // Gestion de l'upload
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('csvFile');
+        
+        uploadZone.addEventListener('click', () => fileInput.click());
+        
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('active');
+        });
+        
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('active');
+        });
+        
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('active');
+            const file = e.dataTransfer.files[0];
+            if (file && file.name.endsWith('.csv')) {
+                handleFile(file);
+            }
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) handleFile(file);
+        });
+        
+        function handleFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                parseCSV(e.target.result);
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('fileInfo').style.display = 'block';
+                document.getElementById('correctionSection').style.display = 'block';
+            };
+            reader.readAsText(file);
+        }
+        
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n').filter(line => line.trim());
+            const headers = lines[0].split(',').map(h => h.trim());
+            
+            csvCorrections = {};
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',').map(v => v.trim());
+                for (let j = 0; j < headers.length; j++) {
+                    if (!csvCorrections[headers[j]]) {
+                        csvCorrections[headers[j]] = values[j];
+                    }
+                }
+            }
+            
+            console.log('✅ Corrections chargées:', csvCorrections);
+        }
+        
+        // Lancer la correction
+        document.getElementById('btnCorrect').addEventListener('click', async function() {
+            if (!selectedQuiz) {
+                alert('Veuillez sélectionner un quiz');
+                return;
+            }
+            
+            this.disabled = true;
+            this.innerHTML = '<div class="spinner"></div> Correction en cours...';
+            
+            try {
+                // Récupérer les réponses depuis Firebase
+                const snapshot = await db.collection(selectedQuiz).get();
+                studentResponses = [];
+                
+                snapshot.forEach(doc => {
+                    studentResponses.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                // Corriger chaque élève
+                correctedResults = studentResponses.map(student => {
+                    return correctStudent(student);
+                });
+                
+                // Afficher les résultats
+                displayResults();
+                
+                this.disabled = false;
+                this.innerHTML = '✅ Correction terminée';
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la correction: ' + error.message);
+                this.disabled = false;
+                this.innerHTML = '🚀 Corriger les réponses';
+            }
+        });
+        
+        function correctStudent(student) {
+            let correct = 0;
+            let total = 0;
+            const details = {};
+            
+            // Parcourir toutes les questions
+            for (let key in csvCorrections) {
+                if (key !== 'Correction' && student[key] !== undefined) {
+                    total++;
+                    const studentAnswer = String(student[key]).toLowerCase().trim();
+                    const correctAnswer = String(csvCorrections[key]).toLowerCase().trim();
+                    
+                    const isCorrect = studentAnswer === correctAnswer;
+                    if (isCorrect) correct++;
+                    
+                    details[key] = {
+                        studentAnswer: student[key],
+                        correctAnswer: csvCorrections[key],
+                        isCorrect: isCorrect
+                    };
+                }
+            }
+            
+            return {
+                ...student,
+                score: correct,
+                total: total,
+                percentage: total > 0 ? Math.round((correct / total) * 100) : 0,
+                details: details
+            };
+        }
+        
+        function displayResults() {
+            document.getElementById('resultsSection').style.display = 'block';
+            
+            // Statistiques
+            const scores = correctedResults.map(r => r.percentage);
+            document.getElementById('statStudents').textContent = correctedResults.length;
+            document.getElementById('statAverage').textContent = 
+                Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) + '%';
+            document.getElementById('statBest').textContent = Math.max(...scores) + '%';
+            document.getElementById('statWorst').textContent = Math.min(...scores) + '%';
+            
+            // Tableau
+            const tbody = document.getElementById('resultsBody');
+            tbody.innerHTML = '';
+            
+            correctedResults.forEach((result, index) => {
+                const scoreClass = result.percentage >= 75 ? 'good' : 
+                                  result.percentage >= 50 ? 'medium' : 'bad';
+                
+                const date = result.date_soumission ? 
+                    new Date(result.date_soumission).toLocaleDateString('fr-FR') : 
+                    'N/A';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${result.nom_eleve || 'Anonyme'}</td>
+                    <td>${result.classe || 'N/A'}</td>
+                    <td class="score ${scoreClass}">${result.score}/${result.total}</td>
+                    <td class="score ${scoreClass}">${result.percentage}%</td>
+                    <td>${date}</td>
+                    <td>
+                        <button class="btn" style="padding: 8px 15px; margin: 0;" 
+                                onclick="toggleDetails(${index})">
+                            📋 Détails
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+                
+                // Ligne de détails (cachée par défaut)
+                const detailRow = document.createElement('tr');
+                detailRow.className = 'detail-row';
+                detailRow.style.display = 'none';
+                detailRow.id = `detail-${index}`;
+                detailRow.innerHTML = `
+                    <td colspan="6">
+                        ${generateDetailHTML(result.details)}
+                    </td>
+                `;
+                tbody.appendChild(detailRow);
+            });
+        }
+        
+        function generateDetailHTML(details) {
+            let html = '<div style="padding: 10px;">';
+            for (let key in details) {
+                const detail = details[key];
+                const icon = detail.isCorrect ? '✅' : '❌';
+                const className = detail.isCorrect ? 'correct' : 'incorrect';
+                
+                html += `
+                    <div class="question-detail">
+                        <strong>${icon} ${key}:</strong><br>
+                        Réponse élève: <span class="${className}">${detail.studentAnswer}</span><br>
+                        Réponse attendue: <span class="correct">${detail.correctAnswer}</span>
+                    </div>
+                `;
+            }
+            html += '</div>';
+            return html;
+        }
+        
+        function toggleDetails(index) {
+            const detailRow = document.getElementById(`detail-${index}`);
+            detailRow.style.display = detailRow.style.display === 'none' ? 'table-row' : 'none';
+        }
+        
+        // Export CSV
+        document.getElementById('btnExport').addEventListener('click', function() {
+            let csv = 'Nom,Classe,Score,Total,Pourcentage,Date\n';
+            
+            correctedResults.forEach(result => {
+                const date = result.date_soumission ? 
+                    new Date(result.date_soumission).toLocaleDateString('fr-FR') : 
+                    'N/A';
+                csv += `${result.nom_eleve},${result.classe},${result.score},${result.total},${result.percentage}%,${date}\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `resultats_${selectedQuiz}_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        });
+    </script>
+</body>
+</html>
