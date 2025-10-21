@@ -411,31 +411,6 @@
         // INITIALISATION
         // ============================================
         window.addEventListener('load', loadStatistics);
-
-        // ============================================
-        // FONCTION DE VÉRIFICATION (à ajouter avant exportFormToCSV)
-        // ============================================
-        function verifierMotDePasse() {
-            const motDePasse = prompt('🔒 Entrez le mot de passe pour exporter les données :');
-            const motDePasseCorrect = 'j5sbj529';
-            return motDePasse === motDePasseCorrect;
-        }
-        
-        // ============================================
-        // EXPORT CSV (votre fonction existante avec l'ajout)
-        // ============================================
-        async function exportFormToCSV(formId) {
-            // AJOUTEZ CES 4 LIGNES AU DÉBUT
-            if (!verifierMotDePasse()) {
-                alert('❌ Mot de passe incorrect !');
-                return;
-            }
-            
-            // ... reste de votre code existant
-            const form = formulaires.find(f => f.id === formId);
-            if (!form) return;
-            // etc.
-        }
         
         // ============================================
         // EXPORT CSV
