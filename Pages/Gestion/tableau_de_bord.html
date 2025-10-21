@@ -408,6 +408,27 @@
         }
 
         // ============================================
+        // INITIALISATION
+        // ============================================
+        window.addEventListener('load', loadStatistics);
+
+        // Ajoutez cette fonction dans votre script
+        function verifierMotDePasse() {
+            const motDePasse = prompt('🔒 Entrez le mot de passe pour exporter les données :');
+            const motDePasseCorrect = 'j5sbj529'; // À personnaliser
+            
+            return motDePasse === motDePasseCorrect;
+        }
+        
+        // Modifiez la fonction exportFormToCSV
+        async function exportFormToCSV(formId) {
+            // Vérification du mot de passe
+            if (!verifierMotDePasse()) {
+                alert('❌ Mot de passe incorrect !');
+                return;
+            }
+            
+        // ============================================
         // EXPORT CSV
         // ============================================
         async function exportFormToCSV(formId) {
@@ -475,30 +496,6 @@
                 button.disabled = false;
                 button.textContent = originalText;
             }
-        }
-
-        // ============================================
-        // INITIALISATION
-        // ============================================
-        window.addEventListener('load', loadStatistics);
-
-        // Ajoutez cette fonction dans votre script
-        function verifierMotDePasse() {
-            const motDePasse = prompt('🔒 Entrez le mot de passe pour exporter les données :');
-            const motDePasseCorrect = 'j5sbj529'; // À personnaliser
-            
-            return motDePasse === motDePasseCorrect;
-        }
-        
-        // Modifiez la fonction exportFormToCSV
-        async function exportFormToCSV(formId) {
-            // Vérification du mot de passe
-            if (!verifierMotDePasse()) {
-                alert('❌ Mot de passe incorrect !');
-                return;
-            }
-            
-            // ... reste du code existant
         }
         
     </script>
