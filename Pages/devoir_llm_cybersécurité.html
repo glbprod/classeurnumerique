@@ -605,6 +605,23 @@
     <script>
     
     // ============================================
+    // CONFIRMATION AVANT FERMETURE
+    // ============================================
+    let formModified = false;
+
+    document.getElementById('quizForm').addEventListener('input', function() {
+        formModified = true;
+    });
+
+    window.addEventListener('beforeunload', function(e) {
+        if (formModified) {
+            e.preventDefault();
+            e.returnValue = '';
+            return '';
+        }
+    });
+       
+    // ============================================
     // CONFIGURATION FIREBASE
     // ============================================
     const firebaseConfig = {
@@ -621,23 +638,6 @@
     const db = firebase.firestore();
 
     console.log('✅ Firebase initialisé');
-
-    // ============================================
-    // CONFIRMATION AVANT FERMETURE
-    // ============================================
-    let formModified = false;
-
-    document.getElementById('quizForm').addEventListener('input', function() {
-        formModified = true;
-    });
-
-    window.addEventListener('beforeunload', function(e) {
-        if (formModified) {
-            e.preventDefault();
-            e.returnValue = '';
-            return '';
-        }
-    });
 
     // ============================================
     // BOUTON D'ENVOI
@@ -680,7 +680,7 @@
             console.log('📤 Envoi des données:', responses);
             
             // Envoyer à Firebase
-            const docRef = await db.collection('llm_cybersecurite').add(responses);
+            const docRef = await db.collection('devoir_llm_cybersecurite').add(responses);
             
             console.log('✅ Document enregistré avec ID:', docRef.id);
             
