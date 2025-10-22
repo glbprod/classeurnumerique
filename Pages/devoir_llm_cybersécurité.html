@@ -684,18 +684,6 @@
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 date_soumission: new Date().toISOString(),
                 
-                // Règles d'or (checkboxes)
-                rule1: formData.get('rule1') ? true : false,
-                rule2: formData.get('rule2') ? true : false,
-                rule3: formData.get('rule3') ? true : false,
-                rule4: formData.get('rule4') ? true : false,
-                rule5: formData.get('rule5') ? true : false,
-                rule6: formData.get('rule6') ? true : false,
-                rule7: formData.get('rule7') ? true : false,
-                rule8: formData.get('rule8') ? true : false,
-                rule9: formData.get('rule9') ? true : false,
-                rule10: formData.get('rule10') ? true : false,
-                
                 // Bonnes pratiques (8 situations)
                 usage1: formData.get('usage1'),
                 usage1_justif: formData.get('usage1_justif'),
