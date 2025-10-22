@@ -284,6 +284,10 @@
             flex-shrink: 0;  /* ← Empêche le bouton de rétrécir */
         }
     </style>
+    
+    <!-- Scripts Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
     
@@ -332,6 +336,24 @@
     </div>
     
     <form id="activitiesForm">
+        <!-- Informations de l'élève -->
+        <div class="activity-section">
+            <div class="activity-header">
+                <span>👤 VOS INFORMATIONS</span>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                <div>
+                    <label for="studentName" style="display: block; margin-bottom: 5px; font-weight: bold;">Nom et Prénom :</label>
+                    <input type="text" id="studentName" name="studentName" required style="width: 100%; padding: 10px; border: 2px solid #d1d5db; border-radius: 4px; font-size: 16px;">
+                </div>
+                <div>
+                    <label for="studentClass" style="display: block; margin-bottom: 5px; font-weight: bold;">Classe :</label>
+                    <input type="text" id="studentClass" name="studentClass" required style="width: 100%; padding: 10px; border: 2px solid #d1d5db; border-radius: 4px; font-size: 16px;" placeholder="Ex: 4ème A">
+                </div>
+            </div>
+        </div>
+        
         <!-- ACTIVITÉ 3 -->
         <div class="activity-section">
             <div class="activity-header">
@@ -559,7 +581,7 @@
         </div>
     </form>
 
-    <button class="download-button" type="button" onclick="sendToFirebase(); return false;">📥 Envoyer mes réponses</button>
+    <button class="download-button" type="button" id="sendToFirebase">📥 Envoyer mes réponses</button>
    
     <!-- RESSOURCES -->
     <div class="info-box">
@@ -639,7 +661,7 @@
     // BOUTON D'ENVOI
     // ============================================
     document.getElementById('sendToFirebase').addEventListener('click', async function() {
-        const form = document.getElementById('quizForm');
+        const form = document.getElementById('activitiesForm');
         
         // Vérifier la validité du formulaire
         if (!form.checkValidity()) {
@@ -662,15 +684,43 @@
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 date_soumission: new Date().toISOString(),
                 
-                // Exercice 1
-                ex1_q1: formData.get('q1_1'),
-                ex1_q2: formData.get('q1_2'),
-                ex1_q3: formData.get('q1_3'),
+                // Règles d'or (checkboxes)
+                rule1: formData.get('rule1') ? true : false,
+                rule2: formData.get('rule2') ? true : false,
+                rule3: formData.get('rule3') ? true : false,
+                rule4: formData.get('rule4') ? true : false,
+                rule5: formData.get('rule5') ? true : false,
+                rule6: formData.get('rule6') ? true : false,
+                rule7: formData.get('rule7') ? true : false,
+                rule8: formData.get('rule8') ? true : false,
+                rule9: formData.get('rule9') ? true : false,
+                rule10: formData.get('rule10') ? true : false,
                 
-                // Exercice 2
-                ex2_q1: formData.get('q2_1'),
-                ex2_q2: formData.get('q2_2'),
-                ex2_q3: formData.get('q2_3'),
+                // Bonnes pratiques (8 situations)
+                usage1: formData.get('usage1'),
+                usage1_justif: formData.get('usage1_justif'),
+                usage2: formData.get('usage2'),
+                usage2_justif: formData.get('usage2_justif'),
+                usage3: formData.get('usage3'),
+                usage3_justif: formData.get('usage3_justif'),
+                usage4: formData.get('usage4'),
+                usage4_justif: formData.get('usage4_justif'),
+                usage5: formData.get('usage5'),
+                usage5_justif: formData.get('usage5_justif'),
+                usage6: formData.get('usage6'),
+                usage6_justif: formData.get('usage6_justif'),
+                usage7: formData.get('usage7'),
+                usage7_justif: formData.get('usage7_justif'),
+                usage8: formData.get('usage8'),
+                usage8_justif: formData.get('usage8_justif'),
+                
+                // Détection de contenu IA (3 textes)
+                texteA: formData.get('texteA'),
+                texteA_justif: formData.get('texteA_justif'),
+                texteB: formData.get('texteB'),
+                texteB_justif: formData.get('texteB_justif'),
+                texteC: formData.get('texteC'),
+                texteC_justif: formData.get('texteC_justif')
             };
             
             console.log('📤 Envoi des données:', responses);
