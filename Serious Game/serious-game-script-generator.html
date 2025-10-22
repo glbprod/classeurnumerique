@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Script - Serious Game Cybersécurité</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        /* FORMULAIRE */
+        .form-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+        
+        input[type="text"],
+        textarea,
+        select,
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .choices-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .choice-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .choice-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+        
+        /* BOUTONS */
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-add {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-add:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        
+        .btn-export {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-export:hover {
+            background: #059669;
+        }
+        
+        .btn-import {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .btn-import:hover {
+            background: #d97706;
+        }
+        
+        .btn-reset {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background: #dc2626;
+        }
+        
+        /* TABLEAU */
+        .table-section {
+            margin-bottom: 40px;
+        }
+        
+        .table-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        thead {
+            background: #667eea;
+            color: white;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 0.85em;
+        }
+        
+        .btn-delete:hover {
+            background: #dc2626;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-style: italic;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Générateur de Script - Serious Game Cybersécurité</h1>
+        <p class="subtitle">Créez le scénario de votre jeu interactif étape par étape</p>
+        
+        <!-- FORMULAIRE -->
+        <div class="form-section">
+        <!-- TABLEAU DES ÉTAPES -->
+        <div class="table-section">
+            <h1>📋 Script du jeu</h1>
+            <div id="tableContainer">
+                <div class="empty-state">
+                    Aucune étape créée pour le moment. Utilisez le formulaire ci-dessus pour commencer !
+                </div>
+            </div>
+        </div>
+            
+            <div class="form-group">
+                <h1>📝 Ajouter une nouvelle étape</h1>
+                <label>📌 Titre de la scène</label>
+                <input type="text" id="titre" placeholder="Ex: Une tentative de phishing">
+            </div>
+            
+            <div class="form-group">
+                <label>📖 Questions posées ou description de la situation</label>
+                <textarea id="description" placeholder="Écrivez la question ou décrivez le contexte et la situation que le joueur va rencontrer..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>⚠️ Type de menace cyber</label>
+                <select id="menace">
+                    <option value="">-- Choisir une menace --</option>
+                    <option value="Phishing">Phishing</option>
+                    <option value="Ransomware">Ransomware</option>
+                    <option value="Mot de passe faible">Mot de passe faible</option>
+                    <option value="Ingénierie sociale">Ingénierie sociale</option>
+                    <option value="Malware">Malware</option>
+                    <option value="Wifi non sécurisé">Wifi non sécurisé</option>
+                    <option value="Vol de données">Vol de données</option>
+                    <option value="Autre">Autre</option>
+                </select>
+            </div>
+            
+            <!-- CHOIX A, B, C -->
+            <div class="form-group">
+                <label>🎯 Choix proposés au joueur et leurs conséquences</label>
+                <div class="choices-grid">
+                    <!-- CHOIX A -->
+                    <div class="choice-box">
+                        <h4>Choix A</h4>
+                        <input type="text" id="choixA" placeholder="Réponse A ou Action A" style="margin-bottom: 10px;">
+                        <textarea id="consequenceA" placeholder="Bonne/Mauvaise réponse ou conséquence de l'action A"></textarea>
+                        <label style="margin-top: 10px;">Points:</label>
+                        <input type="number" id="pointsA" placeholder="0" value="0">
+                    </div>
+                    
+                    <!-- CHOIX B -->
+                    <div class="choice-box">
+                        <h4>Choix B</h4>
+                        <input type="text" id="choixB" placeholder="Réponse B ou Action B" style="margin-bottom: 10px;">
+                        <textarea id="consequenceB" placeholder="Bonne/Mauvaise réponse ou conséquence de l'action B"></textarea>
+                        <label style="margin-top: 10px;">Points:</label>
+                        <input type="number" id="pointsB" placeholder="0" value="0">
+                    </div>
+                    
+                    <!-- CHOIX C -->
+                    <div class="choice-box">
+                        <h4>Choix C</h4>
+                        <input type="text" id="choixC" placeholder="Réponse C ou Action C" style="margin-bottom: 10px;">
+                        <textarea id="consequenceC" placeholder="Bonne/Mauvaise réponse ou conséquence de l'action C"></textarea>
+                        <label style="margin-top: 10px;">Points:</label>
+                        <input type="number" id="pointsC" placeholder="0" value="0">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>💡 Message pédagogique / Conseil de sécurité</label>
+                <textarea id="message" placeholder="Conseil de cybersécurité lié à cette étape..."></textarea>
+            </div>
+            
+            <!-- BOUTONS D'ACTION -->
+            <div class="buttons">
+                <button class="btn-add" onclick="ajouterEtape()">➕ Ajouter cette étape</button>
+                <button class="btn-export" onclick="exporterJSON()">💾 Exporter</button>
+                <button class="btn-import" onclick="document.getElementById('fileInput').click()">📥 Importer</button>
+                <button class="btn-reset" onclick="reinitialiser()">🔄 Réinitialiser tout</button>
+            </div>
+            
+            <input type="file" id="fileInput" accept=".json" onchange="importerJSON(event)">
+        </div>
+    </div>
+
+    <script>
+        // ÉTAPE 1: STOCKAGE EN MÉMOIRE
+        // On utilise un tableau JavaScript pour stocker toutes les étapes
+        let etapesJeu = [];
+
+        // PROTECTION CONTRE LA FERMETURE ACCIDENTELLE
+        window.addEventListener('beforeunload', function(e) {
+        // Afficher l'alerte seulement s'il y a des étapes non sauvegardées
+        if (etapesJeu.length > 0) {
+            e.preventDefault();
+            e.returnValue = ''; // Chrome nécessite cette ligne
+            return ''; // Pour les autres navigateurs
+        }
+        });
+        
+        // ÉTAPE 2: FONCTION POUR AJOUTER UNE ÉTAPE
+        function ajouterEtape() {
+            // Récupération des valeurs du formulaire
+            const titre = document.getElementById('titre').value;
+            const description = document.getElementById('description').value;
+            const menace = document.getElementById('menace').value;
+            const message = document.getElementById('message').value;
+            
+            // Validation: vérifier que les champs essentiels sont remplis
+            if (!titre || !description || !menace) {
+                alert('⚠️ Veuillez remplir au moins le titre, la description et le type de menace !');
+                return;
+            }
+            
+            // Création de l'objet étape avec toutes les données
+            const nouvelleEtape = {
+                numero: etapesJeu.length + 1,
+                titre: titre,
+                description: description,
+                menace: menace,
+                choix: {
+                    A: {
+                        action: document.getElementById('choixA').value,
+                        consequence: document.getElementById('consequenceA').value,
+                        points: parseInt(document.getElementById('pointsA').value) || 0,
+
+                    },
+                    B: {
+                        action: document.getElementById('choixB').value,
+                        consequence: document.getElementById('consequenceB').value,
+                        points: parseInt(document.getElementById('pointsB').value) || 0,
+
+                    },
+                    C: {
+                        action: document.getElementById('choixC').value,
+                        consequence: document.getElementById('consequenceC').value,
+                        points: parseInt(document.getElementById('pointsC').value) || 0,
+
+                    }
+                },
+                messagePedagogique: message
+            };
+            
+            // Ajout de l'étape au tableau
+            etapesJeu.push(nouvelleEtape);
+            
+            // Mise à jour de l'affichage
+            afficherTableau();
+            
+            // Réinitialisation du formulaire
+            document.getElementById('titre').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('menace').value = '';
+            document.getElementById('choixA').value = '';
+            document.getElementById('choixB').value = '';
+            document.getElementById('choixC').value = '';
+            document.getElementById('consequenceA').value = '';
+            document.getElementById('consequenceB').value = '';
+            document.getElementById('consequenceC').value = '';
+            document.getElementById('pointsA').value = '0';
+            document.getElementById('pointsB').value = '0';
+            document.getElementById('pointsC').value = '0';
+            document.getElementById('message').value = '';
+            
+            alert('✅ Étape ajoutée avec succès !');
+        }
+        
+        // ÉTAPE 3: FONCTION D'AFFICHAGE DU TABLEAU
+        function afficherTableau() {
+            const container = document.getElementById('tableContainer');
+            
+            // Si aucune étape, afficher le message vide
+            if (etapesJeu.length === 0) {
+                container.innerHTML = '<div class="empty-state">Aucune étape créée pour le moment. Utilisez le formulaire ci-dessus pour commencer !</div>';
+                return;
+            }
+            
+            // Création du tableau HTML
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Titre</th>
+                            <th>Menace</th>
+                            <th>Choix</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            // Ajout de chaque étape dans le tableau
+            etapesJeu.forEach((etape, index) => {
+                const choixResume = `
+                    A: ${etape.choix.A.action || 'Non défini'} (${etape.choix.A.points} pts)<br>
+                    B: ${etape.choix.B.action || 'Non défini'} (${etape.choix.B.points} pts)<br>
+                    C: ${etape.choix.C.action || 'Non défini'} (${etape.choix.C.points} pts)
+                `;
+                
+                html += `
+                    <tr>
+                        <td><strong>${etape.numero}</strong></td>
+                        <td><strong>${etape.titre}</strong><br><small>${etape.description.substring(0, 80)}...</small></td>
+                        <td>${etape.menace}</td>
+                        <td><small>${choixResume}</small></td>
+                        <td><button class="btn-delete" onclick="supprimerEtape(${index})">🗑️ Supprimer</button></td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = html;
+        }
+        
+        // ÉTAPE 4: FONCTION POUR SUPPRIMER UNE ÉTAPE
+        function supprimerEtape(index) {
+            if (confirm('Voulez-vous vraiment supprimer cette étape ?')) {
+                etapesJeu.splice(index, 1);
+                // Recalculer les numéros d'étape
+                etapesJeu.forEach((etape, i) => {
+                    etape.numero = i + 1;
+                });
+                afficherTableau();
+            }
+        }
+        
+        // ÉTAPE 5: FONCTION D'EXPORT EN JSON
+        function exporterJSON() {
+            if (etapesJeu.length === 0) {
+                alert('⚠️ Aucune étape à exporter !');
+                return;
+            }
+            
+            // Création du fichier JSON
+            const jsonData = JSON.stringify(etapesJeu, null, 2);
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            // Création du lien de téléchargement
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'script-serious-game-' + new Date().toISOString().split('T')[0] + '.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('💾 Script exporté avec succès !');
+        }
+        
+        // ÉTAPE 6: FONCTION D'IMPORT JSON
+        function importerJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    // Validation du format
+                    if (!Array.isArray(data)) {
+                        alert('❌ Format de fichier invalide !');
+                        return;
+                    }
+                    
+                    etapesJeu = data;
+                    afficherTableau();
+                    alert('✅ Script importé avec succès ! ' + etapesJeu.length + ' étape(s) chargée(s).');
+                } catch (error) {
+                    alert('❌ Erreur lors de la lecture du fichier : ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+            
+            // Réinitialiser l'input pour permettre de recharger le même fichier
+            event.target.value = '';
+        }
+        
+        // ÉTAPE 7: FONCTION DE RÉINITIALISATION
+        function reinitialiser() {
+            if (confirm('⚠️ Voulez-vous vraiment supprimer toutes les étapes ? Cette action est irréversible !')) {
+                etapesJeu = [];
+                afficherTableau();
+                alert('🔄 Script réinitialisé !');
+            }
+        }
+    </script>
+</body>
+</html>
