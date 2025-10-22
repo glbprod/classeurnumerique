@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correction des Devoirs - LLM et Cybersécurité</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .upload-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .file-input-wrapper {
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            margin: 10px;
+        }
+        
+        .file-input-button {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .file-input-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .students-nav {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .student-btn {
+            padding: 10px 15px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .student-btn:hover {
+            background: #f3f4f6;
+        }
+        
+        .student-btn.active {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-color: #6366f1;
+        }
+        
+        .student-btn.corrected {
+            border-color: #10b981;
+            background: #d1fae5;
+        }
+        
+        .correction-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: none;
+        }
+        
+        .correction-container.active {
+            display: block;
+        }
+        
+        .student-header {
+            background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #8b5cf6;
+        }
+        
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            border-left: 5px solid #6366f1;
+            background: #f9fafb;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .section-title {
+            color: #6366f1;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .rule-item {
+            padding: 10px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .rule-item .status {
+            font-size: 24px;
+        }
+        
+        .exercise-item {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .exercise-question {
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+        
+        .student-answer {
+            padding: 15px;
+            background: #f3f4f6;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .answer-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        .badge-correct {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .badge-wrong {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .badge-partial {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .correction-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-family: Arial, sans-serif;
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .correction-input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+        
+        .score-input {
+            width: 80px;
+            padding: 8px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .score-summary {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #3b82f6;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .stats-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stat-item {
+            display: inline-block;
+            margin: 0 20px;
+            padding: 10px 20px;
+            background: #f3f4f6;
+            border-radius: 8px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .text-example {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="header">
+        <h1 style="margin: 0;">📝 Interface de Correction</h1>
+        <p style="margin: 10px 0 0 0;">LLM et Cybersécurité - Gestion des devoirs</p>
+    </div>
+    
+    <div class="upload-section" id="uploadSection">
+        <h2>📂 Charger les devoirs</h2>
+        <p>Sélectionnez un ou plusieurs fichiers JSON</p>
+        <div class="file-input-wrapper">
+            <button class="file-input-button">Choisir les fichiers</button>
+            <input type="file" id="fileInput" multiple accept=".json">
+        </div>
+        <p id="fileStatus" style="margin-top: 15px; color: #6b7280;"></p>
+    </div>
+    
+    <div id="statsPanel" class="stats-panel hidden">
+        <div class="stat-item">
+            <div class="stat-label">Total élèves</div>
+            <div class="stat-value" id="totalStudents">0</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-label">Corrigés</div>
+            <div class="stat-value" id="correctedCount" style="color: #10b981;">0</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-label">En attente</div>
+            <div class="stat-value" id="pendingCount" style="color: #f59e0b;">0</div>
+        </div>
+        <div class="action-buttons">
+            <button class="btn btn-success" onclick="exportAllCorrections()">💾 Exporter toutes les corrections</button>
+            <button class="btn btn-secondary" onclick="resetAll()">🔄 Recommencer</button>
+        </div>
+    </div>
+    
+    <div id="studentsNav" class="students-nav hidden"></div>
+    
+    <div id="correctionsContainer"></div>
+
+    <script>
+        let studentsData = [];
+        let currentStudentIndex = 0;
+        let corrections = {};
+        
+        const correctAnswers = {
+            regles: [true, true, true, true, true, true, true, true, true, true],
+            exercices: ['bonne', 'mauvaise', 'mauvaise', 'bonne', 'mauvaise', 'bonne', 'mauvaise', 'bonne'],
+            detection: ['ia', 'humain', 'ia']
+        };
+        
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+        
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            if (files.length === 0) return;
+            
+            studentsData = [];
+            let filesProcessed = 0;
+            
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        const studentName = file.name.split('_')[0] || `Élève ${studentsData.length + 1}`;
+                        studentsData.push({
+                            name: studentName,
+                            filename: file.name,
+                            data: data
+                        });
+                        
+                        filesProcessed++;
+                        if (filesProcessed === files.length) {
+                            initializeCorrectionInterface();
+                        }
+                    } catch (error) {
+                        alert(`Erreur lors de la lecture du fichier ${file.name}`);
+                    }
+                };
+                reader.readAsText(file);
+            });
+        }
+        
+        function initializeCorrectionInterface() {
+            document.getElementById('uploadSection').style.display = 'none';
+            document.getElementById('statsPanel').classList.remove('hidden');
+            document.getElementById('studentsNav').classList.remove('hidden');
+            
+            updateStats();
+            renderStudentsNav();
+            renderAllCorrections();
+            showStudent(0);
+        }
+        
+        function updateStats() {
+            document.getElementById('totalStudents').textContent = studentsData.length;
+            const correctedCount = Object.keys(corrections).filter(key => corrections[key].corrected).length;
+            document.getElementById('correctedCount').textContent = correctedCount;
+            document.getElementById('pendingCount').textContent = studentsData.length - correctedCount;
+        }
+        
+        function renderStudentsNav() {
+            const nav = document.getElementById('studentsNav');
+            nav.innerHTML = '<strong style="margin-right: 15px;">Élèves:</strong>';
+            
+            studentsData.forEach((student, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'student-btn';
+                btn.textContent = student.name;
+                btn.onclick = () => showStudent(index);
+                if (corrections[student.filename]?.corrected) {
+                    btn.classList.add('corrected');
+                }
+                nav.appendChild(btn);
+            });
+        }
+        
+        function renderAllCorrections() {
+            const container = document.getElementById('correctionsContainer');
+            container.innerHTML = '';
+            
+            studentsData.forEach((student, index) => {
+                const correctionDiv = createCorrectionInterface(student, index);
+                container.appendChild(correctionDiv);
+            });
+        }
+        
+        function createCorrectionInterface(student, index) {
+            const div = document.createElement('div');
+            div.className = 'correction-container';
+            div.id = `student-${index}`;
+            
+            const data = student.data;
+            let autoScore = 0;
+            let maxScore = 0;
+            
+            // En-tête élève
+            div.innerHTML = `
+                <div class="student-header">
+                    <h2>👤 ${student.name}</h2>
+                    <p style="color: #666; margin: 5px 0;">Fichier: ${student.filename}</p>
+                    <p style="color: #666; margin: 5px 0;">Date de soumission: ${new Date(data.date).toLocaleString('fr-FR')}</p>
+                </div>
+            `;
+            
+            // Section 1: Les 10 règles d'or
+            let rulesHTML = `
+                <div class="section">
+                    <div class="section-title">✅ Activité 1 : Les 10 Règles d'Or</div>
+            `;
+            
+            const reglesOr = data.activite1_regles_or;
+            const ruleLabels = [
+                "Protéger sa vie privée",
+                "Vérifier les informations",
+                "Croiser les sources",
+                "Rester critique",
+                "Usage éthique",
+                "Attention aux deepfakes",
+                "Signaler les abus",
+                "Respecter les autres",
+                "Garder son esprit critique",
+                "En parler avec des adultes"
+            ];
+            
+            Object.keys(reglesOr).forEach((key, idx) => {
+                const isCorrect = reglesOr[key] === correctAnswers.regles[idx];
+                if (isCorrect) autoScore++;
+                maxScore++;
+                
+                rulesHTML += `
+                    <div class="rule-item">
+                        <span class="status">${reglesOr[key] ? '✅' : '⬜'}</span>
+                        <span><strong>Règle ${idx + 1}:</strong> ${ruleLabels[idx]}</span>
+                        ${!isCorrect ? '<span style="color: #ef4444; margin-left: auto;">❌ Devrait être cochée</span>' : '<span style="color: #10b981; margin-left: auto;">✓</span>'}
+                    </div>
+                `;
+            });
+            
+            rulesHTML += `
+                <p style="margin-top: 15px;"><strong>Score:</strong> ${autoScore}/10</p>
+                <label><strong>Commentaire général:</strong></label>
+                <textarea class="correction-input" id="comment-regles-${index}" placeholder="Ajoutez un commentaire pour cette section..."></textarea>
+                </div>
+            `;
+            
+            div.innerHTML += rulesHTML;
+            
+            // Section 2: Bonnes pratiques
+            let practicesHTML = `
+                <div class="section">
+                    <div class="section-title">💡 Activité 2 : Bonnes et Mauvaises Utilisations</div>
+            `;
+            
+            const practices = data.activite2_bonnes_pratiques;
+            Object.keys(practices).forEach((key, idx) => {
+                const exercise = practices[key];
+                const correctAnswer = correctAnswers.exercices[idx];
+                const isCorrect = exercise.reponse === correctAnswer;
+                if (isCorrect) autoScore += 2;
+                maxScore += 2;
+                
+                practicesHTML += `
+                    <div class="exercise-item">
+                        <div class="exercise-question">${exercise.question}</div>
+                        <div class="student-answer">
+                            <strong>Réponse de l'élève:</strong> 
+                            <span class="answer-badge ${isCorrect ? 'badge-correct' : 'badge-wrong'}">
+                                ${exercise.reponse || 'Non répondu'}
+                            </span>
+                            ${!isCorrect ? `<span class="answer-badge badge-correct">✓ Bonne réponse: ${correctAnswer}</span>` : ''}
+                        </div>
+                        <div class="student-answer">
+                            <strong>Justification:</strong><br>
+                            ${exercise.justification || '<em>Aucune justification fournie</em>'}
+                        </div>
+                        <label><strong>Votre commentaire:</strong></label>
+                        <textarea class="correction-input" id="comment-ex${idx}-${index}" placeholder="Commentaire sur cette réponse..."></textarea>
+                        <label><strong>Points:</strong></label>
+                        <input type="number" class="score-input" id="score-ex${idx}-${index}" min="0" max="2" value="${isCorrect ? 2 : 0}">
+                        <span>/2</span>
+                    </div>
+                `;
+            });
+            
+            practicesHTML += `</div>`;
+            div.innerHTML += practicesHTML;
+            
+            // Section 3: Détection IA
+            let detectionHTML = `
+                <div class="section">
+                    <div class="section-title">🔬 Activité 3 : Détection de Contenu IA</div>
+            `;
+            
+            const detection = data.activite3_detection_ia;
+            const textLabels = ['Texte A', 'Texte B', 'Texte C'];
+            const texts = [
+                "Le collège est une période importante de la vie d'un jeune...",
+                "J'avoue que le collège, au début, ça m'a fait flipper !...",
+                "Le réchauffement climatique représente l'un des défis majeurs..."
+            ];
+            
+            Object.keys(detection).forEach((key, idx) => {
+                const answer = detection[key];
+                const correctAnswer = correctAnswers.detection[idx];
+                const isCorrect = answer.diagnostic === correctAnswer;
+                if (isCorrect) autoScore += 2;
+                maxScore += 2;
+                
+                detectionHTML += `
+                    <div class="exercise-item">
+                        <div class="exercise-question">${textLabels[idx]}</div>
+                        <div class="text-example">${texts[idx]}</div>
+                        <div class="student-answer">
+                            <strong>Diagnostic de l'élève:</strong>
+                            <span class="answer-badge ${isCorrect ? 'badge-correct' : 'badge-wrong'}">
+                                ${answer.diagnostic || 'Non répondu'}
+                            </span>
+                            ${!isCorrect ? `<span class="answer-badge badge-correct">✓ Bonne réponse: ${correctAnswer}</span>` : ''}
+                        </div>
+                        <div class="student-answer">
+                            <strong>Justification:</strong><br>
+                            ${answer.justification || '<em>Aucune justification fournie</em>'}
+                        </div>
+                        <label><strong>Votre commentaire:</strong></label>
+                        <textarea class="correction-input" id="comment-det${idx}-${index}" placeholder="Commentaire sur cette détection..."></textarea>
+                        <label><strong>Points:</strong></label>
+                        <input type="number" class="score-input" id="score-det${idx}-${index}" min="0" max="2" value="${isCorrect ? 2 : 0}">
+                        <span>/2</span>
+                    </div>
+                `;
+            });
+            
+            detectionHTML += `</div>`;
+            div.innerHTML += detectionHTML;
+            
+            // Résumé et actions
+            div.innerHTML += `
+                <div class="score-summary">
+                    <h3>📊 Résumé de la correction</h3>
+                    <p><strong>Score automatique:</strong> ${autoScore}/${maxScore}</p>
+                    <label><strong>Commentaire général final:</strong></label>
+                    <textarea class="correction-input" id="final-comment-${index}" placeholder="Commentaire final sur le travail de l'élève..."></textarea>
+                    <label style="margin-top: 15px;"><strong>Note finale:</strong></label>
+                    <input type="number" class="score-input" id="final-score-${index}" min="0" max="20" value="${Math.round(autoScore / maxScore * 20)}" style="width: 100px; font-size: 20px;">
+                    <span style="font-size: 20px;">/20</span>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button class="btn btn-secondary" onclick="previousStudent()" ${index === 0 ? 'disabled' : ''}>
+                        ← Élève précédent
+                    </button>
+                    <button class="btn btn-success" onclick="saveCorrection(${index})">
+                        💾 Enregistrer cette correction
+                    </button>
+                    <button class="btn btn-secondary" onclick="nextStudent()" ${index === studentsData.length - 1 ? 'disabled' : ''}>
+                        Élève suivant →
+                    </button>
+                </div>
+            `;
+            
+            return div;
+        }
+        
+        function showStudent(index) {
+            currentStudentIndex = index;
+            
+            // Masquer tous
+            document.querySelectorAll('.correction-container').forEach(div => {
+                div.classList.remove('active');
+            });
+            
+            // Afficher le bon
+            document.getElementById(`student-${index}`).classList.add('active');
+            
+            // Mettre à jour la navigation
+            document.querySelectorAll('.student-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', idx === index);
+            });
+            
+            // Charger la correction si elle existe
+            loadCorrection(index);
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function nextStudent() {
+            if (currentStudentIndex < studentsData.length - 1) {
+                showStudent(currentStudentIndex + 1);
+            }
+        }
+        
+        function previousStudent() {
+            if (currentStudentIndex > 0) {
+                showStudent(currentStudentIndex - 1);
+            }
+        }
+        
+        function saveCorrection(index) {
+            const student = studentsData[index];
+            const correction = {
+                student: student.name,
+                filename: student.filename,
+                date: new Date().toISOString(),
+                comments: {},
+                scores: {},
+                finalComment: document.getElementById(`final-comment-${index}`).value,
+                finalScore: document.getElementById(`final-score-${index}`).value,
+                corrected: true
+            };
+            
+            // Sauvegarder tous les commentaires et scores
+            document.querySelectorAll(`[id^="comment-"][id$="-${index}"]`).forEach(el => {
+                correction.comments[el.id] = el.value;
+            });
+            
+            document.querySelectorAll(`[id^="score-"][id$="-${index}"]`).forEach(el => {
+                correction.scores[el.id] = el.value;
+            });
+            
+            corrections[student.filename] = correction;
+            
+            // Mettre à jour l'interface
+            updateStats();
+            renderStudentsNav();
+            
+            alert(`✅ Correction de ${student.name} enregistrée !`);
+        }
+        
+        function loadCorrection(index) {
+            const student = studentsData[index];
+            const correction = corrections[student.filename];
+            
+            if (!correction) return;
+            
+            // Charger les commentaires et scores
+            Object.keys(correction.comments).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = correction.comments[id];
+            });
+            
+            Object.keys(correction.scores).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = correction.scores[id];
+            });
+            
+            const finalCommentEl = document.getElementById(`final-comment-${index}`);
+            const finalScoreEl = document.getElementById(`final-score-${index}`);
+            
+            if (finalCommentEl) finalCommentEl.value = correction.finalComment || '';
+            if (finalScoreEl) finalScoreEl.value = correction.finalScore || '';
+        }
+        
+        function exportAllCorrections() {
+            if (Object.keys(corrections).length === 0) {
+                alert('❌ Aucune correction à exporter !');
+                return;
+            }
+            
+            const dataStr = JSON.stringify(corrections, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `corrections_llm_cybersecurite_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            alert('✅ Toutes les corrections ont été exportées !');
+        }
+        
+        function resetAll() {
+            if (confirm('⚠️ Êtes-vous sûr de vouloir tout recommencer ? Les corrections non exportées seront perdues.')) {
+                studentsData = [];
+                corrections = {};
+                currentStudentIndex = 0;
+                
+                document.getElementById('uploadSection').style.display = 'block';
+                document.getElementById('statsPanel').classList.add('hidden');
+                document.getElementById('studentsNav').classList.add('hidden');
+                document.getElementById('correctionsContainer').innerHTML = '';
+                document.getElementById('fileInput').value = '';
+                document.getElementById('fileStatus').textContent = '';
+            }
+        }
+    </script>
+
+</body>
+</html>
