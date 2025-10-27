@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activité - Robot de patrouille autonome</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .fiche {
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            border-bottom: 4px solid #e74c3c;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .niveau {
+            background-color: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        .sequence-info {
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 0.95em;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            padding-left: 10px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        h3 {
+            color: #34495e;
+            font-size: 1.1em;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+        
+        .objectifs {
+            background-color: #ffebee;
+            border-left: 4px solid #e74c3c;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .objectifs ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .materiel {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .materiel ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .situation {
+            background-color: #e8f5e9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #4caf50;
+        }
+        
+        .situation-titre {
+            color: #2e7d32;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .mission-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        
+        .etape {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 3px solid #e74c3c;
+        }
+        
+        .etape-numero {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+        
+        .etape-titre {
+            font-weight: bold;
+            color: #2c3e50;
+            display: inline;
+            font-size: 1.05em;
+        }
+        
+        .phase {
+            background: linear-gradient(to right, #f39c12, #e67e22);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 10px 0;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #bdc3c7;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #e74c3c;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #ffebee;
+        }
+        
+        .code-block {
+            background-color: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .code-comment {
+            color: #90a4ae;
+        }
+        
+        .consigne {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 12px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+        
+        .competences {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .competence-badge {
+            background-color: #e74c3c;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+        }
+        
+        .attention {
+            background-color: #fff9c4;
+            border-left: 4px solid #fbc02d;
+            padding: 12px;
+            margin: 15px 0;
+        }
+        
+        .attention::before {
+            content: "⚠️ ";
+            font-weight: bold;
+        }
+        
+        .astuce {
+            background-color: #e1f5fe;
+            border-left: 4px solid #03a9f4;
+            padding: 12px;
+            margin: 15px 0;
+        }
+        
+        .astuce::before {
+            content: "💡 ";
+            font-weight: bold;
+        }
+        
+        .defi {
+            background-color: #f3e5f5;
+            border: 2px dashed #9c27b0;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        
+        .defi-titre {
+            color: #7b1fa2;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+        
+        .defi-titre::before {
+            content: "🏆 ";
+        }
+        
+        .comportement-box {
+            background-color: #fff;
+            border: 2px solid #e74c3c;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .comportement-titre {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px solid #ecf0f1;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            .fiche {
+                box-shadow: none;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fiche">
+        <header>
+            <div class="header-top">
+                <div>
+                    <h1>🤖 Robot de patrouille autonome</h1>
+                    <p class="sequence-info">Séquence : Systèmes de protection automatisés | Projet intégrateur</p>
+                </div>
+                <div class="niveau">3ème</div>
+            </div>
+            <div class="competences">
+                <span class="competence-badge">CT 5.6 - Structurer un programme</span>
+                <span class="competence-badge">CT 5.7 - Programmation</span>
+                <span class="competence-badge">CT 2.4 - Flux d'information</span>
+                <span class="competence-badge">Robotique mobile</span>
+            </div>
+        </header>
+
+        <div class="objectifs">
+            <strong>🎯 Objectifs de l'activité :</strong>
+            <ul>
+                <li>Programmer un robot mobile autonome capable de patrouiller dans une zone définie</li>
+                <li>Intégrer des capteurs pour la détection d'obstacles et d'intrusions</li>
+                <li>Créer des comportements adaptatifs selon les situations rencontrées</li>
+                <li>Tester et optimiser un algorithme de navigation autonome</li>
+                <li>Réfléchir aux limites et enjeux éthiques des robots de surveillance</li>
+            </ul>
+        </div>
+
+        <div class="materiel">
+            <strong>📦 Matériel par groupe (3-4 élèves) :</strong>
+            <ul>
+                <li><strong>Robot mobile :</strong> mBot, Arduino Robot, Zumo ou équivalent</li>
+                <li><strong>Capteurs embarqués :</strong> 2 capteurs ultrason (avant + côté), 1 capteur suiveur de ligne</li>
+                <li><strong>Capteur de détection :</strong> PIR (mouvement) ou caméra basique</li>
+                <li><strong>Signalisation :</strong> LED RGB, buzzer</li>
+                <li><strong>Parcours :</strong> Ruban adhésif noir, panneaux carton pour obstacles</li>
+                <li><strong>Ordinateur</strong> avec logiciel de programmation (mBlock, Arduino IDE, etc.)</li>
+            </ul>
+        </div>
+
+        <div class="situation">
+            <div class="situation-titre">🔒 CONTEXTE DE LA MISSION</div>
+            <p>Une entreprise souhaite sécuriser son entrepôt la nuit sans mobiliser du personnel en permanence. Elle fait appel à votre équipe d'ingénieurs roboticiens pour développer un <strong>robot de patrouille autonome</strong>.</p>
+            
+            <div class="mission-badge">
+                🎯 MISSION : Créer un robot capable de surveiller une zone en patrouille automatique et de détecter toute présence suspecte
+            </div>
+
+            <h3 style="margin-top: 15px;">Cahier des charges :</h3>
+            <table style="margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th>Critère</th>
+                        <th>Exigence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Navigation</strong></td>
+                        <td>Suivre un parcours défini (circuit fermé) de manière autonome</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Évitement</strong></td>
+                        <td>Détecter et contourner les obstacles imprévus</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Détection</strong></td>
+                        <td>Identifier une présence humaine (mouvement)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alerte</strong></td>
+                        <td>Signaler visuellement et sonore en cas de détection</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Autonomie</strong></td>
+                        <td>Fonctionner sans intervention humaine pendant 5 minutes minimum</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>🗺️ Déroulement du projet (4 séances)</h2>
+
+        <div class="phase">PHASE 1 : DÉCOUVERTE ET ANALYSE (Séance 1 - 1h30)</div>
+
+        <div class="etape">
+            <span class="etape-numero">1</span>
+            <span class="etape-titre">Prise en main du robot (30 min)</span>
+            <div class="consigne">
+                Familiarisez-vous avec le robot et ses capteurs. Testez les fonctions de base.
+            </div>
+            <h3>Tests à effectuer :</h3>
+            <ul style="margin-left: 20px;">
+                <li>✅ Déplacement en ligne droite (avancer, reculer)</li>
+                <li>✅ Rotation sur place (gauche, droite)</li>
+                <li>✅ Lecture des capteurs ultrason (afficher les distances)</li>
+                <li>✅ Lecture du capteur de ligne</li>
+                <li>✅ Activation LED et buzzer</li>
+            </ul>
+            <div class="astuce">
+                Notez la vitesse optimale des moteurs pour un déplacement stable. Testez différentes valeurs (50, 100, 150...).
+            </div>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">2</span>
+            <span class="etape-titre">Analyse des comportements nécessaires (20 min)</span>
+            <div class="consigne">
+                Identifiez et listez les différents comportements que le robot doit être capable d'adopter.
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Comportement</th>
+                        <th>Capteurs utilisés</th>
+                        <th>Actions du robot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Patrouille normale</td>
+                        <td>Suiveur de ligne</td>
+                        <td>Suivre le circuit à vitesse constante</td>
+                    </tr>
+                    <tr>
+                        <td>Évitement d'obstacle</td>
+                        <td>Ultrason avant</td>
+                        <td>S'arrêter, reculer, contourner</td>
+                    </tr>
+                    <tr>
+                        <td>Détection d'intrusion</td>
+                        <td>PIR (mouvement)</td>
+                        <td>S'arrêter, LED rouge, bip d'alerte</td>
+                    </tr>
+                    <tr>
+                        <td>Reprise de patrouille</td>
+                        <td>Chronomètre interne</td>
+                        <td>Après 3s d'alerte, reprendre le circuit</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">3</span>
+            <span class="etape-titre">Conception de l'algorithme global (40 min)</span>
+            <div class="consigne">
+                Sur une feuille A3, créez l'organigramme de l'algorithme principal avec les 4 comportements.
+            </div>
+            <div class="attention">
+                Pensez à la <strong>priorité des comportements</strong> : la détection d'intrusion doit avoir la priorité sur la navigation normale !
+            </div>
+            <h3>Structure recommandée :</h3>
+            <div class="code-block">
+<span class="code-comment">// Pseudo-code de l'algorithme global</span>
+
+BOUCLE INFINIE:
+    Lire tous les capteurs
+    
+    SI intrusion détectée (PIR activé) ALORS
+        → Comportement ALERTE
+        
+    SINON SI obstacle proche (distance < 20cm) ALORS
+        → Comportement ÉVITEMENT
+        
+    SINON
+        → Comportement PATROUILLE
+    
+    FIN SI
+FIN BOUCLE
+            </div>
+        </div>
+
+        <div class="phase">PHASE 2 : DÉVELOPPEMENT PAR COMPORTEMENT (Séance 2 - 1h30)</div>
+
+        <div class="etape">
+            <span class="etape-numero">4</span>
+            <span class="etape-titre">Programmation modulaire (1h30)</span>
+            <div class="consigne">
+                Programmez chaque comportement sous forme de fonction indépendante. Testez-les un par un avant de les intégrer.
+            </div>
+            
+            <div class="comportement-box">
+                <div class="comportement-titre">🔵 Comportement 1 : PATROUILLE</div>
+                <p><strong>Objectif :</strong> Suivre la ligne noire au sol</p>
+                <div class="code-block">
+void patrouille() {
+  int capteurLigne = lireCapteurLigne();
+  
+  if (capteurLigne == NOIR) {
+    <span class="code-comment">// Sur la ligne : avancer droit</span>
+    avancer(vitesse);
+  }
+  else if (capteurLigne == BLANC_GAUCHE) {
+    <span class="code-comment">// Ligne à gauche : tourner à gauche</span>
+    tournerGauche(vitesse);
+  }
+  else if (capteurLigne == BLANC_DROITE) {
+    <span class="code-comment">// Ligne à droite : tourner à droite</span>
+    tournerDroite(vitesse);
+  }
+  
+  <span class="code-comment">// LED verte = mode patrouille</span>
+  allumerLED(VERT);
+}
+                </div>
+                <p style="margin-top: 10px;"><strong>Tests à faire :</strong> Le robot suit-il la ligne ? Ajustez la vitesse si nécessaire.</p>
+            </div>
+
+            <div class="comportement-box">
+                <div class="comportement-titre">🟠 Comportement 2 : ÉVITEMENT</div>
+                <p><strong>Objectif :</strong> Contourner un obstacle imprévu</p>
+                <div class="code-block">
+void evitementObstacle() {
+  arreter();
+  delay(500);
+  
+  <span class="code-comment">// Reculer un peu</span>
+  reculer(vitesse);
+  delay(800);
+  
+  <span class="code-comment">// Tourner pour contourner</span>
+  tournerDroite(vitesse);
+  delay(600);
+  
+  <span class="code-comment">// Avancer pour dépasser l'obstacle</span>
+  avancer(vitesse);
+  delay(1000);
+  
+  <span class="code-comment">// LED orange = évitement</span>
+  allumerLED(ORANGE);
+}
+                </div>
+                <p style="margin-top: 10px;"><strong>Tests à faire :</strong> Placez un obstacle. Le robot le contourne-t-il ?</p>
+            </div>
+
+            <div class="comportement-box">
+                <div class="comportement-titre">🔴 Comportement 3 : ALERTE INTRUSION</div>
+                <p><strong>Objectif :</strong> Signaler une présence détectée</p>
+                <div class="code-block">
+void alerteIntrusion() {
+  arreter();
+  
+  <span class="code-comment">// Signal visuel : LED rouge clignotante</span>
+  for (int i = 0; i < 6; i++) {
+    allumerLED(ROUGE);
+    delay(200);
+    eteindreLED();
+    delay(200);
+  }
+  
+  <span class="code-comment">// Signal sonore : sirène</span>
+  for (int freq = 1000; freq < 2000; freq += 100) {
+    tone(pinBuzzer, freq);
+    delay(50);
+  }
+  noTone(pinBuzzer);
+  
+  <span class="code-comment">// Attendre 3 secondes</span>
+  delay(3000);
+}
+                </div>
+                <p style="margin-top: 10px;"><strong>Tests à faire :</strong> Déclenchez le capteur PIR. L'alerte est-elle claire ?</p>
+            </div>
+        </div>
+
+        <div class="phase">PHASE 3 : INTÉGRATION ET OPTIMISATION (Séance 3 - 1h30)</div>
+
+        <div class="etape">
+            <span class="etape-numero">5</span>
+            <span class="etape-titre">Programme principal complet (45 min)</span>
+            <div class="consigne">
+                Intégrez tous les comportements dans le programme principal avec la logique de priorité.
+            </div>
+            <div class="code-block">
+void loop() {
+  <span class="code-comment">// 1. ACQUISITION - Lire tous les capteurs</span>
+  int distanceAvant = lireUltrason(pinTrigAvant, pinEchoAvant);
+  int intrusion = digitalRead(pinPIR);
+  
+  <span class="code-comment">// 2. TRAITEMENT - Décider du comportement</span>
+  
+  if (intrusion == HIGH) {
+    <span class="code-comment">// PRIORITÉ 1 : Intrusion détectée</span>
+    alerteIntrusion();
+  }
+  else if (distanceAvant < 20) {
+    <span class="code-comment">// PRIORITÉ 2 : Obstacle proche</span>
+    evitementObstacle();
+  }
+  else {
+    <span class="code-comment">// Mode normal : Patrouille</span>
+    patrouille();
+  }
+  
+  <span class="code-comment">// 3. COMMUNICATION - Optionnel : envoyer état via Bluetooth</span>
+}
+            </div>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">6</span>
+            <span class="etape-titre">Tests et calibrage (45 min)</span>
+            <div class="consigne">
+                Testez le robot sur le parcours complet. Remplissez le carnet de tests et ajustez les paramètres.
+            </div>
+            <h3>Carnet de tests :</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test n°</th>
+                        <th>Scénario</th>
+                        <th>Résultat</th>
+                        <th>Améliorations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Patrouille sans obstacle ni intrusion</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Obstacle placé sur le parcours</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Personne passe devant le robot</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Obstacle + intrusion simultanés</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Test d'autonomie (5 min)</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="astuce">
+                Paramètres à ajuster : vitesses, durées des delays, seuil de distance d'évitement, sensibilité du capteur PIR.
+            </div>
+        </div>
+
+        <div class="phase">PHASE 4 : PRÉSENTATION ET RÉFLEXION (Séance 4 - 1h30)</div>
+
+        <div class="etape">
+            <span class="etape-numero">7</span>
+            <span class="etape-titre">Démonstration et évaluation (45 min)</span>
+            <div class="consigne">
+                Chaque groupe présente son robot en conditions réelles devant la classe. Les autres groupes évaluent selon la grille.
+            </div>
+            <h3>Critères d'évaluation (sur 20 points) :</h3>
+            <ul style="margin-left: 20px;">
+                <li><strong>Navigation (5 pts) :</strong> Suit correctement le circuit</li>
+                <li><strong>Évitement (4 pts) :</strong> Contourne les obstacles sans intervention</li>
+                <li><strong>Détection (4 pts) :</strong> Réagit à une présence humaine</li>
+                <li><strong>Signalisation (3 pts) :</strong> Alerte claire et visible</li>
+                <li><strong>Autonomie (2 pts) :</strong> Fonctionne 5 min sans blocage</li>
+                <li><strong>Code (2 pts) :</strong> Programme lisible, commenté, structuré</li>
+            </ul>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">8</span>
+            <span class="etape-titre">Débat : Robots et surveillance (45 min)</span>
+            <div class="consigne">
+                Discussion collective sur les enjeux éthiques et sociétaux des robots de surveillance.
+            </div>
+            <h3>Questions débat :</h3>
+            <ol style="margin-left: 25px;">
+                <li>Quels sont les <strong>avantages</strong> d'un robot de patrouille par rapport à un humain ? Les <strong>inconvénients</strong> ?</li>
+                <li>Un robot peut-il prendre de <strong>mauvaises décisions</strong> ? (faux positifs, erreurs de détection)</li>
+                <li>Que se passe-t-il si le robot est <strong>piraté</strong> ? (lien avec séquence cybersécurité)</li>
+                <li>Doit-on informer les personnes qu'elles sont surveillées par un robot ?</li>
+                <li>Quel impact sur <strong>l'emploi</strong> des agents de sécurité ?</li>
+                <li>Dans quels lieux accepteriez-vous d'être surveillés par un robot ? Dans quels lieux refuseriez-vous ?</li>
+            </ol>
+            <div class="attention">
+                Lien avec le <strong>RGPD</strong> (séquence cybersécurité) : collecte de données, vidéosurveillance, reconnaissance faciale.
+            </div>
+        </div>
+
+        <h2>🚀 Défis bonus (pour aller plus loin)</h2>
+
+        <div class="defi">
+            <div class="defi-titre">DÉFI 1 : Compteur de passages</div>
+            <p>Ajoutez un compteur qui enregistre le nombre de tours de circuit effectués et le nombre d'intrusions détectées. Affichez ces données sur un écran LCD ou en Bluetooth.</p>
+        </div>
+
+        <div class="defi">
+            <div class="defi-titre">DÉFI 2 : Patrouille intelligente</div>
+            <p>Le robot ralentit automatiquement dans les "zones sensibles" (marquées par une double ligne) et accélère dans les zones normales.</p>
+        </div>
+
+        <div class="defi">
+            <div class="defi-titre">DÉFI 3 : Communication multi-robots</div>
+            <p>Deux robots patrouillent sur des circuits différents. Si l'un détecte une intrusion, il envoie un signal à l'autre robot qui change également en mode alerte (communication Bluetooth ou infrarouge).</p>
+        </div>
+
+        <div class="defi">
+            <div class="defi-titre">DÉFI 4 : Retour à la base</div>
+            <p>Ajoutez un bouton d'arrêt d'urgence. Quand il est pressé, le robot retourne automatiquement à son point de départ (marqué par un carré noir).</p>
+        </div>
+
+        <h2>📝 Trace écrite individuelle</h2>
+        <p><strong>À rédiger dans le cahier (10 min) :</strong></p>
+        
+        <h3>Synthèse technique :</h3>
+        <ul style="margin-left: 20px;">
+            <li>Un <strong>robot autonome</strong> prend des décisions sans intervention humaine grâce à ses capteurs et son programme</li>
+            <li>La <strong>programmation modulaire</strong> (fonctions) permet de découper un problème complexe en sous-problèmes simples</li>
+            <li>Les <strong>comportements</strong> du robot sont hiérarchisés : certains ont la priorité sur d'autres</li>
+            <li>Le <strong>calibrage</strong> (ajustement des paramètres) est essentiel pour adapter le robot à son environnement</li>
+        </ul>
+
+        <h3>Réflexion personnelle :</h3>
+        <p style="margin-left: 20px; font-style: italic;">Selon vous, les robots de surveillance représentent-ils un progrès ou un danger pour notre société ? Justifiez votre réponse en 5 lignes minimum.</p>
+
+        <h2>🔗 Liens avec les séquences précédentes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Séquence</th>
+                    <th>Concept réutilisé</th>
+                    <th>Application dans le robot</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>LLM</strong></td>
+                    <td>Arbre de décision, logique conditionnelle</td>
+                    <td>Choix du comportement selon les capteurs</td>
+                </tr>
+                <tr>
+                    <td><strong>Cybersécurité</strong></td>
+                    <td>Détection d'anomalies, authentification</td>
+                    <td>Détection d'intrusion, risque de piratage</td>
+                </tr>
+                <tr>
+                    <td><strong>Systèmes automatisés</strong></td>
+                    <td>Chaîne d'information, capteurs/actionneurs</td>
+                    <td>Architecture complète du robot</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer>
+            <div>Technologie 3ème - Robot de patrouille autonome</div>
+            <div>Durée : 4 séances (6h)</div>
+        </footer>
+    </div>
+</body>
+</html>
