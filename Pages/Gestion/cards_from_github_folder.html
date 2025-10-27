@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cards auto depuis dossier GitHub</title>
+  <style>
+    :root{--gap:16px;--card-radius:12px;--card-shadow:0 6px 18px rgba(0,0,0,.08)}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;margin:0;padding:24px;background:#f6f7fb;color:#111}
+    .config{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+    label{font-size:13px}
+    input,select,button{padding:8px 10px;border:1px solid #d6d9e6;border-radius:8px;font-size:14px}
+    button{cursor:pointer}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:var(--gap)}
+    .card{background:#fff;border-radius:var(--card-radius);box-shadow:var(--card-shadow);padding:16px;display:flex;flex-direction:column;gap:10px;min-height:120px}
+    .card h3{margin:0;font-size:16px}
+    .meta{font-size:13px;color:#666}
+    .excerpt{flex:1;color:#333}
+    .actions{display:flex;gap:8px}
+    .small{font-size:12px;padding:6px 8px}
+    .status{margin-bottom:12px;color:#333}
+    @media (max-width:520px){body{padding:12px}}
+  </style>
+</head>
+<body>
+  <h1>Cards auto — dossier GitHub</h1>
+  <p>Cette page crée des cards à partir des fichiers HTML présents dans un dossier GitHub. Ajoutez un fichier au dossier → la card apparaît (selon l'ordre chronologique choisi).</p>
+
+  <div class="config">
+    <label>Propriétaire / Org<br><input id="owner" placeholder="ex: monuser" /></label>
+    <label>Dépôt<br><input id="repo" placeholder="ex: mon-repo" /></label>
+    <label>Dossier (path)<br><input id="path" placeholder="ex: pages" /></label>
+    <label>Branche<br><input id="branch" placeholder="main" value="main" /></label>
+    <label>Tri<br>
+      <select id="order">
+        <option value="desc">Nouveaux d'abord (par défaut)</option>
+        <option value="asc">Anciens d'abord</option>
+      </select>
+    </label>
+    <label>Token GitHub (optionnel, pour privé / limites)<br><input id="token" placeholder="ghp_... (optionnel)" /></label>
+    <div style="display:flex;align-items:flex-end">
+      <button id="go">Générer</button>
+    </div>
+  </div>
+
+  <div class="status" id="status">Prêt.</div>
+  <div id="cards" class="grid"></div>
+
+  <script>
+    const el = (id)=>document.getElementById(id);
+    el('go').addEventListener('click', run);
+
+    async function run(){
+      const owner = el('owner').value.trim();
+      const repo = el('repo').value.trim();
+      const path = el('path').value.trim();
+      const branch = el('branch').value.trim() || 'main';
+      const order = el('order').value || 'desc';
+      const token = el('token').value.trim();
+      const status = el('status');
+      const cards = el('cards');
+      cards.innerHTML = '';
+      if(!owner||!repo||!path){ status.textContent = 'Remplissez owner, repo et path.'; return }
+
+      status.textContent = 'Récupération du contenu...';
+
+      const headers = token ? { Authorization: 'token '+token } : {};
+      try{
+        // 1) lister les fichiers du dossier
+        const contentsUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(branch)}`;
+        const resp = await fetch(contentsUrl,{headers});
+        if(resp.status===404){ status.textContent = 'Dossier non trouvé (vérifiez owner/repo/path/branche).'; return }
+        if(!resp.ok){ status.textContent = 'Erreur GitHub API: '+resp.status; return }
+        const items = await resp.json();
+
+        // ne garder que les fichiers HTML
+        const htmlFiles = items.filter(it => it.type==='file' && it.name.toLowerCase().endsWith('.html'));
+        if(htmlFiles.length===0){ status.textContent = 'Aucun fichier HTML trouvé dans ce dossier.'; return }
+
+        status.textContent = `Trouvé ${htmlFiles.length} fichiers. Récupération des dates de commit...`;
+
+        // 2) pour chaque fichier, récupérer la date du dernier commit (date de modification)
+        const enriched = await Promise.all(htmlFiles.map(async file=>{
+          // appel commits pour le chemin du fichier (per_page=1 => le dernier commit qui concerne ce fichier)
+          const commitsUrl = `https://api.github.com/repos/${owner}/${repo}/commits?path=${encodeURIComponent(file.path)}&per_page=1&sha=${encodeURIComponent(branch)}`;
+          try{
+            const cResp = await fetch(commitsUrl,{headers});
+            if(!cResp.ok) return {file, date: null};
+            const cJson = await cResp.json();
+            const date = (Array.isArray(cJson) && cJson[0] && cJson[0].commit && cJson[0].commit.author) ? cJson[0].commit.author.date : null;
+            // essayer d'extraire titre (balise <title> ou premier <h1>) depuis download_url
+            let title = file.name.replace(/\.html?$/i,'');
+            let excerpt = '';
+            try{
+              const raw = await fetch(file.download_url);
+              if(raw.ok){
+                const txt = await raw.text();
+                const tMatch = txt.match(/<title[^>]*>([^<]+)<\/title>/i);
+                if(tMatch) title = tMatch[1].trim();
+                else{
+                  const h1 = txt.match(/<h1[^>]*>([^<]+)<\/h1>/i);
+                  if(h1) title = h1[1].trim();
+                }
+                // petit extrait texte depuis body
+                const bMatch = txt.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<style[\s\S]*?<\/style>/gi,'').replace(/<[^>]+>/g,' ');
+                excerpt = bMatch.trim().split(/\s+/).slice(0,30).join(' ');
+              }
+            }catch(e){/* ignore */}
+
+            return {file, date, title, excerpt};
+          }catch(e){ return {file, date:null, title:file.name.replace(/\.html?$/i,''), excerpt:''} }
+        }));
+
+        // 3) trier
+        enriched.sort((a,b)=>{
+          const da = a.date ? new Date(a.date).getTime() : 0;
+          const db = b.date ? new Date(b.date).getTime() : 0;
+          return order==='desc' ? db - da : da - db;
+        });
+
+        // 4) afficher
+        status.textContent = 'Génération des cards...';
+        for(const item of enriched){
+          const c = document.createElement('div'); c.className='card';
+          const h = document.createElement('h3'); h.textContent = item.title || item.file.name;
+          const m = document.createElement('div'); m.className='meta'; m.textContent = item.date ? (new Date(item.date)).toLocaleString() : 'Date inconnue';
+          const ex = document.createElement('div'); ex.className='excerpt'; ex.textContent = item.excerpt || '';
+          const actions = document.createElement('div'); actions.className='actions';
+          const a1 = document.createElement('a'); a1.href = item.file.html_url; a1.target='_blank'; a1.rel='noopener'; a1.className='small'; a1.textContent='Voir sur GitHub';
+          const a2 = document.createElement('a'); a2.href = item.file.download_url; a2.target='_blank'; a2.rel='noopener'; a2.className='small'; a2.textContent='Ouvrir la page';
+          actions.appendChild(a1); actions.appendChild(a2);
+          c.appendChild(h); c.appendChild(m); c.appendChild(ex); c.appendChild(actions);
+          cards.appendChild(c);
+        }
+
+        status.textContent = 'Terminé.';
+
+      }catch(err){
+        console.error(err);
+        status.textContent = 'Erreur: '+err.message;
+      }
+    }
+  </script>
+</body>
+</html>
