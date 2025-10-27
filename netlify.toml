@@ -50,12 +50,12 @@
   status = 200
 
 [functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
 
-# Variables d'environnement (à configurer dans l'interface Netlify)
-GITHUB_TOKEN = "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"
-GITHUB_REPO = "glbprod/classeurnumerique"
+  [functions.GITHUB_TOKEN]
+  external_node_modules = [
+    "module-one",
+    "module-two"
+  ]
 
 [[redirects]]
   from = "/api/*"
