@@ -48,3 +48,16 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Variables d'environnement (à configurer dans l'interface Netlify)
+# GITHUB_TOKEN = "ton_token_github"
+# GITHUB_REPO = "utilisateur/nom-repo"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
