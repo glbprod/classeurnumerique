@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNB Technologie - Trottinette Électrique</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+        }
+        .question {
+            margin: 25px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .points {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 2px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 2px solid #34495e;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+        td input[type="text"] {
+            border: 1px solid #95a5a6;
+        }
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .flowchart {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid #34495e;
+            position: relative;
+        }
+        .flowchart-box {
+            border: 2px solid #2c3e50;
+            padding: 15px;
+            margin: 15px auto;
+            width: 250px;
+            text-align: center;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        .flowchart-diamond {
+            width: 200px;
+            height: 100px;
+            background-color: #f39c12;
+            margin: 15px auto;
+            transform: rotate(45deg);
+            position: relative;
+        }
+        .diamond-text {
+            transform: rotate(-45deg);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            width: 140px;
+        }
+        .flowchart-action {
+            background-color: #3498db;
+            color: white;
+        }
+        .arrow {
+            text-align: center;
+            font-size: 24px;
+            margin: 5px 0;
+        }
+        .flowchart-input {
+            width: 90%;
+            margin: 10px auto;
+        }
+        .program-block {
+            background-color: #fff;
+            border: 2px solid #34495e;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .block {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+        }
+        .block-if {
+            background-color: #f39c12;
+        }
+        .block-action {
+            background-color: #3498db;
+        }
+        .block-wait {
+            background-color: #e67e22;
+        }
+        .block-sensor {
+            background-color: #27ae60;
+        }
+        .placement-table {
+            margin-top: 20px;
+        }
+        .placement-table td {
+            vertical-align: middle;
+        }
+        .block-to-place {
+            margin: 5px 0;
+        }
+        select {
+            padding: 8px;
+            font-size: 14px;
+            border: 2px solid #bdc3c7;
+            border-radius: 4px;
+            width: 100px;
+        }
+        .submit-btn {
+            background-color: #27ae60;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+        .submit-btn:hover {
+            background-color: #229954;
+        }
+        .reglement-col {
+            width: 60px;
+            text-align: center;
+        }
+        .intro {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 20px;
+        }
+        .rules-box {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+        .rules-box h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛴 DNB Technologie - Trottinette Électrique</h1>
+        <p style="text-align: right; font-style: italic;">Durée : 30 minutes</p>
+
+        <div class="intro">
+            <h3>Présentation</h3>
+            <p>La trottinette électrique est un moyen de transport peu encombrant, léger, peu polluant et pratique pour se déplacer au cœur des villes. Sa popularité ne cesse de croître (plus de 200 000 ventes en 2018) mais son usage en milieu urbain est source de nombreux accidents. Une réglementation intégrée au code de la route a été mise en place.</p>
+        </div>
+
+        <div class="rules-box">
+            <h3>Document 1 : Extrait des nouvelles règles en vigueur au 26 octobre 2019</h3>
+            <ol>
+                <li>La circulation sur les trottoirs est interdite, sauf si le maire l'autorise et dans ce cas l'allure doit être modérée (6 km/h).</li>
+                <li>L'utilisateur doit être âgé d'au moins 12 ans.</li>
+                <li>La vitesse maximale autorisée est de 25 km/h.</li>
+                <li>Les feux avant et arrière sont obligatoires.</li>
+                <li>Le transport de passager est interdit.</li>
+                <li>Le port d'un gilet rétro-réfléchissant est obligatoire la nuit ou en cas de visibilité insuffisante la journée.</li>
+                <li>L'avertisseur sonore est obligatoire.</li>
+                <li>Un système de freinage est obligatoire.</li>
+                <li>L'utilisateur a l'obligation d'avoir une assurance.</li>
+            </ol>
+        </div>
+
+        <div style="background-color: #e8f4f8; padding: 15px; margin: 15px 0; border: 2px dashed #3498db; text-align: center;">
+            <p><strong>Document 2 : Schéma de la trottinette électrique</strong></p>
+            <p style="color: #7f8c8d; font-style: italic;">[Insérer ici l'image du schéma de la trottinette]</p>
+        </div>
+
+        <form id="dnbForm">
+            <!-- Identification de l'élève -->
+            <div class="question" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
+                <h2>👤 Identification</h2>
+                <p><strong>Nom et Prénom :</strong></p>
+                <input type="text" id="studentName" name="studentName" placeholder="Ex: Dupont Marie" required>
+                
+                <p style="margin-top: 15px;"><strong>Classe :</strong></p>
+                <input type="text" id="studentClass" name="studentClass" placeholder="Ex: 3èmeA" required>
+            </div>
+
+            <!-- Question 1 -->
+            <div class="question">
+                <h2>Question 1 <span class="points">(4 points)</span></h2>
+                <p><strong>À l'aide du texte de présentation, relever trois avantages et un inconvénient de la trottinette comme moyen de transport urbain.</strong></p>
+                
+                <p><strong>Avantages :</strong></p>
+                <input type="text" name="q1_avantage1" placeholder="Avantage 1">
+                <input type="text" name="q1_avantage2" placeholder="Avantage 2">
+                <input type="text" name="q1_avantage3" placeholder="Avantage 3">
+                
+                <p style="margin-top: 15px;"><strong>Inconvénient :</strong></p>
+                <input type="text" name="q1_inconvenient" placeholder="Inconvénient">
+            </div>
+
+            <!-- Questions 2 et 3 -->
+            <div class="question">
+                <h2>Question 2 <span class="points">(7 points)</span> et Question 3 <span class="points">(4 points)</span></h2>
+                <p><strong>Question 2 :</strong> À l'aide du document 2, compléter le tableau. Indiquer les solutions techniques manquantes.</p>
+                <p><strong>Question 3 :</strong> À l'aide du document 1, compléter la colonne de droite du tableau « Règlement » par une croix, si la solution technique permet de satisfaire une exigence de la nouvelle réglementation.</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>FONCTION</th>
+                            <th>SOLUTION TECHNIQUE</th>
+                            <th class="reglement-col">RÈGLEMENT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Freiner</strong></td>
+                            <td>Roue avec frein électromagnétique / Gâchette de freinage</td>
+                            <td class="reglement-col"><input type="checkbox" name="q3_freiner"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Avertir</strong></td>
+                            <td>
+                                Bouton commande avertisseur sonore / 
+                                <input type="text" name="q2_avertir" placeholder="Complétez..." style="width: 300px;">
+                            </td>
+                            <td class="reglement-col"><input type="checkbox" name="q3_avertir"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Avancer</strong></td>
+                            <td>
+                                <input type="text" name="q2_avancer1" placeholder="Solution 1" style="width: 200px;"> / 
+                                <input type="text" name="q2_avancer2" placeholder="Solution 2" style="width: 200px;"> / 
+                                <input type="text" name="q2_avancer3" placeholder="Solution 3" style="width: 200px;">
+                            </td>
+                            <td class="reglement-col"><input type="checkbox" name="q3_avancer"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Éclairer</strong></td>
+                            <td>
+                                <input type="text" name="q2_eclairer1" placeholder="Solution 1" style="width: 250px;"> / 
+                                <input type="text" name="q2_eclairer2" placeholder="Solution 2" style="width: 250px;">
+                            </td>
+                            <td class="reglement-col"><input type="checkbox" name="q3_eclairer"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" name="q2_fonction_batterie" placeholder="Fonction..." style="width: 180px;">
+                            </td>
+                            <td>Batterie</td>
+                            <td class="reglement-col"><input type="checkbox" name="q3_batterie"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Respecter la limitation de vitesse</strong></td>
+                            <td>Limiteur de vitesse électronique</td>
+                            <td class="reglement-col"><input type="checkbox" name="q3_vitesse"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question">
+                <h2>Question 4 <span class="points">(6 points)</span></h2>
+                <p><strong>Pour accroître la sécurité pendant toute la durée du freinage, l'éclairage arrière se met à clignoter, la commande d'accélération n'est pas autorisée et le moteur n'est plus alimenté en électricité.</strong></p>
+                <p>Le feu arrière retrouve ensuite l'état dans lequel il était avant le freinage (allumé ou éteint).</p>
+                <p>Compléter l'algorigramme décrivant ce fonctionnement avec les propositions ci-dessous :</p>
+                <ul>
+                    <li>Allumer éclairage LED arrière 0,2 secondes</li>
+                    <li>Éteindre éclairage LED arrière 0,2 secondes</li>
+                    <li>Éclairage demandé ?</li>
+                    <li>OUI - NON</li>
+                    <li>Autoriser l'accélération</li>
+                </ul>
+
+                <div class="flowchart">
+                    <div style="text-align: center; font-size: 20px;">●</div>
+                    <div class="arrow">↓</div>
+                    
+                    <div class="flowchart-diamond">
+                        <div class="diamond-text"><strong>Freinage demandé ?</strong></div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-around;">
+                        <div style="width: 45%;">
+                            <div style="text-align: center;"><strong>NON</strong></div>
+                            <div class="arrow">↓</div>
+                            <div class="flowchart-box">
+                                <textarea name="q4_box1" rows="2" placeholder="Complétez..." style="width: 100%;"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div style="width: 45%;">
+                            <div style="text-align: center;"><strong>OUI</strong></div>
+                            <div class="arrow">↓</div>
+                            <div class="flowchart-box flowchart-action">
+                                Ne pas autoriser l'accélération
+                            </div>
+                            <div class="arrow">↓</div>
+                            <div class="flowchart-box flowchart-action">
+                                <textarea name="q4_box2" rows="2" placeholder="Complétez..." style="width: 100%;"></textarea>
+                            </div>
+                            <div class="arrow">↓</div>
+                            <div class="flowchart-box flowchart-action">
+                                <textarea name="q4_box3" rows="2" placeholder="Complétez..." style="width: 100%;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow">↓</div>
+                    
+                    <div class="flowchart-diamond">
+                        <div class="diamond-text">
+                            <textarea name="q4_diamond" rows="2" placeholder="Complétez..." style="width: 130px;"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-around;">
+                        <div style="width: 45%;">
+                            <div style="text-align: center;">
+                                <textarea name="q4_reponse1" rows="1" placeholder="..." style="width: 80px;"></textarea>
+                            </div>
+                            <div class="arrow">↓</div>
+                            <div class="flowchart-box flowchart-action">
+                                Allumer éclairage LED arrière
+                            </div>
+                        </div>
+                        
+                        <div style="width: 45%;">
+                            <div style="text-align: center;">
+                                <textarea name="q4_reponse2" rows="1" placeholder="..." style="width: 80px;"></textarea>
+                            </div>
+                            <div class="arrow">↓</div>
+                            <div class="flowchart-box flowchart-action">
+                                Éteindre éclairage LED arrière
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 15px;">
+                        <div class="arrow">↓</div>
+                        <div style="font-size: 20px;">⟲ (retour au début)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question">
+                <h2>Question 5 <span class="points">(4 points)</span></h2>
+                <p><strong>Compléter le programme, en indiquant la position des blocs manquants, pour qu'il corresponde à l'algorigramme précédent.</strong></p>
+                
+                <div class="program-block">
+                    <div style="background-color: #f8f9fa; padding: 15px; margin: 10px 0; border: 2px solid #34495e; border-radius: 5px;">
+                        <span class="block block-if">si</span>
+                        <span style="background-color: #ddd; padding: 5px; border-radius: 3px;">Ⓐ</span>
+                        <span class="block block-if">alors</span>
+                        <br><br>
+                        <div style="margin-left: 40px;">
+                            <span style="background-color: #ddd; padding: 5px; border-radius: 3px;">Ⓑ</span>
+                            <br><br>
+                            <span class="block block-action">Allumer éclairage LED arrière</span>
+                            <br><br>
+                            <span class="block block-wait">attendre 0.2 secondes</span>
+                            <br><br>
+                            <span class="block block-action">Éteindre éclairage LED arrière</span>
+                            <br><br>
+                            <span class="block block-wait">attendre 0.2 secondes</span>
+                        </div>
+                        <br>
+                        <span class="block block-if">sinon</span>
+                        <br><br>
+                        <div style="margin-left: 40px;">
+                            <span style="background-color: #ddd; padding: 5px; border-radius: 3px;">Ⓒ</span>
+                            <br><br>
+                            <span class="block block-if">si</span>
+                            <span style="background-color: #ddd; padding: 5px; border-radius: 3px;">Ⓓ</span>
+                            <span class="block block-if">alors</span>
+                            <br><br>
+                            <div style="margin-left: 40px;">
+                                <span class="block block-action">Allumer éclairage LED arrière</span>
+                            </div>
+                            <br>
+                            <span class="block block-if">sinon</span>
+                            <br><br>
+                            <div style="margin-left: 40px;">
+                                <span class="block block-action">Éteindre éclairage LED arrière</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 30px;">Blocs à placer :</h3>
+                    
+                    <table class="placement-table">
+                        <thead>
+                            <tr>
+                                <th>Bloc à placer</th>
+                                <th>Emplacement (A, B, C ou D)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="block-to-place">
+                                        <span class="block block-action">Autoriser l'accélération</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <select name="q5_autoriser">
+                                        <option value="">-- Choisir --</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="block-to-place">
+                                        <span class="block block-sensor">Gâchette de freinage = 1</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <select name="q5_gachette">
+                                        <option value="">-- Choisir --</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="block-to-place">
+                                        <span class="block block-sensor">bouton d'éclairage = 1</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <select name="q5_bouton">
+                                        <option value="">-- Choisir --</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="block-to-place">
+                                        <span class="block block-action">Ne pas autoriser l'accélération</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <select name="q5_ne_pas_autoriser">
+                                        <option value="">-- Choisir --</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <button type="button" id="sendToFirebase" class="submit-btn" style="background-color: #27ae60; flex: 1;">
+                    📤 Envoyer mes réponses
+                </button>
+                <button type="reset" class="submit-btn" style="background-color: #e74c3c; flex: 0.3;">
+                    🔄 Réinitialiser
+                </button>
+            </div>
+        </form>
+
+        <div id="result" style="margin-top: 20px; padding: 15px; display: none; background-color: #d4edda; border: 2px solid #28a745; border-radius: 5px;">
+            <h3>✅ Réponses enregistrées !</h3>
+            <p>Vos réponses ont été sauvegardées. Vous pouvez maintenant les relire ou demander une correction à votre professeur.</p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIRMATION AVANT FERMETURE
+        // ============================================
+        let formModified = false;
+
+        document.getElementById('dnbForm').addEventListener('input', function() {
+            formModified = true;
+        });
+
+        window.addEventListener('beforeunload', function(e) {
+            if (formModified) {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+           
+        // ============================================
+        // CONFIGURATION FIREBASE
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        console.log('✅ Firebase initialisé');
+
+        // ============================================
+        // BOUTON D'ENVOI
+        // ============================================
+        document.getElementById('sendToFirebase').addEventListener('click', async function() {
+            const form = document.getElementById('dnbForm');
+            
+            // Vérifier la validité du formulaire
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Désactiver le bouton
+            const originalText = this.textContent;
+            this.disabled = true;
+            this.textContent = '⏳ Envoi en cours...';
+            
+            try {
+                // Collecter les données
+                const formData = new FormData(form);
+                
+                const responses = {
+                    nom_eleve: document.getElementById('studentName').value,
+                    classe: document.getElementById('studentClass').value,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    date_soumission: new Date().toISOString(),
+                    
+                    // Question 1 (4 points)
+                    q1_avantage1: formData.get('q1_avantage1') || '',
+                    q1_avantage2: formData.get('q1_avantage2') || '',
+                    q1_avantage3: formData.get('q1_avantage3') || '',
+                    q1_inconvenient: formData.get('q1_inconvenient') || '',
+                    
+                    // Question 2 (7 points)
+                    q2_avertir: formData.get('q2_avertir') || '',
+                    q2_avancer1: formData.get('q2_avancer1') || '',
+                    q2_avancer2: formData.get('q2_avancer2') || '',
+                    q2_avancer3: formData.get('q2_avancer3') || '',
+                    q2_eclairer1: formData.get('q2_eclairer1') || '',
+                    q2_eclairer2: formData.get('q2_eclairer2') || '',
+                    q2_fonction_batterie: formData.get('q2_fonction_batterie') || '',
+                    
+                    // Question 3 (4 points)
+                    q3_freiner: formData.get('q3_freiner') === 'on',
+                    q3_avertir: formData.get('q3_avertir') === 'on',
+                    q3_avancer: formData.get('q3_avancer') === 'on',
+                    q3_eclairer: formData.get('q3_eclairer') === 'on',
+                    q3_batterie: formData.get('q3_batterie') === 'on',
+                    q3_vitesse: formData.get('q3_vitesse') === 'on',
+                    
+                    // Question 4 (6 points)
+                    q4_box1: formData.get('q4_box1') || '',
+                    q4_box2: formData.get('q4_box2') || '',
+                    q4_box3: formData.get('q4_box3') || '',
+                    q4_diamond: formData.get('q4_diamond') || '',
+                    q4_reponse1: formData.get('q4_reponse1') || '',
+                    q4_reponse2: formData.get('q4_reponse2') || '',
+                    
+                    // Question 5 (4 points)
+                    q5_autoriser: formData.get('q5_autoriser') || '',
+                    q5_gachette: formData.get('q5_gachette') || '',
+                    q5_bouton: formData.get('q5_bouton') || '',
+                    q5_ne_pas_autoriser: formData.get('q5_ne_pas_autoriser') || ''
+                };
+                
+                console.log('📤 Envoi des données:', responses);
+                
+                // Envoyer à Firebase
+                const docRef = await db.collection('dnb_trottinette').add(responses);
+                
+                console.log('✅ Document enregistré avec ID:', docRef.id);
+                
+                // Réactiver le bouton
+                this.disabled = false;
+                this.textContent = originalText;
+                
+                // Notification de succès
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+                
+                // Réinitialiser le formulaire après 2 secondes
+                setTimeout(() => {
+                    form.reset();
+                    formModified = false;
+                    document.getElementById('result').style.display = 'none';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('❌ Erreur Firebase:', error);
+                
+                // Réactiver le bouton
+                this.disabled = false;
+                this.textContent = originalText;
+                
+                // Notification d'erreur
+                alert('❌ Erreur lors de l\'envoi : ' + error.message);
+            }
+        });
+
+        // Gestion du bouton de réinitialisation
+        document.getElementById('dnbForm').addEventListener('reset', function() {
+            if (confirm('Êtes-vous sûr de vouloir effacer toutes vos réponses ?')) {
+                formModified = false;
+                document.getElementById('result').style.display = 'none';
+            } else {
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>
