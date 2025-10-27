@@ -1,1 +1,12 @@
-
+{
+  "pages": [
+    {
+      "id": "exemple-1",
+      "title": "Introduction à Python",
+      "githubPath": "cours/python/introduction.html",
+      "addedDate": "2025-10-27T10:00:00Z",
+      "lastModified": "2025-10-27T10:00:00Z",
+      "description": "Cours d'introduction"
+    }
+  ]
+}
