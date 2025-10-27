@@ -54,8 +54,8 @@
   node_bundler = "esbuild"
 
 # Variables d'environnement (à configurer dans l'interface Netlify)
-# GITHUB_TOKEN = "ton_token_github"
-# GITHUB_REPO = "utilisateur/nom-repo"
+GITHUB_TOKEN = "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"
+GITHUB_REPO = "glbprod/classeurnumerique"
 
 [[redirects]]
   from = "/api/*"
