@@ -229,7 +229,6 @@
         </div>
 
         <div style="background-color: #e8f4f8; padding: 15px; margin: 15px 0; border: 2px dashed #3498db; text-align: center;">
-            <p><strong>Document 2 : Descriptif de la trottinette électrique</strong></p>
             <figure style="text-align: center; margin: 20px 0;">
                 <img src="/Pages/DNB/img/schema_trotinette.png" 
                      alt="Schéma descriptif de la trottinette électrique avec légendes"
@@ -551,6 +550,34 @@
     </div>
 
     <script>
+
+            // Protection par mot de passe
+        (function() {
+            const MOT_DE_PASSE = '4202BND'; // ← Changez ici
+            let tentatives = 3;
+            
+            while (tentatives > 0) {
+                const saisie = prompt('🔒 Mot de passe requis pour accéder au formulaire :');
+                
+                if (saisie === null) {
+                    document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès annulé</h1>';
+                    throw new Error('Accès annulé');
+                }
+                
+                if (saisie === MOT_DE_PASSE) {
+                    return; // ✅ Mot de passe correct
+                }
+                
+                tentatives--;
+                if (tentatives > 0) {
+                    alert('❌ Mot de passe incorrect ! Il vous reste ' + tentatives + ' tentative(s).');
+                }
+            }
+            
+            alert('🚫 Nombre de tentatives dépassé !');
+            document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès refusé</h1>';
+            throw new Error('Accès refusé');
+        })();
         // ============================================
         // CONFIRMATION AVANT FERMETURE
         // ============================================
