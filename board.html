@@ -22,7 +22,8 @@ export default function GithubHtmlCards() {
       if (!treeResp.ok) throw new Error('Erreur API GitHub');
       const treeData = await treeResp.json();
 
-      const htmlFiles = treeData.tree.filter(item => item.path.endsWith('.html'));
+      const allTree = Array.isArray(treeData.tree) ? treeData.tree : [];
+      const htmlFiles = allTree.filter(item => item.path && item.path.endsWith('.html'));
       if (htmlFiles.length === 0) {
         setStatus('Aucun fichier HTML trouvé dans ce dépôt.');
         setLoading(false);
@@ -33,7 +34,7 @@ export default function GithubHtmlCards() {
 
       // Récupérer la date du dernier commit pour chaque fichier
       const enriched = await Promise.all(htmlFiles.map(async file => {
-        const commitsUrl = `https://api.github.com/repos/${owner}/${repo}/commits?path=${file.path}&per_page=1&sha=${branch}`;
+        const commitsUrl = `https://api.github.com/repos/${owner}/${repo}/commits?path=${encodeURIComponent(file.path)}&per_page=1&sha=${encodeURIComponent(branch)}`;
         try {
           const cResp = await fetch(commitsUrl);
           const cJson = await cResp.json();
@@ -46,19 +47,28 @@ export default function GithubHtmlCards() {
             const rawResp = await fetch(rawUrl);
             if (rawResp.ok) {
               const text = await rawResp.text();
-              const tMatch = text.match(/<title[^>]*>([^<]+)<\\/title>/i);
+
+              // Extract title or first H1
+              const tMatch = text.match(/<title[^>]*>([^<]+)<\/title>/i);
               if (tMatch) title = tMatch[1].trim();
               else {
-                const h1 = text.match(/<h1[^>]*>([^<]+)<\\/h1>/i);
+                const h1 = text.match(/<h1[^>]*>([^<]+)<\/h1>/i);
                 if (h1) title = h1[1].trim();
               }
-              const bMatch = text.replace(/<script[\\s\\S]*?<\\/script>/gi, '').replace(/<style[\\s\\S]*?<\\/style>/gi, '').replace(/<[^>]+>/g, ' ');
-              excerpt = bMatch.trim().split(/\\s+/).slice(0, 25).join(' ');
+
+              // Remove scripts/styles and strip tags using a safer pattern that doesn't rely on \s\S
+              const withoutScripts = text.replace(/<script[^]*?<\/script>/gi, '');
+              const withoutStyles = withoutScripts.replace(/<style[^]*?<\/style>/gi, '');
+              const onlyText = withoutStyles.replace(/<[^>]+>/g, ' ');
+
+              excerpt = onlyText.trim().split(/\s+/).slice(0, 25).join(' ');
             }
-          } catch {}
+          } catch (err) {
+            // ignore per-file fetch errors
+          }
 
           return { file, date, title, excerpt };
-        } catch {
+        } catch (err) {
           return { file, date: null, title: file.path, excerpt: '' };
         }
       }));
