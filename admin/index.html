@@ -210,6 +210,94 @@
     font-size: 0.95rem;
     margin: 40px 0;
   }
+
+/* Navigateur de fichiers */
+.file-browser {
+  display: none;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.file-browser.active {
+  display: block;
+}
+
+.file-browser-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #30363d;
+}
+
+.file-browser-path {
+  color: #8b949e;
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
+}
+
+.file-browser-close {
+  background: none;
+  border: none;
+  color: #8b949e;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0;
+}
+
+.file-browser-close:hover {
+  color: #c9d1d9;
+}
+
+.file-item, .folder-item {
+  padding: 8px 12px;
+  margin: 4px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 0.9rem;
+}
+
+.folder-item {
+  color: #58a6ff;
+}
+
+.folder-item:hover {
+  background: #21262d;
+}
+
+.file-item {
+  color: #c9d1d9;
+}
+
+.file-item:hover {
+  background: #21262d;
+}
+
+.file-item::before {
+  content: "📄 ";
+}
+
+.folder-item::before {
+  content: "📁 ";
+}
+
+.btn-browse {
+  background: #238636;
+  border-color: #238636;
+}
+
+.btn-browse:hover {
+  background: #2ea043;
+  border-color: #2ea043;
+}
+  
 </style>
 
 </head>
@@ -240,10 +328,21 @@
         </div>
         
         <button type="submit" class="btn" id="submitBtn">Ajouter la page</button>
+        <button type="button" class="btn btn-browse" onclick="toggleFileBrowser()">📂 Parcourir GitHub</button>
         <button type="button" class="btn refresh-btn" onclick="loadPages()">🔄 Rafraîchir</button>
       </form>
-    </div>
 
+    <!-- Navigateur de fichiers -->
+    <div id="fileBrowser" class="file-browser">
+      <div class="file-browser-header">
+        <span class="file-browser-path" id="currentPath">/</span>
+        <button class="file-browser-close" onclick="toggleFileBrowser()">✕</button>
+      </div>
+      <div id="fileList">
+        <p class="loading">Chargement...</p>
+      </div>
+    </div>
+      
     <!-- Liste des pages -->
     <div id="pagesContainer">
       <p class="loading">Chargement des pages...</p>
@@ -401,6 +500,89 @@
       } catch (error) {
         showMessage(`❌ Erreur : ${error.message}`, 'error');
       }
+    }
+
+    // Variables pour le navigateur de fichiers
+    let currentBrowsePath = '';
+    
+    // Toggle du navigateur de fichiers
+    function toggleFileBrowser() {
+      const browser = document.getElementById('fileBrowser');
+      browser.classList.toggle('active');
+      
+      if (browser.classList.contains('active')) {
+        loadFiles('');
+      }
+    }
+    
+    // Charger les fichiers d'un dossier
+    async function loadFiles(path) {
+      currentBrowsePath = path;
+      const fileList = document.getElementById('fileList');
+      const pathDisplay = document.getElementById('currentPath');
+      
+      fileList.innerHTML = '<p class="loading">Chargement...</p>';
+      pathDisplay.textContent = path || '/';
+    
+      try {
+        const response = await fetch(`${API_BASE}/list-files?path=${encodeURIComponent(path)}`);
+        const data = await response.json();
+    
+        if (!data.success) {
+          throw new Error(data.error);
+        }
+    
+        fileList.innerHTML = '';
+    
+        // Bouton retour si on n'est pas à la racine
+        if (path) {
+          const backBtn = document.createElement('div');
+          backBtn.className = 'folder-item';
+          backBtn.innerHTML = '⬆️ .. (retour)';
+          backBtn.onclick = () => {
+            const parentPath = path.split('/').slice(0, -1).join('/');
+            loadFiles(parentPath);
+          };
+          fileList.appendChild(backBtn);
+        }
+    
+        // Afficher les dossiers
+        data.folders.forEach(folder => {
+          const folderDiv = document.createElement('div');
+          folderDiv.className = 'folder-item';
+          folderDiv.textContent = folder.name;
+          folderDiv.onclick = () => loadFiles(folder.path);
+          fileList.appendChild(folderDiv);
+        });
+    
+        // Afficher les fichiers HTML
+        data.files.forEach(file => {
+          const fileDiv = document.createElement('div');
+          fileDiv.className = 'file-item';
+          fileDiv.textContent = file.name;
+          fileDiv.onclick = () => selectFile(file.path, file.name);
+          fileList.appendChild(fileDiv);
+        });
+    
+        if (data.folders.length === 0 && data.files.length === 0) {
+          fileList.innerHTML = '<p style="color: #8b949e; text-align: center;">Aucun fichier HTML trouvé</p>';
+        }
+    
+      } catch (error) {
+        fileList.innerHTML = `<p style="color: #f85149;">Erreur : ${error.message}</p>`;
+      }
+    }
+    
+    // Sélectionner un fichier
+    function selectFile(path, name) {
+      // Pré-remplir le formulaire
+      document.getElementById('githubPath').value = path;
+      document.getElementById('title').value = name.replace('.html', '').replace(/-|_/g, ' ');
+      
+      // Fermer le navigateur
+      toggleFileBrowser();
+      
+      showMessage(`✅ Fichier sélectionné : ${path}`, 'success');
     }
 
     // Charger les pages au démarrage
