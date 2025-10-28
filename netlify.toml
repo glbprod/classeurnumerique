@@ -32,6 +32,11 @@
     X-Frame-Options = "ALLOWALL"
     Content-Security-Policy = "frame-ancestors *"
 
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
 # Redirections si nécessaire
 [[redirects]]
   from = "/old-page"
@@ -56,8 +61,3 @@
     "module-one",
     "module-two"
   ]
-
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
