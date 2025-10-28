@@ -318,6 +318,19 @@
 
       const title = document.getElementById('title').value;
       const githubPath = document.getElementById('githubPath').value;
+
+      // Nettoyer le chemin s'il contient une URL GitHub complète
+      let cleanPath = githubPath;
+      if (githubPath.includes('github.com')) {
+        // Extraire le chemin depuis l'URL GitHub
+        // De: https://github.com/user/repo/blob/main/Pages/file.html
+        // À: Pages/file.html
+        const match = githubPath.match(/blob\/[^\/]+\/(.*)/);
+        if (match) {
+          cleanPath = match[1];
+        }
+      }
+      
       const description = document.getElementById('description').value;
 
       try {
