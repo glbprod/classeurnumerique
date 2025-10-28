@@ -1,6 +1,17 @@
 [build]
   publish = "."
 
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# IMPORTANT : La redirection API DOIT être AVANT la règle catch-all
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Headers de sécurité
 [[headers]]
   for = "/*"
   [headers.values]
@@ -32,32 +43,14 @@
     X-Frame-Options = "ALLOWALL"
     Content-Security-Policy = "frame-ancestors *"
 
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
-
-# Redirections si nécessaire
+# Anciennes redirections (si nécessaires)
 [[redirects]]
   from = "/old-page"
   to = "/index.html"
   status = 301
 
-# Redirections si nécessaire
-[[redirects]]
-  from = "/old-page"
-  to = "/index.html"
-  status = 301
-
+# ATTENTION : Cette règle catch-all DOIT être EN DERNIER
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
-[functions]
-
-  [functions.GITHUB_TOKEN]
-  external_node_modules = [
-    "module-one",
-    "module-two"
-  ]
