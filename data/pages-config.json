@@ -62,6 +62,15 @@
       "addedDate": "2025-10-28T18:33:10.577Z",
       "lastModified": "2025-10-28T18:33:10.579Z",
       "favorite": true
+    },
+    {
+      "id": "page-1761676445286",
+      "title": "Ajouter des pages",
+      "githubPath": "admin/index.html",
+      "description": "",
+      "addedDate": "2025-10-28T18:34:05.286Z",
+      "lastModified": "2025-10-28T18:34:05.286Z",
+      "favorite": false
     }
   ]
 }
