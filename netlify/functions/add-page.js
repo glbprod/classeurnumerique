@@ -44,7 +44,7 @@ exports.handler = async (event, context) => {
 
     // 1. Récupération du fichier actuel
     const getResponse = await fetch(
-      `https://api.github.com/repos/${GITHUB_REPO}/contents/data/pages-config.json`,
+      `https://api.github.com/repos/${GITHUB_REPO}/data/pages-config.json`,
       {
         headers: {
           'Authorization': `token ${GITHUB_TOKEN}`,
