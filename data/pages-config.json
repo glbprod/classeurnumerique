@@ -7,6 +7,14 @@
       "addedDate": "2025-10-27T10:00:00Z",
       "lastModified": "2025-10-27T10:00:00Z",
       "description": "Cours d'introduction"
+    },
+    {
+      "id": "page-1761612672245",
+      "title": "Correcteur",
+      "githubPath": "https://github.com/glbprod/classeurnumerique/blob/main/Pages/Gestion/correcteur.html",
+      "description": "Quiz Évolution et Fonctions + Devoir LLM et Cybersécurité",
+      "addedDate": "2025-10-28T00:51:12.245Z",
+      "lastModified": "2025-10-28T00:51:12.247Z"
     }
   ]
 }
