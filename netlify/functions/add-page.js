@@ -79,7 +79,7 @@ exports.handler = async (event, context) => {
     const newContent = Buffer.from(JSON.stringify(pagesConfig, null, 2)).toString('base64');
     
     const updateResponse = await fetch(
-      `https://api.github.com/repos/${GITHUB_REPO}/contents/data/pages-config.json`,
+      `https://api.github.com/repos/${GITHUB_REPO}/data/pages-config.json`,
       {
         method: 'PUT',
         headers: {
