@@ -7,6 +7,7 @@
       "description": "En dev",
       "addedDate": "2025-10-28T01:12:15.505Z",
       "lastModified": "2025-10-28T01:12:15.507Z"
+      "favorite": false
     },
     {
       "id": "page-1761613998521",
@@ -15,6 +16,7 @@
       "description": "",
       "addedDate": "2025-10-28T01:13:18.521Z",
       "lastModified": "2025-10-28T01:13:18.521Z"
+      "favorite": false
     },
     {
       "id": "page-1761673344881",
@@ -23,6 +25,7 @@
       "description": "",
       "addedDate": "2025-10-28T17:42:24.881Z",
       "lastModified": "2025-10-28T17:42:24.882Z"
+      "favorite": false
     },
     {
       "id": "page-1761673375066",
@@ -31,6 +34,7 @@
       "description": "",
       "addedDate": "2025-10-28T17:42:55.066Z",
       "lastModified": "2025-10-28T17:42:55.066Z"
+      "favorite": false
     },
     {
       "id": "page-1761673414988",
@@ -39,6 +43,7 @@
       "description": "",
       "addedDate": "2025-10-28T17:43:34.988Z",
       "lastModified": "2025-10-28T17:43:34.988Z"
+      "favorite": false
     },
     {
       "id": "page-1761673456140",
@@ -47,6 +52,7 @@
       "description": "",
       "addedDate": "2025-10-28T17:44:16.140Z",
       "lastModified": "2025-10-28T17:44:16.140Z"
+      "favorite": false
     }
   ]
 }
