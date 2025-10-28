@@ -339,7 +339,7 @@
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ title, githubPath, description })
+          body: JSON.stringify({ title, githubPath: cleanPath, description })
         });
 
         const data = await response.json();
