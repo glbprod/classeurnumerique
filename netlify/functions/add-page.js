@@ -69,7 +69,8 @@ exports.handler = async (event, context) => {
       githubPath: githubPath,
       description: description || '',
       addedDate: new Date().toISOString(),
-      lastModified: new Date().toISOString()
+      lastModified: new Date().toISOString(),
+      favorite: false
     };
 
     // 3. Ajout de la page
