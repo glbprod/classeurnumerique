@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galerie des Ressources Pédagogiques</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    h1 {
+      color: #f0f6fc;
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      color: #8b949e;
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+
+    /* Filtres */
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: #21262d;
+      color: #c9d1d9;
+      padding: 10px 20px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      background: #30363d;
+      border-color: #58a6ff;
+    }
+
+    .filter-btn.active {
+      background: #58a6ff;
+      border-color: #58a6ff;
+      color: #0d1117;
+      font-weight: 600;
+    }
+
+    /* Grille de cards */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .gallery-card {
+      background: #161b22;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #30363d;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gallery-card:hover {
+      border-color: #58a6ff;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(88, 166, 255, 0.15);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .gallery-card h3 {
+      color: #58a6ff;
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin: 0;
+      flex: 1;
+    }
+
+    .badge-container {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-favorite {
+      background: rgba(241, 224, 90, 0.15);
+      color: #f1e05a;
+      border: 1px solid rgba(241, 224, 90, 0.3);
+    }
+
+    .badge-new {
+      background: rgba(63, 185, 80, 0.15);
+      color: #3fb950;
+      border: 1px solid rgba(63, 185, 80, 0.3);
+    }
+
+    .gallery-card .description {
+      color: #8b949e;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid #21262d;
+      margin-top: auto;
+    }
+
+    .card-date {
+      color: #6e7681;
+      font-size: 0.85rem;
+    }
+
+    .card-arrow {
+      color: #58a6ff;
+      font-size: 1.2rem;
+      transition: transform 0.2s;
+    }
+
+    .gallery-card:hover .card-arrow {
+      transform: translateX(4px);
+    }
+
+    .loading {
+      text-align: center;
+      color: #8b949e;
+      font-size: 1.1rem;
+      margin: 60px 0;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #8b949e;
+      margin: 60px 0;
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 16px;
+    }
+
+    .empty-state-text {
+      font-size: 1.2rem;
+    }
+
+    /* Stats */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      color: #8b949e;
+      font-size: 0.95rem;
+    }
+
+    .stat-number {
+      color: #58a6ff;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎓 Ressources Pédagogiques</h1>
+      <p class="subtitle">Découvrez l'ensemble des ressources disponibles</p>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats" id="stats"></div>
+
+    <!-- Filtres -->
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterPages('all')">📚 Toutes les pages</button>
+      <button class="filter-btn" onclick="filterPages('favorites')">⭐ Favoris</button>
+      <button class="filter-btn" onclick="filterPages('recent')">🕒 Récentes</button>
+    </div>
+
+    <!-- Galerie -->
+    <div id="galleryContainer">
+      <p class="loading">Chargement des ressources...</p>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = '/api';
+    let allPages = [];
+    let currentFilter = 'all';
+
+    // Charger les pages
+    async function loadGallery() {
+      const container = document.getElementById('galleryContainer');
+      container.innerHTML = '<p class="loading">Chargement des ressources...</p>';
+
+      try {
+        const response = await fetch(`${API_BASE}/get-pages`);
+        const data = await response.json();
+
+        if (!data.success || !data.pages) {
+          throw new Error('Erreur lors du chargement');
+        }
+
+        allPages = data.pages;
+        updateStats();
+        displayPages(allPages);
+
+      } catch (error) {
+        container.innerHTML = `<p class="loading" style="color: #f85149;">Erreur : ${error.message}</p>`;
+      }
+    }
+
+    // Mettre à jour les stats
+    function updateStats() {
+      const statsContainer = document.getElementById('stats');
+      const totalPages = allPages.length;
+      const favoritesCount = allPages.filter(p => p.favorite).length;
+      const recentCount = allPages.filter(p => isRecent(p.addedDate)).length;
+
+      statsContainer.innerHTML = `
+        <div class="stat-item">
+          <span class="stat-number">${totalPages}</span> ressource${totalPages > 1 ? 's' : ''}
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">${favoritesCount}</span> favori${favoritesCount > 1 ? 's' : ''}
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">${recentCount}</span> récente${recentCount > 1 ? 's' : ''}
+        </div>
+      `;
+    }
+
+    // Vérifier si une page est récente (moins de 30 jours)
+    function isRecent(dateString) {
+      const pageDate = new Date(dateString);
+      const now = new Date();
+      const daysDiff = (now - pageDate) / (1000 * 60 * 60 * 24);
+      return daysDiff <= 30;
+    }
+
+    // Afficher les pages
+    function displayPages(pages) {
+      const container = document.getElementById('galleryContainer');
+
+      if (pages.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <p class="empty-state-text">Aucune ressource à afficher</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Trier : favoris en premier, puis par date décroissante
+      const sortedPages = [...pages].sort((a, b) => {
+        // D'abord par favoris
+        if (a.favorite && !b.favorite) return -1;
+        if (!a.favorite && b.favorite) return 1;
+        // Puis par date d'ajout (plus récent en premier)
+        return new Date(b.addedDate) - new Date(a.addedDate);
+      });
+
+      const grid = document.createElement('div');
+      grid.className = 'gallery-grid';
+
+      sortedPages.forEach(page => {
+        const card = document.createElement('div');
+        card.className = 'gallery-card';
+        card.onclick = () => window.open(`/${page.githubPath}`, '_blank');
+
+        const addedDate = new Date(page.addedDate).toLocaleDateString('fr-FR', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+
+        const badges = [];
+        if (page.favorite) {
+          badges.push('<span class="badge badge-favorite">⭐ Favori</span>');
+        }
+        if (isRecent(page.addedDate)) {
+          badges.push('<span class="badge badge-new">🆕 Nouveau</span>');
+        }
+
+        card.innerHTML = `
+          <div class="card-header">
+            <h3>${page.title}</h3>
+            ${badges.length > 0 ? `<div class="badge-container">${badges.join('')}</div>` : ''}
+          </div>
+          ${page.description ? `<p class="description">${page.description}</p>` : '<p class="description">Aucune description disponible</p>'}
+          <div class="card-footer">
+            <span class="card-date">📅 ${addedDate}</span>
+            <span class="card-arrow">→</span>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      container.innerHTML = '';
+      container.appendChild(grid);
+    }
+
+    // Filtrer les pages
+    function filterPages(filter) {
+      currentFilter = filter;
+
+      // Mise à jour des boutons actifs
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      let filteredPages = [];
+
+      switch(filter) {
+        case 'favorites':
+          filteredPages = allPages.filter(p => p.favorite);
+          break;
+        case 'recent':
+          filteredPages = allPages.filter(p => isRecent(p.addedDate));
+          break;
+        default:
+          filteredPages = allPages;
+      }
+
+      displayPages(filteredPages);
+    }
+
+    // Charger au démarrage
+    loadGallery();
+  </script>
+</body>
+</html>
