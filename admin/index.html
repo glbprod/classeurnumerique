@@ -111,11 +111,13 @@
       border-radius: 15px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       transition: transform 0.3s;
+      cursor: pointer;  /* ← AJOUTE CETTE LIGNE */
     }
-
+    
     .page-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      border: 2px solid #667eea;  /* ← AJOUTE CETTE LIGNE (optionnel, pour un effet visuel) */
     }
 
     .page-card h3 {
@@ -276,6 +278,13 @@
           const card = document.createElement('div');
           card.className = 'page-card';
           
+          // ← AJOUTE CES 3 LIGNES
+          card.onclick = (e) => {
+            if (!e.target.classList.contains('btn-delete')) {
+              window.open(`/${page.githubPath}`, '_blank');
+            }
+          };
+          
           const lastModified = new Date(page.lastModified).toLocaleDateString('fr-FR');
           
           card.innerHTML = `
@@ -284,7 +293,7 @@
             ${page.description ? `<p class="description">${page.description}</p>` : ''}
             <p class="date">📅 Dernière modification : ${lastModified}</p>
             <div class="actions">
-              <button class="btn-delete" onclick="deletePage('${page.id}')">🗑️ Supprimer</button>
+              <button class="btn-delete" onclick="deletePage('${page.id}'); event.stopPropagation();">🗑️ Supprimer</button>
             </div>
           `;
           
