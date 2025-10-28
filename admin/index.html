@@ -360,10 +360,32 @@
       }
     });
 
-    // Supprimer une page (à implémenter plus tard)
-    function deletePage(id) {
-      if (confirm('Voulez-vous vraiment supprimer cette page ?')) {
-        showMessage('⚠️ Fonction de suppression à venir !', 'error');
+    // Supprimer une page
+    async function deletePage(id) {
+      if (!confirm('Voulez-vous vraiment supprimer cette page ?')) {
+        return;
+      }
+    
+      try {
+        const response = await fetch(`${API_BASE}/delete-page`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ id })
+        });
+    
+        const data = await response.json();
+    
+        if (data.success) {
+          showMessage('✅ Page supprimée avec succès !', 'success');
+          loadPages(); // Recharger la liste
+        } else {
+          throw new Error(data.error || 'Erreur inconnue');
+        }
+    
+      } catch (error) {
+        showMessage(`❌ Erreur : ${error.message}`, 'error');
       }
     }
 
