@@ -297,6 +297,26 @@
   background: #2ea043;
   border-color: #2ea043;
 }
+
+.btn-favorite {
+  background: #21262d;
+  color: #8b949e;
+  padding: 6px 12px;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+.btn-favorite.active {
+  color: #f1e05a;
+  border-color: #f1e05a;
+}
+
+.btn-favorite:hover {
+  border-color: #f1e05a;
+}
   
 </style>
 
@@ -388,30 +408,32 @@
         grid.className = 'pages-grid';
 
         data.pages.forEach(page => {
-          const card = document.createElement('div');
-          card.className = 'page-card';
-          
-          // ← AJOUTE CES 3 LIGNES
-          card.onclick = (e) => {
-            if (!e.target.classList.contains('btn-delete')) {
-              window.open(`/${page.githubPath}`, '_blank');
-            }
-          };
-          
-          const lastModified = new Date(page.lastModified).toLocaleDateString('fr-FR');
-          
-          card.innerHTML = `
-            <h3>${page.title}</h3>
-            <p class="path">📁 ${page.githubPath}</p>
-            ${page.description ? `<p class="description">${page.description}</p>` : ''}
-            <p class="date">📅 Dernière modification : ${lastModified}</p>
-            <div class="actions">
-              <button class="btn-delete" onclick="deletePage('${page.id}'); event.stopPropagation();">🗑️ Supprimer</button>
-            </div>
-          `;
-          
-          grid.appendChild(card);
-        });
+        const card = document.createElement('div');
+        card.className = 'page-card';
+        
+        card.onclick = (e) => {
+          if (!e.target.classList.contains('btn-delete') && !e.target.classList.contains('btn-favorite')) {
+            window.open(`/${page.githubPath}`, '_blank');
+          }
+        };
+        
+        const lastModified = new Date(page.lastModified).toLocaleDateString('fr-FR');
+        const favoriteClass = page.favorite ? 'active' : '';
+        const favoriteIcon = page.favorite ? '⭐' : '☆';
+        
+        card.innerHTML = `
+          <h3>${page.title}</h3>
+          <p class="path">📁 ${page.githubPath}</p>
+          ${page.description ? `<p class="description">${page.description}</p>` : ''}
+          <p class="date">📅 Dernière modification : ${lastModified}</p>
+          <div class="actions">
+            <button class="btn-favorite ${favoriteClass}" onclick="toggleFavorite('${page.id}'); event.stopPropagation();">${favoriteIcon} Favori</button>
+            <button class="btn-delete" onclick="deletePage('${page.id}'); event.stopPropagation();">🗑️ Supprimer</button>
+          </div>
+        `;
+        
+        grid.appendChild(card);
+      });
 
         container.innerHTML = '';
         container.appendChild(grid);
@@ -583,6 +605,31 @@
       toggleFileBrowser();
       
       showMessage(`✅ Fichier sélectionné : ${path}`, 'success');
+    }
+
+    // Toggle favori
+    async function toggleFavorite(id) {
+      try {
+        const response = await fetch(`${API_BASE}/toggle-favorite`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ id })
+        });
+    
+        const data = await response.json();
+    
+        if (data.success) {
+          showMessage(data.message, 'success');
+          loadPages(); // Recharger la liste
+        } else {
+          throw new Error(data.error || 'Erreur inconnue');
+        }
+    
+      } catch (error) {
+        showMessage(`❌ Erreur : ${error.message}`, 'error');
+      }
     }
 
     // Charger les pages au démarrage
