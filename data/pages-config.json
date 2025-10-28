@@ -1,14 +1,6 @@
 {
   "pages": [
     {
-      "id": "exemple-1",
-      "title": "Introduction à Python",
-      "githubPath": "cours/python/introduction.html",
-      "addedDate": "2025-10-27T10:00:00Z",
-      "lastModified": "2025-10-27T10:00:00Z",
-      "description": "Cours d'introduction"
-    },
-    {
       "id": "page-1761612672245",
       "title": "Correcteur",
       "githubPath": "https://github.com/glbprod/classeurnumerique/blob/main/Pages/Gestion/correcteur.html",
