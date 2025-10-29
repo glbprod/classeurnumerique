@@ -372,6 +372,35 @@
   </div>
 
   <script>
+
+    // Protection par mot de passe
+    (function() {
+        const MOT_DE_PASSE = '4202BND'; // ← Changez ici
+        let tentatives = 3;
+        
+        while (tentatives > 0) {
+            const saisie = prompt('🔒 Mot de passe requis pour accéder au formulaire :');
+            
+            if (saisie === null) {
+                document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès annulé</h1>';
+                throw new Error('Accès annulé');
+            }
+            
+            if (saisie === MOT_DE_PASSE) {
+                return; // ✅ Mot de passe correct
+            }
+            
+            tentatives--;
+            if (tentatives > 0) {
+                alert('❌ Mot de passe incorrect ! Il vous reste ' + tentatives + ' tentative(s).');
+            }
+        }
+        
+        alert('🚫 Nombre de tentatives dépassé !');
+        document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès refusé</h1>';
+        throw new Error('Accès refusé');
+    })();
+    
     // Configuration
     const API_BASE = '/api';
 
