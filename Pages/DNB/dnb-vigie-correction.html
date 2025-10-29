@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correction DNB - Vigie de Surveillance</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .controls input, .controls select {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .controls button:hover {
+            background-color: #c0392b;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: #e74c3c;
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .student-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .student-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .student-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #e74c3c;
+            margin-bottom: 20px;
+        }
+
+        .student-info h2 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .student-info p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .note-section {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .note-section input {
+            width: 80px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .note-section button {
+            padding: 8px 15px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .note-section button:hover {
+            background-color: #229954;
+        }
+
+        .note-saved {
+            background-color: #27ae60 !important;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .responses-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .question-block {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .question-block h3 {
+            color: #34495e;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .answer {
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+        }
+
+        .answer strong {
+            color: #e74c3c;
+            display: inline-block;
+            min-width: 150px;
+        }
+
+        .binary-display {
+            display: inline-flex;
+            gap: 5px;
+            margin-left: 10px;
+        }
+
+        .binary-bit {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color: #34495e;
+            color: white;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .no-data h2 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        .empty-field {
+            color: #e74c3c;
+            font-style: italic;
+        }
+
+        .alerte-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .alerte-oui {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .alerte-non {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        @media print {
+            .controls, .note-section button {
+                display: none;
+            }
+            
+            .student-card {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔥 Correction DNB - Vigie de Surveillance</h1>
+        <p>Interface de correction et notation des réponses des élèves</p>
+    </div>
+
+    <div class="stats" id="stats">
+        <div class="stat-card">
+            <h3 id="totalStudents">0</h3>
+            <p>Élèves</p>
+        </div>
+        <div class="stat-card">
+            <h3 id="totalGraded">0</h3>
+            <p>Notés</p>
+        </div>
+        <div class="stat-card">
+            <h3 id="avgNote">-</h3>
+            <p>Moyenne</p>
+        </div>
+    </div>
+
+    <div class="controls">
+        <input type="text" id="searchStudent" placeholder="🔍 Rechercher un élève...">
+        
+        <select id="filterClass">
+            <option value="">Toutes les classes</option>
+        </select>
+        
+        <select id="filterGraded">
+            <option value="">Tous</option>
+            <option value="graded">Déjà notés</option>
+            <option value="ungraded">Non notés</option>
+        </select>
+        
+        <button onclick="refreshData()">🔄 Actualiser</button>
+        <button onclick="exportToCSV()">📥 Exporter CSV</button>
+        <button onclick="window.print()">🖨️ Imprimer</button>
+    </div>
+
+    <div id="loading" class="loading">
+        ⏳ Chargement des données...
+    </div>
+
+    <div id="studentsContainer"></div>
+
+    <script>
+        // ============================================
+        // PROTECTION PAR MOT DE PASSE
+        // ============================================
+        window.addEventListener('load', function() {
+            const motDePasse = "correction2024";
+            const tentative = prompt("🔒 Entrez le mot de passe professeur :");
+            
+            if (tentative !== motDePasse) {
+                alert("❌ Mot de passe incorrect !");
+                document.body.innerHTML = "<h1 style='text-align:center; margin-top:100px; color:#e74c3c;'>🔒 Accès refusé</h1>";
+                throw new Error("Accès refusé");
+            }
+        });
+
+        // ============================================
+        // CONFIGURATION FIREBASE
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let allStudents = [];
+        let filteredStudents = [];
+
+        // ============================================
+        // CHARGEMENT DES DONNÉES
+        // ============================================
+        async function loadData() {
+            try {
+                const snapshot = await db.collection('dnb_vigie')
+                    .orderBy('timestamp', 'desc')
+                    .get();
+
+                allStudents = [];
+                const classes = new Set();
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    allStudents.push({
+                        id: doc.id,
+                        ...data
+                    });
+                    if (data.classe) {
+                        classes.add(data.classe);
+                    }
+                });
+
+                const filterClass = document.getElementById('filterClass');
+                filterClass.innerHTML = '<option value="">Toutes les classes</option>';
+                Array.from(classes).sort().forEach(classe => {
+                    filterClass.innerHTML += `<option value="${classe}">${classe}</option>`;
+                });
+
+                filteredStudents = [...allStudents];
+                updateStats();
+                displayStudents();
+                
+                document.getElementById('loading').style.display = 'none';
+                
+                console.log('✅ Données chargées:', allStudents.length, 'élèves');
+            } catch (error) {
+                console.error('❌ Erreur de chargement:', error);
+                document.getElementById('loading').innerHTML = 
+                    '<div class="no-data"><h2>❌ Erreur de chargement</h2><p>' + error.message + '</p></div>';
+            }
+        }
+
+        // ============================================
+        // MISE À JOUR DES STATISTIQUES
+        // ============================================
+        function updateStats() {
+            const graded = allStudents.filter(s => s.note !== undefined && s.note !== null && s.note !== '');
+            const notes = graded.map(s => parseFloat(s.note)).filter(n => !isNaN(n));
+            const avg = notes.length > 0 ? (notes.reduce((a, b) => a + b, 0) / notes.length).toFixed(1) : '-';
+
+            document.getElementById('totalStudents').textContent = allStudents.length;
+            document.getElementById('totalGraded').textContent = graded.length;
+            document.getElementById('avgNote').textContent = avg !== '-' ? avg + '/25' : '-';
+        }
+
+        // ============================================
+        // AFFICHAGE DES ÉLÈVES
+        // ============================================
+        function displayStudents() {
+            const container = document.getElementById('studentsContainer');
+            
+            if (filteredStudents.length === 0) {
+                container.innerHTML = '<div class="no-data"><h2>📭 Aucune réponse</h2><p>Aucun élève n\'a encore soumis le formulaire.</p></div>';
+                return;
+            }
+
+            container.innerHTML = filteredStudents.map(student => `
+                <div class="student-card" data-id="${student.id}">
+                    <div class="student-header">
+                        <div class="student-info">
+                            <h2>👤 ${student.nom_eleve || 'Sans nom'}</h2>
+                            <p>📚 Classe: ${student.classe || 'Non spécifiée'} | 
+                               📅 ${formatDate(student.date_soumission)}</p>
+                        </div>
+                        <div class="note-section">
+                            <label><strong>Note :</strong></label>
+                            <input type="number" 
+                                   id="note-${student.id}" 
+                                   min="0" 
+                                   max="25" 
+                                   step="0.5"
+                                   value="${student.note || ''}"
+                                   placeholder="/25"
+                                   ${student.note ? 'class="note-saved"' : ''}>
+                            <button onclick="saveNote('${student.id}')">💾 Enregistrer</button>
+                        </div>
+                    </div>
+
+                    <div class="responses-grid">
+                        <!-- Question 1 -->
+                        <div class="question-block">
+                            <h3>Question 1 (5 points) - Besoin et solutions techniques</h3>
+                            <div class="answer">
+                                <strong>Besoin :</strong> 
+                                ${student.q1_besoin || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>E1 - Surélever :</strong> 
+                                ${student.q1_e1 || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>E2 - Intrusions :</strong> 
+                                ${student.q1_e2 || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>E3 - Confort :</strong> 
+                                ${student.q1_e3 || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>E4 - Surveillance :</strong> 
+                                ${student.q1_e4 || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>E5 - Énergie :</strong> 
+                                ${student.q1_e5 || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>E6 - Paysage :</strong> 
+                                ${student.q1_e6 || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                        </div>
+
+                        <!-- Question 2 -->
+                        <div class="question-block">
+                            <h3>Question 2 (4 points) - Mouvement et temps</h3>
+                            <div class="answer">
+                                <strong>Nature du mouvement :</strong> 
+                                ${student.q2_nature || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>Temps écoulé :</strong> 
+                                ${student.q2_temps || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                        </div>
+
+                        <!-- Question 3 -->
+                        <div class="question-block">
+                            <h3>Question 3 (6 points) - Capacité de la batterie</h3>
+                            <div class="answer">
+                                <strong>Calculs détaillés :</strong><br>
+                                ${student.q3_calculs ? student.q3_calculs.replace(/\n/g, '<br>') : '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>Résultat final :</strong> 
+                                ${student.q3_resultat || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                        </div>
+
+                        <!-- Question 4 -->
+                        <div class="question-block">
+                            <h3>Question 4 (5 points) - Détection d'anomalie</h3>
+                            <div class="answer">
+                                <strong>Pixel P (cycle 2) binaire :</strong>
+                                ${student.q4_binaire_complet ? 
+                                    '<div class="binary-display">' + 
+                                    student.q4_binaire_complet.split('').map(bit => 
+                                        `<span class="binary-bit">${bit}</span>`
+                                    ).join('') + 
+                                    '</div>' : 
+                                    '<span class="empty-field">Non renseigné</span>'
+                                }
+                            </div>
+                            <div class="answer">
+                                <strong>Pixel P (cycle 1) décimal :</strong> 
+                                ${student.q4_decimal_c1 || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>Pixel P (cycle 2) décimal :</strong> 
+                                ${student.q4_decimal_c2 || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>Alerte :</strong>
+                                ${student.q4_alerte ? 
+                                    `<span class="alerte-badge ${student.q4_alerte === 'oui' ? 'alerte-oui' : 'alerte-non'}">${student.q4_alerte.toUpperCase()}</span>` : 
+                                    '<span class="empty-field">Non renseigné</span>'
+                                }
+                            </div>
+                            <div class="answer">
+                                <strong>Argumentation :</strong> 
+                                ${student.q4_argumentation || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                        </div>
+
+                        <!-- Question 5 -->
+                        <div class="question-block">
+                            <h3>Question 5 (5 points) - Programme</h3>
+                            <div class="answer">
+                                <strong>Élément 1 :</strong> 
+                                ${student.q5_element1 || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>Élément 2 :</strong> 
+                                ${student.q5_element2 || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>Élément 3 :</strong> 
+                                ${student.q5_element3 || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>Élément 4 :</strong> 
+                                ${student.q5_element4 || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                            <div class="answer">
+                                <strong>Élément 5 :</strong> 
+                                ${student.q5_element5 || '<span class="empty-field">Non renseigné</span>'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // ENREGISTRER UNE NOTE
+        // ============================================
+        async function saveNote(studentId) {
+            const noteInput = document.getElementById(`note-${studentId}`);
+            const note = parseFloat(noteInput.value);
+
+            if (isNaN(note) || note < 0 || note > 25) {
+                alert('⚠️ La note doit être entre 0 et 25');
+                return;
+            }
+
+            try {
+                await db.collection('dnb_vigie').doc(studentId).update({
+                    note: note,
+                    date_correction: new Date().toISOString()
+                });
+
+                noteInput.classList.add('note-saved');
+                
+                const studentIndex = allStudents.findIndex(s => s.id === studentId);
+                if (studentIndex !== -1) {
+                    allStudents[studentIndex].note = note;
+                }
+                
+                updateStats();
+                
+                console.log('✅ Note enregistrée:', note, 'pour l\'élève', studentId);
+                
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✅ Enregistré !';
+                button.style.backgroundColor = '#27ae60';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.backgroundColor = '';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('❌ Erreur lors de l\'enregistrement:', error);
+                alert('❌ Erreur : ' + error.message);
+            }
+        }
+
+        // ============================================
+        // FILTRES
+        // ============================================
+        document.getElementById('searchStudent').addEventListener('input', applyFilters);
+        document.getElementById('filterClass').addEventListener('change', applyFilters);
+        document.getElementById('filterGraded').addEventListener('change', applyFilters);
+
+        function applyFilters() {
+            const search = document.getElementById('searchStudent').value.toLowerCase();
+            const classFilter = document.getElementById('filterClass').value;
+            const gradedFilter = document.getElementById('filterGraded').value;
+
+            filteredStudents = allStudents.filter(student => {
+                const matchSearch = !search || 
+                    (student.nom_eleve && student.nom_eleve.toLowerCase().includes(search));
+                
+                const matchClass = !classFilter || student.classe === classFilter;
+                
+                const matchGraded = !gradedFilter || 
+                    (gradedFilter === 'graded' && student.note) ||
+                    (gradedFilter === 'ungraded' && !student.note);
+
+                return matchSearch && matchClass && matchGraded;
+            });
+
+            displayStudents();
+        }
+
+        // ============================================
+        // ACTUALISER
+        // ============================================
+        function refreshData() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('studentsContainer').innerHTML = '';
+            loadData();
+        }
+
+        // ============================================
+        // EXPORT CSV
+        // ============================================
+        function exportToCSV() {
+            const headers = ['Nom', 'Classe', 'Date soumission', 'Note'];
+            const rows = allStudents.map(s => [
+                s.nom_eleve || '',
+                s.classe || '',
+                formatDate(s.date_soumission),
+                s.note || ''
+            ]);
+
+            let csv = headers.join(';') + '\n';
+            csv += rows.map(row => row.join(';')).join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `dnb_vigie_notes_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+        }
+
+        // ============================================
+        // UTILITAIRES
+        // ============================================
+        function formatDate(dateString) {
+            if (!dateString) return 'Date inconnue';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', { 
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // ============================================
+        // CHARGEMENT INITIAL
+        // ============================================
+        loadData();
+    </script>
+</body>
+</html>
