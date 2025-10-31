@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activité mBot 2 - Patrouille intelligente avec IA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .fiche {
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+            margin: -30px -30px 25px -30px;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .niveau {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            border: 2px solid white;
+        }
+        
+        .robot-badge {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        
+        h1 {
+            color: white;
+            font-size: 1.9em;
+            margin-bottom: 5px;
+        }
+        
+        .sequence-info {
+            color: rgba(255, 255, 255, 0.9);
+            font-style: italic;
+            font-size: 0.95em;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            padding-left: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.1em;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+        
+        .objectifs {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .objectifs ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .materiel {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-left: 4px solid #ff9068;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .materiel ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .mbot2-specificite {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 3px solid #667eea;
+        }
+        
+        .mbot2-titre {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .mbot2-titre::before {
+            content: "🤖 ";
+        }
+        
+        .situation {
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #764ba2;
+        }
+        
+        .situation-titre {
+            color: #764ba2;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .mission-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        
+        .etape {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+        
+        .etape-numero {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+        
+        .etape-titre {
+            font-weight: bold;
+            color: #2c3e50;
+            display: inline;
+            font-size: 1.05em;
+        }
+        
+        .phase {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 10px 0;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #bdc3c7;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f3f4f6;
+        }
+        
+        .code-block {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 15px 0;
+            border: 2px solid #667eea;
+        }
+        
+        .code-python {
+            color: #9cdcfe;
+        }
+        
+        .code-comment {
+            color: #6a9955;
+        }
+        
+        .code-keyword {
+            color: #c586c0;
+        }
+        
+        .code-string {
+            color: #ce9178;
+        }
+        
+        .consigne {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 12px;
+            margin: 15px 0;
+            font-weight: 500;
+            border-radius: 5px;
+        }
+        
+        .competences {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .competence-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+        }
+        
+        .attention {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .attention::before {
+            content: "⚠️ ";
+            font-weight: bold;
+        }
+        
+        .astuce {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .astuce::before {
+            content: "💡 ";
+            font-weight: bold;
+        }
+        
+        .nouveau {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .nouveau::before {
+            content: "🆕 ";
+            font-weight: bold;
+        }
+        
+        .defi {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border: 2px dashed #e17055;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        
+        .defi-titre {
+            color: #d63031;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+        
+        .defi-titre::before {
+            content: "🏆 ";
+        }
+        
+        .comparaison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .comparaison-box {
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .mbot1-box {
+            background-color: #e8f5e9;
+            border: 2px solid #4caf50;
+        }
+        
+        .mbot2-box {
+            background-color: #e3f2fd;
+            border: 2px solid #2196f3;
+        }
+        
+        footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px solid #ecf0f1;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .fiche {
+                box-shadow: none;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fiche">
+        <header>
+            <div class="header-top">
+                <div>
+                    <h1>🤖 Patrouille Intelligente avec IA</h1>
+                    <p class="sequence-info">Séquence : Systèmes de protection automatisés | Activité avancée mBot 2</p>
+                    <span class="robot-badge">Spécial mBot 2</span>
+                </div>
+                <div class="niveau">3ème</div>
+            </div>
+            <div class="competences">
+                <span class="competence-badge">CT 5.6 - Algorithmique avancée</span>
+                <span class="competence-badge">CT 5.7 - Programmation Python</span>
+                <span class="competence-badge">Intelligence Artificielle</span>
+                <span class="competence-badge">Vision par ordinateur</span>
+            </div>
+        </header>
+
+        <div class="mbot2-specificite">
+            <div class="mbot2-titre">POURQUOI LE mBot 2 ?</div>
+            <p>Le <strong>mBot 2</strong> (CyberPi) est une évolution majeure du mBot classique, conçu pour l'apprentissage de l'IA et de l'IoT au collège.</p>
+            
+            <div class="comparaison">
+                <div class="comparaison-box mbot1-box">
+                    <h4>mBot V1 (Arduino)</h4>
+                    <ul style="margin-left: 20px; font-size: 0.9em;">
+                        <li>Programmation Scratch uniquement</li>
+                        <li>Capteurs basiques</li>
+                        <li>Pas d'écran</li>
+                        <li>Bluetooth simple</li>
+                    </ul>
+                </div>
+                <div class="comparaison-box mbot2-box">
+                    <h4>mBot 2 (CyberPi) ✨</h4>
+                    <ul style="margin-left: 20px; font-size: 0.9em;">
+                        <li><strong>Python</strong> + Scratch</li>
+                        <li><strong>Caméra IA</strong> intégrée</li>
+                        <li><strong>Écran couleur</strong> tactile</li>
+                        <li><strong>WiFi</strong> + Bluetooth 5.0</li>
+                        <li><strong>Odomètres</strong> précis</li>
+                        <li><strong>Reconnaissance</strong> vocale/faciale</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="objectifs">
+            <strong>🎯 Objectifs de l'activité :</strong>
+            <ul>
+                <li>Exploiter les capacités <strong>d'Intelligence Artificielle</strong> du mBot 2</li>
+                <li>Programmer en <strong>Python</strong> un système de détection intelligente</li>
+                <li>Utiliser la <strong>reconnaissance faciale</strong> pour authentification</li>
+                <li>Créer une <strong>communication WiFi</strong> entre robots</li>
+                <li>Analyser les <strong>enjeux éthiques</strong> de la surveillance par IA</li>
+            </ul>
+        </div>
+
+        <div class="materiel">
+            <strong>📦 Matériel nécessaire :</strong>
+            <ul>
+                <li><strong>2-3 robots mBot 2</strong> (CyberPi) chargés</li>
+                <li>Ordinateurs avec <strong>mBlock 5</strong> installé</li>
+                <li>Parcours de patrouille (ruban noir, 4×5m)</li>
+                <li>Obstacles mobiles (cartons)</li>
+                <li>Photos d'identité des élèves (pour reconnaissance faciale)</li>
+                <li>Connexion WiFi pour communication inter-robots</li>
+            </ul>
+        </div>
+
+        <div class="situation">
+            <div class="situation-titre">🔒 CONTEXTE : MUSÉE SÉCURISÉ</div>
+            <p>Un musée souhaite moderniser sa sécurité avec des robots de patrouille équipés d'<strong>intelligence artificielle</strong>. Ces robots doivent :</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Patrouiller de manière <strong>autonome</strong> dans les salles</li>
+                <li><strong>Reconnaître</strong> le personnel autorisé (reconnaissance faciale)</li>
+                <li><strong>Détecter</strong> les visiteurs non autorisés après les heures de fermeture</li>
+                <li><strong>Communiquer</strong> entre eux pour coordonner la surveillance</li>
+                <li>Afficher l'état de surveillance sur leur <strong>écran</strong></li>
+            </ul>
+            
+            <div class="mission-badge">
+                🎯 MISSION : Programmer un robot de patrouille intelligent avec reconnaissance faciale et communication WiFi
+            </div>
+        </div>
+
+        <h2>📋 Déroulement (3 séances de 1h30)</h2>
+
+        <div class="phase">SÉANCE 1 : DÉCOUVERTE DES CAPACITÉS IA DU mBot 2</div>
+
+        <div class="etape">
+            <span class="etape-numero">1</span>
+            <span class="etape-titre">Prise en main du CyberPi (30 min)</span>
+            <div class="consigne">
+                Découvrez les nouveaux composants et fonctionnalités du mBot 2
+            </div>
+            
+            <h3>Tests de découverte :</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fonctionnalité</th>
+                        <th>Test à réaliser</th>
+                        <th>Bloc mBlock / Code Python</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Écran couleur</strong></td>
+                        <td>Afficher "Bonjour"</td>
+                        <td><code>cyberpi.display.show_label(...)</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Odomètres</strong></td>
+                        <td>Avancer précisément de 50cm</td>
+                        <td><code>cyberpi.quad_rgb_sensor.get_offset(...)</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Caméra IA</strong></td>
+                        <td>Détecter un visage</td>
+                        <td><code>cyberpi.camera.detect_face()</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>WiFi</strong></td>
+                        <td>Se connecter au réseau</td>
+                        <td><code>cyberpi.wifi.connect(...)</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">2</span>
+            <span class="etape-titre">Initiation à la reconnaissance faciale (60 min)</span>
+            <div class="consigne">
+                Testez la reconnaissance faciale et créez une base de données de visages autorisés
+            </div>
+            
+            <div class="nouveau">
+                <strong>Nouvelle fonctionnalité IA :</strong> Le mBot 2 peut apprendre à reconnaître des visages et les distinguer !
+            </div>
+
+            <h3>Étapes de configuration :</h3>
+            <ol style="margin-left: 25px;">
+                <li><strong>Entraînement du modèle</strong> : Prendre 5-10 photos de chaque personne autorisée</li>
+                <li><strong>Labellisation</strong> : Associer un nom à chaque visage ("Personnel", "Intrus")</li>
+                <li><strong>Test</strong> : Vérifier que le robot reconnaît correctement les visages</li>
+                <li><strong>Optimisation</strong> : Ajuster l'éclairage, la distance, l'angle</li>
+            </ol>
+
+            <h3>Programme de test en mode blocs (mBlock) :</h3>
+            <div class="code-block">
+Quand 🏁 cliqué
+  Répéter indéfiniment
+    Si caméra détecte un visage alors
+      Mettre [nom_détecté] à (nom du visage reconnu)
+      
+      Si [nom_détecté] = "Personnel" alors
+        Afficher "Accès autorisé"
+        LED en VERT
+        
+      Sinon
+        Afficher "ALERTE : Intrus détecté !"
+        LED en ROUGE
+        Jouer son d'alarme
+      Fin Si
+    Fin Si
+  Fin Répéter
+            </div>
+
+            <div class="astuce">
+                <strong>Astuce :</strong> Pour de meilleurs résultats, entraînez le modèle avec des photos dans différentes conditions d'éclairage !
+            </div>
+        </div>
+
+        <div class="phase">SÉANCE 2 : PROGRAMMATION DE LA PATROUILLE INTELLIGENTE</div>
+
+        <div class="etape">
+            <span class="etape-numero">3</span>
+            <span class="etape-titre">Patrouille avec odomètres (45 min)</span>
+            <div class="consigne">
+                Utilisez les odomètres pour un suivi précis du parcours
+            </div>
+
+            <div class="nouveau">
+                <strong>Avantage des odomètres :</strong> Mesure précise de la distance parcourue, même sans ligne au sol !
+            </div>
+
+            <h3>Programme Python (pour élèves avancés) :</h3>
+            <div class="code-block">
+<span class="code-keyword">import</span> <span class="code-python">cyberpi</span>
+<span class="code-keyword">import</span> <span class="code-python">mbot2</span>
+
+<span class="code-comment"># Configuration</span>
+VITESSE = <span class="code-string">50</span>
+DISTANCE_COTE = <span class="code-string">100</span>  <span class="code-comment"># en cm</span>
+
+<span class="code-comment"># Fonction de patrouille en carré</span>
+<span class="code-keyword">def</span> <span class="code-python">patrouille_carre</span>():
+    <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-python">range</span>(<span class="code-string">4</span>):  <span class="code-comment"># 4 côtés</span>
+        <span class="code-comment"># Afficher sur l'écran</span>
+        cyberpi.display.show_label(<span class="code-string">f"Côté {i+1}/4"</span>, <span class="code-string">16</span>)
+        
+        <span class="code-comment"># Réinitialiser les odomètres</span>
+        mbot2.reset_encoder()
+        
+        <span class="code-comment"># Avancer jusqu'à atteindre la distance</span>
+        <span class="code-keyword">while</span> mbot2.get_encoder_distance() < DISTANCE_COTE:
+            mbot2.forward(VITESSE)
+            
+        mbot2.stop()
+        cyberpi.wait(<span class="code-string">0.5</span>)
+        
+        <span class="code-comment"># Tourner à 90°</span>
+        mbot2.turn_right(<span class="code-string">90</span>)
+        cyberpi.wait(<span class="code-string">0.5</span>)
+
+<span class="code-comment"># Boucle principale</span>
+<span class="code-keyword">while</span> <span class="code-python">True</span>:
+    patrouille_carre()
+            </div>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">4</span>
+            <span class="etape-titre">Intégration détection IA + patrouille (45 min)</span>
+            <div class="consigne">
+                Combinez la patrouille autonome avec la reconnaissance faciale
+            </div>
+
+            <h3>Algorithme complet :</h3>
+            <div class="code-block">
+<span class="code-keyword">import</span> <span class="code-python">cyberpi</span>
+<span class="code-keyword">import</span> <span class="code-python">mbot2</span>
+
+<span class="code-comment"># Variables globales</span>
+etat = <span class="code-string">"PATROUILLE"</span>  <span class="code-comment"># États: PATROUILLE, ALERTE, VERIFICATION</span>
+intrusions = <span class="code-string">0</span>
+
+<span class="code-comment"># Fonction de détection</span>
+<span class="code-keyword">def</span> <span class="code-python">verifier_presence</span>():
+    <span class="code-keyword">if</span> cyberpi.camera.detect_face():
+        nom = cyberpi.camera.get_face_name()
+        
+        <span class="code-keyword">if</span> nom == <span class="code-string">"Personnel"</span>:
+            cyberpi.display.show_label(<span class="code-string">"Accès OK"</span>, <span class="code-string">16</span>, <span class="code-string">"green"</span>)
+            cyberpi.led.on(<span class="code-string">0</span>, <span class="code-string">255</span>, <span class="code-string">0</span>)  <span class="code-comment"># LED verte</span>
+            <span class="code-keyword">return</span> <span class="code-string">"AUTORISE"</span>
+        <span class="code-keyword">else</span>:
+            <span class="code-keyword">return</span> <span class="code-string">"INTRUS"</span>
+    <span class="code-keyword">return</span> <span class="code-string">"RIEN"</span>
+
+<span class="code-comment"># Fonction d'alerte</span>
+<span class="code-keyword">def</span> <span class="code-python">declencher_alerte</span>():
+    <span class="code-keyword">global</span> intrusions
+    intrusions += <span class="code-string">1</span>
+    
+    mbot2.stop()
+    cyberpi.display.show_label(<span class="code-string">"ALERTE !"</span>, <span class="code-string">24</span>, <span class="code-string">"red"</span>)
+    
+    <span class="code-comment"># LED rouge clignotante + sirène</span>
+    <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-python">range</span>(<span class="code-string">5</span>):
+        cyberpi.led.on(<span class="code-string">255</span>, <span class="code-string">0</span>, <span class="code-string">0</span>)
+        cyberpi.audio.play(<span class="code-string">"siren"</span>)
+        cyberpi.wait(<span class="code-string">0.3</span>)
+        cyberpi.led.off()
+        cyberpi.wait(<span class="code-string">0.3</span>)
+
+<span class="code-comment"># Boucle principale</span>
+<span class="code-keyword">while</span> <span class="code-python">True</span>:
+    <span class="code-comment"># Afficher l'état actuel</span>
+    cyberpi.display.show_label(<span class="code-string">f"{etat} - {intrusions}"</span>, <span class="code-string">12</span>)
+    
+    <span class="code-comment"># Vérifier détection</span>
+    resultat = verifier_presence()
+    
+    <span class="code-keyword">if</span> resultat == <span class="code-string">"INTRUS"</span>:
+        etat = <span class="code-string">"ALERTE"</span>
+        declencher_alerte()
+        cyberpi.wait(<span class="code-string">3</span>)
+        etat = <span class="code-string">"PATROUILLE"</span>
+    
+    <span class="code-keyword">elif</span> resultat == <span class="code-string">"RIEN"</span>:
+        <span class="code-comment"># Mode patrouille normale</span>
+        mbot2.forward(<span class="code-string">50</span>)
+            </div>
+
+            <div class="attention">
+                Le programme doit gérer les <strong>priorités</strong> : détection d'intrusion > évitement d'obstacle > patrouille normale
+            </div>
+        </div>
+
+        <div class="phase">SÉANCE 3 : COMMUNICATION MULTI-ROBOTS</div>
+
+        <div class="etape">
+            <span class="etape-numero">5</span>
+            <span class="etape-titre">Configuration du réseau WiFi (20 min)</span>
+            <div class="consigne">
+                Connectez les mBot 2 au même réseau WiFi pour qu'ils puissent communiquer
+            </div>
+
+            <h3>Configuration WiFi :</h3>
+            <div class="code-block">
+<span class="code-keyword">import</span> <span class="code-python">cyberpi</span>
+
+<span class="code-comment"># Se connecter au WiFi</span>
+SSID = <span class="code-string">"ReseauCollege"</span>
+PASSWORD = <span class="code-string">"motdepasse123"</span>
+
+cyberpi.wifi.connect(SSID, PASSWORD)
+
+<span class="code-comment"># Attendre la connexion</span>
+<span class="code-keyword">while</span> <span class="code-keyword">not</span> cyberpi.wifi.is_connected():
+    cyberpi.display.show_label(<span class="code-string">"Connexion..."</span>, <span class="code-string">16</span>)
+    cyberpi.wait(<span class="code-string">0.5</span>)
+
+cyberpi.display.show_label(<span class="code-string">"WiFi OK !"</span>, <span class="code-string">16</span>, <span class="code-string">"green"</span>)
+
+<span class="code-comment"># Afficher l'adresse IP du robot</span>
+ip = cyberpi.wifi.get_ip()
+cyberpi.display.show_label(<span class="code-string">f"IP: {ip}"</span>, <span class="code-string">12</span>)
+            </div>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">6</span>
+            <span class="etape-titre">Communication entre robots (70 min)</span>
+            <div class="consigne">
+                Programmez les robots pour qu'ils se préviennent mutuellement en cas d'intrusion détectée
+            </div>
+
+            <div class="nouveau">
+                <strong>Concept :</strong> Quand un robot détecte un intrus, il envoie un message WiFi à tous les autres robots qui passent TOUS en mode alerte !
+            </div>
+
+            <h3>Architecture de communication :</h3>
+            <ul style="margin-left: 20px;">
+                <li><strong>Robot 1</strong> (Patrouille Zone A) → Détecte intrusion → Envoie message "ALERTE_ZONE_A"</li>
+                <li><strong>Robot 2</strong> (Patrouille Zone B) → Reçoit message → Passe en mode alerte coordonné</li>
+                <li><strong>Robot 3</strong> (Patrouille Zone C) → Reçoit message → Se dirige vers Zone A</li>
+            </ul>
+
+            <h3>Programme avec communication (simplifié) :</h3>
+            <div class="code-block">
+<span class="code-keyword">import</span> <span class="code-python">cyberpi</span>
+<span class="code-keyword">import</span> <span class="code-python">mbot2</span>
+
+<span class="code-comment"># Configuration</span>
+ID_ROBOT = <span class="code-string">"ROBOT_1"</span>  <span class="code-comment"># Changer pour chaque robot</span>
+TOPIC_ALERTE = <span class="code-string">"musee/alerte"</span>
+
+<span class="code-comment"># Callback quand message reçu</span>
+<span class="code-keyword">def</span> <span class="code-python">message_recu</span>(topic, message):
+    <span class="code-keyword">if</span> message == <span class="code-string">"INTRUS_DETECTE"</span>:
+        cyberpi.display.show_label(<span class="code-string">"Alerte reçue!"</span>, <span class="code-string">16</span>, <span class="code-string">"red"</span>)
+        cyberpi.led.on(<span class="code-string">255</span>, <span class="code-string">0</span>, <span class="code-string">0</span>)
+        cyberpi.audio.play(<span class="code-string">"alert"</span>)
+
+<span class="code-comment"># S'abonner au topic</span>
+cyberpi.cloud.subscribe(TOPIC_ALERTE, message_recu)
+
+<span class="code-comment"># Boucle principale</span>
+<span class="code-keyword">while</span> <span class="code-python">True</span>:
+    <span class="code-keyword">if</span> cyberpi.camera.detect_face():
+        nom = cyberpi.camera.get_face_name()
+        
+        <span class="code-keyword">if</span> nom != <span class="code-string">"Personnel"</span>:
+            <span class="code-comment"># INTRUS DÉTECTÉ - Prévenir les autres !</span>
+            cyberpi.cloud.publish(TOPIC_ALERTE, <span class="code-string">"INTRUS_DETECTE"</span>)
+            cyberpi.display.show_label(<span class="code-string">"Alerte envoyée"</span>, <span class="code-string">16</span>)
+    
+    <span class="code-comment"># Continuer la patrouille...</span>
+    mbot2.forward(<span class="code-string">50</span>)
+            </div>
+
+            <div class="astuce">
+                <strong>Test de communication :</strong> Placez une main devant un robot → Vérifiez que les autres réagissent !
+            </div>
+        </div>
+
+        <h2>🏆 Défis bonus</h2>
+
+        <div class="defi">
+            <div class="defi-titre">DÉFI 1 : Tableau de bord en temps réel</div>
+            <p>Créez une page web affichant en temps réel : position de chaque robot, nombre d'intrusions, niveau de batterie, zones couvertes. Utilisez l'API Cloud du mBot 2.</p>
+        </div>
+
+        <div class="defi">
+            <div class="defi-titre">DÉFI 2 : Reconnaissance d'objets</div>
+            <p>Entraînez le robot à reconnaître des objets (sac à dos, téléphone) en plus des visages. Le robot signale tout objet abandonné suspect.</p>
+        </div>
+
+        <div class="defi">
+            <div class="defi-titre">DÉFI 3 : Mode nuit automatique</div>
+            <p>Utilisez le capteur de luminosité pour activer automatiquement la patrouille à la tombée de la nuit et la désactiver le matin.</p>
+        </div>
+
+        <div class="defi">
+            <div class="defi-titre">DÉFI 4 : Historique et statistiques</div>
+            <p>Enregistrez dans un fichier : heures des intrusions, durée de chaque patrouille, zones les plus fréquentées. Affichez des graphiques sur l'écran du robot.</p>
+        </div>
+
+        <h2>💭 Débat éthique (20 min)</h2>
+
+        <div class="attention">
+            <strong>Questions à débattre en classe :</strong>
+        </div>
+
+        <ol style="margin-left: 25px; margin-top: 10px;">
+            <li>La reconnaissance faciale est-elle une atteinte à la <strong>vie privée</strong> ?</li>
+            <li>Que se passe-t-il si le robot fait une <strong>erreur</strong> et prend une personne autorisée pour un intrus ?</li>
+            <li>Doit-on <strong>informer</strong> les visiteurs qu'ils sont filmés par un robot IA ?</li>
+            <li>Un robot peut-il remplacer un <strong>agent de sécurité humain</strong> ? Avantages / Inconvénients ?</li>
+            <li>Qui est <strong>responsable</strong> si le robot cause un accident ?</li>
+            <li>Les données collectées (visages filmés) doivent-elles être <strong>effacées</strong> ? Après combien de temps ?</li>
+        </ol>
+
+        <div class="nouveau">
+            <strong>Lien avec la séquence précédente (Cybersécurité) :</strong>
+            <ul style="margin-left: 20px; margin-top: 5px;">
+                <li>Reconnaissance faciale = biométrie = authentification forte</li>
+                <li>Communication WiFi = risque de piratage</li>
+                <li>RGPD : droit à l'image, consentement, durée de conservation</li>
+            </ul>
+        </div>
+
+        <h2>📊 Évaluation</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Critère</th>
+                    <th>Points</th>
+                    <th>Indicateurs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Reconnaissance faciale</strong></td>
+                    <td>5 pts</td>
+                    <td>Modèle entraîné, taux de reconnaissance > 80%</td>
+                </tr>
+                <tr>
+                    <td><strong>Patrouille autonome</strong></td>
+                    <td>4 pts</td>
+                    <td>Circuit parcouru sans erreur, évitement d'obstacles</td>
+                </tr>
+                <tr>
+                    <td><strong>Communication WiFi</strong></td>
+                    <td>4 pts</td>
+                    <td>Messages envoyés/reçus, coordination entre robots</td>
+                </tr>
+                <tr>
+                    <td><strong>Interface écran</strong></td>
+                    <td>3 pts</td>
+                    <td>Affichage clair de l'état, des alertes, des stats</td>
+                </tr>
+                <tr>
+                    <td><strong>Code Python</strong></td>
+                    <td>2 pts</td>
+                    <td>Syntaxe correcte, commentaires, structure claire</td>
+                </tr>
+                <tr>
+                    <td><strong>Réflexion éthique</strong></td>
+                    <td>2 pts</td>
+                    <td>Participation au débat, arguments construits</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>📝 Trace écrite</h2>
+
+        <p><strong>Concepts clés à retenir :</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+            <li>L'<strong>Intelligence Artificielle</strong> permet aux machines d'apprendre et de reconnaître des patterns (visages, objets, etc.)</li>
+            <li>La <strong>reconnaissance faciale</strong> repose sur des réseaux de neurones entraînés sur des milliers d'images</li>
+            <li>Les <strong>odomètres</strong> mesurent précisément les rotations des roues pour calculer la distance parcourue</li>
+            <li>La <strong>communication WiFi</strong> permet aux robots de collaborer et de partager des informations en temps réel</li>
+            <li>Les systèmes de surveillance par IA soulèvent des questions <strong>éthiques</strong> importantes : vie privée, biais algorithmiques, responsabilité</li>
+        </ul>
+
+        <footer>
+            <div>Technologie 3ème - mBot 2 - Patrouille Intelligente avec IA</div>
+            <div>Durée : 3 séances (4h30)</div>
+        </footer>
+    </div>
+</body>
+</html>
