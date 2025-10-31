@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gestion des Pages — Compact Matrix</title>
+
+  <style>
+    /* --- Reset minimal --- */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+
+    /* --- Palette Matrix high-contrast --- */
+    :root{
+      --bg:#000;               /* noir profond */
+      --panel:rgba(0,0,0,0.6);
+      --glass:rgba(0,0,0,0.45);
+      --neon:#00ff41;          /* vert néon Matrix */
+      --neon-dim:#39c04a;     /* version un peu moins lumineuse */
+      --muted:#1f2933;        /* texte secondaire sombre */
+      --danger:#ff5544;
+      --accent:#00b894;
+      --card-border:rgba(0,255,65,0.18);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace;
+    }
+
+    body{
+      font-family:var(--mono);
+      background:var(--bg);
+      color:var(--neon-dim);
+      -webkit-font-smoothing:antialiased;
+      padding:14px;
+      line-height:1.1;
+      font-size:13px; /* compact */
+      overflow-y:auto;
+      position:relative;
+    }
+
+    /* --- Matrix falling code background (subtle, performant) --- */
+    body::before{
+      content:'';
+      position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.9) 100%);
+    }
+
+    /* Animated vertical stripes that look like rain of characters */
+    .matrix-rain{
+      position:fixed;inset:0;z-index:0;pointer-events:none;mix-blend-mode:screen;opacity:0.16;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(0,255,65,0.14) 0 1px, transparent 2px),
+        radial-gradient(circle at 80% 10%, rgba(0,255,65,0.12) 0 1px, transparent 2px);
+      background-size: 100px 200px, 120px 240px;
+      animation: rainShift 12s linear infinite;
+      filter:blur(0.6px);
+    }
+
+    @keyframes rainShift{
+      from{transform:translateY(-10%)}
+      to{transform:translateY(10%)}
+    }
+
+    /* Container ultra-compact */
+    .wrap{position:relative;z-index:1;max-width:1100px;margin:8px auto;padding:8px}
+
+    header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    h1{color:var(--neon);font-size:15px;font-weight:700;letter-spacing:1px;text-shadow:0 0 8px rgba(0,255,65,0.12);}
+    .subtitle{color:rgba(0,255,65,0.25);font-size:11px}
+
+    /* Compact form - inline, tiny inputs */
+    .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .field{background:var(--glass);border:1px solid var(--card-border);padding:6px 8px;border-radius:6px;min-width:0}
+    input[type="text"], textarea{background:transparent;border:none;color:var(--neon);font-family:var(--mono);font-size:12px;min-width:120px}
+    textarea{padding:0;resize:vertical;max-height:80px}
+
+    button{background:transparent;border:1px solid var(--card-border);color:var(--neon);padding:6px 8px;border-radius:6px;font-size:12px;cursor:pointer}
+    button.ghost{opacity:0.75}
+    button.warn{color:var(--danger);border-color:rgba(255,85,68,0.15)}
+
+    /* Messages */
+    .message{padding:8px 10px;border-radius:6px;margin:8px 0;font-size:12px;color:var(--neon);background:linear-gradient(90deg, rgba(0,255,65,0.03), rgba(0,255,65,0.01));border:1px solid rgba(0,255,65,0.08)}
+    .message.error{color:var(--danger);border-color:rgba(255,85,68,0.12);background:rgba(255,85,68,0.02)}
+
+    /* Grid très compact */
+    .pages-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:10px}
+
+    .page-card{background:linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.45));padding:8px;border-radius:6px;border:1px solid rgba(0,255,65,0.06);backdrop-filter: blur(2px);cursor:default;overflow:hidden}
+    .page-card:hover{border-color:var(--neon);box-shadow:0 0 18px rgba(0,255,65,0.06)}
+
+    .page-card h3{font-size:13px;color:var(--neon);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .path{font-size:11px;color:rgba(0,255,65,0.35);font-family:var(--mono);word-break:break-all}
+    .description{font-size:11px;color:rgba(0,255,65,0.18);font-style:italic;margin-top:6px}
+    .meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:11px;color:rgba(0,255,65,0.25)}
+
+    .actions{display:flex;gap:6px}
+    .btn-favorite{padding:4px 6px;border-radius:5px;font-size:11px}
+    .btn-delete{padding:4px 6px;border-radius:5px;font-size:11px;color:var(--danger)}
+
+    /* Tiny file-browser */
+    .file-browser{background:var(--panel);border:1px solid rgba(0,255,65,0.06);padding:8px;border-radius:6px;margin-top:8px;max-height:220px;overflow:auto}
+    .file-item,.folder-item{padding:6px;border-radius:4px;font-size:12px;color:var(--neon-dim);cursor:pointer}
+    .folder-item{color:var(--neon)}
+    .file-item:hover,.folder-item:hover{background:rgba(0,255,65,0.03)}
+
+    /* micro-animations */
+    .glow{animation:glowPulse 2s infinite}
+    @keyframes glowPulse{0%{text-shadow:0 0 6px rgba(0,255,65,0.06)}50%{text-shadow:0 0 12px rgba(0,255,65,0.12)}100%{text-shadow:0 0 6px rgba(0,255,65,0.06)}}
+
+    /* Responsive tweaks */
+    @media (max-width:520px){
+      .pages-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px}
+      body{padding:10px;font-size:12px}
+      h1{font-size:14px}
+    }
+
+    /* Accessibility: very high contrast mode (inverse) */
+    .high-contrast *{outline-color:var(--neon)}
+  </style>
+</head>
+<body>
+
+  <div class="matrix-rain" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header>
+      <h1 class="glow">Gestion des Pages</h1>
+      <div class="subtitle">Compact — Dark / Matrix</div>
+      <div style="margin-left:auto;display:flex;gap:6px">
+        <button class="ghost" onclick="toggleContrast()">🔆 Contraste</button>
+        <button class="ghost" onclick="loadPages()">🔄</button>
+      </div>
+    </header>
+
+    <div id="message"></div>
+
+    <!-- Formulaire compact (inline) -->
+    <form id="addPageForm" class="bar" style="align-items:center">
+      <div class="field"><input id="title" required placeholder="Titre" /></div>
+      <div class="field" style="min-width:200px"><input id="githubPath" required placeholder="chemin/github.html" /></div>
+      <div class="field" style="flex:1"><input id="description" placeholder="desc (optionnelle)" /></div>
+      <div style="display:flex;gap:6px">
+        <button type="submit">➕</button>
+        <button type="button" class="ghost" onclick="toggleFileBrowser()">📂</button>
+        <button type="button" class="ghost" onclick="loadPages()">↺</button>
+      </div>
+    </form>
+
+    <div id="fileBrowser" class="file-browser" hidden></div>
+
+    <div id="pagesContainer">
+      <p class="message" style="margin-top:10px">Chargement des pages…</p>
+    </div>
+  </div>
+
+  <script>
+    // --- Small script glue (compatible with your original logic) ---
+    const API_BASE = '/api';
+
+    function toggleContrast(){ document.body.classList.toggle('high-contrast'); }
+
+    function showMessage(text, type='success'){
+      const el = document.getElementById('message');
+      el.innerHTML = `<div class="message ${type==='error'?'error':''}">${text}</div>`;
+      setTimeout(()=>{el.innerHTML='';},4200);
+    }
+
+    async function loadPages(){
+      const container = document.getElementById('pagesContainer');
+      container.innerHTML = '<p class="message">Chargement des pages…</p>';
+      try{
+        const res = await fetch(`${API_BASE}/get-pages`);
+        const data = await res.json();
+        if(!data.success || !data.pages) throw new Error('Échec chargement');
+        if(data.pages.length===0){ container.innerHTML='<p class="message">Aucune page trouvée</p>'; return; }
+
+        const grid = document.createElement('div'); grid.className='pages-grid';
+        data.pages.forEach(p=>{
+          const card = document.createElement('article'); card.className='page-card';
+          const last = new Date(p.lastModified||Date.now()).toLocaleDateString('fr-FR');
+          card.innerHTML = `<h3 title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</h3>`+
+                           `<div class="path">${escapeHtml(p.githubPath)}</div>`+
+                           `${p.description?`<div class="description">${escapeHtml(p.description)}</div>`:''}+
+                           `<div class="meta"><span>📅 ${last}</span><span class="actions">`+
+                           `<button class="btn-favorite" onclick="toggleFavorite('${p.id}');event.stopPropagation()">${p.favorite?'⭐':'☆'}</button>`+
+                           `<button class="btn-delete" onclick="deletePage('${p.id}');event.stopPropagation()">🗑</button>`+
+                           `</span></div>`;
+          card.onclick = ()=>window.open(`/${p.githubPath}`,'_blank');
+          grid.appendChild(card);
+        });
+        container.innerHTML=''; container.appendChild(grid);
+      }catch(e){ container.innerHTML=`<p class="message error">Erreur : ${e.message}</p>` }
+    }
+
+    // Helpers (simple escapes)
+    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]); }
+
+    // Stubs calling your API endpoints, kept minimal to preserve original behaviour
+    async function deletePage(id){ if(!confirm('Supprimer cette page ?')) return; try{ const r=await fetch(`${API_BASE}/delete-page`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})}); const d=await r.json(); if(d.success){ showMessage('Supprimée'); loadPages(); } else throw new Error(d.error||'Erreur'); }catch(e){ showMessage(e.message,'error'); } }
+
+    async function toggleFavorite(id){ try{ const r=await fetch(`${API_BASE}/toggle-favorite`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})}); const d=await r.json(); if(d.success){ showMessage(d.message||'ok'); loadPages(); } else throw new Error(d.error||'Erreur'); }catch(e){ showMessage(e.message,'error'); } }
+
+    // File browser minimal
+    function toggleFileBrowser(){ const fb = document.getElementById('fileBrowser'); if(fb.hidden){ fb.hidden=false; loadFiles(''); } else fb.hidden=true; }
+    async function loadFiles(path=''){ const fb=document.getElementById('fileBrowser'); fb.innerHTML='<div class="message">Chargement…</div>'; try{ const r=await fetch(`${API_BASE}/list-files?path=${encodeURIComponent(path)}`); const d=await r.json(); if(!d.success) throw new Error(d.error||''); fb.innerHTML=''; if(path){ const up=document.createElement('div'); up.className='folder-item'; up.textContent='⬆ ..'; up.onclick=()=>loadFiles(path.split('/').slice(0,-1).join('/')); fb.appendChild(up); }
+      d.folders.forEach(f=>{ const el=document.createElement('div'); el.className='folder-item'; el.textContent=f.name; el.onclick=()=>loadFiles(f.path); fb.appendChild(el); });
+      d.files.forEach(f=>{ const el=document.createElement('div'); el.className='file-item'; el.textContent=f.name; el.onclick=()=>{ document.getElementById('githubPath').value=f.path; document.getElementById('title').value=f.name.replace('.html','').replace(/[-_]/g,' '); toggleFileBrowser(); showMessage('Fichier sélectionné'); }; fb.appendChild(el); });
+      if(d.folders.length===0 && d.files.length===0) fb.innerHTML='<div class="message">Aucun fichier</div>';
+    }catch(e){ fb.innerHTML=`<div class="message error">Erreur : ${e.message}</div>` }}
+
+    // Form submit: keep logic compact and non-blocking
+    document.getElementById('addPageForm').addEventListener('submit', async e=>{
+      e.preventDefault(); const title=document.getElementById('title').value; let path=document.getElementById('githubPath').value; const desc=document.getElementById('description').value;
+      // nettoyage rapide d'URL GitHub
+      if(path.includes('github.com')){ const m=path.match(/blob\/[^\/]+\/(.*)/); if(m) path=m[1]; }
+      try{ const r=await fetch(`${API_BASE}/add-page`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title,githubPath:path,description:desc})}); const d=await r.json(); if(d.success){ showMessage('Page ajoutée'); document.getElementById('addPageForm').reset(); loadPages(); } else throw new Error(d.error||'Erreur'); }catch(e){ showMessage(e.message,'error'); }
+    });
+
+    // Charge au démarrage
+    loadPages();
+  </script>
+</body>
+</html>
