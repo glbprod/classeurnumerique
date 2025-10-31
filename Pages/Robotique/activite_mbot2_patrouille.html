@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activité - Robot de patrouille mBot 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .fiche {
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .niveau {
+            background-color: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .robot-badge {
+            background-color: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        .sequence-info {
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 0.95em;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            padding-left: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        h3 {
+            color: #34495e;
+            font-size: 1.1em;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+        
+        .objectifs {
+            background-color: #e8eaf6;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .objectifs ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .materiel {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .materiel ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .mbot2-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .mbot2-info h3 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .situation {
+            background-color: #e8f5e9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #4caf50;
+        }
+        
+        .situation-titre {
+            color: #2e7d32;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .mission-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        
+        .etape {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+        
+        .etape-numero {
+            display: inline-block;
+            background-color: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+        
+        .etape-titre {
+            font-weight: bold;
+            color: #2c3e50;
+            display: inline;
+            font-size: 1.05em;
+        }
+        
+        .phase {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 10px 0;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #bdc3c7;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f3f4f6;
+        }
+        
+        .code-block {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 15px 0;
+            white-space: pre-wrap;
+            line-height: 1.5;
+            border-left: 4px solid #667eea;
+        }
+        
+        .code-comment {
+            color: #95a5a6;
+            font-style: italic;
+        }
+        
+        .scratch-block {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 3px solid #667eea;
+        }
+        
+        .scratch-title {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .consigne {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 12px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+        
+        .competences {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .competence-badge {
+            background-color: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+        }
+        
+        .attention {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 15px 0;
+        }
+        
+        .attention::before {
+            content: "⚠️ ";
+            font-weight: bold;
+        }
+        
+        .astuce {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 12px;
+            margin: 15px 0;
+        }
+        
+        .astuce::before {
+            content: "💡 ";
+            font-weight: bold;
+        }
+        
+        .defi {
+            background-color: #f3e5f5;
+            border: 2px dashed #9c27b0;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        
+        .defi-titre {
+            color: #7b1fa2;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+        
+        .defi-titre::before {
+            content: "🏆 ";
+        }
+        
+        .comportement-box {
+            background-color: #fff;
+            border: 2px solid #667eea;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .comportement-titre {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px solid #ecf0f1;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            .fiche {
+                box-shadow: none;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fiche">
+        <header>
+            <div class="header-top">
+                <div>
+                    <h1>🤖 Robot de patrouille autonome</h1>
+                    <p class="sequence-info">Séquence : Systèmes de protection automatisés | Projet intégrateur
+                        <span class="robot-badge">Version mBot 2</span>
+                    </p>
+                </div>
+                <div class="niveau">3ème</div>
+            </div>
+            <div class="competences">
+                <span class="competence-badge">CT 5.6 - Structurer un programme</span>
+                <span class="competence-badge">CT 5.7 - Programmation</span>
+                <span class="competence-badge">CT 2.4 - Flux d'information</span>
+                <span class="competence-badge">Robotique mobile</span>
+            </div>
+        </header>
+
+        <div class="objectifs">
+            <strong>🎯 Objectifs de l'activité :</strong>
+            <ul>
+                <li>Programmer un robot <strong>mBot 2</strong> autonome capable de patrouiller dans une zone définie</li>
+                <li>Intégrer les capteurs du mBot 2 pour la détection d'obstacles et d'intrusions</li>
+                <li>Créer des comportements adaptatifs selon les situations rencontrées</li>
+                <li>Utiliser l'<strong>écran CyberPi</strong> pour afficher l'état du robot</li>
+                <li>Réfléchir aux limites et enjeux éthiques des robots de surveillance</li>
+            </ul>
+        </div>
+
+        <div class="mbot2-info">
+            <h3>🤖 Pourquoi le mBot 2 (CyberPi) ?</h3>
+            <p>Le <strong>mBot 2</strong> est la nouvelle génération de robot éducatif Makeblock. Il intègre un microcontrôleur <strong>CyberPi</strong> (ESP32) avec :</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>✅ <strong>Écran couleur</strong> intégré pour affichage d'informations</li>
+                <li>✅ <strong>LED RGB</strong> programmables</li>
+                <li>✅ <strong>Capteurs intégrés</strong> : suiveur de ligne quad RGB, capteur ultrason, gyroscope</li>
+                <li>✅ <strong>Programmation</strong> en blocs Scratch (mBlock) ou Python</li>
+                <li>✅ <strong>Communication</strong> Bluetooth et WiFi</li>
+            </ul>
+        </div>
+
+        <div class="materiel">
+            <strong>📦 Matériel par groupe (3-4 élèves) :</strong>
+            <ul>
+                <li><strong>1 robot mBot 2</strong> (CyberPi) chargé</li>
+                <li><strong>Capteurs intégrés au mBot 2 :</strong>
+                    <ul style="margin-left: 20px;">
+                        <li>Capteur suiveur de ligne quad RGB (4 LEDs)</li>
+                        <li>Capteur ultrason (distance)</li>
+                        <li>Écran couleur CyberPi</li>
+                        <li>LED RGB (x5)</li>
+                        <li>Buzzer intégré</li>
+                    </ul>
+                </li>
+                <li><strong>Parcours :</strong> Ruban adhésif noir (circuit), panneaux carton (obstacles)</li>
+                <li><strong>Ordinateur</strong> avec logiciel <strong>mBlock 5</strong></li>
+                <li>Câble USB pour programmation</li>
+            </ul>
+        </div>
+
+        <div class="situation">
+            <div class="situation-titre">🔒 CONTEXTE DE LA MISSION</div>
+            <p>Une entreprise souhaite sécuriser son entrepôt la nuit sans mobiliser du personnel en permanence. Elle fait appel à votre équipe d'ingénieurs roboticiens pour développer un <strong>robot de patrouille autonome</strong> avec le mBot 2.</p>
+            
+            <div class="mission-badge">
+                🎯 MISSION : Créer un robot capable de surveiller une zone en patrouille automatique et de détecter toute intrusion
+            </div>
+
+            <h3 style="margin-top: 15px;">Cahier des charges :</h3>
+            <table style="margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th>Critère</th>
+                        <th>Exigence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Navigation</strong></td>
+                        <td>Suivre un parcours défini (ligne noire) de manière autonome</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Évitement</strong></td>
+                        <td>Détecter et contourner les obstacles imprévus (distance < 20 cm)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Détection</strong></td>
+                        <td>Identifier une présence proche (utiliser le capteur ultrason)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alerte</strong></td>
+                        <td>Signaler visuellement (écran + LED) et sonore (buzzer) en cas de détection</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Autonomie</strong></td>
+                        <td>Fonctionner sans intervention humaine pendant 5 minutes minimum</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>🗺️ Déroulement du projet (4 séances)</h2>
+
+        <div class="phase">PHASE 1 : DÉCOUVERTE ET ANALYSE (Séance 1 - 1h30)</div>
+
+        <div class="etape">
+            <span class="etape-numero">1</span>
+            <span class="etape-titre">Prise en main du mBot 2 (30 min)</span>
+            <div class="consigne">
+                Familiarisez-vous avec le robot mBot 2 et ses capteurs. Testez les fonctions de base.
+            </div>
+            <h3>Tests à effectuer :</h3>
+            <ul style="margin-left: 20px;">
+                <li>✅ Déplacement en ligne droite (avancer, reculer)</li>
+                <li>✅ Rotation sur place (gauche, droite, 90°)</li>
+                <li>✅ Lecture du capteur ultrason (afficher la distance sur l'écran)</li>
+                <li>✅ Lecture du capteur suiveur de ligne (tester les 4 LED)</li>
+                <li>✅ Affichage sur l'écran CyberPi (texte, emoji)</li>
+                <li>✅ Activation LED RGB et buzzer</li>
+            </ul>
+            <div class="astuce">
+                <strong>Astuce :</strong> Notez la vitesse optimale des moteurs pour un déplacement stable. Testez différentes valeurs (30, 50, 70...).
+            </div>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">2</span>
+            <span class="etape-titre">Analyse des comportements nécessaires (20 min)</span>
+            <div class="consigne">
+                Identifiez et listez les différents comportements que le robot doit être capable d'adopter.
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Comportement</th>
+                        <th>Capteurs utilisés</th>
+                        <th>Actions du robot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Patrouille normale</td>
+                        <td>Suiveur de ligne (quad RGB)</td>
+                        <td>Suivre le circuit à vitesse constante</td>
+                    </tr>
+                    <tr>
+                        <td>Évitement d'obstacle</td>
+                        <td>Capteur ultrason</td>
+                        <td>S'arrêter, reculer, contourner</td>
+                    </tr>
+                    <tr>
+                        <td>Détection d'intrusion</td>
+                        <td>Capteur ultrason (très proche)</td>
+                        <td>S'arrêter, LED rouge, bip d'alerte, affichage écran</td>
+                    </tr>
+                    <tr>
+                        <td>Reprise de patrouille</td>
+                        <td>Temporisation interne</td>
+                        <td>Après 3s d'alerte, reprendre le circuit</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">3</span>
+            <span class="etape-titre">Conception de l'algorithme global (40 min)</span>
+            <div class="consigne">
+                Sur une feuille A3, créez l'organigramme de l'algorithme principal avec les 4 comportements.
+            </div>
+            <div class="attention">
+                Pensez à la <strong>priorité des comportements</strong> : la détection d'intrusion doit avoir la priorité sur la navigation normale !
+            </div>
+            <h3>Structure recommandée (pseudo-code) :</h3>
+            <div class="code-block">DÉBUT du programme
+
+RÉPÉTER INDÉFINIMENT :
+    
+    <span class="code-comment">// ÉTAPE 1 : ACQUISITION - Lire tous les capteurs</span>
+    Lire distance_avant (capteur ultrason)
+    Lire état_ligne (capteur suiveur de ligne)
+    
+    <span class="code-comment">// ÉTAPE 2 : TRAITEMENT - Décider du comportement selon les priorités</span>
+    
+    SI distance_avant < 10 cm ALORS
+        <span class="code-comment">→ PRIORITÉ 1 : Intrusion très proche détectée</span>
+        Exécuter Comportement_ALERTE
+        
+    SINON SI distance_avant < 20 cm ALORS
+        <span class="code-comment">→ PRIORITÉ 2 : Obstacle proche</span>
+        Exécuter Comportement_ÉVITEMENT
+        
+    SINON
+        <span class="code-comment">→ Mode normal : Patrouille</span>
+        Exécuter Comportement_PATROUILLE
+        
+    FIN SI
+    
+FIN RÉPÉTER
+
+FIN du programme</div>
+        </div>
+
+        <div class="phase">PHASE 2 : DÉVELOPPEMENT PAR COMPORTEMENT (Séance 2 - 1h30)</div>
+
+        <div class="etape">
+            <span class="etape-numero">4</span>
+            <span class="etape-titre">Programmation modulaire (1h30)</span>
+            <div class="consigne">
+                Programmez chaque comportement sous forme de bloc ou fonction indépendante dans mBlock. Testez-les un par un avant de les intégrer.
+            </div>
+            
+            <div class="comportement-box">
+                <div class="comportement-titre">🔵 Comportement 1 : PATROUILLE</div>
+                <p><strong>Objectif :</strong> Suivre la ligne noire au sol</p>
+                <div class="code-block">FONCTION Patrouille :
+
+    <span class="code-comment">// Lire les 4 capteurs du suiveur de ligne (S1, S2, S3, S4)</span>
+    Lire état_capteurs_ligne
+    
+    SI ligne détectée AU CENTRE (S2 et S3 noirs) ALORS
+        <span class="code-comment">→ Sur la ligne : avancer tout droit</span>
+        Moteur_Gauche = 50
+        Moteur_Droit = 50
+        
+    SINON SI ligne détectée À GAUCHE (S1 noir) ALORS
+        <span class="code-comment">→ Ligne à gauche : tourner à gauche</span>
+        Moteur_Gauche = 30
+        Moteur_Droit = 60
+        
+    SINON SI ligne détectée À DROITE (S4 noir) ALORS
+        <span class="code-comment">→ Ligne à droite : tourner à droite</span>
+        Moteur_Gauche = 60
+        Moteur_Droit = 30
+        
+    SINON
+        <span class="code-comment">→ Ligne perdue : continuer avancer doucement</span>
+        Moteur_Gauche = 40
+        Moteur_Droit = 40
+        
+    FIN SI
+    
+    <span class="code-comment">// Affichage sur écran</span>
+    Afficher "MODE PATROUILLE" sur écran CyberPi
+    LED_RGB = VERT
+    
+FIN FONCTION</div>
+                <p style="margin-top: 10px;"><strong>Tests à faire :</strong> Le robot suit-il la ligne ? Ajustez les vitesses si nécessaire.</p>
+            </div>
+
+            <div class="comportement-box">
+                <div class="comportement-titre">🟠 Comportement 2 : ÉVITEMENT</div>
+                <p><strong>Objectif :</strong> Contourner un obstacle imprévu</p>
+                <div class="code-block">FONCTION Évitement_Obstacle :
+
+    <span class="code-comment">// S'arrêter</span>
+    Moteur_Gauche = 0
+    Moteur_Droit = 0
+    Attendre 0,5 seconde
+    
+    <span class="code-comment">// Affichage</span>
+    Afficher "OBSTACLE !" sur écran
+    LED_RGB = ORANGE
+    Buzzer = bip court
+    
+    <span class="code-comment">// Reculer un peu</span>
+    Moteur_Gauche = -40
+    Moteur_Droit = -40
+    Attendre 0,8 seconde
+    
+    <span class="code-comment">// Tourner à droite pour contourner</span>
+    Moteur_Gauche = 50
+    Moteur_Droit = -50
+    Attendre 0,6 seconde
+    
+    <span class="code-comment">// Avancer pour dépasser l'obstacle</span>
+    Moteur_Gauche = 50
+    Moteur_Droit = 50
+    Attendre 1 seconde
+    
+    <span class="code-comment">// Tourner à gauche pour revenir vers la ligne</span>
+    Moteur_Gauche = -50
+    Moteur_Droit = 50
+    Attendre 0,6 seconde
+    
+FIN FONCTION</div>
+                <p style="margin-top: 10px;"><strong>Tests à faire :</strong> Placez un obstacle. Le robot le contourne-t-il correctement ?</p>
+            </div>
+
+            <div class="comportement-box">
+                <div class="comportement-titre">🔴 Comportement 3 : ALERTE INTRUSION</div>
+                <p><strong>Objectif :</strong> Signaler une présence détectée (distance < 10 cm)</p>
+                <div class="code-block">FONCTION Alerte_Intrusion :
+
+    <span class="code-comment">// Arrêt immédiat</span>
+    Moteur_Gauche = 0
+    Moteur_Droit = 0
+    
+    <span class="code-comment">// Signal visuel : écran + LED rouge clignotante</span>
+    RÉPÉTER 6 fois :
+        Afficher "⚠ ALERTE ⚠" sur écran (rouge)
+        LED_RGB = ROUGE (toutes)
+        Attendre 0,2 seconde
+        
+        Effacer écran
+        LED_RGB = ÉTEINT
+        Attendre 0,2 seconde
+    FIN RÉPÉTER
+    
+    <span class="code-comment">// Signal sonore : sirène montante</span>
+    POUR fréquence DE 400 À 1200 PAR PAS DE 100 :
+        Buzzer = fréquence
+        Attendre 0,05 seconde
+    FIN POUR
+    Buzzer = ARRÊT
+    
+    <span class="code-comment">// Afficher message final</span>
+    Afficher "Intrusion détectée" sur écran
+    Afficher "Heure : [temps_actuel]" sur écran
+    
+    <span class="code-comment">// Attendre 3 secondes avant de reprendre</span>
+    Attendre 3 secondes
+    
+FIN FONCTION</div>
+                <p style="margin-top: 10px;"><strong>Tests à faire :</strong> Approchez votre main à moins de 10 cm. L'alerte est-elle visible et audible ?</p>
+            </div>
+        </div>
+
+        <div class="phase">PHASE 3 : INTÉGRATION ET OPTIMISATION (Séance 3 - 1h30)</div>
+
+        <div class="etape">
+            <span class="etape-numero">5</span>
+            <span class="etape-titre">Programme principal complet (45 min)</span>
+            <div class="consigne">
+                Intégrez tous les comportements dans le programme principal avec la logique de priorité.
+            </div>
+            <h3>Algorithme principal en pseudo-code :</h3>
+            <div class="code-block">PROGRAMME PRINCIPAL - Robot de Patrouille
+
+<span class="code-comment">// INITIALISATION</span>
+AU DÉMARRAGE :
+    Afficher "Démarrage..." sur écran
+    LED_RGB = BLEU (toutes)
+    Attendre 2 secondes
+    Afficher "En patrouille" sur écran
+
+<span class="code-comment">// BOUCLE PRINCIPALE</span>
+RÉPÉTER INDÉFINIMENT :
+    
+    <span class="code-comment">// 1. ACQUISITION - Lire tous les capteurs</span>
+    Lire distance_avant (capteur ultrason)
+    Lire état_ligne (capteur suiveur de ligne)
+    
+    <span class="code-comment">// 2. TRAITEMENT - Décider du comportement selon PRIORITÉS</span>
+    
+    SI distance_avant < 10 cm ALORS
+        <span class="code-comment">// PRIORITÉ 1 : Intrusion très proche !</span>
+        Exécuter Alerte_Intrusion
+        
+    SINON SI distance_avant < 20 cm ALORS
+        <span class="code-comment">// PRIORITÉ 2 : Obstacle à éviter</span>
+        Exécuter Évitement_Obstacle
+        
+    SINON
+        <span class="code-comment">// Mode normal : Suivre la ligne</span>
+        Exécuter Patrouille
+        
+    FIN SI
+    
+    <span class="code-comment">// 3. COMMUNICATION (optionnel)</span>
+    <span class="code-comment">// Envoyer l'état via Bluetooth si demandé</span>
+    
+FIN RÉPÉTER
+
+FIN PROGRAMME</div>
+            <div class="attention">
+                L'ordre des conditions est crucial : on teste d'abord le cas le plus urgent (intrusion), puis l'obstacle, puis la patrouille normale.
+            </div>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">6</span>
+            <span class="etape-titre">Tests et calibrage (45 min)</span>
+            <div class="consigne">
+                Testez le robot sur le parcours complet. Remplissez le carnet de tests et ajustez les paramètres.
+            </div>
+            <h3>Carnet de tests :</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test n°</th>
+                        <th>Scénario</th>
+                        <th>Résultat ✓/✗</th>
+                        <th>Améliorations nécessaires</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Patrouille sans obstacle ni intrusion</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Obstacle placé sur le parcours</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Main approchée à moins de 10 cm</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Obstacle + intrusion simultanés</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Test d'autonomie complète (5 min)</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="astuce">
+                <strong>Paramètres à ajuster :</strong> vitesses des moteurs, durées d'attente, seuils de distance (20cm, 10cm), sensibilité du suiveur de ligne.
+            </div>
+        </div>
+
+        <div class="phase">PHASE 4 : PRÉSENTATION ET RÉFLEXION (Séance 4 - 1h30)</div>
+
+        <div class="etape">
+            <span class="etape-numero">7</span>
+            <span class="etape-titre">Démonstration et évaluation (45 min)</span>
+            <div class="consigne">
+                Chaque groupe présente son robot en conditions réelles devant la classe. Les autres groupes évaluent selon la grille.
+            </div>
+            <h3>Critères d'évaluation (sur 20 points) :</h3>
+            <ul style="margin-left: 20px;">
+                <li><strong>Navigation (5 pts) :</strong> Suit correctement le circuit noir</li>
+                <li><strong>Évitement (4 pts) :</strong> Contourne les obstacles sans intervention</li>
+                <li><strong>Détection (4 pts) :</strong> Réagit à une présence proche (< 10 cm)</li>
+                <li><strong>Signalisation (3 pts) :</strong> Alerte claire (écran + LED + son)</li>
+                <li><strong>Autonomie (2 pts) :</strong> Fonctionne 5 min sans blocage</li>
+                <li><strong>Programme (2 pts) :</strong> Code organisé, lisible, commenté</li>
+            </ul>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">8</span>
+            <span class="etape-titre">Débat : Robots et surveillance (45 min)</span>
+            <div class="consigne">
+                Discussion collective sur les enjeux éthiques et sociétaux des robots de surveillance.
+            </div>
+            <h3>Questions débat :</h3>
+            <ol style="margin-left: 25px;">
+                <li>Quels sont les <strong>avantages</strong> d'un robot de patrouille par rapport à un humain ? Les <strong>inconvénients</strong> ?</li>
+                <li>Un robot peut-il prendre de <strong>mauvaises décisions</strong> ? (faux positifs, erreurs de détection)</li>
+                <li>Que se passe-t-il si le robot est <strong>piraté</strong> ? (lien avec séquence cybersécurité)</li>
+                <li>Doit-on informer les personnes qu'elles sont surveillées par un robot ?</li>
+                <li>Quel impact sur <strong>l'emploi</strong> des agents de sécurité ?</li>
+                <li>Dans quels lieux accepteriez-vous d'être surveillés par un robot ? Dans quels lieux refuseriez-vous ?</li>
+            </ol>
+            <div class="attention">
+                Lien avec le <strong>RGPD</strong> (séquence cybersécurité) : collecte de données, vidéosurveillance, reconnaissance faciale, droit à l'image.
+            </div>
+        </div>
+
+        <h2>📱 Exemple en blocs mBlock (Scratch)</h2>
+
+        <div class="scratch-block">
+            <div class="scratch-title">💻 Programme complet en blocs visuels mBlock</div>
+            <p style="text-align: center; margin-bottom: 15px;"><em>Voici comment traduire l'algorithme en blocs Scratch dans mBlock 5</em></p>
+            
+            <div style="background-color: white; padding: 15px; border-radius: 8px; border: 2px solid #667eea;">
+                <p style="font-weight: bold; color: #667eea; margin-bottom: 10px;">🟢 Au démarrage :</p>
+                <div style="margin-left: 20px; font-family: monospace;">
+                    <div style="background: #4CAF50; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                        Quand 🏁 cliqué
+                    </div><br>
+                    <div style="background: #9C27B0; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                        CyberPi afficher [Démarrage...] en taille (16)
+                    </div><br>
+                    <div style="background: #9C27B0; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                        allumer toutes LED en 🔵 BLEU
+                    </div><br>
+                    <div style="background: #FF9800; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                        attendre (2) secondes
+                    </div><br>
+                    <div style="background: #9C27B0; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                        CyberPi afficher [En patrouille] en taille (16)
+                    </div>
+                </div>
+
+                <p style="font-weight: bold; color: #667eea; margin: 20px 0 10px 0;">🔁 Boucle principale :</p>
+                <div style="margin-left: 20px; font-family: monospace;">
+                    <div style="background: #FF9800; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                        répéter indéfiniment
+                    </div><br>
+                    <div style="margin-left: 30px;">
+                        <div style="background: #2196F3; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                            mettre [distance] à (capteur ultrason)
+                        </div><br>
+                        
+                        <div style="background: #FF9800; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                            si &lt;[distance] &lt; (10)&gt; alors
+                        </div><br>
+                        <div style="margin-left: 30px;">
+                            <div style="background: #E91E63; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                                🔴 Alerte_Intrusion
+                            </div><br>
+                        </div>
+                        
+                        <div style="background: #FF9800; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                            sinon si &lt;[distance] &lt; (20)&gt; alors
+                        </div><br>
+                        <div style="margin-left: 30px;">
+                            <div style="background: #FF9800; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                                🟠 Évitement_Obstacle
+                            </div><br>
+                        </div>
+                        
+                        <div style="background: #FF9800; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                            sinon
+                        </div><br>
+                        <div style="margin-left: 30px;">
+                            <div style="background: #4CAF50; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                                🔵 Patrouille
+                            </div><br>
+                        </div>
+                        
+                        <div style="background: #FF9800; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                            fin si
+                        </div>
+                    </div>
+                </div>
+
+                <p style="font-weight: bold; color: #667eea; margin: 20px 0 10px 0;">🔵 Fonction Patrouille (exemple) :</p>
+                <div style="margin-left: 20px; font-family: monospace;">
+                    <div style="background: #9C27B0; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                        définir Patrouille
+                    </div><br>
+                    <div style="margin-left: 30px;">
+                        <div style="background: #FF9800; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                            si &lt;capteur ligne détecte CENTRE&gt; alors
+                        </div><br>
+                        <div style="margin-left: 30px;">
+                            <div style="background: #2196F3; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                                mBot2 avancer à (50) %
+                            </div><br>
+                        </div>
+                        
+                        <div style="background: #FF9800; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                            sinon si &lt;capteur ligne détecte GAUCHE&gt; alors
+                        </div><br>
+                        <div style="margin-left: 30px;">
+                            <div style="background: #2196F3; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                                moteur gauche à (30) moteur droit à (60)
+                            </div><br>
+                        </div>
+                        
+                        <div style="background: #FF9800; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                            sinon si &lt;capteur ligne détecte DROITE&gt; alors
+                        </div><br>
+                        <div style="margin-left: 30px;">
+                            <div style="background: #2196F3; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                                moteur gauche à (60) moteur droit à (30)
+                            </div><br>
+                        </div>
+                        
+                        <div style="background: #FF9800; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                            fin si
+                        </div><br>
+                        
+                        <div style="background: #9C27B0; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                            allumer toutes LED en 🟢 VERT
+                        </div><br>
+                        <div style="background: #9C27B0; color: white; padding: 8px; margin: 5px 0; border-radius: 5px; display: inline-block;">
+                            CyberPi afficher [MODE PATROUILLE]
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="astuce" style="margin-top: 15px;">
+                <strong>Dans mBlock 5 :</strong> Les blocs se trouvent dans les catégories "CyberPi", "mBot2", "Mouvement", "Apparence" et "Contrôle". Créez les fonctions avec "Mes blocs".
+            </div>
+        </div>
+
+        <h2>🚀 Défis bonus (pour aller plus loin)</h2>
+
+        <div class="defi">
+            <div class="defi-titre">DÉFI 1 : Compteur de tours</div>
+            <p>Ajoutez un compteur qui enregistre le nombre de tours de circuit effectués et le nombre d'intrusions détectées. Affichez ces statistiques sur l'écran du mBot 2.</p>
+        </div>
+
+        <div class="defi">
+            <div class="defi-titre">DÉFI 2 : Patrouille intelligente</div>
+            <p>Le robot ralentit automatiquement dans les "zones sensibles" (marquées par une double ligne noire) et accélère dans les zones normales.</p>
+        </div>
+
+        <div class="defi">
+            <div class="defi-titre">DÉFI 3 : Communication Bluetooth</div>
+            <p>Deux mBot 2 patrouillent sur des circuits différents. Si l'un détecte une intrusion, il envoie un message Bluetooth à l'autre robot qui passe également en mode alerte.</p>
+        </div>
+
+        <div class="defi">
+            <div class="defi-titre">DÉFI 4 : Horloge de patrouille</div>
+            <p>Utilisez la fonction "temps écoulé" pour que le robot affiche l'heure de chaque intrusion détectée sur son écran.</p>
+        </div>
+
+        <h2>📝 Trace écrite individuelle</h2>
+        <p><strong>À rédiger dans le cahier (10 min) :</strong></p>
+        
+        <h3>Synthèse technique :</h3>
+        <ul style="margin-left: 20px;">
+            <li>Un <strong>robot autonome</strong> prend des décisions sans intervention humaine grâce à ses capteurs et son programme</li>
+            <li>Le <strong>mBot 2 (CyberPi)</strong> dispose de capteurs intégrés : suiveur de ligne quad RGB, capteur ultrason, écran couleur</li>
+            <li>La <strong>programmation modulaire</strong> (fonctions/blocs) permet de découper un problème complexe en sous-problèmes simples</li>
+            <li>Les <strong>comportements</strong> du robot sont hiérarchisés : certains ont la priorité sur d'autres (intrusion > obstacle > patrouille)</li>
+            <li>Le <strong>calibrage</strong> (ajustement des paramètres) est essentiel pour adapter le robot à son environnement</li>
+        </ul>
+
+        <h3>Réflexion personnelle :</h3>
+        <p style="margin-left: 20px; font-style: italic;">Selon vous, les robots de surveillance représentent-ils un progrès ou un danger pour notre société ? Justifiez votre réponse en 5 lignes minimum en vous appuyant sur des exemples concrets.</p>
+
+        <h2>🔗 Liens avec les séquences précédentes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Séquence</th>
+                    <th>Concept réutilisé</th>
+                    <th>Application dans le robot</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>LLM</strong></td>
+                    <td>Arbre de décision, logique conditionnelle</td>
+                    <td>Choix du comportement selon les capteurs (SI...SINON)</td>
+                </tr>
+                <tr>
+                    <td><strong>Cybersécurité</strong></td>
+                    <td>Détection d'anomalies, authentification</td>
+                    <td>Détection d'intrusion, risque de piratage Bluetooth/WiFi</td>
+                </tr>
+                <tr>
+                    <td><strong>Systèmes automatisés</strong></td>
+                    <td>Chaîne d'information, capteurs/actionneurs</td>
+                    <td>Architecture complète du mBot 2 (acquisition→traitement→action)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer>
+            <div>Technologie 3ème - Robot de patrouille mBot 2 - Version pseudo-code + Scratch</div>
+            <div>Durée : 4 séances (6h)</div>
+        </footer>
+    </div>
+</body>
+</html>
