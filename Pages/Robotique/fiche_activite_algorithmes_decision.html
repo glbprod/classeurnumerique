@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activité - Algorithmes de décision pour système d'alarme</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .fiche {
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            border-bottom: 4px solid #2c3e50;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .niveau {
+            background-color: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        .sequence-info {
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 0.95em;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        h3 {
+            color: #34495e;
+            font-size: 1.1em;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+        
+        .objectifs {
+            background-color: #ebf5fb;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .objectifs ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .materiel {
+            background-color: #fef9e7;
+            border-left: 4px solid #f39c12;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .materiel ul {
+            margin-left: 20px;
+            margin-top: 10px;
+            columns: 2;
+        }
+        
+        .situation {
+            background-color: #fdecea;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #e74c3c;
+        }
+        
+        .situation-titre {
+            color: #c0392b;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .etape {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 3px solid #95a5a6;
+        }
+        
+        .etape-numero {
+            display: inline-block;
+            background-color: #34495e;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .etape-titre {
+            font-weight: bold;
+            color: #2c3e50;
+            display: inline;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #bdc3c7;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #34495e;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #ecf0f1;
+        }
+        
+        .code-block {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .consigne {
+            background-color: #e8f8f5;
+            border-left: 4px solid #16a085;
+            padding: 12px;
+            margin: 15px 0;
+            font-style: italic;
+        }
+        
+        .competences {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .competence-badge {
+            background-color: #95a5a6;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+        }
+        
+        .attention {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 15px 0;
+        }
+        
+        .attention::before {
+            content: "⚠️ ";
+            font-weight: bold;
+        }
+        
+        footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px solid #ecf0f1;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            .fiche {
+                box-shadow: none;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fiche">
+        <header>
+            <div class="header-top">
+                <div>
+                    <h1>Algorithmes de décision pour système d'alarme</h1>
+                    <p class="sequence-info">Séquence : Systèmes de protection automatisés | Séance 6</p>
+                </div>
+                <div class="niveau">3ème</div>
+            </div>
+            <div class="competences">
+                <span class="competence-badge">CT 5.6 - Structurer un programme</span>
+                <span class="competence-badge">CT 5.7 - Écrire un programme</span>
+                <span class="competence-badge">Algorithmique</span>
+            </div>
+        </header>
+
+        <div class="objectifs">
+            <strong>🎯 Objectifs de la séance :</strong>
+            <ul>
+                <li>Comprendre et utiliser les structures conditionnelles (SI...ALORS...SINON)</li>
+                <li>Créer des conditions multiples avec les opérateurs logiques (ET, OU)</li>
+                <li>Concevoir un organigramme pour modéliser un algorithme</li>
+                <li>Programmer différents niveaux d'alerte selon les capteurs activés</li>
+            </ul>
+        </div>
+
+        <div class="materiel">
+            <strong>📦 Matériel par îlot :</strong>
+            <ul>
+                <li>1 carte Arduino ou micro:bit</li>
+                <li>1 capteur PIR (mouvement)</li>
+                <li>1 capteur ultrason</li>
+                <li>1 buzzer</li>
+                <li>2 LED (rouge et orange)</li>
+                <li>Ordinateur avec IDE</li>
+                <li>Feuille A3 pour organigramme</li>
+            </ul>
+        </div>
+
+        <div class="situation">
+            <div class="situation-titre">🔐 SITUATION PROBLÈME</div>
+            <p>La salle de technologie dispose de matériel coûteux. Le système d'alarme doit être capable de gérer différentes situations avec des réponses adaptées :</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><strong>Niveau 1 (Vigilance)</strong> : Un mouvement est détecté → LED orange clignote</li>
+                <li><strong>Niveau 2 (Alerte)</strong> : Mouvement ET proximité détectée → LED rouge + bip court</li>
+                <li><strong>Niveau 3 (Alarme)</strong> : Mouvement ET proximité depuis plus de 3 secondes → Sirène continue</li>
+            </ul>
+            <p style="margin-top: 10px;"><strong>Mission :</strong> Créer l'algorithme puis le programme qui gère ces trois niveaux d'alerte.</p>
+        </div>
+
+        <h2>📋 Déroulement de l'activité</h2>
+
+        <div class="etape">
+            <span class="etape-numero">1</span>
+            <span class="etape-titre">Rappel : les structures conditionnelles (10 min)</span>
+            <p style="margin-top: 10px;">Une structure conditionnelle permet au programme de prendre des décisions selon une condition :</p>
+            <div class="code-block">
+SI (condition) ALORS
+    Action 1
+SINON
+    Action 2
+FIN SI
+            </div>
+            <p style="margin-top: 10px;">Les opérateurs logiques permettent de combiner plusieurs conditions :</p>
+            <ul style="margin-left: 30px; margin-top: 5px;">
+                <li><strong>ET</strong> : les deux conditions doivent être vraies</li>
+                <li><strong>OU</strong> : au moins une condition doit être vraie</li>
+                <li><strong>NON</strong> : inverse la condition</li>
+            </ul>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">2</span>
+            <span class="etape-titre">Analyse du problème (15 min)</span>
+            <div class="consigne">
+                En groupe, remplissez le tableau pour identifier les capteurs, les conditions et les actions pour chaque niveau d'alerte.
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Niveau</th>
+                        <th>Capteurs activés</th>
+                        <th>Conditions</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Vigilance</strong></td>
+                        <td>PIR uniquement</td>
+                        <td>Mouvement = OUI</td>
+                        <td>LED orange clignote</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alerte</strong></td>
+                        <td>PIR + Ultrason</td>
+                        <td>Mouvement = OUI ET Distance < 30 cm</td>
+                        <td>LED rouge + bip court</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alarme</strong></td>
+                        <td>PIR + Ultrason (durée)</td>
+                        <td>Mouvement = OUI ET Distance < 30 cm ET Durée > 3s</td>
+                        <td>Sirène continue</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">3</span>
+            <span class="etape-titre">Conception de l'organigramme (20 min)</span>
+            <div class="consigne">
+                Sur une feuille A3, dessinez l'organigramme de l'algorithme en respectant les symboles normalisés.
+            </div>
+            <h3>Symboles de l'organigramme :</h3>
+            <table style="width: 70%;">
+                <tr>
+                    <td style="text-align: center;">⬭ Ovale</td>
+                    <td>Début / Fin</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">▭ Rectangle</td>
+                    <td>Traitement / Action</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">◇ Losange</td>
+                    <td>Test / Condition</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">▱ Parallélogramme</td>
+                    <td>Entrée / Sortie</td>
+                </tr>
+            </table>
+            <div class="attention">
+                Pensez à bien gérer la priorité des conditions : vérifier d'abord le niveau 3 (le plus critique), puis le niveau 2, puis le niveau 1.
+            </div>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">4</span>
+            <span class="etape-titre">Programmation (30 min)</span>
+            <div class="consigne">
+                Traduisez votre organigramme en code. Testez progressivement chaque niveau d'alerte.
+            </div>
+            <h3>Structure de base du programme :</h3>
+            <div class="code-block">
+// Déclaration des variables
+int pinPIR = 2;
+int pinTrig = 3;
+int pinEcho = 4;
+int pinLedOrange = 8;
+int pinLedRouge = 9;
+int pinBuzzer = 10;
+
+void setup() {
+  pinMode(pinPIR, INPUT);
+  pinMode(pinTrig, OUTPUT);
+  pinMode(pinEcho, INPUT);
+  pinMode(pinLedOrange, OUTPUT);
+  pinMode(pinLedRouge, OUTPUT);
+  pinMode(pinBuzzer, OUTPUT);
+}
+
+void loop() {
+  // 1. Lire les capteurs
+  int mouvement = digitalRead(pinPIR);
+  int distance = lireDistance();
+  
+  // 2. Appliquer les conditions
+  if (/* condition niveau 3 */) {
+    // Actions niveau 3
+  }
+  else if (/* condition niveau 2 */) {
+    // Actions niveau 2
+  }
+  else if (/* condition niveau 1 */) {
+    // Actions niveau 1
+  }
+  else {
+    // Tout éteint
+  }
+}
+            </div>
+            <h3>Aide à la programmation :</h3>
+            <ul style="margin-left: 20px;">
+                <li><code>millis()</code> : renvoie le temps écoulé en millisecondes depuis le démarrage</li>
+                <li>Pour mesurer une durée, comparer la différence entre deux appels de <code>millis()</code></li>
+                <li>Opérateur ET en Arduino : <code>&&</code></li>
+                <li>Opérateur OU en Arduino : <code>||</code></li>
+            </ul>
+        </div>
+
+        <div class="etape">
+            <span class="etape-numero">5</span>
+            <span class="etape-titre">Tests et amélioration (15 min)</span>
+            <div class="consigne">
+                Testez votre programme en simulant les différentes situations. Notez vos observations et ajustez si nécessaire.
+            </div>
+            <h3>Grille de tests :</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Scénario testé</th>
+                        <th>Résultat attendu</th>
+                        <th>✓ / ✗</th>
+                        <th>Observations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Aucun mouvement</td>
+                        <td>Tout éteint</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Mouvement loin (> 30 cm)</td>
+                        <td>LED orange clignote</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Mouvement proche (< 30 cm)</td>
+                        <td>LED rouge + bip</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Mouvement proche > 3s</td>
+                        <td>Sirène continue</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>🚀 Pour aller plus loin (optionnel)</h2>
+        <ul style="margin-left: 20px;">
+            <li>Ajouter un bouton pour désactiver l'alarme (authentification simple)</li>
+            <li>Créer un niveau 4 avec plusieurs capteurs activés simultanément</li>
+            <li>Afficher le niveau d'alerte sur un écran LCD</li>
+            <li>Enregistrer le nombre de déclenchements dans une variable</li>
+        </ul>
+
+        <h2>📝 Trace écrite</h2>
+        <p><strong>À retenir :</strong></p>
+        <ul style="margin-left: 20px; margin-top: 5px;">
+            <li>Les <strong>structures conditionnelles</strong> permettent au programme de prendre des décisions</li>
+            <li>Les <strong>opérateurs logiques</strong> (ET, OU, NON) combinent plusieurs conditions</li>
+            <li>Un <strong>organigramme</strong> modélise graphiquement un algorithme avant de le programmer</li>
+            <li>L'ordre des conditions est important : tester d'abord les cas les plus spécifiques</li>
+        </ul>
+
+        <footer>
+            <div>Technologie 3ème - Systèmes de protection automatisés</div>
+            <div>Durée : 1h30</div>
+        </footer>
+    </div>
+</body>
+</html>
