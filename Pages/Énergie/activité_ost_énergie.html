@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Chaîne d'Énergie - Exercices</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .intro {
+            background: #f8f9fa;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+            margin-bottom: 40px;
+            border-radius: 5px;
+        }
+        
+        .intro h2 {
+            color: #764ba2;
+            margin-bottom: 15px;
+        }
+        
+        .intro p {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+        
+        .schema {
+            background: white;
+            padding: 15px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .exercise {
+            background: #ffffff;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .exercise h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .question p {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .options {
+            margin-left: 20px;
+        }
+        
+        .options label {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .options label:hover {
+            background: #e9ecef;
+        }
+        
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+        
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        
+        .match-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            gap: 15px;
+        }
+        
+        .match-item span {
+            flex: 1;
+            padding: 10px;
+            background: #e7e9fd;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto 0;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        
+        .result.show {
+            display: block;
+        }
+        
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .result.partial {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffeaa7;
+        }
+        
+        .result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        
+        .legend {
+            background: #e7e9fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        
+        .legend strong {
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔋 La Chaîne d'Énergie</h1>
+        
+        <div class="intro">
+            <h2>Introduction : La chaîne d'énergie dans les objets techniques</h2>
+            <p>
+                La plupart des objets techniques que nous utilisons au quotidien fonctionnent grâce à une source d'énergie. 
+                Pour réaliser leur fonction d'usage (ce pour quoi ils sont conçus), ces objets doivent transformer l'énergie 
+                qu'ils reçoivent en une forme utilisable.
+            </p>
+            <p>
+                La <strong>chaîne d'énergie</strong> est un schéma qui permet de visualiser et de comprendre comment l'énergie 
+                circule et se transforme à l'intérieur d'un objet technique, depuis la source d'énergie jusqu'à l'action finale.
+            </p>
+            
+            <div class="schema">
+                ALIMENTER → DISTRIBUER → CONVERTIR → TRANSMETTRE
+            </div>
+            
+            <p style="margin-top: 15px;">
+                <strong>Les quatre fonctions principales :</strong>
+            </p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><strong>ALIMENTER :</strong> Fournir l'énergie nécessaire au fonctionnement (batterie, prise électrique, panneaux solaires...)</li>
+                <li><strong>DISTRIBUER :</strong> Gérer et répartir l'énergie vers les différents composants (interrupteurs, cartes électroniques...)</li>
+                <li><strong>CONVERTIR :</strong> Transformer l'énergie en une forme utilisable (moteur électrique, résistance chauffante...)</li>
+                <li><strong>TRANSMETTRE :</strong> Transférer l'énergie convertie vers l'effecteur final (engrenages, courroies, roues...)</li>
+            </ul>
+            
+            <div class="legend">
+                <strong>💡 Le saviez-vous ?</strong> Le Solar Impulse, avion qui a fait le tour du monde, utilise uniquement 
+                l'énergie solaire ! Ses panneaux solaires captent l'énergie du soleil, qui est ensuite stockée dans des batteries, 
+                puis convertie en énergie mécanique par des moteurs électriques pour faire tourner les hélices.
+            </div>
+        </div>
+        
+        <form id="energyForm">
+            <!-- Exercice 1 -->
+            <div class="exercise">
+                <h3>📝 Exercice 1 : Identifier les fonctions de la chaîne d'énergie</h3>
+                
+                <div class="question">
+                    <p>1. Quelle fonction permet de fournir l'énergie à l'objet technique ?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="a"> Distribuer</label>
+                        <label><input type="radio" name="q1" value="b"> Alimenter</label>
+                        <label><input type="radio" name="q1" value="c"> Convertir</label>
+                        <label><input type="radio" name="q1" value="d"> Transmettre</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p>2. Un moteur électrique assure quelle fonction dans la chaîne d'énergie ?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="a"> Alimenter</label>
+                        <label><input type="radio" name="q2" value="b"> Distribuer</label>
+                        <label><input type="radio" name="q2" value="c"> Convertir</label>
+                        <label><input type="radio" name="q2" value="d"> Transmettre</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p>3. Quels composants peuvent assurer la fonction TRANSMETTRE ? (Plusieurs réponses possibles)</p>
+                    <div class="options">
+                        <label><input type="checkbox" name="q3" value="a"> Engrenages</label>
+                        <label><input type="checkbox" name="q3" value="b"> Batterie</label>
+                        <label><input type="checkbox" name="q3" value="c"> Courroies</label>
+                        <label><input type="checkbox" name="q3" value="d"> Roues</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Exercice 2 -->
+            <div class="exercise">
+                <h3>🔌 Exercice 2 : Analyser la chaîne d'énergie d'une lampe de poche</h3>
+                <p style="margin-bottom: 20px;">
+                    Une lampe de poche fonctionne avec des piles. Elle possède un interrupteur pour l'allumer, 
+                    une ampoule LED qui produit de la lumière, et un réflecteur qui dirige la lumière vers l'avant.
+                </p>
+                
+                <div class="question">
+                    <p>4. Associez chaque composant à sa fonction dans la chaîne d'énergie :</p>
+                    
+                    <div class="match-item">
+                        <span>Les piles</span>
+                        <select name="q4a">
+                            <option value="">-- Choisir --</option>
+                            <option value="alimenter">ALIMENTER</option>
+                            <option value="distribuer">DISTRIBUER</option>
+                            <option value="convertir">CONVERTIR</option>
+                            <option value="transmettre">TRANSMETTRE</option>
+                        </select>
+                    </div>
+                    
+                    <div class="match-item">
+                        <span>L'interrupteur</span>
+                        <select name="q4b">
+                            <option value="">-- Choisir --</option>
+                            <option value="alimenter">ALIMENTER</option>
+                            <option value="distribuer">DISTRIBUER</option>
+                            <option value="convertir">CONVERTIR</option>
+                            <option value="transmettre">TRANSMETTRE</option>
+                        </select>
+                    </div>
+                    
+                    <div class="match-item">
+                        <span>L'ampoule LED</span>
+                        <select name="q4c">
+                            <option value="">-- Choisir --</option>
+                            <option value="alimenter">ALIMENTER</option>
+                            <option value="distribuer">DISTRIBUER</option>
+                            <option value="convertir">CONVERTIR</option>
+                            <option value="transmettre">TRANSMETTRE</option>
+                        </select>
+                    </div>
+                    
+                    <div class="match-item">
+                        <span>Le réflecteur</span>
+                        <select name="q4d">
+                            <option value="">-- Choisir --</option>
+                            <option value="alimenter">ALIMENTER</option>
+                            <option value="distribuer">DISTRIBUER</option>
+                            <option value="convertir">CONVERTIR</option>
+                            <option value="transmettre">TRANSMETTRE</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Exercice 3 -->
+            <div class="exercise">
+                <h3>🚗 Exercice 3 : Compléter la chaîne d'énergie d'un véhicule électrique</h3>
+                <p style="margin-bottom: 20px;">
+                    Un véhicule électrique utilise une batterie rechargeable. L'énergie électrique est gérée par 
+                    un ordinateur de bord, puis transformée par un moteur électrique en énergie mécanique. 
+                    Cette énergie est ensuite transmise aux roues par un système de transmission.
+                </p>
+                
+                <div class="question">
+                    <p>5. Quelle est la source d'énergie du véhicule électrique ?</p>
+                    <input type="text" name="q5" placeholder="Votre réponse...">
+                </div>
+                
+                <div class="question">
+                    <p>6. Quel type d'énergie est converti par le moteur électrique ?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q6" value="a"> Énergie thermique en énergie mécanique</label>
+                        <label><input type="radio" name="q6" value="b"> Énergie électrique en énergie mécanique</label>
+                        <label><input type="radio" name="q6" value="c"> Énergie chimique en énergie électrique</label>
+                        <label><input type="radio" name="q6" value="d"> Énergie lumineuse en énergie thermique</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p>7. Dans quelle ordre se déroulent les fonctions de la chaîne d'énergie ?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q7" value="a"> CONVERTIR → ALIMENTER → DISTRIBUER → TRANSMETTRE</label>
+                        <label><input type="radio" name="q7" value="b"> ALIMENTER → DISTRIBUER → CONVERTIR → TRANSMETTRE</label>
+                        <label><input type="radio" name="q7" value="c"> DISTRIBUER → ALIMENTER → TRANSMETTRE → CONVERTIR</label>
+                        <label><input type="radio" name="q7" value="d"> TRANSMETTRE → CONVERTIR → DISTRIBUER → ALIMENTER</label>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">✓ Valider mes réponses</button>
+            
+            <div id="result" class="result"></div>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById('energyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            let total = 11; // Nombre total de points
+            let details = [];
+            
+            // Q1
+            if (document.querySelector('input[name="q1"]:checked')?.value === 'b') {
+                score++;
+            } else {
+                details.push('Question 1 : La bonne réponse est "Alimenter"');
+            }
+            
+            // Q2
+            if (document.querySelector('input[name="q2"]:checked')?.value === 'c') {
+                score++;
+            } else {
+                details.push('Question 2 : Un moteur électrique "Convertit" l\'énergie électrique en énergie mécanique');
+            }
+            
+            // Q3 (3 points)
+            const q3Checked = Array.from(document.querySelectorAll('input[name="q3"]:checked')).map(cb => cb.value);
+            const q3Correct = ['a', 'c', 'd'];
+            let q3Score = 0;
+            
+            if (q3Checked.includes('a')) q3Score++;
+            if (q3Checked.includes('c')) q3Score++;
+            if (q3Checked.includes('d')) q3Score++;
+            if (q3Checked.includes('b')) q3Score--; // Pénalité pour mauvaise réponse
+            
+            score += Math.max(0, q3Score);
+            if (q3Score < 3) {
+                details.push('Question 3 : Les engrenages, courroies et roues transmettent l\'énergie');
+            }
+            
+            // Q4a-d (4 points)
+            if (document.querySelector('select[name="q4a"]')?.value === 'alimenter') {
+                score++;
+            } else {
+                details.push('Question 4a : Les piles "Alimentent" le système');
+            }
+            
+            if (document.querySelector('select[name="q4b"]')?.value === 'distribuer') {
+                score++;
+            } else {
+                details.push('Question 4b : L\'interrupteur "Distribue" l\'énergie');
+            }
+            
+            if (document.querySelector('select[name="q4c"]')?.value === 'convertir') {
+                score++;
+            } else {
+                details.push('Question 4c : L\'ampoule LED "Convertit" l\'énergie électrique en lumière');
+            }
+            
+            if (document.querySelector('select[name="q4d"]')?.value === 'transmettre') {
+                score++;
+            } else {
+                details.push('Question 4d : Le réflecteur "Transmet" la lumière vers l\'avant');
+            }
+            
+            // Q5
+            const q5Answer = document.querySelector('input[name="q5"]')?.value.toLowerCase().trim();
+            if (q5Answer.includes('batterie') || q5Answer.includes('électrique')) {
+                score++;
+            } else {
+                details.push('Question 5 : La source d\'énergie est la "batterie"');
+            }
+            
+            // Q6
+            if (document.querySelector('input[name="q6"]:checked')?.value === 'b') {
+                score++;
+            } else {
+                details.push('Question 6 : Le moteur convertit l\'énergie électrique en énergie mécanique');
+            }
+            
+            // Q7
+            if (document.querySelector('input[name="q7"]:checked')?.value === 'b') {
+                score++;
+            } else {
+                details.push('Question 7 : L\'ordre correct est ALIMENTER → DISTRIBUER → CONVERTIR → TRANSMETTRE');
+            }
+            
+            // Afficher le résultat
+            const resultDiv = document.getElementById('result');
+            const percentage = Math.round((score / total) * 100);
+            
+            let message = `<div style="font-size: 1.5em; margin-bottom: 15px;">Score : ${score}/${total} (${percentage}%)</div>`;
+            
+            if (percentage >= 90) {
+                resultDiv.className = 'result show success';
+                message += '🎉 Excellent ! Tu maîtrises parfaitement la chaîne d\'énergie !';
+            } else if (percentage >= 70) {
+                resultDiv.className = 'result show partial';
+                message += '👍 Bien ! Quelques petites erreurs à corriger.';
+            } else if (percentage >= 50) {
+                resultDiv.className = 'result show partial';
+                message += '💪 Pas mal, mais il faut encore réviser certaines notions.';
+            } else {
+                resultDiv.className = 'result show error';
+                message += '📚 Il est nécessaire de revoir le cours sur la chaîne d\'énergie.';
+            }
+            
+            if (details.length > 0) {
+                message += '<div style="margin-top: 20px; text-align: left; font-size: 0.9em; background: white; padding: 15px; border-radius: 5px;">';
+                message += '<strong>Corrections :</strong><ul style="margin-left: 20px; margin-top: 10px;">';
+                details.forEach(detail => {
+                    message += `<li style="margin: 5px 0;">${detail}</li>`;
+                });
+                message += '</ul></div>';
+            }
+            
+            resultDiv.innerHTML = message;
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    </script>
+</body>
+</html>
