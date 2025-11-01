@@ -143,6 +143,15 @@
       "addedDate": "2025-11-01T14:50:46.851Z",
       "lastModified": "2025-11-01T14:50:46.853Z",
       "favorite": false
+    },
+    {
+      "id": "page-1762009113280",
+      "title": "astro guide",
+      "githubPath": "Pages/Ressources/astro_guide.html",
+      "description": "",
+      "addedDate": "2025-11-01T14:58:33.280Z",
+      "lastModified": "2025-11-01T14:58:33.282Z",
+      "favorite": false
     }
   ]
 }
