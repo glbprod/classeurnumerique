@@ -5,7 +5,7 @@ app.post('/api/check-page-status', async (req, res) => {
   const { githubPath } = req.body;
   
   // Construire l'URL complète
-  const fullUrl = `https://ton-site.netlify.app/${githubPath}`;
+  const fullUrl = 'https://latechnologieaucollege.netlify.app/${githubPath}`;
   
   try {
     // Faire une requête HTTP pour tester le lien
