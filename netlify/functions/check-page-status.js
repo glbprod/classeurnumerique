@@ -1,29 +1,71 @@
-// 📁 Ton fichier serveur (server.js, app.js, ou netlify/functions/...)
+const fetch = require('node-fetch');
 
-// ✅ NOUVELLE FONCTION 1 : Vérifier le statut d'une page
-app.post('/api/check-page-status', async (req, res) => {
-  const { githubPath } = req.body;
-  
-  // Construire l'URL complète
-  const fullUrl = 'https://latechnologieaucollege.netlify.app/${githubPath}`;
-  
-  try {
-    // Faire une requête HTTP pour tester le lien
-    const response = await fetch(fullUrl, { 
-      method: 'HEAD' // Ne télécharge pas la page, juste vérifie
-    });
-    
-    // Retourner le statut
-    res.json({
-      success: true,
-      status: response.status,
-      isOk: response.status === 200,
-      isError: response.status >= 400
-    });
-  } catch (error) {
-    res.json({
-      success: false,
-      isError: true
-    });
+exports.handler = async (event) => {
+  // Headers CORS
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json'
+  };
+
+  // Gérer OPTIONS pour CORS
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers, body: '' };
   }
-});
+
+  try {
+    const { githubPath } = JSON.parse(event.body);
+    
+    // Construire l'URL complète de ta page déployée
+    // Remplace par ton URL Netlify réelle
+    const baseUrl = process.env.URL || 'https://ton-site.netlify.app';
+    const fullUrl = `${baseUrl}/${githubPath}`;
+    
+    console.log(`Vérification de : ${fullUrl}`);
+    
+    try {
+      const response = await fetch(fullUrl, {
+        method: 'HEAD',
+        redirect: 'manual',
+        timeout: 5000 // 5 secondes max
+      });
+      
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          url: fullUrl,
+          status: response.status,
+          isOk: response.status === 200,
+          isRedirect: [301, 302, 307, 308].includes(response.status),
+          isError: response.status >= 400
+        })
+      };
+    } catch (fetchError) {
+      // Erreur réseau (page inaccessible)
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          url: fullUrl,
+          status: 0,
+          isOk: false,
+          isError: true,
+          message: 'Inaccessible'
+        })
+      };
+    }
+    
+  } catch (error) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({
+        success: false,
+        error: error.message
+      })
+    };
+  }
+};
