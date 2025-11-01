@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>頁 · Index</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Courier New', 'Courier', monospace;
+      background: #f8f6f1;
+      color: #2d2d2d;
+      min-height: 100vh;
+      padding: 25px 20px;
+      position: relative;
+    }
+
+    /* Texture papier japonais */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 50%, transparent 0%, rgba(199, 74, 74, 0.02) 50%, transparent 100%),
+        radial-gradient(circle at 80% 80%, transparent 0%, rgba(199, 74, 74, 0.02) 50%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Grain papier */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.03"/></svg>');
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 35px;
+      position: relative;
+    }
+
+    /* Trait d'encre au-dessus */
+    header::before {
+      content: "";
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 2px;
+      background: #c74a4a;
+      box-shadow: 0 0 2px rgba(199, 74, 74, 0.4);
+    }
+
+    h1 {
+      color: #1a1a1a;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: 6px;
+      position: relative;
+      text-shadow: 1px 1px 0 rgba(199, 74, 74, 0.1);
+    }
+
+    h1::after {
+      content: "頁";
+      position: absolute;
+      top: -10px;
+      right: -30px;
+      font-size: 1rem;
+      color: #c74a4a;
+      opacity: 0.7;
+      font-weight: 400;
+    }
+
+    .subtitle {
+      color: #6a6a6a;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 3px;
+    }
+
+    /* Stats compactes */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: center;
+      position: relative;
+    }
+
+    .stat-item::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 1px;
+      background: #c74a4a;
+      box-shadow: 0 0 2px rgba(199, 74, 74, 0.3);
+    }
+
+    .stat-number {
+      display: block;
+      color: #c74a4a;
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 3px;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 0 rgba(199, 74, 74, 0.1);
+    }
+
+    .stat-label {
+      color: #8a8a8a;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 1px;
+    }
+
+    /* Ornement */
+    .ornament {
+      text-align: center;
+      margin: 30px 0 20px 0;
+      color: #c74a4a;
+      font-size: 1rem;
+      opacity: 0.5;
+    }
+
+    /* Filtres compacts */
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #d4c4b4;
+    }
+
+    .filter-btn {
+      background: transparent;
+      color: #6a6a6a;
+      padding: 8px 20px;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      font-family: 'Courier New', monospace;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+
+    .filter-btn:hover {
+      color: #2d2d2d;
+    }
+
+    .filter-btn.active {
+      color: #c74a4a;
+      border-bottom-color: #c74a4a;
+      text-shadow: 0 0 1px rgba(199, 74, 74, 0.3);
+    }
+
+    /* Grille compacte */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .gallery-card {
+      background: #ffffff;
+      padding: 0;
+      border: 2px solid #d4c4b4;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 2px 2px 0 rgba(199, 74, 74, 0.1);
+    }
+
+    /* Effet d'encre qui coule sur le bord */
+    .gallery-card::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      width: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #c74a4a, transparent);
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 4px 4px 0 rgba(199, 74, 74, 0.2);
+      border-color: #c74a4a;
+    }
+
+    .gallery-card:hover::before {
+      width: calc(100% + 4px);
+    }
+
+    .card-content {
+      padding: 16px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .gallery-card h3 {
+      color: #1a1a1a;
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0;
+      flex: 1;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 0 rgba(199, 74, 74, 0.05);
+    }
+
+    .badge-container {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+
+    .badge {
+      padding: 3px 8px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      border: 2px solid;
+      background: #ffffff;
+    }
+
+    .badge-favorite {
+      color: #d4a574;
+      border-color: #d4a574;
+      text-shadow: 0 0 1px rgba(212, 165, 116, 0.3);
+    }
+
+    .badge-new {
+      color: #5b8db8;
+      border-color: #5b8db8;
+      text-shadow: 0 0 1px rgba(91, 141, 184, 0.3);
+    }
+
+    .gallery-card .description {
+      color: #5a5a5a;
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+      line-height: 1.5;
+      flex: 1;
+      font-weight: 400;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 10px;
+      border-top: 1px solid #e8e4df;
+      margin-top: auto;
+    }
+
+    .card-date {
+      color: #8a8a8a;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+
+    .card-arrow {
+      color: #c74a4a;
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+      font-weight: 700;
+    }
+
+    .gallery-card:hover .card-arrow {
+      transform: translateX(4px);
+    }
+
+    .loading {
+      text-align: center;
+      color: #8a8a8a;
+      font-size: 0.85rem;
+      font-weight: 400;
+      margin: 60px 0;
+      letter-spacing: 2px;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #8a8a8a;
+      margin: 60px 0;
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      opacity: 0.4;
+      color: #c74a4a;
+    }
+
+    .empty-state-text {
+      font-size: 0.95rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+    }
+
+    /* Cercle Enso décoratif */
+    .enso {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 80px;
+      height: 80px;
+      border: 2px solid rgba(199, 74, 74, 0.2);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      box-shadow: 0 0 3px rgba(199, 74, 74, 0.1);
+    }
+
+    .enso::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      border: 1px solid rgba(199, 74, 74, 0.15);
+      border-radius: 50%;
+    }
+
+    /* Bouton flottant Matrix */
+    .fab-matrix {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      width: 60px;
+      height: 60px;
+      background: #000000;
+      border: 3px solid #00ff00;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3), 0 0 20px rgba(0, 255, 0, 0.2);
+      text-shadow: 0 0 10px #00ff00;
+      animation: matrixPulse 2s infinite;
+    }
+
+    .fab-matrix:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 6px 25px rgba(0, 255, 0, 0.5), 0 0 30px rgba(0, 255, 0, 0.3);
+    }
+
+    .fab-matrix::before {
+      content: "[ M ]";
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+
+    @keyframes matrixPulse {
+      0%, 100% {
+        box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3), 0 0 20px rgba(0, 255, 0, 0.2);
+      }
+      50% {
+        box-shadow: 0 4px 20px rgba(0, 255, 0, 0.5), 0 0 30px rgba(0, 255, 0, 0.3);
+      }
+    }
+
+    /* Tooltip pour le bouton */
+    .fab-matrix::after {
+      content: "GESTION MATRIX";
+      position: absolute;
+      left: 75px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #000000;
+      color: #00ff00;
+      padding: 6px 12px;
+      border: 2px solid #00ff00;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+      text-shadow: 0 0 5px #00ff00;
+    }
+
+    .fab-matrix:hover::after {
+      opacity: 1;
+    }
+
+    /* Animation de chargement */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .gallery-card {
+      animation: fadeInUp 0.5s ease-out backwards;
+    }
+
+    .gallery-card:nth-child(1) { animation-delay: 0.05s; }
+    .gallery-card:nth-child(2) { animation-delay: 0.1s; }
+    .gallery-card:nth-child(3) { animation-delay: 0.15s; }
+    .gallery-card:nth-child(4) { animation-delay: 0.2s; }
+    .gallery-card:nth-child(5) { animation-delay: 0.25s; }
+    .gallery-card:nth-child(6) { animation-delay: 0.3s; }
+  </style>
+</head>
+<body>
+  <div class="enso"></div>
+  
+  <!-- Bouton flottant Matrix -->
+  <a href="gestion-pages-matrix.html" class="fab-matrix"></a>
+  
+  <div class="container">
+    <header>
+      <h1>INDEX</h1>
+      <p class="subtitle">COLLECTION</p>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats" id="stats"></div>
+
+    <div class="ornament">◈</div>
+
+    <!-- Filtres -->
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterPages('all')">TOUT</button>
+      <button class="filter-btn" onclick="filterPages('favorites')">FAVORIS</button>
+      <button class="filter-btn" onclick="filterPages('recent')">RÉCENT</button>
+    </div>
+
+    <!-- Galerie -->
+    <div id="galleryContainer">
+      <p class="loading">CHARGEMENT</p>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = '/api';
+    let allPages = [];
+    let currentFilter = 'all';
+
+    // Charger les pages
+    async function loadGallery() {
+      const container = document.getElementById('galleryContainer');
+      container.innerHTML = '<p class="loading">CHARGEMENT</p>';
+
+      try {
+        const response = await fetch(`${API_BASE}/get-pages`);
+        const data = await response.json();
+
+        if (!data.success || !data.pages) {
+          throw new Error('Erreur lors du chargement');
+        }
+
+        allPages = data.pages;
+        updateStats();
+        displayPages(allPages);
+
+      } catch (error) {
+        container.innerHTML = `<p class="loading" style="color: #c74a4a;">ERREUR : ${error.message}</p>`;
+      }
+    }
+
+    // Mettre à jour les stats
+    function updateStats() {
+      const statsContainer = document.getElementById('stats');
+      const totalPages = allPages.length;
+      const favoritesCount = allPages.filter(p => p.favorite).length;
+      const recentCount = allPages.filter(p => isRecent(p.addedDate)).length;
+
+      statsContainer.innerHTML = `
+        <div class="stat-item">
+          <span class="stat-number">${totalPages}</span>
+          <span class="stat-label">PAGE${totalPages > 1 ? 'S' : ''}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">${favoritesCount}</span>
+          <span class="stat-label">FAVORI${favoritesCount > 1 ? 'S' : ''}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">${recentCount}</span>
+          <span class="stat-label">RÉCENT${recentCount > 1 ? 'S' : ''}</span>
+        </div>
+      `;
+    }
+
+    // Vérifier si une page est récente (moins de 30 jours)
+    function isRecent(dateString) {
+      const pageDate = new Date(dateString);
+      const now = new Date();
+      const daysDiff = (now - pageDate) / (1000 * 60 * 60 * 24);
+      return daysDiff <= 30;
+    }
+
+    // Afficher les pages
+    function displayPages(pages) {
+      const container = document.getElementById('galleryContainer');
+
+      if (pages.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">○</div>
+            <p class="empty-state-text">AUCUNE PAGE</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Trier : favoris en premier, puis par date décroissante
+      const sortedPages = [...pages].sort((a, b) => {
+        if (a.favorite && !b.favorite) return -1;
+        if (!a.favorite && b.favorite) return 1;
+        return new Date(b.addedDate) - new Date(a.addedDate);
+      });
+
+      const grid = document.createElement('div');
+      grid.className = 'gallery-grid';
+
+      sortedPages.forEach(page => {
+        const card = document.createElement('div');
+        card.className = 'gallery-card';
+        card.onclick = () => window.open(`/${page.githubPath}`, '_blank');
+
+        const addedDate = new Date(page.addedDate).toLocaleDateString('fr-FR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+
+        const badges = [];
+        if (page.favorite) {
+          badges.push('<span class="badge badge-favorite">★</span>');
+        }
+        if (isRecent(page.addedDate)) {
+          badges.push('<span class="badge badge-new">NEW</span>');
+        }
+
+        card.innerHTML = `
+          <div class="card-content">
+            <div class="card-header">
+              <h3>${page.title}</h3>
+              ${badges.length > 0 ? `<div class="badge-container">${badges.join('')}</div>` : ''}
+            </div>
+            ${page.description ? `<p class="description">${page.description}</p>` : '<p class="description">—</p>'}
+            <div class="card-footer">
+              <span class="card-date">${addedDate}</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      container.innerHTML = '';
+      container.appendChild(grid);
+    }
+
+    // Filtrer les pages
+    function filterPages(filter) {
+      currentFilter = filter;
+
+      // Mise à jour des boutons actifs
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      let filteredPages = [];
+
+      switch(filter) {
+        case 'favorites':
+          filteredPages = allPages.filter(p => p.favorite);
+          break;
+        case 'recent':
+          filteredPages = allPages.filter(p => isRecent(p.addedDate));
+          break;
+        default:
+          filteredPages = allPages;
+      }
+
+      displayPages(filteredPages);
+    }
+
+    // Charger au démarrage
+    loadGallery();
+  </script>
+</body>
+</html>
