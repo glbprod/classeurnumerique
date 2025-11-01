@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Règles de Conjugaison et de Grammaire - Collège</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #667eea;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .exemple {
+            background: #e8f4f8;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .astuce {
+            background: #fff3cd;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .astuce::before {
+            content: "💡 Astuce : ";
+            font-weight: bold;
+            color: #856404;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9ff;
+        }
+
+        .highlight {
+            color: #764ba2;
+            font-weight: bold;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Conjugaison et Grammaire</h1>
+        <p class="subtitle">Guide pratique pour collégiens</p>
+
+        <h2>I. Les Temps de Conjugaison</h2>
+
+        <div class="section">
+            <h3>1. Le Présent de l'Indicatif</h3>
+            <p><strong>Usage :</strong> Actions qui se déroulent maintenant, vérités générales, habitudes.</p>
+            
+            <table>
+                <tr>
+                    <th>Groupe</th>
+                    <th>Terminaisons</th>
+                    <th>Exemple (CHANTER)</th>
+                </tr>
+                <tr>
+                    <td>1er groupe (-er)</td>
+                    <td>-e, -es, -e, -ons, -ez, -ent</td>
+                    <td>je chante, tu chantes, il/elle chante...</td>
+                </tr>
+                <tr>
+                    <td>2e groupe (-ir)</td>
+                    <td>-is, -is, -it, -issons, -issez, -issent</td>
+                    <td>je finis, tu finis, il/elle finit...</td>
+                </tr>
+                <tr>
+                    <td>3e groupe</td>
+                    <td>Irréguliers (à apprendre)</td>
+                    <td>je prends, tu prends, il/elle prend...</td>
+                </tr>
+            </table>
+
+            <div class="astuce">
+                Pour les verbes du 1er groupe, retire le -er et ajoute les terminaisons !
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>2. L'Imparfait</h3>
+            <p><strong>Usage :</strong> Actions passées qui duraient, descriptions, habitudes passées.</p>
+            <p><strong>Formation :</strong> Radical du verbe à la 1ère personne du pluriel au présent + terminaisons</p>
+            
+            <table>
+                <tr>
+                    <th>Personne</th>
+                    <th>Terminaison</th>
+                    <th>Exemple (PARLER)</th>
+                </tr>
+                <tr><td>Je</td><td>-ais</td><td>je parlais</td></tr>
+                <tr><td>Tu</td><td>-ais</td><td>tu parlais</td></tr>
+                <tr><td>Il/Elle</td><td>-ait</td><td>il/elle parlait</td></tr>
+                <tr><td>Nous</td><td>-ions</td><td>nous parlions</td></tr>
+                <tr><td>Vous</td><td>-iez</td><td>vous parliez</td></tr>
+                <tr><td>Ils/Elles</td><td>-aient</td><td>ils/elles parlaient</td></tr>
+            </table>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Quand j'<span class="highlight">étais</span> petit, je <span class="highlight">jouais</span> tous les jours au parc.
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>3. Le Passé Composé</h3>
+            <p><strong>Usage :</strong> Actions passées terminées, événements précis.</p>
+            <p><strong>Formation :</strong> Auxiliaire ÊTRE ou AVOIR au présent + participe passé</p>
+
+            <p><strong>Auxiliaire AVOIR :</strong> La plupart des verbes</p>
+            <div class="exemple">
+                J'<span class="highlight">ai mangé</span>, tu <span class="highlight">as fini</span>, il <span class="highlight">a pris</span>
+            </div>
+
+            <p><strong>Auxiliaire ÊTRE :</strong> 16 verbes de mouvement + verbes pronominaux</p>
+            <div class="exemple">
+                Je <span class="highlight">suis allé(e)</span>, tu <span class="highlight">es venu(e)</span>, elle <span class="highlight">s'est levée</span>
+            </div>
+
+            <div class="astuce">
+                Les 16 verbes avec ÊTRE : aller, venir, arriver, partir, entrer, sortir, monter, descendre, naître, mourir, rester, tomber, devenir, revenir, retourner, passer (+ leurs composés)
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>4. Le Futur Simple</h3>
+            <p><strong>Usage :</strong> Actions qui vont se dérouler dans l'avenir.</p>
+            <p><strong>Formation :</strong> Infinitif du verbe + terminaisons</p>
+
+            <table>
+                <tr>
+                    <th>Personne</th>
+                    <th>Terminaison</th>
+                    <th>Exemple (PARLER)</th>
+                </tr>
+                <tr><td>Je</td><td>-ai</td><td>je parlerai</td></tr>
+                <tr><td>Tu</td><td>-as</td><td>tu parleras</td></tr>
+                <tr><td>Il/Elle</td><td>-a</td><td>il/elle parlera</td></tr>
+                <tr><td>Nous</td><td>-ons</td><td>nous parlerons</td></tr>
+                <tr><td>Vous</td><td>-ez</td><td>vous parlerez</td></tr>
+                <tr><td>Ils/Elles</td><td>-ont</td><td>ils/elles parleront</td></tr>
+            </table>
+
+            <div class="astuce">
+                Verbes irréguliers à retenir : être → je serai, avoir → j'aurai, aller → j'irai, faire → je ferai, voir → je verrai
+            </div>
+        </div>
+
+        <h2>II. Les Règles de Grammaire Essentielles</h2>
+
+        <div class="section">
+            <h3>1. L'Accord du Participe Passé</h3>
+            
+            <p><strong>Avec ÊTRE :</strong> Le participe passé s'accorde avec le sujet</p>
+            <div class="exemple">
+                Elle est <span class="highlight">partie</span> (féminin singulier)<br>
+                Ils sont <span class="highlight">venus</span> (masculin pluriel)<br>
+                Elles sont <span class="highlight">arrivées</span> (féminin pluriel)
+            </div>
+
+            <p><strong>Avec AVOIR :</strong> Le participe passé s'accorde avec le COD s'il est placé AVANT le verbe</p>
+            <div class="exemple">
+                J'ai mangé la pomme → La pomme que j'ai <span class="highlight">mangée</span><br>
+                Il a pris les clés → Les clés qu'il a <span class="highlight">prises</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>2. Les Classes Grammaticales</h3>
+            <ul>
+                <li><strong>Nom :</strong> Désigne une personne, un animal, une chose, une idée (chat, table, bonheur)</li>
+                <li><strong>Déterminant :</strong> Accompagne le nom (le, un, mon, ce, chaque...)</li>
+                <li><strong>Adjectif :</strong> Précise le nom (grand, beau, intelligent...)</li>
+                <li><strong>Verbe :</strong> Exprime une action ou un état (courir, être, sembler...)</li>
+                <li><strong>Pronom :</strong> Remplace un nom (je, tu, il, celui-ci, qui...)</li>
+                <li><strong>Adverbe :</strong> Modifie un verbe, un adjectif ou un autre adverbe (vite, très, bien...)</li>
+                <li><strong>Préposition :</strong> Relie des mots (à, de, dans, pour, avec...)</li>
+                <li><strong>Conjonction :</strong> Relie des phrases ou des propositions (et, mais, ou, donc, car...)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>3. Les Fonctions Grammaticales</h3>
+            
+            <p><strong>Le Sujet :</strong> Qui fait l'action ? (répond à "qui est-ce qui ?" ou "qu'est-ce qui ?")</p>
+            <div class="exemple">
+                <span class="highlight">Le chat</span> dort. → Qui dort ? Le chat.
+            </div>
+
+            <p><strong>Le COD (Complément d'Objet Direct) :</strong> Répond à "qui ?" ou "quoi ?"</p>
+            <div class="exemple">
+                Je mange <span class="highlight">une pomme</span>. → Je mange quoi ? Une pomme.
+            </div>
+
+            <p><strong>Le COI (Complément d'Objet Indirect) :</strong> Répond à "à qui ?", "à quoi ?", "de qui ?", "de quoi ?"</p>
+            <div class="exemple">
+                Je pense <span class="highlight">à mes vacances</span>. → Je pense à quoi ? À mes vacances.
+            </div>
+
+            <p><strong>Le Complément Circonstanciel :</strong> Indique les circonstances (temps, lieu, manière, cause...)</p>
+            <div class="exemple">
+                Je vais au parc <span class="highlight">demain</span> (temps) <span class="highlight">avec mes amis</span> (accompagnement).
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>4. Les Accords Importants</h3>
+            
+            <p><strong>Accord du verbe avec le sujet :</strong> Le verbe s'accorde en personne et en nombre avec son sujet</p>
+            <div class="exemple">
+                Le chien <span class="highlight">aboie</span> (singulier) / Les chiens <span class="highlight">aboient</span> (pluriel)
+            </div>
+
+            <p><strong>Accord de l'adjectif :</strong> L'adjectif s'accorde en genre et en nombre avec le nom</p>
+            <div class="exemple">
+                Un garçon <span class="highlight">intelligent</span> / Une fille <span class="highlight">intelligente</span> / Des enfants <span class="highlight">intelligents</span>
+            </div>
+
+            <div class="astuce">
+                Attention aux adjectifs de couleur : bleu → bleue, vert → verte, MAIS orange et marron sont invariables !
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>5. Les Homophones Courants</h3>
+            <table>
+                <tr>
+                    <th>Mot</th>
+                    <th>Nature</th>
+                    <th>Exemple</th>
+                </tr>
+                <tr>
+                    <td>a</td>
+                    <td>verbe AVOIR</td>
+                    <td>Il <strong>a</strong> un chien (avait)</td>
+                </tr>
+                <tr>
+                    <td>à</td>
+                    <td>préposition</td>
+                    <td>Je vais <strong>à</strong> l'école</td>
+                </tr>
+                <tr>
+                    <td>et</td>
+                    <td>conjonction</td>
+                    <td>Toi <strong>et</strong> moi</td>
+                </tr>
+                <tr>
+                    <td>est</td>
+                    <td>verbe ÊTRE</td>
+                    <td>Il <strong>est</strong> grand (était)</td>
+                </tr>
+                <tr>
+                    <td>son</td>
+                    <td>déterminant possessif</td>
+                    <td><strong>Son</strong> livre (le sien)</td>
+                </tr>
+                <tr>
+                    <td>sont</td>
+                    <td>verbe ÊTRE</td>
+                    <td>Ils <strong>sont</strong> là (étaient)</td>
+                </tr>
+                <tr>
+                    <td>ou</td>
+                    <td>conjonction (choix)</td>
+                    <td>Thé <strong>ou</strong> café ?</td>
+                </tr>
+                <tr>
+                    <td>où</td>
+                    <td>pronom/adverbe (lieu)</td>
+                    <td><strong>Où</strong> vas-tu ?</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h3>6. Les Types de Phrases</h3>
+            <ul>
+                <li><strong>Phrase déclarative :</strong> Donne une information. <em>Il fait beau.</em></li>
+                <li><strong>Phrase interrogative :</strong> Pose une question. <em>Fait-il beau ?</em></li>
+                <li><strong>Phrase exclamative :</strong> Exprime un sentiment fort. <em>Qu'il fait beau !</em></li>
+                <li><strong>Phrase impérative :</strong> Donne un ordre ou un conseil. <em>Regarde le ciel !</em></li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>💪 Bon courage pour tes révisions !</p>
+            <p>N'hésite pas à relire ces règles régulièrement pour bien les mémoriser.</p>
+        </div>
+    </div>
+</body>
+</html>
