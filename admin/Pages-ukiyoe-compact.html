@@ -572,13 +572,13 @@
       const sortedPages = [...pages].sort((a, b) => {
         if (a.favorite && !b.favorite) return -1;
         if (!a.favorite && b.favorite) return 1;
-        return new Date(b.addedDate) - new Date(a.addedDate);
+        return new Date(a.addedDate) - new Date(b.addedDate); // Inverser pour ordre croissant
       });
-
+      
       const grid = document.createElement('div');
       grid.className = 'gallery-grid';
 
-      sortedPages.forEach(page => {
+      sortedPages.forEach((page, index) => {
         const card = document.createElement('div');
         card.className = 'gallery-card';
         card.onclick = () => window.open(`/${page.githubPath}`, '_blank');
@@ -600,7 +600,7 @@
         card.innerHTML = `
           <div class="card-content">
             <div class="card-header">
-              <h3>${page.title}</h3>
+              <h3>#${index + 1} — ${page.title}</h3>
               ${badges.length > 0 ? `<div class="badge-container">${badges.join('')}</div>` : ''}
             </div>
             <div class="card-footer">
