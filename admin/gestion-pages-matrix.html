@@ -548,6 +548,12 @@
         }
 
         // Créer la grille de cards
+
+        // Dans la boucle forEach qui crée les cards, ajouter :
+        const statusIcon = page.status?.isOk ? '🟢' :
+                           page.status?.isError ? '🔴' :
+                           page.status?.isRedirect ? '🟡' : '';
+        
         const grid = document.createElement('div');
         grid.className = 'pages-grid';
 
@@ -566,13 +572,20 @@
         const favoriteIcon = page.favorite ? '★' : '☆';
         
         card.innerHTML = `
-          <h3>[ ${page.title} ]</h3>
+          <h3>${statusIcon} [ ${page.title} ]</h3>
           <p class="path">► ${page.githubPath}</p>
           ${page.description ? `<p class="description">// ${page.description}</p>` : ''}
           <p class="date">// ${lastModified}</p>
           <div class="actions">
             <button class="btn-favorite ${favoriteClass}" onclick="toggleFavorite('${page.id}'); event.stopPropagation();">${favoriteIcon}</button>
             <button class="btn-delete" onclick="deletePage('${page.id}'); event.stopPropagation();">[ DEL ]</button>
+            <!-- Dans le formulaire, après les autres boutons -->
+            <button type="button" class="btn" onclick="checkAllPages()">
+              [ 🔍 VÉRIFIER ]
+            </button>
+            <button type="button" class="btn btn-delete" onclick="cleanBrokenLinks()">
+              [ 🧹 NETTOYER ]
+            </button>
           </div>
         `;
         
@@ -770,71 +783,72 @@
         showMessage(`[ ✗ ERREUR : ${error.message} ]`, 'error');
       }
     }
-// ✅ NOUVELLE FONCTION 3 : Vérifier une page
-async function checkPageStatus(page) {
-  const response = await fetch(`${API_BASE}/check-page-status`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ githubPath: page.githubPath })
-  });
-  
-  const data = await response.json();
-  return { ...page, status: data }; // Ajoute le statut à la page
-}
-
-// ✅ NOUVELLE FONCTION 4 : Vérifier toutes les pages
-async function checkAllPages() {
-  showMessage('[ 🔍 VÉRIFICATION EN COURS... ]', 'success');
-  
-  // Vérifier chaque page (en parallèle)
-  const checkedPages = await Promise.all(
-    allPages.map(page => checkPageStatus(page))
-  );
-  
-  // Sauvegarder les résultats
-  allPages = checkedPages;
-  
-  // Ré-afficher avec les statuts
-  displayPages(allPages);
-  
-  // Compter les erreurs
-  const errors = checkedPages.filter(p => p.status?.isError).length;
-  if (errors > 0) {
-    showMessage(`[ ⚠️ ${errors} LIEN(S) MORT(S) ]`, 'error');
-  } else {
-    showMessage('[ ✓ TOUS LES LIENS FONCTIONNENT ]', 'success');
-  }
-}
-
-// ✅ NOUVELLE FONCTION 5 : Nettoyer les liens morts
-async function cleanBrokenLinks() {
-  // Trouver les pages avec erreur
-  const brokenPages = allPages.filter(p => p.status?.isError);
-  
-  if (brokenPages.length === 0) {
-    showMessage('[ ✓ AUCUN LIEN MORT ]', 'success');
-    return;
-  }
-  
-  // Demander confirmation
-  const list = brokenPages.map(p => `- ${p.title}`).join('\n');
-  if (!confirm(`Supprimer ${brokenPages.length} page(s) ?\n\n${list}`)) {
-    return;
-  }
-  
-  // Supprimer via l'API
-  const ids = brokenPages.map(p => p.id);
-  const response = await fetch(`${API_BASE}/delete-pages-batch`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ids })
-  });
-  
-  if (response.ok) {
-    showMessage(`[ ✓ ${ids.length} PAGE(S) SUPPRIMÉE(S) ]`, 'success');
-    loadPages(); // Recharger la liste
-  }
-}
+    
+    // ✅ NOUVELLE FONCTION 3 : Vérifier une page
+    async function checkPageStatus(page) {
+      const response = await fetch(`${API_BASE}/check-page-status`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ githubPath: page.githubPath })
+      });
+      
+      const data = await response.json();
+      return { ...page, status: data }; // Ajoute le statut à la page
+    }
+    
+    // ✅ NOUVELLE FONCTION 4 : Vérifier toutes les pages
+    async function checkAllPages() {
+      showMessage('[ 🔍 VÉRIFICATION EN COURS... ]', 'success');
+      
+      // Vérifier chaque page (en parallèle)
+      const checkedPages = await Promise.all(
+        allPages.map(page => checkPageStatus(page))
+      );
+      
+      // Sauvegarder les résultats
+      allPages = checkedPages;
+      
+      // Ré-afficher avec les statuts
+      displayPages(allPages);
+      
+      // Compter les erreurs
+      const errors = checkedPages.filter(p => p.status?.isError).length;
+      if (errors > 0) {
+        showMessage(`[ ⚠️ ${errors} LIEN(S) MORT(S) ]`, 'error');
+      } else {
+        showMessage('[ ✓ TOUS LES LIENS FONCTIONNENT ]', 'success');
+      }
+    }
+    
+    // ✅ NOUVELLE FONCTION 5 : Nettoyer les liens morts
+    async function cleanBrokenLinks() {
+      // Trouver les pages avec erreur
+      const brokenPages = allPages.filter(p => p.status?.isError);
+      
+      if (brokenPages.length === 0) {
+        showMessage('[ ✓ AUCUN LIEN MORT ]', 'success');
+        return;
+      }
+      
+      // Demander confirmation
+      const list = brokenPages.map(p => `- ${p.title}`).join('\n');
+      if (!confirm(`Supprimer ${brokenPages.length} page(s) ?\n\n${list}`)) {
+        return;
+      }
+      
+      // Supprimer via l'API
+      const ids = brokenPages.map(p => p.id);
+      const response = await fetch(`${API_BASE}/delete-pages-batch`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids })
+      });
+      
+      if (response.ok) {
+        showMessage(`[ ✓ ${ids.length} PAGE(S) SUPPRIMÉE(S) ]`, 'success');
+        loadPages(); // Recharger la liste
+      }
+    }
     // Charger les pages au démarrage
     loadPages();
   </script>
