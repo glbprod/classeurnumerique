@@ -1,14 +1,15 @@
-const fetch = require('node-fetch');
+// ❌ SUPPRIMER cette ligne :
+// const fetch = require('node-fetch');
+
+// ✅ Fetch est déjà disponible nativement dans Node.js 18+
 
 exports.handler = async (event) => {
-  // Headers CORS
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'application/json'
   };
 
-  // Gérer OPTIONS pour CORS
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers, body: '' };
   }
@@ -16,17 +17,17 @@ exports.handler = async (event) => {
   try {
     const { githubPath } = JSON.parse(event.body);
     
-    // Ton URL Netlify
     const baseUrl = 'https://latechnologieaucollege.netlify.app';
     const fullUrl = `${baseUrl}/${githubPath}`;
     
     console.log(`Vérification de : ${fullUrl}`);
     
     try {
+      // fetch est disponible nativement
       const response = await fetch(fullUrl, {
         method: 'HEAD',
         redirect: 'manual',
-        timeout: 5000
+        signal: AbortSignal.timeout(5000) // Timeout de 5 secondes
       });
       
       return {
