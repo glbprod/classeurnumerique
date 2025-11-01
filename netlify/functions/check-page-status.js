@@ -16,9 +16,8 @@ exports.handler = async (event) => {
   try {
     const { githubPath } = JSON.parse(event.body);
     
-    // Construire l'URL complète de ta page déployée
-    // Remplace par ton URL Netlify réelle
-    const baseUrl = process.env.URL || 'https://ton-site.netlify.app';
+    // Ton URL Netlify
+    const baseUrl = 'https://latechnologieaucollege.netlify.app';
     const fullUrl = `${baseUrl}/${githubPath}`;
     
     console.log(`Vérification de : ${fullUrl}`);
@@ -27,7 +26,7 @@ exports.handler = async (event) => {
       const response = await fetch(fullUrl, {
         method: 'HEAD',
         redirect: 'manual',
-        timeout: 5000 // 5 secondes max
+        timeout: 5000
       });
       
       return {
@@ -43,7 +42,6 @@ exports.handler = async (event) => {
         })
       };
     } catch (fetchError) {
-      // Erreur réseau (page inaccessible)
       return {
         statusCode: 200,
         headers,
