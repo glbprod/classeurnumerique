@@ -80,50 +80,187 @@
             height: 20px;
             cursor: pointer;
         }
+           /* STYLES ALGORIGRAMME */
         .flowchart {
-            margin: 20px 0;
-            padding: 20px;
-            background-color: white;
-            border: 2px solid #34495e;
-            position: relative;
+            margin: 30px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 3px solid #34495e;
+            border-radius: 15px;
+            max-width: 850px;
         }
-        .flowchart-box {
-            border: 2px solid #2c3e50;
-            padding: 15px;
-            margin: 15px auto;
-            width: 250px;
-            text-align: center;
-            background-color: #ecf0f1;
-            border-radius: 5px;
-        }
-        .flowchart-diamond {
-            width: 100px;
-            height: 100px;
-            background-color: #f39c12;
-            margin: 15px auto;
-            transform: rotate(45deg);
-            position: relative;
-        }
-        .diamond-text {
-            transform: rotate(-45deg);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            width: 140px;
-        }
-        .flowchart-action {
-            background-color: #3498db;
+        
+        .start-end {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: #2c3e50;
             color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 32px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
+        
         .arrow {
             text-align: center;
-            font-size: 24px;
-            margin: 5px 0;
+            font-size: 32px;
+            margin: 10px 0;
+            color: #2c3e50;
+            line-height: 1;
         }
-        .flowchart-input {
-            width: 90%;
-            margin: 10px auto;
+        
+        .flowchart-diamond {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            margin: 25px auto;
+            position: relative;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .diamond-text {
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+            color: white;
+            max-width: 140px;
+        }
+        
+        .diamond-input {
+            background-color: rgba(255,255,255,0.95);
+            border: 2px solid #d68910;
+            border-radius: 5px;
+            padding: 8px;
+            font-size: 14px;
+            text-align: center;
+            width: 120px;
+            font-weight: normal;
+        }
+        
+        .flow-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 25px 0;
+            align-items: start;
+        }
+        
+        .flow-branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .branch-label {
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            border-radius: 25px;
+            margin-bottom: 12px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+        
+        .flowchart-box {
+            border: 3px solid #2c3e50;
+            padding: 18px;
+            margin: 12px auto;
+            width: 280px;
+            min-height: 70px;
+            text-align: center;
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 500;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+        
+        .flowchart-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+        }
+        
+        .flowchart-action {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border-color: #2980b9;
+        }
+        
+        .flowchart-box textarea {
+            width: 100%;
+            border: 2px solid #95a5a6;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 50px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .flowchart-box textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            background-color: #fff;
+        }
+        
+        .flow-merge {
+            position: relative;
+            margin: 30px 0;
+        }
+        
+        .merge-arrows {
+            text-align: center;
+            font-size: 28px;
+            color: #2c3e50;
+            margin: 15px 0;
+        }
+        
+        .loop-arrow {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 20px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .loop-arrow span {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #e8f4f8;
+            border: 2px solid #3498db;
+            border-radius: 20px;
+        }
+        
+        .instruction-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .instruction-box h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        
+        .instruction-box ul {
+            margin: 10px 0;
+            padding-left: 25px;
         }
         .program-block {
             background-color: #fff;
@@ -338,77 +475,113 @@
                     <li>Autoriser l'accélération</li>
                 </ul>
 
-                <div class="flowchart">
-                    <div style="text-align: center; font-size: 20px;">●</div>
-                    <div class="arrow">↓</div>
-                    
-                    <div class="flowchart-diamond">
-                        <div class="diamond-text"><strong>Freinage demandé ?</strong></div>
-                    </div>
-                    
-                    <div style="display: flex; justify-content: space-around;">
-                        <div style="width: 45%;">
-                            <div style="text-align: center;"><strong>NON</strong></div>
-                            <div class="arrow">↓</div>
-                            <div class="flowchart-box">
-                                <textarea name="q4_box1" rows="2" placeholder="Complétez..." style="width: 100%;"></textarea>
-                            </div>
-                        </div>
-                        
-                        <div style="width: 45%;">
-                            <div style="text-align: center;"><strong>OUI</strong></div>
-                            <div class="arrow">↓</div>
-                            <div class="flowchart-box flowchart-action">
-                                Ne pas autoriser l'accélération
-                            </div>
-                            <div class="arrow">↓</div>
-                            <div class="flowchart-box flowchart-action">
-                                <textarea name="q4_box2" rows="2" placeholder="Complétez..." style="width: 100%;"></textarea>
-                            </div>
-                            <div class="arrow">↓</div>
-                            <div class="flowchart-box flowchart-action">
-                                <textarea name="q4_box3" rows="2" placeholder="Complétez..." style="width: 100%;"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="arrow">↓</div>
-                    
-                    <div class="flowchart-diamond">
-                        <div class="diamond-text">
-                            <textarea name="q4_diamond" rows="2" placeholder="Complétez..." style="width: 130px;"></textarea>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; justify-content: space-around;">
-                        <div style="width: 45%;">
-                            <div style="text-align: center;">
-                                <textarea name="q4_reponse1" rows="1" placeholder="..." style="width: 80px;"></textarea>
-                            </div>
-                            <div class="arrow">↓</div>
-                            <div class="flowchart-box flowchart-action">
-                                Allumer éclairage LED arrière
-                            </div>
-                        </div>
-                        
-                        <div style="width: 45%;">
-                            <div style="text-align: center;">
-                                <textarea name="q4_reponse2" rows="1" placeholder="..." style="width: 80px;"></textarea>
-                            </div>
-                            <div class="arrow">↓</div>
-                            <div class="flowchart-box flowchart-action">
-                                Éteindre éclairage LED arrière
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 15px;">
-                        <div class="arrow">↓</div>
-                        <div style="font-size: 20px;">⟲ (retour au début)</div>
+              <div class="flowchart">
+                <!-- Début -->
+                <div class="start-end">●</div>
+                <div class="arrow">↓</div>
+                
+                <!-- Première condition : Freinage demandé ? -->
+                <div class="flowchart-diamond">
+                    <div class="diamond-text">
+                        <strong>Freinage<br>demandé ?</strong>
                     </div>
                 </div>
+                
+                <!-- Division en deux branches -->
+                <div class="flow-split">
+                    <!-- Branche NON (gauche) -->
+                    <div class="flow-branch">
+                        <div class="branch-label">NON</div>
+                        <div class="arrow">↓</div>
+                        
+                        <div class="flowchart-box">
+                            <textarea name="q4_box1" rows="2" placeholder="Complétez cette action..."></textarea>
+                        </div>
+                        
+                        <div class="arrow">↓</div>
+                    </div>
+                    
+                    <!-- Branche OUI (droite) -->
+                    <div class="flow-branch">
+                        <div class="branch-label">OUI</div>
+                        <div class="arrow">↓</div>
+                        
+                        <div class="flowchart-box flowchart-action">
+                            Ne pas autoriser<br>l'accélération
+                        </div>
+                        
+                        <div class="arrow">↓</div>
+                        
+                        <div class="flowchart-box flowchart-action">
+                            <textarea name="q4_box2" rows="2" placeholder="Complétez cette action..."></textarea>
+                        </div>
+                        
+                        <div class="arrow">↓</div>
+                        
+                        <div class="flowchart-box flowchart-action">
+                            <textarea name="q4_box3" rows="2" placeholder="Complétez cette action..."></textarea>
+                        </div>
+                        
+                        <div class="arrow">↓</div>
+                    </div>
+                </div>
+                
+                <!-- Fusion des branches -->
+                <div class="merge-arrows">↓ ↓</div>
+                <div class="arrow">↓</div>
+                
+                <!-- Deuxième condition -->
+                <div class="flowchart-diamond">
+                    <div class="diamond-text">
+                        <textarea name="q4_diamond" class="diamond-input" rows="2" placeholder="Quelle condition ?"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Deuxième division -->
+                <div class="flow-split">
+                    <!-- Branche gauche -->
+                    <div class="flow-branch">
+                        <div style="text-align: center; margin-bottom: 10px;">
+                            <textarea name="q4_reponse1" rows="1" placeholder="..." style="width: 100px; padding: 8px; border: 2px solid #95a5a6; border-radius: 5px; text-align: center; font-size: 14px;"></textarea>
+                        </div>
+                        <div class="arrow">↓</div>
+                        
+                        <div class="flowchart-box flowchart-action">
+                            Allumer éclairage<br>LED arrière
+                        </div>
+                        
+                        <div class="arrow">↓</div>
+                    </div>
+                    
+                    <!-- Branche droite -->
+                    <div class="flow-branch">
+                        <div style="text-align: center; margin-bottom: 10px;">
+                            <textarea name="q4_reponse2" rows="1" placeholder="..." style="width: 100px; padding: 8px; border: 2px solid #95a5a6; border-radius: 5px; text-align: center; font-size: 14px;"></textarea>
+                        </div>
+                        <div class="arrow">↓</div>
+                        
+                        <div class="flowchart-box flowchart-action">
+                            Éteindre éclairage<br>LED arrière
+                        </div>
+                        
+                        <div class="arrow">↓</div>
+                    </div>
+                </div>
+                
+                <!-- Retour au début -->
+                <div class="merge-arrows">↓ ↓</div>
+                <div class="arrow">↓</div>
+                
+                <div class="loop-arrow">
+                    <span>⟲ Retour au début</span>
+                </div>
             </div>
-
+            
+            <div style="text-align: center; margin-top: 30px; padding: 20px; background-color: #d4edda; border: 2px solid #28a745; border-radius: 8px;">
+                <p style="margin: 0; color: #155724; font-weight: bold;">
+                    ℹ️ Cet algorigramme décrit la gestion automatique de l'éclairage arrière pendant le freinage
+                </p>
+            </div>
             <!-- Question 5 -->
             <div class="question">
                 <h2>Question 5 <span class="points">(4 points)</span></h2>
