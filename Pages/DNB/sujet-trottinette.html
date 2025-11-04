@@ -9,7 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     
-    <style>
+   <style>
         body {
             font-family: Arial, sans-serif;
             max-width: 900px;
@@ -27,179 +27,190 @@
             color: #2c3e50;
             border-bottom: 3px solid #3498db;
             padding-bottom: 10px;
-        }
-        h2 {
-            color: #34495e;
-            margin-top: 30px;
-            background-color: #ecf0f1;
-            padding: 10px;
-            border-left: 4px solid #3498db;
-        }
-        .question {
-            margin: 25px 0;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-        }
-        .points {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            border: 2px solid #bdc3c7;
-            border-radius: 4px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-        input[type="text"]:focus, textarea:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-        th, td {
-            border: 2px solid #34495e;
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #34495e;
-            color: white;
-        }
-        td input[type="text"] {
-            border: 1px solid #95a5a6;
-        }
-        input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-        .flowchart {
-            margin: 20px 0;
-            padding: 20px;
-            background-color: white;
-            border: 2px solid #34495e;
-            position: relative;
-        }
-        .flowchart-box {
-            border: 2px solid #2c3e50;
-            padding: 15px;
-            margin: 15px auto;
-            width: 250px;
             text-align: center;
-            background-color: #ecf0f1;
-            border-radius: 5px;
         }
-        .flowchart-diamond {
-            width: 100px;
-            height: 100px;
-            background-color: #f39c12;
-            margin: 15px auto;
-            transform: rotate(45deg);
-            position: relative;
+        
+        /* STYLES ALGORIGRAMME */
+        .flowchart {
+            margin: 30px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 3px solid #34495e;
+            border-radius: 15px;
+            max-width: 850px;
         }
-        .diamond-text {
-            transform: rotate(-45deg);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            width: 140px;
-        }
-        .flowchart-action {
-            background-color: #3498db;
+        
+        .start-end {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: #2c3e50;
             color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 32px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
+        
         .arrow {
             text-align: center;
-            font-size: 24px;
-            margin: 5px 0;
+            font-size: 32px;
+            margin: 10px 0;
+            color: #2c3e50;
+            line-height: 1;
         }
-        .flowchart-input {
-            width: 90%;
-            margin: 10px auto;
+        
+        .flowchart-diamond {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            margin: 25px auto;
+            position: relative;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
-        .program-block {
-            background-color: #fff;
-            border: 2px solid #34495e;
-            padding: 20px;
-            margin: 15px 0;
-        }
-        .block {
-            display: inline-block;
-            padding: 10px 15px;
-            margin: 5px;
-            border-radius: 5px;
+        
+        .diamond-text {
+            padding: 15px;
+            text-align: center;
             font-weight: bold;
+            font-size: 15px;
             color: white;
+            max-width: 140px;
         }
-        .block-if {
-            background-color: #f39c12;
-        }
-        .block-action {
-            background-color: #3498db;
-        }
-        .block-wait {
-            background-color: #e67e22;
-        }
-        .block-sensor {
-            background-color: #27ae60;
-        }
-        .placement-table {
-            margin-top: 20px;
-        }
-        .placement-table td {
-            vertical-align: middle;
-        }
-        .block-to-place {
-            margin: 5px 0;
-        }
-        select {
+        
+        .diamond-input {
+            background-color: rgba(255,255,255,0.95);
+            border: 2px solid #d68910;
+            border-radius: 5px;
             padding: 8px;
             font-size: 14px;
-            border: 2px solid #bdc3c7;
-            border-radius: 4px;
-            width: 100px;
-        }
-        .submit-btn {
-            background-color: #27ae60;
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
-            display: block;
-            width: 100%;
-        }
-        .submit-btn:hover {
-            background-color: #229954;
-        }
-        .reglement-col {
-            width: 60px;
             text-align: center;
+            width: 120px;
+            font-weight: normal;
         }
-        .intro {
-            background-color: #e8f4f8;
-            padding: 15px;
-            border-left: 4px solid #3498db;
-            margin-bottom: 20px;
+        
+        .flow-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 25px 0;
+            align-items: start;
         }
-        .rules-box {
-            background-color: #fff3cd;
-            padding: 15px;
-            border-left: 4px solid #ffc107;
+        
+        .flow-branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .branch-label {
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            border-radius: 25px;
+            margin-bottom: 12px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+        
+        .flowchart-box {
+            border: 3px solid #2c3e50;
+            padding: 18px;
+            margin: 12px auto;
+            width: 280px;
+            min-height: 70px;
+            text-align: center;
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 500;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+        
+        .flowchart-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+        }
+        
+        .flowchart-action {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border-color: #2980b9;
+        }
+        
+        .flowchart-box textarea {
+            width: 100%;
+            border: 2px solid #95a5a6;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 50px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .flowchart-box textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            background-color: #fff;
+        }
+        
+        .flow-merge {
+            position: relative;
+            margin: 30px 0;
+        }
+        
+        .merge-arrows {
+            text-align: center;
+            font-size: 28px;
+            color: #2c3e50;
             margin: 15px 0;
         }
-        .rules-box h3 {
+        
+        .loop-arrow {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 20px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .loop-arrow span {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #e8f4f8;
+            border: 2px solid #3498db;
+            border-radius: 20px;
+        }
+        
+        .instruction-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .instruction-box h3 {
             margin-top: 0;
+            color: #856404;
+        }
+        
+        .instruction-box ul {
+            margin: 10px 0;
+            padding-left: 25px;
         }
     </style>
 </head>
