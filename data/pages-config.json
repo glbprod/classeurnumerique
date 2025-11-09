@@ -1,4 +1,3 @@
-
 {
   "pages": [
     {
@@ -9,6 +8,15 @@
       "addedDate": "2025-11-01T00:01:58.637Z",
       "lastModified": "2025-11-01T00:01:58.637Z",
       "favorite": true
+    },
+    {
+      "id": "page-1762710381808",
+      "title": "gestion pages",
+      "githubPath": "admin/gestion-pages.html",
+      "description": "",
+      "addedDate": "2025-11-09T17:46:21.808Z",
+      "lastModified": "2025-11-09T17:46:21.810Z",
+      "favorite": false
     }
   ]
 }
