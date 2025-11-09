@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classification des Objets Techniques - Collège Moulin à Vent</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    
+    <!-- html2pdf.js pour l'export PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .controls-container {
+            max-width: 900px;
+            margin: 0 auto 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-save {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background-color: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn-pdf {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-pdf:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-json {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-json:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-reset {
+            background-color: #95a5a6;
+            color: white;
+            flex: 0.3;
+        }
+
+        .btn-reset:hover {
+            background-color: #7f8c8d;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .header-left {
+            flex: 1;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 1.5em;
+            margin: 30px 0 15px 0;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        .intro-section {
+            background-color: #e8f4f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+
+        .objectifs {
+            background-color: #d4edda;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #28a745;
+        }
+
+        .objectifs ul {
+            margin-left: 25px;
+            line-height: 1.8;
+        }
+
+        .notions-cles {
+            background-color: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #ffc107;
+        }
+
+        .notion {
+            margin-bottom: 15px;
+        }
+
+        .notion strong {
+            color: #e67e22;
+            font-size: 1.05em;
+        }
+
+        .section {
+            background-color: #ecf0f1;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .exemple-box {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 2px dashed #95a5a6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+        }
+
+        table th {
+            background-color: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .response-area {
+            background-color: white;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 150px;
+            margin-top: 10px;
+        }
+
+        .frise {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 20px;
+            background: linear-gradient(to right, #e8f4f8, #d4edda, #fff3cd, #f8d7da);
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            min-height: 200px;
+        }
+
+        .frise::before {
+            content: '';
+            position: absolute;
+            bottom: 50px;
+            left: 20px;
+            right: 20px;
+            height: 4px;
+            background-color: #2c3e50;
+        }
+
+        .frise-item {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .frise-item::before {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 30px;
+            background-color: #2c3e50;
+        }
+
+        .frise-annee {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+
+        .frise-objet {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .consigne {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        .consigne::before {
+            content: "📋 Consigne : ";
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .aide {
+            background-color: #fff3cd;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 0.95em;
+            border-left: 4px solid #ffc107;
+        }
+
+        .aide::before {
+            content: "💡 Aide : ";
+            font-weight: bold;
+            color: #856404;
+        }
+
+        .evaluation {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 2px solid #6c757d;
+        }
+
+        .evaluation h3 {
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .critere {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 8px 0;
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #28a745;
+            display: none;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #dc3545;
+            display: none;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .controls-container {
+                display: none !important;
+            }
+            
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- BOUTONS D'ACTION -->
+    <div class="controls-container">
+        <button id="saveBtn" class="btn-action btn-save">
+            💾 Sauvegarder dans Firebase
+        </button>
+        <button id="exportPdfBtn" class="btn-action btn-pdf">
+            📄 Exporter en PDF
+        </button>
+        <button id="exportJsonBtn" class="btn-action btn-json">
+            📦 Exporter en JSON
+        </button>
+        <button id="resetBtn" class="btn-action btn-reset">
+            🔄 Réinitialiser
+        </button>
+    </div>
+
+    <div class="container" id="ficheContent">
+        <!-- EN-TÊTE AVEC INFORMATIONS DE L'ÉLÈVE -->
+        <header class="header">
+            <div class="header-left">
+                <div class="info-grid">
+                    <div class="form-group">
+                        <label>Nom :</label>
+                        <input type="text" id="nom" placeholder="Votre nom">
+                    </div>
+                    <div class="form-group">
+                        <label>Prénom :</label>
+                        <input type="text" id="prenom" placeholder="Votre prénom">
+                    </div>
+                    <div class="form-group">
+                        <label>Classe :</label>
+                        <input type="text" id="classe" placeholder="Ex: 6èmeA">
+                    </div>
+                </div>
+                <div class="info-grid" style="margin-top: 15px;">
+                    <div class="form-group">
+                        <label>Séquence n° :</label>
+                        <input type="number" id="sequence" placeholder="1" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Séance n° :</label>
+                        <input type="number" id="seance" placeholder="1" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Date :</label>
+                        <input type="text" id="date" placeholder="JJ/MM/AAAA">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- TITRE PRINCIPAL -->
+        <h1>🔧 Comment classer les objets techniques en familles ?</h1>
+
+        <!-- INTRODUCTION -->
+        <section class="intro-section">
+            <h2>📖 Introduction</h2>
+            <p>
+                Chaque jour, nous utilisons de nombreux <strong>objets techniques</strong> : vélo, téléphone, 
+                four micro-ondes, lampe, etc. Tous ces objets ont été créés par l'homme pour répondre à un besoin.
+            </p>
+            <p style="margin-top: 10px;">
+                Mais comment s'y retrouver parmi tous ces objets ? Comment les organiser ? 
+                C'est ce que nous allons découvrir en apprenant à <strong>classer les objets techniques en familles</strong> 
+                selon différents critères.
+            </p>
+        </section>
+
+        <!-- OBJECTIFS D'APPRENTISSAGE -->
+        <section class="objectifs">
+            <h2>🎯 Objectifs de la séance</h2>
+            <p>À la fin de cette activité, tu seras capable de :</p>
+            <ul>
+                <li>Définir ce qu'est un objet technique</li>
+                <li>Identifier la <strong>fonction d'usage</strong> d'un objet</li>
+                <li>Classer des objets selon leur <strong>fonction</strong></li>
+                <li>Classer des objets selon leurs <strong>matériaux</strong></li>
+                <li>Classer des objets selon leur <strong>époque</strong></li>
+                <li>Comprendre la notion de <strong>lignée d'objets</strong></li>
+            </ul>
+        </section>
+
+        <!-- NOTIONS CLÉS -->
+        <section class="notions-cles">
+            <h2>📚 Notions clés à retenir</h2>
+            
+            <div class="notion">
+                <strong>🔹 Objet technique :</strong> 
+                Objet fabriqué par l'homme pour répondre à un besoin.
+            </div>
+            
+            <div class="notion">
+                <strong>🔹 Fonction d'usage :</strong> 
+                C'est le service rendu par l'objet. Elle répond à la question : « À quoi sert cet objet ? »
+            </div>
+            
+            <div class="notion">
+                <strong>🔹 Famille d'objets :</strong> 
+                Ensemble d'objets qui ont la même fonction d'usage.
+            </div>
+            
+            <div class="notion">
+                <strong>🔹 Matériau :</strong> 
+                Matière dont est fait l'objet (bois, métal, plastique, verre, etc.).
+            </div>
+            
+            <div class="notion">
+                <strong>🔹 Lignée d'objets :</strong> 
+                Suite chronologique d'objets ayant la même fonction mais de technologies différentes 
+                (exemple : bougie → lampe à pétrole → ampoule électrique → LED).
+            </div>
+        </section>
+
+        <!-- ACTIVITÉ 1 : IDENTIFIER LA FONCTION D'USAGE -->
+        <section class="section">
+            <div class="section-title">
+                📝 Activité 1 : Identifier la fonction d'usage
+            </div>
+            
+            <div class="consigne">
+                Pour chaque objet présenté ci-dessous, indique sa fonction d'usage en complétant la phrase : 
+                « Cet objet sert à... »
+            </div>
+
+            <div class="exemple-box">
+                <strong>Exemple :</strong> Un vélo → Cet objet sert à <em>se déplacer</em>.
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Objet</th>
+                        <th>Fonction d'usage (À quoi sert-il ?)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>🚴 Vélo</td>
+                        <td><input type="text" id="fonction_velo" placeholder="Cet objet sert à..."></td>
+                    </tr>
+                    <tr>
+                        <td>💡 Lampe</td>
+                        <td><input type="text" id="fonction_lampe" placeholder="Cet objet sert à..."></td>
+                    </tr>
+                    <tr>
+                        <td>📱 Téléphone portable</td>
+                        <td><input type="text" id="fonction_telephone" placeholder="Cet objet sert à..."></td>
+                    </tr>
+                    <tr>
+                        <td>🍴 Four micro-ondes</td>
+                        <td><input type="text" id="fonction_four" placeholder="Cet objet sert à..."></td>
+                    </tr>
+                    <tr>
+                        <td>✂️ Ciseaux</td>
+                        <td><input type="text" id="fonction_ciseaux" placeholder="Cet objet sert à..."></td>
+                    </tr>
+                    <tr>
+                        <td>🏠 Porte</td>
+                        <td><input type="text" id="fonction_porte" placeholder="Cet objet sert à..."></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="aide">
+                Pense à ce que tu fais avec l'objet au quotidien !
+            </div>
+        </section>
+
+        <!-- ACTIVITÉ 2 : CLASSER PAR FONCTION -->
+        <section class="section">
+            <div class="section-title">
+                🗂️ Activité 2 : Classer des objets par fonction
+            </div>
+            
+            <div class="consigne">
+                Classe les objets suivants dans le tableau selon leur fonction principale.
+            </div>
+
+            <div class="exemple-box">
+                <strong>Liste des objets :</strong><br>
+                Vélo • Voiture • Trottinette • Train • Lampe • Bougie • Ampoule • Projecteur • 
+                Téléphone fixe • Smartphone • Lettre • Talkie-walkie
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Fonction</th>
+                        <th>Objets appartenant à cette famille</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Se déplacer</strong></td>
+                        <td><textarea id="famille_deplacement" placeholder="Écris ici les objets..."></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><strong>S'éclairer</strong></td>
+                        <td><textarea id="famille_eclairage" placeholder="Écris ici les objets..."></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Communiquer</strong></td>
+                        <td><textarea id="famille_communication" placeholder="Écris ici les objets..."></textarea></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Question :</h3>
+            <p><strong>Qu'est-ce qu'une famille d'objets ?</strong></p>
+            <div class="response-area">
+                <textarea id="reponse_famille" placeholder="Ta réponse ici..." style="border: none; width: 100%; min-height: 80px;"></textarea>
+            </div>
+        </section>
+
+        <!-- ACTIVITÉ 3 : CLASSER PAR MATÉRIAUX -->
+        <section class="section">
+            <div class="section-title">
+                🧱 Activité 3 : Classer des objets par matériaux
+            </div>
+            
+            <div class="consigne">
+                Observe les objets suivants et indique de quel(s) matériau(x) ils sont principalement constitués.
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Objet</th>
+                        <th>Matériau(x) principal(aux)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Règle en bois</td>
+                        <td><input type="text" id="materiau_regle" placeholder="Matériau..."></td>
+                    </tr>
+                    <tr>
+                        <td>Bouteille d'eau</td>
+                        <td><input type="text" id="materiau_bouteille" placeholder="Matériau..."></td>
+                    </tr>
+                    <tr>
+                        <td>Cadre de vélo</td>
+                        <td><input type="text" id="materiau_velo" placeholder="Matériau..."></td>
+                    </tr>
+                    <tr>
+                        <td>Fenêtre</td>
+                        <td><input type="text" id="materiau_fenetre" placeholder="Matériau..."></td>
+                    </tr>
+                    <tr>
+                        <td>Chaise en plastique</td>
+                        <td><input type="text" id="materiau_chaise" placeholder="Matériau..."></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="aide">
+                Les matériaux courants sont : bois, métal, plastique, verre, tissu, carton...
+            </div>
+
+            <h3>Question :</h3>
+            <p><strong>Pourquoi le choix du matériau est-il important pour un objet technique ?</strong></p>
+            <div class="response-area">
+                <textarea id="reponse_materiau" placeholder="Ta réponse ici..." style="border: none; width: 100%; min-height: 80px;"></textarea>
+            </div>
+        </section>
+
+        <!-- ACTIVITÉ 4 : LIGNÉE D'OBJETS (FRISE CHRONOLOGIQUE) -->
+        <section class="section">
+            <div class="section-title">
+                ⏳ Activité 4 : La lignée d'objets - Évolution dans le temps
+            </div>
+            
+            <div class="consigne">
+                Observe cette frise chronologique qui montre l'évolution des objets servant à s'éclairer.
+            </div>
+
+            <h3>🕯️ Famille : Objets pour s'éclairer</h3>
+            
+            <div class="frise">
+                <div class="frise-item">
+                    <div class="frise-objet">🕯️</div>
+                    <div>Bougie</div>
+                    <div class="frise-annee">1800</div>
+                </div>
+                <div class="frise-item">
+                    <div class="frise-objet">🏮</div>
+                    <div>Lampe à pétrole</div>
+                    <div class="frise-annee">1860</div>
+                </div>
+                <div class="frise-item">
+                    <div class="frise-objet">💡</div>
+                    <div>Ampoule incandescente</div>
+                    <div class="frise-annee">1879</div>
+                </div>
+                <div class="frise-item">
+                    <div class="frise-objet">🔦</div>
+                    <div>Ampoule LED</div>
+                    <div class="frise-annee">2000</div>
+                </div>
+            </div>
+
+            <h3>Questions :</h3>
+            
+            <p><strong>1. Qu'est-ce qu'une lignée d'objets ?</strong></p>
+            <div class="response-area">
+                <textarea id="reponse_lignee_def" placeholder="Ta réponse ici..." style="border: none; width: 100%; min-height: 80px;"></textarea>
+            </div>
+
+            <p style="margin-top: 15px;"><strong>2. Tous ces objets ont-ils la même fonction d'usage ? Laquelle ?</strong></p>
+            <div class="response-area">
+                <textarea id="reponse_lignee_fonction" placeholder="Ta réponse ici..." style="border: none; width: 100%; min-height: 60px;"></textarea>
+            </div>
+
+            <p style="margin-top: 15px;"><strong>3. Qu'est-ce qui a changé entre ces objets au fil du temps ?</strong></p>
+            <div class="response-area">
+                <textarea id="reponse_lignee_evolution" placeholder="Ta réponse ici..." style="border: none; width: 100%; min-height: 80px;"></textarea>
+            </div>
+
+            <div class="aide">
+                Pense aux technologies utilisées, à l'efficacité, à la sécurité, etc.
+            </div>
+        </section>
+
+        <!-- ACTIVITÉ 5 : CRÉER SA PROPRE LIGNÉE -->
+        <section class="section">
+            <div class="section-title">
+                🎨 Activité 5 : À toi de jouer !
+            </div>
+            
+            <div class="consigne">
+                Choisis une famille d'objets (exemples : objets pour communiquer, pour se déplacer, pour mesurer le temps...) 
+                et présente au moins 3 objets de cette lignée en indiquant leur époque approximative.
+            </div>
+
+            <div class="form-group">
+                <label>Famille d'objets choisie :</label>
+                <input type="text" id="lignee_perso_famille" placeholder="Ex: Objets pour mesurer le temps">
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Objet n°</th>
+                        <th>Nom de l'objet</th>
+                        <th>Époque / Année</th>
+                        <th>Description rapide</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td><input type="text" id="lignee_objet1_nom" placeholder="Nom..."></td>
+                        <td><input type="text" id="lignee_objet1_epoque" placeholder="Ex: 1500"></td>
+                        <td><input type="text" id="lignee_objet1_desc" placeholder="Description..."></td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td><input type="text" id="lignee_objet2_nom" placeholder="Nom..."></td>
+                        <td><input type="text" id="lignee_objet2_epoque" placeholder="Ex: 1800"></td>
+                        <td><input type="text" id="lignee_objet2_desc" placeholder="Description..."></td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td><input type="text" id="lignee_objet3_nom" placeholder="Nom..."></td>
+                        <td><input type="text" id="lignee_objet3_epoque" placeholder="Ex: 2020"></td>
+                        <td><input type="text" id="lignee_objet3_desc" placeholder="Description..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SYNTHÈSE -->
+        <section class="section" style="background-color: #e8f4f8;">
+            <div class="section-title">
+                📌 Synthèse - Ce que j'ai appris
+            </div>
+            
+            <div class="consigne">
+                Complète le texte à trous avec les mots suivants : 
+                <strong>fonction d'usage • famille • matériaux • lignée • époque • besoin</strong>
+            </div>
+
+            <div style="background-color: white; padding: 20px; border-radius: 8px; margin-top: 15px; line-height: 2;">
+                <p>
+                    Un objet technique est créé par l'homme pour répondre à un <input type="text" id="synthese_1" style="width: 150px; display: inline-block; margin: 0 5px;">. 
+                    Le service qu'il rend s'appelle sa <input type="text" id="synthese_2" style="width: 200px; display: inline-block; margin: 0 5px;">.
+                </p>
+                <p style="margin-top: 15px;">
+                    On peut regrouper les objets ayant la même fonction dans une même <input type="text" id="synthese_3" style="width: 150px; display: inline-block; margin: 0 5px;">. 
+                    On peut aussi les classer selon leurs <input type="text" id="synthese_4" style="width: 150px; display: inline-block; margin: 0 5px;"> 
+                    ou selon leur <input type="text" id="synthese_5" style="width: 120px; display: inline-block; margin: 0 5px;">.
+                </p>
+                <p style="margin-top: 15px;">
+                    Une <input type="text" id="synthese_6" style="width: 120px; display: inline-block; margin: 0 5px;"> d'objets montre l'évolution 
+                    d'une famille d'objets à travers le temps, avec des technologies de plus en plus performantes.
+                </p>
+            </div>
+        </section>
+
+        <!-- GRILLE D'AUTO-ÉVALUATION -->
+        <section class="evaluation">
+            <h3>✅ Grille d'auto-évaluation</h3>
+            <p style="margin-bottom: 15px; font-style: italic;">
+                Coche la case qui correspond à ton niveau de réussite pour chaque critère.
+            </p>
+
+            <div class="critere">
+                <span>Je sais définir ce qu'est un objet technique</span>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c1_non" name="eval_c1" value="non">
+                        <label for="eval_c1_non">❌ Non acquis</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c1_cours" name="eval_c1" value="cours">
+                        <label for="eval_c1_cours">⚠️ En cours</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c1_oui" name="eval_c1" value="acquis">
+                        <label for="eval_c1_oui">✅ Acquis</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="critere">
+                <span>Je sais identifier la fonction d'usage d'un objet</span>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c2_non" name="eval_c2" value="non">
+                        <label for="eval_c2_non">❌ Non acquis</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c2_cours" name="eval_c2" value="cours">
+                        <label for="eval_c2_cours">⚠️ En cours</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c2_oui" name="eval_c2" value="acquis">
+                        <label for="eval_c2_oui">✅ Acquis</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="critere">
+                <span>Je sais classer des objets selon leur fonction</span>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c3_non" name="eval_c3" value="non">
+                        <label for="eval_c3_non">❌ Non acquis</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c3_cours" name="eval_c3" value="cours">
+                        <label for="eval_c3_cours">⚠️ En cours</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c3_oui" name="eval_c3" value="acquis">
+                        <label for="eval_c3_oui">✅ Acquis</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="critere">
+                <span>Je sais identifier les matériaux d'un objet</span>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c4_non" name="eval_c4" value="non">
+                        <label for="eval_c4_non">❌ Non acquis</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c4_cours" name="eval_c4" value="cours">
+                        <label for="eval_c4_cours">⚠️ En cours</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c4_oui" name="eval_c4" value="acquis">
+                        <label for="eval_c4_oui">✅ Acquis</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="critere">
+                <span>Je comprends ce qu'est une lignée d'objets</span>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c5_non" name="eval_c5" value="non">
+                        <label for="eval_c5_non">❌ Non acquis</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c5_cours" name="eval_c5" value="cours">
+                        <label for="eval_c5_cours">⚠️ En cours</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c5_oui" name="eval_c5" value="acquis">
+                        <label for="eval_c5_oui">✅ Acquis</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="critere">
+                <span>J'ai bien organisé mon travail et mes réponses sont claires</span>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c6_non" name="eval_c6" value="non">
+                        <label for="eval_c6_non">❌ Non acquis</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c6_cours" name="eval_c6" value="cours">
+                        <label for="eval_c6_cours">⚠️ En cours</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="eval_c6_oui" name="eval_c6" value="acquis">
+                        <label for="eval_c6_oui">✅ Acquis</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Messages de feedback -->
+        <div id="successMessage" class="success-message">
+            ✅ <strong>Succès !</strong> Votre fiche a été enregistrée avec succès.
+        </div>
+        <div id="errorMessage" class="error-message">
+            ❌ <strong>Erreur !</strong> <span id="errorText"></span>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p>Collège Moulin à Vent – Technologie au collège</p>
+            <p>Fiche d'activité Cycle 3/4 – Classer les objets techniques</p>
+        </footer>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION FIREBASE
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        console.log('✅ Firebase initialisé');
+
+        // ============================================
+        // FONCTION POUR RÉCUPÉRER LES VALEURS DES CHECKBOXES
+        // ============================================
+        function getCheckboxValue(name) {
+            const checkedBox = document.querySelector(`input[name="${name}"]:checked`);
+            return checkedBox ? checkedBox.value : null;
+        }
+
+        // ============================================
+        // FONCTION POUR COCHER UNE CHECKBOX
+        // ============================================
+        function setCheckboxValue(name, value) {
+            // Décocher toutes les cases du groupe
+            document.querySelectorAll(`input[name="${name}"]`).forEach(cb => {
+                cb.checked = false;
+            });
+            // Cocher la bonne case
+            const targetCheckbox = document.querySelector(`input[name="${name}"][value="${value}"]`);
+            if (targetCheckbox) {
+                targetCheckbox.checked = true;
+            }
+        }
+
+        // ============================================
+        // FONCTION POUR COLLECTER TOUTES LES DONNÉES
+        // ============================================
+        function collectFormData() {
+            return {
+                // Informations élève
+                nom: document.getElementById('nom').value.trim(),
+                prenom: document.getElementById('prenom').value.trim(),
+                classe: document.getElementById('classe').value.trim(),
+                sequence: parseInt(document.getElementById('sequence').value) || null,
+                seance: parseInt(document.getElementById('seance').value) || null,
+                date: document.getElementById('date').value.trim(),
+                
+                // Activité 1 - Fonctions d'usage
+                fonction_velo: document.getElementById('fonction_velo').value.trim(),
+                fonction_lampe: document.getElementById('fonction_lampe').value.trim(),
+                fonction_telephone: document.getElementById('fonction_telephone').value.trim(),
+                fonction_four: document.getElementById('fonction_four').value.trim(),
+                fonction_ciseaux: document.getElementById('fonction_ciseaux').value.trim(),
+                fonction_porte: document.getElementById('fonction_porte').value.trim(),
+                
+                // Activité 2 - Classer par fonction
+                famille_deplacement: document.getElementById('famille_deplacement').value.trim(),
+                famille_eclairage: document.getElementById('famille_eclairage').value.trim(),
+                famille_communication: document.getElementById('famille_communication').value.trim(),
+                reponse_famille: document.getElementById('reponse_famille').value.trim(),
+                
+                // Activité 3 - Matériaux
+                materiau_regle: document.getElementById('materiau_regle').value.trim(),
+                materiau_bouteille: document.getElementById('materiau_bouteille').value.trim(),
+                materiau_velo: document.getElementById('materiau_velo').value.trim(),
+                materiau_fenetre: document.getElementById('materiau_fenetre').value.trim(),
+                materiau_chaise: document.getElementById('materiau_chaise').value.trim(),
+                reponse_materiau: document.getElementById('reponse_materiau').value.trim(),
+                
+                // Activité 4 - Lignée d'objets
+                reponse_lignee_def: document.getElementById('reponse_lignee_def').value.trim(),
+                reponse_lignee_fonction: document.getElementById('reponse_lignee_fonction').value.trim(),
+                reponse_lignee_evolution: document.getElementById('reponse_lignee_evolution').value.trim(),
+                
+                // Activité 5 - Lignée personnelle
+                lignee_perso_famille: document.getElementById('lignee_perso_famille').value.trim(),
+                lignee_objet1_nom: document.getElementById('lignee_objet1_nom').value.trim(),
+                lignee_objet1_epoque: document.getElementById('lignee_objet1_epoque').value.trim(),
+                lignee_objet1_desc: document.getElementById('lignee_objet1_desc').value.trim(),
+                lignee_objet2_nom: document.getElementById('lignee_objet2_nom').value.trim(),
+                lignee_objet2_epoque: document.getElementById('lignee_objet2_epoque').value.trim(),
+                lignee_objet2_desc: document.getElementById('lignee_objet2_desc').value.trim(),
+                lignee_objet3_nom: document.getElementById('lignee_objet3_nom').value.trim(),
+                lignee_objet3_epoque: document.getElementById('lignee_objet3_epoque').value.trim(),
+                lignee_objet3_desc: document.getElementById('lignee_objet3_desc').value.trim(),
+                
+                // Synthèse - Texte à trous
+                synthese_1: document.getElementById('synthese_1').value.trim(),
+                synthese_2: document.getElementById('synthese_2').value.trim(),
+                synthese_3: document.getElementById('synthese_3').value.trim(),
+                synthese_4: document.getElementById('synthese_4').value.trim(),
+                synthese_5: document.getElementById('synthese_5').value.trim(),
+                synthese_6: document.getElementById('synthese_6').value.trim(),
+                
+                // Auto-évaluation
+                eval_c1: getCheckboxValue('eval_c1'),
+                eval_c2: getCheckboxValue('eval_c2'),
+                eval_c3: getCheckboxValue('eval_c3'),
+                eval_c4: getCheckboxValue('eval_c4'),
+                eval_c5: getCheckboxValue('eval_c5'),
+                eval_c6: getCheckboxValue('eval_c6'),
+                
+                // Métadonnées
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                dateSoumission: new Date().toISOString(),
+                timestampLocal: Date.now()
+            };
+        }
+
+        // ============================================
+        // FONCTION POUR CHARGER LES DONNÉES DANS LE FORMULAIRE
+        // ============================================
+        function loadFormData(data) {
+            // Informations élève
+            if (data.nom) document.getElementById('nom').value = data.nom;
+            if (data.prenom) document.getElementById('prenom').value = data.prenom;
+            if (data.classe) document.getElementById('classe').value = data.classe;
+            if (data.sequence) document.getElementById('sequence').value = data.sequence;
+            if (data.seance) document.getElementById('seance').value = data.seance;
+            if (data.date) document.getElementById('date').value = data.date;
+            
+            // Activité 1
+            if (data.fonction_velo) document.getElementById('fonction_velo').value = data.fonction_velo;
+            if (data.fonction_lampe) document.getElementById('fonction_lampe').value = data.fonction_lampe;
+            if (data.fonction_telephone) document.getElementById('fonction_telephone').value = data.fonction_telephone;
+            if (data.fonction_four) document.getElementById('fonction_four').value = data.fonction_four;
+            if (data.fonction_ciseaux) document.getElementById('fonction_ciseaux').value = data.fonction_ciseaux;
+            if (data.fonction_porte) document.getElementById('fonction_porte').value = data.fonction_porte;
+            
+            // Activité 2
+            if (data.famille_deplacement) document.getElementById('famille_deplacement').value = data.famille_deplacement;
+            if (data.famille_eclairage) document.getElementById('famille_eclairage').value = data.famille_eclairage;
+            if (data.famille_communication) document.getElementById('famille_communication').value = data.famille_communication;
+            if (data.reponse_famille) document.getElementById('reponse_famille').value = data.reponse_famille;
+            
+            // Activité 3
+            if (data.materiau_regle) document.getElementById('materiau_regle').value = data.materiau_regle;
+            if (data.materiau_bouteille) document.getElementById('materiau_bouteille').value = data.materiau_bouteille;
+            if (data.materiau_velo) document.getElementById('materiau_velo').value = data.materiau_velo;
+            if (data.materiau_fenetre) document.getElementById('materiau_fenetre').value = data.materiau_fenetre;
+            if (data.materiau_chaise) document.getElementById('materiau_chaise').value = data.materiau_chaise;
+            if (data.reponse_materiau) document.getElementById('reponse_materiau').value = data.reponse_materiau;
+            
+            // Activité 4
+            if (data.reponse_lignee_def) document.getElementById('reponse_lignee_def').value = data.reponse_lignee_def;
+            if (data.reponse_lignee_fonction) document.getElementById('reponse_lignee_fonction').value = data.reponse_lignee_fonction;
+            if (data.reponse_lignee_evolution) document.getElementById('reponse_lignee_evolution').value = data.reponse_lignee_evolution;
+            
+            // Activité 5
+            if (data.lignee_perso_famille) document.getElementById('lignee_perso_famille').value = data.lignee_perso_famille;
+            if (data.lignee_objet1_nom) document.getElementById('lignee_objet1_nom').value = data.lignee_objet1_nom;
+            if (data.lignee_objet1_epoque) document.getElementById('lignee_objet1_epoque').value = data.lignee_objet1_epoque;
+            if (data.lignee_objet1_desc) document.getElementById('lignee_objet1_desc').value = data.lignee_objet1_desc;
+            if (data.lignee_objet2_nom) document.getElementById('lignee_objet2_nom').value = data.lignee_objet2_nom;
+            if (data.lignee_objet2_epoque) document.getElementById('lignee_objet2_epoque').value = data.lignee_objet2_epoque;
+            if (data.lignee_objet2_desc) document.getElementById('lignee_objet2_desc').value = data.lignee_objet2_desc;
+            if (data.lignee_objet3_nom) document.getElementById('lignee_objet3_nom').value = data.lignee_objet3_nom;
+            if (data.lignee_objet3_epoque) document.getElementById('lignee_objet3_epoque').value = data.lignee_objet3_epoque;
+            if (data.lignee_objet3_desc) document.getElementById('lignee_objet3_desc').value = data.lignee_objet3_desc;
+            
+            // Synthèse
+            if (data.synthese_1) document.getElementById('synthese_1').value = data.synthese_1;
+            if (data.synthese_2) document.getElementById('synthese_2').value = data.synthese_2;
+            if (data.synthese_3) document.getElementById('synthese_3').value = data.synthese_3;
+            if (data.synthese_4) document.getElementById('synthese_4').value = data.synthese_4;
+            if (data.synthese_5) document.getElementById('synthese_5').value = data.synthese_5;
+            if (data.synthese_6) document.getElementById('synthese_6').value = data.synthese_6;
+            
+            // Auto-évaluation
+            if (data.eval_c1) setCheckboxValue('eval_c1', data.eval_c1);
+            if (data.eval_c2) setCheckboxValue('eval_c2', data.eval_c2);
+            if (data.eval_c3) setCheckboxValue('eval_c3', data.eval_c3);
+            if (data.eval_c4) setCheckboxValue('eval_c4', data.eval_c4);
+            if (data.eval_c5) setCheckboxValue('eval_c5', data.eval_c5);
+            if (data.eval_c6) setCheckboxValue('eval_c6', data.eval_c6);
+        }
+
+        // ============================================
+        // SAUVEGARDE DANS FIREBASE
+        // ============================================
+        document.getElementById('saveBtn').addEventListener('click', async function() {
+            // Validation minimale
+            const nom = document.getElementById('nom').value.trim();
+            const prenom = document.getElementById('prenom').value.trim();
+            
+            if (!nom || !prenom) {
+                alert('⚠️ Veuillez renseigner au moins votre nom et prénom');
+                return;
+            }
+
+            // Désactiver le bouton pendant le traitement
+            const btn = this;
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = '⏳ Enregistrement en cours...';
+
+            try {
+                // Collecter toutes les données
+                const ficheData = collectFormData();
+                
+                // Enregistrer dans Firestore
+                const docRef = await db.collection('fiches_classification_objets').add(ficheData);
+                
+                console.log('✅ Fiche enregistrée avec ID:', docRef.id);
+
+                // Afficher le message de succès
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                // Masquer le message après 5 secondes
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+
+                // Marquer le formulaire comme sauvegardé
+                formModified = false;
+
+            } catch (error) {
+                console.error('❌ Erreur:', error);
+                document.getElementById('errorText').textContent = error.message;
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            } finally {
+                // Réactiver le bouton
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+
+        // ============================================
+        // EXPORT PDF
+        // ============================================
+        document.getElementById('exportPdfBtn').addEventListener('click', function() {
+            const btn = this;
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = '⏳ Génération du PDF...';
+
+            const element = document.getElementById('ficheContent');
+            
+            const opt = {
+                margin: 10,
+                filename: `classification-objets-${document.getElementById('nom').value || 'sans-nom'}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2,
+                    useCORS: true,
+                    logging: false
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait' 
+                }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                btn.disabled = false;
+                btn.textContent = originalText;
+                console.log('✅ PDF généré avec succès');
+            }).catch(error => {
+                console.error('❌ Erreur génération PDF:', error);
+                alert('Erreur lors de la génération du PDF');
+                btn.disabled = false;
+                btn.textContent = originalText;
+            });
+        });
+
+        // ============================================
+        // EXPORT JSON
+        // ============================================
+        document.getElementById('exportJsonBtn').addEventListener('click', function() {
+            const data = collectFormData();
+            
+            // Convertir en JSON formaté
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `classification-objets-${data.nom || 'sans-nom'}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            console.log('✅ JSON exporté');
+        });
+
+        // ============================================
+        // RÉINITIALISATION
+        // ============================================
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm('⚠️ Êtes-vous sûr de vouloir réinitialiser le formulaire ? Toutes les données non sauvegardées seront perdues.')) {
+                // Réinitialiser tous les champs texte
+                document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(field => {
+                    field.value = '';
+                });
+                
+                // Décocher toutes les checkboxes
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    cb.checked = false;
+                });
+                
+                // Réinitialiser les valeurs par défaut
+                document.getElementById('sequence').value = '1';
+                document.getElementById('seance').value = '1';
+                
+                // Masquer les messages
+                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                formModified = false;
+                
+                console.log('✅ Formulaire réinitialisé');
+            }
+        });
+
+        // ============================================
+        // GESTION DE LA MODIFICATION DU FORMULAIRE
+        // ============================================
+        let formModified = false;
+
+        document.querySelectorAll('input, textarea').forEach(element => {
+            element.addEventListener('input', () => {
+                formModified = true;
+            });
+        });
+
+        // Gestion spécifique des checkboxes pour n'autoriser qu'une seule sélection par groupe
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                formModified = true;
+                
+                // Si la case est cochée, décocher les autres du même groupe
+                if (this.checked) {
+                    const name = this.getAttribute('name');
+                    document.querySelectorAll(`input[name="${name}"]`).forEach(cb => {
+                        if (cb !== this) {
+                            cb.checked = false;
+                        }
+                    });
+                }
+            });
+        });
+
+        // ============================================
+        // CONFIRMATION AVANT FERMETURE
+        // ============================================
+        window.addEventListener('beforeunload', function(e) {
+            if (formModified) {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+
+        // ============================================
+        // AUTO-SAUVEGARDE LOCALE (OPTIONNEL)
+        // ============================================
+        // Sauvegarder automatiquement dans localStorage toutes les 30 secondes
+        setInterval(() => {
+            if (formModified) {
+                const data = collectFormData();
+                localStorage.setItem('fiche_classification_draft', JSON.stringify(data));
+                console.log('💾 Brouillon sauvegardé localement');
+            }
+        }, 30000);
+
+        // Charger le brouillon au démarrage si disponible
+        window.addEventListener('load', () => {
+            const draft = localStorage.getItem('fiche_classification_draft');
+            if (draft) {
+                if (confirm('📋 Un brouillon a été trouvé. Voulez-vous le charger ?')) {
+                    try {
+                        const data = JSON.parse(draft);
+                        loadFormData(data);
+                        console.log('✅ Brouillon chargé');
+                    } catch (error) {
+                        console.error('❌ Erreur chargement brouillon:', error);
+                    }
+                }
+            }
+        });
+
+        // Effacer le brouillon après sauvegarde réussie
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            setTimeout(() => {
+                localStorage.removeItem('fiche_classification_draft');
+                console.log('🗑️ Brouillon effacé');
+            }, 1000);
+        });
+
+        console.log('✅ Application initialisée');
+    </script>
+</body>
+</html>
