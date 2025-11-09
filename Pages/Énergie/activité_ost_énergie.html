@@ -188,10 +188,10 @@
             <!-- Identification de l'élève -->
             <div class="question" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
                 <p><strong>Nom et Prénom :</strong></p>
-                <input type="text" id="studentName" name="studentName" placeholder="Ex: Dupont Marie" required>
+                <input type="text" id="studentName" name="studentName" placeholder="" required>
                 
                 <p style="margin-top: 15px;"><strong>Classe :</strong></p>
-                <input type="text" id="studentClass" name="studentClass" placeholder="Ex: 3èmeA" required>
+                <input type="text" id="studentClass" name="studentClass" placeholder="" required>
             </div>
 
             <!-- Partie 1: Entrée-Sortie -->
@@ -425,8 +425,8 @@
     <script>
         // Protection par mot de passe
         (function() {
-            const MOT_DE_PASSE = 'ENERGIE2025'; // ← Changez ici
-            let tentatives = 3;
+            const MOT_DE_PASSE = 'énergie2025'; // ← Changez ici
+            let tentatives = 5;
             
             while (tentatives > 0) {
                 const saisie = prompt('🔒 Mot de passe requis pour accéder au formulaire :');
