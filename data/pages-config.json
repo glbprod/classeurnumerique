@@ -98,6 +98,15 @@
       "addedDate": "2025-11-09T19:47:15.690Z",
       "lastModified": "2025-11-09T19:47:15.701Z",
       "favorite": false
+    },
+    {
+      "id": "page-1762723128264",
+      "title": "activite mbot2 IA",
+      "githubPath": "src/Pages/Robotique/activite_mbot2_IA.html",
+      "description": "",
+      "addedDate": "2025-11-09T21:18:48.264Z",
+      "lastModified": "2025-11-09T21:18:48.265Z",
+      "favorite": false
     }
   ]
 }
