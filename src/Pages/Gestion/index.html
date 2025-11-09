@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index des Fiches d'Activité Générées</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .stats {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .stats-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .fiches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .fiche-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .fiche-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .fiche-numero {
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        .fiche-card h3 {
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+        
+        .fiche-card p {
+            color: #7f8c8d;
+            margin: 10px 0;
+        }
+        
+        .btn-view {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        
+        .btn-view:hover {
+            background: #229954;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Fiches d'Activité Générées Automatiquement</h1>
+        
+        <div class="stats">
+            <div class="stats-number">1</div>
+            <div>fiche générée</div>
+            <div class="badge">Générées le 09/11/2025 à 16:01</div>
+        </div>
+        
+        <div class="fiches-grid">
+            
+        <div class="fiche-card">
+            <div class="fiche-numero">Fiche #1</div>
+            <h3>Robot mBot 2 - Système énergétique</h3>
+            <p><strong>Classe :</strong> 5èmeA</p>
+            <a href="fiche-activite-seq6-seance3-5emeA.html" class="btn-view">📄 Voir la fiche</a>
+        </div>
+        
+        </div>
+        
+        <div class="footer">
+            <p>Collège Moulin à vent – Technologie au collège</p>
+            <p>Générateur automatique de fiches d'activité</p>
+        </div>
+    </div>
+</body>
+</html>
