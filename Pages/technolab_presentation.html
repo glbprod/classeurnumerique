@@ -694,4 +694,15 @@
         console.log('%cTu aimes coder ? Consulte le code source sur GitHub !', 'color: #fbbf24;');
     </script>
 </body>
-</html>
+</html>"""
+
+# Écriture du fichier HTML
+with open('technolab_presentation.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print("✅ Fichier 'technolab_presentation.html' créé avec succès!")
+print("📐 Dimensions optimisées pour iframe Moodle : 1280x4000px")
+print("🎨 Design : Fond animé FabLab avec typo code")
+print("👥 Public cible : Collégiens")
+print("\n📋 Code d'intégration Moodle :")
+print('<iframe src="technolab_presentation.html" width="1280" height="4000" style="border: none; display: block; margin: 0 auto;"></iframe>')
