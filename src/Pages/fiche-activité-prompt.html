@@ -317,35 +317,10 @@
     </style>
 </head>
 <body>
-    <!-- Boutons de contrôle
-    <div class="controls-container">
-        <button type="button" id="saveBtn" class="btn-action btn-save">
-            💾 Enregistrer dans Firebase
-        </button>
-        <button type="button" id="exportPdfBtn" class="btn-action btn-pdf">
-            📄 Télécharger en PDF
-        </button>
-        <button type="button" id="exportJsonBtn" class="btn-action btn-json">
-            📦 Exporter JSON
-        </button>
-        <button type="button" id="resetBtn" class="btn-action btn-reset">
-            🔄 Réinitialiser
-        </button>
-    </div> -->
-
     <div class="container" id="ficheContent">
         <!-- En-tête -->
         <div class="header">
             <div class="header-left">
-                <!-- <div class="info-grid">
-                    <div class="form-group">
-                        <label>Prénom <span class="required">*</span></label>
-                        <input type="text" id="prenom" placeholder="Prénom" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Nom <span class="required">*</span></label>
-                        <input type="text" id="nom" placeholder="Nom" required>
-                    </div> -->
                     <div class="form-group">
                         <label>Classe <span class="required">*</span></label>
                         <input type="text" id="classe" placeholder="Ex: 5èmeA" required>
@@ -360,19 +335,6 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- <div class="header-right">
-                <div class="college-title">Collège Moulin à Vent</div>
-                <div class="logo-upload">
-                    <label for="logoUpload" class="upload-area" style="cursor: pointer; padding: 10px;">
-                        <div class="upload-icon">🏫</div>
-                        <div>Logo du collège</div>
-                        <div class="file-info">Cliquez pour uploader</div>
-                    </label>
-                    <input type="file" id="logoUpload" accept="image/*">
-                    <img id="logoPreview" class="logo-preview" style="display: none;">
-                </div>
-            </div> -->
         </div>
 
         <h1>Fiche d'Activité</h1>
@@ -410,17 +372,6 @@
                     Exemples : Questions-réponses, texte à trous, calculs, correspondances...
                 </div>
             </div>
-
-            <!-- <div class="form-group">
-                <label>Schéma ou illustration 1</label>
-                <label for="schema1Upload" class="upload-area">
-                    <div class="upload-icon">🖼️</div>
-                    <div>Ajouter un schéma ou une illustration</div>
-                    <div class="file-info">Format: JPG, PNG, SVG (max 5 Mo)</div>
-                </label>
-                <input type="file" id="schema1Upload" accept="image/*">
-                <img id="schema1Preview" class="image-preview" style="display: none;">
-            </div> -->
         </div>
 
         <!-- Activité 2 -->
@@ -436,17 +387,6 @@
                     Exemples : Investigations, recherches, schématisation, résolution de problèmes...
                 </div>
             </div>
-
-            <!-- <div class="form-group">
-                <label>Schéma ou illustration 2</label>
-                <label for="schema2Upload" class="upload-area">
-                    <div class="upload-icon">📊</div>
-                    <div>Ajouter un schéma ou une illustration</div>
-                    <div class="file-info">Format: JPG, PNG, SVG (max 5 Mo)</div>
-                </label>
-                <input type="file" id="schema2Upload" accept="image/*">
-                <img id="schema2Preview" class="image-preview" style="display: none;">
-            </div> -->
         </div>
 
         <!-- Conclusion / Réalisation -->
@@ -462,17 +402,6 @@
                     Synthèse, commentaires, solutions trouvées, modélisation...
                 </div>
             </div>
-
-            <!-- <div class="form-group">
-                <label>Tableau ou schéma de synthèse</label>
-                <label for="schema3Upload" class="upload-area">
-                    <div class="upload-icon">📋</div>
-                    <div>Ajouter un tableau ou schéma de synthèse</div>
-                    <div class="file-info">Format: JPG, PNG, SVG (max 5 Mo)</div>
-                </label>
-                <input type="file" id="schema3Upload" accept="image/*">
-                <img id="schema3Preview" class="image-preview" style="display: none;">
-            </div> -->
         </div>
 
         <!-- Messages de feedback -->
@@ -489,36 +418,6 @@
     </div>
 
     <script>
-        // // ============================================
-        // // PROTECTION PAR MOT DE PASSE
-        // // ============================================
-        // (function() {
-        //     const MOT_DE_PASSE = 'j5';
-        //     let tentatives = 3;
-            
-        //     while (tentatives > 0) {
-        //         const saisie = prompt('🔒 Mot de passe requis pour accéder au formulaire :');
-                
-        //         if (saisie === null) {
-        //             document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès annulé</h1>';
-        //             throw new Error('Accès annulé');
-        //         }
-                
-        //         if (saisie === MOT_DE_PASSE) {
-        //             return;
-        //         }
-                
-        //         tentatives--;
-        //         if (tentatives > 0) {
-        //             alert('❌ Mot de passe incorrect ! Il vous reste ' + tentatives + ' tentative(s).');
-        //         }
-        //     }
-            
-        //     alert('🚫 Nombre de tentatives dépassé !');
-        //     document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès refusé</h1>';
-        //     throw new Error('Accès refusé');
-        // })();
-
         // ============================================
         // CONFIGURATION FIREBASE
         // ============================================
