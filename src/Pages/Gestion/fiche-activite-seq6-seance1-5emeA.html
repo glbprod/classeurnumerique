@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche d'Activité - Robot mBot 2 - Découverte</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .header-left {
+            flex: 1;
+        }
+
+        .header-right {
+            text-align: center;
+        }
+
+        .college-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .logo-placeholder {
+            width: 150px;
+            height: 150px;
+            background-color: #ecf0f1;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info-item {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #7f8c8d;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #2c3e50;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .field {
+            margin-bottom: 25px;
+        }
+
+        .field-label {
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 10px;
+            font-size: 15px;
+            display: block;
+        }
+
+        .field-content {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #95a5a6;
+            line-height: 1.8;
+        }
+
+        .section {
+            background-color: #ecf0f1;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .conclusion {
+            border-left-color: #27ae60;
+        }
+
+        .conclusion .section-title {
+            color: #27ae60;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 2px solid #34495e;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 12px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+        }
+
+        .generated-badge {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        strong {
+            color: #2c3e50;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                padding: 20mm;
+            }
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header">
+            <div class="header-left">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Classe</div>
+                        <div class="info-value">5èmeA</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Séquence n°</div>
+                        <div class="info-value">6</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Séance n°</div>
+                        <div class="info-value">1</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="college-title">Collège Moulin à Vent</div>
+                <div class="logo-placeholder">🏫</div>
+            </div>
+        </div>
+
+        <h1>Fiche d'Activité</h1>
+
+        <!-- Objet Système Technique -->
+        <div class="field">
+            <span class="field-label">📦 Objet Système Technique</span>
+            <div class="field-content">
+                <strong>Robot mBot 2 - Découverte</strong>
+            </div>
+        </div>
+
+        <!-- Problématique -->
+        <div class="field">
+            <span class="field-label">❓ Problématique</span>
+            <div class="field-content">
+                Qu'est-ce qu'un robot et quelles sont ses caractéristiques ?
+            </div>
+        </div>
+
+        <!-- Travail demandé -->
+        <div class="field">
+            <span class="field-label">📋 Travail demandé - Résumé des activités</span>
+            <div class="field-content">
+                Découvrir le robot mBot 2, identifier ses composants et comprendre la différence entre objet naturel et objet technique.
+            </div>
+        </div>
+
+        <!-- Activité 1 -->
+        <div class="section">
+            <div class="section-title">
+                📝 Activité 1
+            </div>
+            <div class="section-content">
+**Observation du robot mBot 2**
+
+Complétez le tableau d'analyse :
+
+| Critère | Observation |
+|---------|-------------|
+| Forme générale | Robot à deux roues avec châssis métallique |
+| Matériaux | Aluminium (châssis), plastique (roues), composants électroniques |
+| Couleur | Bleu et argenté |
+| Taille approximative | 17 cm × 13 cm × 9 cm |
+| Poids | Environ 1 kg |
+
+**Questions :**
+1. Le robot mBot est-il un objet naturel ou un objet technique ? Justifiez.
+2. Quels sont les éléments qui le composent ?
+3. À quoi servent les différents capteurs visibles ?
+            </div>
+        </div>
+
+        <!-- Activité 2 -->
+        <div class="section">
+            <div class="section-title">
+                🔍 Activité 2
+            </div>
+            <div class="section-content">
+**Manipulation et tests**
+
+Mettez le robot en marche et testez ses fonctionnalités :
+
+1. **Mode télécommande** : Pilotez le robot avec la télécommande infrarouge
+2. **Mode autonome** : Observez son comportement (évitement d'obstacles)
+3. **Capteurs** : Identifiez le rôle de chaque capteur
+
+**Schématisation :**
+Dessinez le robot vu de dessus et annotez tous les composants visibles (moteurs, roues, capteurs, LED, carte mère, batterie).
+
+**Recherche documentaire :**
+À partir de la documentation fournie, complétez la fiche technique du mBot 2.
+            </div>
+        </div>
+
+        <!-- Conclusion / Réalisation -->
+        <div class="section conclusion">
+            <div class="section-title">
+                ✅ Conclusion ou Réalisation
+            </div>
+            <div class="section-content">
+**Synthèse sur les objets techniques**
+
+Le robot mBot 2 est un **objet technique** conçu et fabriqué par l'homme pour répondre à des besoins spécifiques (éducation, apprentissage de la robotique).
+
+**Caractéristiques d'un objet technique :**
+• Conçu et fabriqué par l'homme
+• Répond à un besoin identifié
+• Composé de plusieurs matériaux
+• Possède des fonctions précises
+
+**Composants principaux du mBot 2 :**
+• Châssis en aluminium (structure)
+• Deux moteurs électriques (mouvement)
+• Capteurs (détection d'obstacles, suiveur de ligne)
+• Carte mère Makeblock (contrôle)
+• Batterie rechargeable (énergie)
+
+**Compétences mobilisées :**
+✓ Décrire un objet technique (C4)
+✓ Identifier les matériaux (C2)
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div>Collège Moulin à vent – Technologie au collège</div>
+            <div class="generated-badge">
+                🤖 Fiche générée automatiquement le 09/11/2025 à 16:05
+            </div>
+        </div>
+    </div>
+</body>
+</html>

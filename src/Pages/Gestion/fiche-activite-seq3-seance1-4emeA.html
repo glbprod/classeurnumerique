@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche d'Activité - Impression 3D - Porte-clés</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .header-left {
+            flex: 1;
+        }
+
+        .header-right {
+            text-align: center;
+        }
+
+        .college-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .logo-placeholder {
+            width: 150px;
+            height: 150px;
+            background-color: #ecf0f1;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info-item {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #7f8c8d;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #2c3e50;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .field {
+            margin-bottom: 25px;
+        }
+
+        .field-label {
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 10px;
+            font-size: 15px;
+            display: block;
+        }
+
+        .field-content {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #95a5a6;
+            line-height: 1.8;
+        }
+
+        .section {
+            background-color: #ecf0f1;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .conclusion {
+            border-left-color: #27ae60;
+        }
+
+        .conclusion .section-title {
+            color: #27ae60;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 2px solid #34495e;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 12px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+        }
+
+        .generated-badge {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        strong {
+            color: #2c3e50;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                padding: 20mm;
+            }
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header">
+            <div class="header-left">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Classe</div>
+                        <div class="info-value">4èmeA</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Séquence n°</div>
+                        <div class="info-value">3</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Séance n°</div>
+                        <div class="info-value">1</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="college-title">Collège Moulin à Vent</div>
+                <div class="logo-placeholder">🏫</div>
+            </div>
+        </div>
+
+        <h1>Fiche d'Activité</h1>
+
+        <!-- Objet Système Technique -->
+        <div class="field">
+            <span class="field-label">📦 Objet Système Technique</span>
+            <div class="field-content">
+                <strong>Impression 3D - Porte-clés</strong>
+            </div>
+        </div>
+
+        <!-- Problématique -->
+        <div class="field">
+            <span class="field-label">❓ Problématique</span>
+            <div class="field-content">
+                Comment concevoir et réaliser un objet en 3D ?
+            </div>
+        </div>
+
+        <!-- Travail demandé -->
+        <div class="field">
+            <span class="field-label">📋 Travail demandé - Résumé des activités</span>
+            <div class="field-content">
+                Apprendre les bases de la modélisation 3D avec Tinkercad et réaliser un porte-clés personnalisé.
+            </div>
+        </div>
+
+        <!-- Activité 1 -->
+        <div class="section">
+            <div class="section-title">
+                📝 Activité 1
+            </div>
+            <div class="section-content">
+**Découverte de la CAO (Conception Assistée par Ordinateur)**
+
+1. Ouvrez Tinkercad dans votre navigateur
+2. Créez un nouveau design
+3. Explorez la bibliothèque de formes de base :
+   - Cube, cylindre, sphère
+   - Formes composées
+   - Texte 3D
+
+**Premiers pas :**
+- Placez un cube sur le plan de travail
+- Modifiez ses dimensions
+- Changez sa couleur
+- Ajoutez un cylindre
+- Créez un trou (forme négative)
+- Groupez les objets
+
+**Vocabulaire technique :**
+- CAO : Conception Assistée par Ordinateur
+- Plan de travail : Surface où on modélise
+- Extrusion : Donner de l'épaisseur à une forme 2D
+- Grouper : Fusionner plusieurs objets
+            </div>
+        </div>
+
+        <!-- Activité 2 -->
+        <div class="section">
+            <div class="section-title">
+                🔍 Activité 2
+            </div>
+            <div class="section-content">
+**Projet : Créer votre porte-clés personnalisé**
+
+**Cahier des charges :**
+- Dimensions maximales : 50 × 30 × 5 mm
+- Doit contenir vos initiales ou un symbole
+- Trou pour l'anneau (Ø 5 mm minimum)
+- Forme originale (pas un simple rectangle)
+
+**Étapes de réalisation :**
+1. Dessiner un croquis papier de votre idée
+2. Modéliser dans Tinkercad
+3. Vérifier les dimensions
+4. Exporter en fichier STL
+5. Le professeur imprimera votre objet
+
+**Contraintes techniques :**
+- Épaisseur minimum : 3 mm
+- Pas de partie trop fine (se casse)
+- Penser à l'orientation d'impression
+- Le fichier STL doit être fermé (étanche)
+            </div>
+        </div>
+
+        <!-- Conclusion / Réalisation -->
+        <div class="section conclusion">
+            <div class="section-title">
+                ✅ Conclusion ou Réalisation
+            </div>
+            <div class="section-content">
+**La chaîne numérique de fabrication**
+
+Vous avez découvert la **chaîne numérique** complète :
+
+**1. Conception (CAO)**
+Tinkercad → Fichier STL
+
+**2. Préparation (Slicing)**
+Logiciel slicer → Fichier G-code
+(découpage en couches + trajectoire)
+
+**3. Fabrication (Impression 3D)**
+Imprimante 3D → Objet physique
+(dépôt de matière couche par couche)
+
+**Avantages de l'impression 3D :**
+• Prototypage rapide
+• Formes complexes impossibles autrement
+• Personnalisation facile
+• Réduction du gaspillage de matière
+
+**Limites :**
+• Temps d'impression long (plusieurs heures)
+• Résolution limitée (couches visibles)
+• Matériaux limités (PLA, ABS)
+• Taille limitée par le plateau
+
+**Compétences mobilisées :**
+✓ Réaliser une représentation numérique (C2)
+✓ Imaginer une solution (C1)
+✓ Utiliser des logiciels de CAO (C3)
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div>Collège Moulin à vent – Technologie au collège</div>
+            <div class="generated-badge">
+                🤖 Fiche générée automatiquement le 09/11/2025 à 16:05
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche d'Activité - Robot mBot 2 - Programmation</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .header-left {
+            flex: 1;
+        }
+
+        .header-right {
+            text-align: center;
+        }
+
+        .college-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .logo-placeholder {
+            width: 150px;
+            height: 150px;
+            background-color: #ecf0f1;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info-item {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #7f8c8d;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #2c3e50;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .field {
+            margin-bottom: 25px;
+        }
+
+        .field-label {
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 10px;
+            font-size: 15px;
+            display: block;
+        }
+
+        .field-content {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #95a5a6;
+            line-height: 1.8;
+        }
+
+        .section {
+            background-color: #ecf0f1;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .conclusion {
+            border-left-color: #27ae60;
+        }
+
+        .conclusion .section-title {
+            color: #27ae60;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 2px solid #34495e;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 12px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+        }
+
+        .generated-badge {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        strong {
+            color: #2c3e50;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                padding: 20mm;
+            }
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header">
+            <div class="header-left">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Classe</div>
+                        <div class="info-value">5èmeA</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Séquence n°</div>
+                        <div class="info-value">6</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Séance n°</div>
+                        <div class="info-value">2</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="college-title">Collège Moulin à Vent</div>
+                <div class="logo-placeholder">🏫</div>
+            </div>
+        </div>
+
+        <h1>Fiche d'Activité</h1>
+
+        <!-- Objet Système Technique -->
+        <div class="field">
+            <span class="field-label">📦 Objet Système Technique</span>
+            <div class="field-content">
+                <strong>Robot mBot 2 - Programmation</strong>
+            </div>
+        </div>
+
+        <!-- Problématique -->
+        <div class="field">
+            <span class="field-label">❓ Problématique</span>
+            <div class="field-content">
+                Comment programmer le robot pour qu'il suive un parcours ?
+            </div>
+        </div>
+
+        <!-- Travail demandé -->
+        <div class="field">
+            <span class="field-label">📋 Travail demandé - Résumé des activités</span>
+            <div class="field-content">
+                Découvrir la programmation par blocs avec mBlock et créer un programme simple pour piloter le robot.
+            </div>
+        </div>
+
+        <!-- Activité 1 -->
+        <div class="section">
+            <div class="section-title">
+                📝 Activité 1
+            </div>
+            <div class="section-content">
+**Découverte de l'interface mBlock**
+
+1. Ouvrez le logiciel mBlock sur l'ordinateur
+2. Connectez le robot via Bluetooth
+3. Explorez les différentes catégories de blocs :
+   - Mouvement (avancer, reculer, tourner)
+   - Événements (démarrage, capteur détecté)
+   - Contrôle (boucles, conditions)
+   - Opérateurs (calculs, comparaisons)
+
+**Premier programme :**
+Créez un programme simple qui fait :
+1. Avancer pendant 2 secondes
+2. Tourner à droite
+3. Avancer pendant 1 seconde
+4. S'arrêter
+
+Testez votre programme sur le robot.
+            </div>
+        </div>
+
+        <!-- Activité 2 -->
+        <div class="section">
+            <div class="section-title">
+                🔍 Activité 2
+            </div>
+            <div class="section-content">
+**Défi : Parcours imposé**
+
+Votre mission : programmer le robot pour qu'il suive ce parcours automatiquement
+
+1. Avancer de 50 cm
+2. Tourner à droite (90°)
+3. Avancer de 30 cm
+4. Tourner à gauche (90°)
+5. Avancer de 40 cm
+6. S'arrêter et allumer les LED en vert
+
+**Contraintes :**
+- Utiliser une boucle pour répéter les mouvements si nécessaire
+- La vitesse doit être de 75%
+- Le robot ne doit pas sortir du parcours matérialisé
+
+**Questions :**
+- Quelle est la différence entre une séquence et une boucle ?
+- Comment améliorer la précision des mouvements ?
+            </div>
+        </div>
+
+        <!-- Conclusion / Réalisation -->
+        <div class="section conclusion">
+            <div class="section-title">
+                ✅ Conclusion ou Réalisation
+            </div>
+            <div class="section-content">
+**La programmation et les algorithmes**
+
+Un **algorithme** est une suite d'instructions qui permet de résoudre un problème. En programmation, on traduit cet algorithme en langage compréhensible par la machine.
+
+**Ce que nous avons appris :**
+• Les instructions sont exécutées dans l'ordre (séquence)
+• On peut répéter des actions (boucles)
+• On peut tester des conditions (si... alors...)
+• La précision dépend des paramètres (vitesse, durée, angle)
+
+**Structure d'un programme :**
+1. Événement déclencheur (bouton, capteur)
+2. Suite d'instructions
+3. Conditions et boucles
+4. Fin du programme ou retour au début
+
+**Vers la programmation textuelle :**
+Les blocs mBlock sont une représentation visuelle du code Python. Plus tard, vous apprendrez à écrire directement en langage textuel.
+
+**Compétences mobilisées :**
+✓ Concevoir et écrire un programme (C9)
+✓ Tester et mettre au point (C6)
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div>Collège Moulin à vent – Technologie au collège</div>
+            <div class="generated-badge">
+                🤖 Fiche générée automatiquement le 09/11/2025 à 16:05
+            </div>
+        </div>
+    </div>
+</body>
+</html>

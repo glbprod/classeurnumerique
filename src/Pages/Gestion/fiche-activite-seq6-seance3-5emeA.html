@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche d'Activité - Robot mBot 2 - Système énergétique</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .header-left {
+            flex: 1;
+        }
+
+        .header-right {
+            text-align: center;
+        }
+
+        .college-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .logo-placeholder {
+            width: 150px;
+            height: 150px;
+            background-color: #ecf0f1;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info-item {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #7f8c8d;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #2c3e50;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .field {
+            margin-bottom: 25px;
+        }
+
+        .field-label {
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 10px;
+            font-size: 15px;
+            display: block;
+        }
+
+        .field-content {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #95a5a6;
+            line-height: 1.8;
+        }
+
+        .section {
+            background-color: #ecf0f1;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .conclusion {
+            border-left-color: #27ae60;
+        }
+
+        .conclusion .section-title {
+            color: #27ae60;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 2px solid #34495e;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 12px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+        }
+
+        .generated-badge {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        strong {
+            color: #2c3e50;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                padding: 20mm;
+            }
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header">
+            <div class="header-left">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Classe</div>
+                        <div class="info-value">5èmeA</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Séquence n°</div>
+                        <div class="info-value">6</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Séance n°</div>
+                        <div class="info-value">3</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="college-title">Collège Moulin à Vent</div>
+                <div class="logo-placeholder">🏫</div>
+            </div>
+        </div>
+
+        <h1>Fiche d'Activité</h1>
+
+        <!-- Objet Système Technique -->
+        <div class="field">
+            <span class="field-label">📦 Objet Système Technique</span>
+            <div class="field-content">
+                <strong>Robot mBot 2 - Système énergétique</strong>
+            </div>
+        </div>
+
+        <!-- Problématique -->
+        <div class="field">
+            <span class="field-label">❓ Problématique</span>
+            <div class="field-content">
+                Comment le robot mBot 2 transforme-t-il l'énergie électrique en mouvement pour se déplacer ?
+            </div>
+        </div>
+
+        <!-- Travail demandé -->
+        <div class="field">
+            <span class="field-label">📋 Travail demandé - Résumé des activités</span>
+            <div class="field-content">
+                Étudier la chaîne d'énergie du robot mBot 2, identifier les différentes formes d'énergie et comprendre les transformations énergétiques nécessaires au mouvement.
+            </div>
+        </div>
+
+        <!-- Activité 1 -->
+        <div class="section">
+            <div class="section-title">
+                📝 Activité 1
+            </div>
+            <div class="section-content">
+**Découverte de la chaîne d'énergie du mBot 2**
+
+Répondez aux questions suivantes en observant le robot :
+
+1. Quelle est l'énergie d'entrée du robot mBot 2 ?
+   → Énergie électrique (batterie lithium-ion)
+
+2. Quelle est l'énergie de sortie principale ?
+   → Énergie cinétique (mouvement des roues)
+
+3. Complétez le tableau des composants :
+
+| Composant | Fonction | Transformation d'énergie |
+|-----------|----------|--------------------------|
+| Batterie | Stocker l'énergie | Énergie chimique → Énergie électrique |
+| Carte mère | Distribuer l'énergie | Énergie électrique |
+| Moteurs | Convertir en mouvement | Énergie électrique → Énergie cinétique |
+| Roues | Transmettre le mouvement | Énergie cinétique (rotation) → Énergie cinétique (translation) |
+
+4. Dessinez la chaîne d'énergie complète avec les blocs fonctionnels (ALIMENTER - DISTRIBUER - CONVERTIR - TRANSMETTRE)
+            </div>
+        </div>
+
+        <!-- Activité 2 -->
+        <div class="section">
+            <div class="section-title">
+                🔍 Activité 2
+            </div>
+            <div class="section-content">
+**Investigation : Mesure de l'autonomie énergétique**
+
+Objectif : Déterminer l'autonomie du robot en fonction de son utilisation
+
+**Protocole expérimental :**
+
+1. Charger complètement la batterie du mBot 2
+2. Programmer le robot pour qu'il avance en ligne droite à vitesse constante (75%)
+3. Mesurer le temps de fonctionnement jusqu'à l'arrêt
+4. Calculer la distance parcourue
+
+**Résultats attendus :**
+- Tension batterie : 3,7V (lithium-ion)
+- Capacité : 1800 mAh
+- Autonomie estimée : 2-3 heures selon l'usage
+- Distance parcourue : environ 500-800 mètres
+
+**Questions de réflexion :**
+- Quels éléments consomment le plus d'énergie sur le robot ?
+- Comment pourrait-on améliorer l'autonomie du robot ?
+- Quelles énergies sont perdues lors des transformations ? (chaleur, frottements)
+
+**Schématisation :**
+Réalisez un schéma annoté montrant les flux d'énergie dans le robot, avec les pertes énergétiques aux différentes étapes.
+            </div>
+        </div>
+
+        <!-- Conclusion / Réalisation -->
+        <div class="section conclusion">
+            <div class="section-title">
+                ✅ Conclusion ou Réalisation
+            </div>
+            <div class="section-content">
+**Synthèse : Optimisation énergétique du robot**
+
+**Ce que nous avons appris :**
+
+Le robot mBot 2 illustre parfaitement la notion de chaîne d'énergie dans un objet technique moderne. L'énergie électrique stockée dans la batterie traverse plusieurs étapes de transformation avant de produire le mouvement des roues.
+
+**Points clés :**
+• La batterie lithium-ion stocke l'énergie sous forme chimique
+• La carte mère distribue l'énergie électrique aux différents composants
+• Les moteurs électriques convertissent l'énergie électrique en énergie mécanique (rotation)
+• Les roues transmettent cette énergie pour créer le déplacement
+
+**Efficacité énergétique :**
+À chaque étape de transformation, une partie de l'énergie est perdue, principalement sous forme de chaleur (effet Joule dans les moteurs et les circuits électriques) et par frottements mécaniques. C'est pourquoi l'autonomie réelle est toujours inférieure à l'autonomie théorique calculée.
+
+**Applications concrètes :**
+Cette compréhension de la chaîne d'énergie nous permet d'optimiser l'utilisation du robot :
+- Réduire la vitesse pour économiser l'énergie
+- Éviter les démarrages/arrêts brusques
+- Maintenir les roues propres pour réduire les frottements
+- Programmer des trajectoires efficaces
+
+**Vers le développement durable :**
+L'étude de l'efficacité énergétique des objets techniques est essentielle dans le contexte de la transition écologique. Les principes observés sur le mBot 2 s'appliquent à tous les véhicules électriques, des trottinettes aux voitures.
+
+**Compétences mobilisées :**
+✓ Identifier les formes d'énergie (MMEI 3.1)
+✓ Décrire la chaîne d'énergie (C4)
+✓ Mesurer et calculer des performances (C5)
+✓ Analyser l'impact environnemental (C7)
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div>Collège Moulin à vent – Technologie au collège</div>
+            <div class="generated-badge">
+                🤖 Fiche générée automatiquement le 09/11/2025 à 16:01
+            </div>
+        </div>
+    </div>
+</body>
+</html>
