@@ -35,6 +35,15 @@
       "addedDate": "2025-11-09T17:50:06.167Z",
       "lastModified": "2025-11-09T17:50:06.167Z",
       "favorite": false
+    },
+    {
+      "id": "page-1762710713831",
+      "title": "index",
+      "githubPath": "src/Pages/Gestion/index.html",
+      "description": "",
+      "addedDate": "2025-11-09T17:51:53.831Z",
+      "lastModified": "2025-11-09T17:51:53.831Z",
+      "favorite": false
     }
   ]
 }
