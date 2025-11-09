@@ -26,6 +26,15 @@
       "addedDate": "2025-11-09T17:49:02.331Z",
       "lastModified": "2025-11-09T17:49:02.331Z",
       "favorite": false
+    },
+    {
+      "id": "page-1762710606166",
+      "title": "fiche activite type",
+      "githubPath": "src/Pages/fiche-activite-type.html",
+      "description": "",
+      "addedDate": "2025-11-09T17:50:06.167Z",
+      "lastModified": "2025-11-09T17:50:06.167Z",
+      "favorite": false
     }
   ]
 }
