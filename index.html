@@ -21,6 +21,42 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Particules animées en arrière-plan */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
         }
         
         /* ===== HEADER ===== */
@@ -31,6 +67,13 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            backdrop-filter: blur(10px);
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .header.hidden {
+            transform: translateY(-100%);
         }
         
         .header-content {
@@ -50,12 +93,20 @@
         
         .logo-icon {
             font-size: 2.5em;
+            transition: transform 0.5s ease;
+        }
+        
+        .logo:hover .logo-icon {
+            transform: rotate(15deg) scale(1.1);
         }
         
         .logo-text h1 {
             color: #667eea;
             font-size: 1.8em;
             margin-bottom: 5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .logo-text p {
@@ -75,26 +126,69 @@
             padding: 8px 16px;
             border-radius: 5px;
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+        
+        .header-nav a:hover::after {
+            width: 100%;
         }
         
         .header-nav a:hover {
-            background: #667eea;
-            color: white;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
         }
         
         /* ===== HERO SECTION ===== */
         .hero {
             text-align: center;
             color: white;
-            padding: 20px 20px;
+            padding: 100px 20px;
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: pulse 8s infinite alternate;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
         }
         
         .hero h2 {
             font-size: 3em;
             margin-bottom: 20px;
             animation: fadeInDown 1s;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         
         .hero p {
@@ -102,6 +196,9 @@
             opacity: 0.95;
             margin-bottom: 40px;
             animation: fadeInUp 1s;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .cta-buttons {
@@ -121,11 +218,31 @@
             text-decoration: none;
             display: inline-block;
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(0,0,0,0.1);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn-cta:hover::before {
+            width: 100%;
         }
         
         .btn-primary {
             background: white;
             color: #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         .btn-primary:hover {
@@ -158,6 +275,14 @@
             padding: 40px;
             margin-bottom: 30px;
             box-shadow: 0 5px 30px rgba(0,0,0,0.1);
+            transform: translateY(50px);
+            opacity: 0;
+            transition: transform 0.8s ease, opacity 0.8s ease;
+        }
+        
+        .section.visible {
+            transform: translateY(0);
+            opacity: 1;
         }
         
         .section-header {
@@ -171,6 +296,11 @@
         
         .section-icon {
             font-size: 2.5em;
+            transition: transform 0.5s ease;
+        }
+        
+        .section-header:hover .section-icon {
+            transform: scale(1.2) rotate(10deg);
         }
         
         .section-title {
@@ -181,6 +311,23 @@
             color: #333;
             font-size: 2em;
             margin-bottom: 5px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+        }
+        
+        .section-title:hover h3::after {
+            width: 100%;
         }
         
         .section-title p {
@@ -202,6 +349,32 @@
             transition: all 0.3s;
             border: 2px solid transparent;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        
+        .card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover::before {
+            transform: scaleX(1);
         }
         
         .card:hover {
@@ -213,6 +386,11 @@
         .card-icon {
             font-size: 3em;
             margin-bottom: 15px;
+            transition: transform 0.5s ease;
+        }
+        
+        .card:hover .card-icon {
+            transform: scale(1.2) rotate(5deg);
         }
         
         .card h4 {
@@ -241,6 +419,11 @@
             border-radius: 20px;
             font-size: 0.85em;
             font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover .badge {
+            transform: scale(1.1);
         }
         
         .card-link {
@@ -249,6 +432,20 @@
             text-decoration: none;
             font-weight: bold;
             transition: all 0.3s;
+            position: relative;
+        }
+        
+        .card-link::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .card-link:hover::after {
+            right: -25px;
+            opacity: 1;
         }
         
         .card-link:hover {
@@ -260,6 +457,36 @@
         .card-admin {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-admin::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: adminPulse 6s infinite alternate;
+            z-index: 0;
+        }
+        
+        @keyframes adminPulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.3;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 0.6;
+            }
+        }
+        
+        .card-admin > * {
+            position: relative;
+            z-index: 1;
         }
         
         .card-admin h4,
@@ -290,6 +517,7 @@
             padding: 30px 20px;
             text-align: center;
             color: #666;
+            backdrop-filter: blur(10px);
         }
         
         .footer p {
@@ -326,6 +554,10 @@
                 gap: 20px;
             }
             
+            .hero {
+                padding: 60px 20px;
+            }
+            
             .hero h2 {
                 font-size: 2em;
             }
@@ -345,8 +577,11 @@
     </style>
 </head>
 <body>
+    <!-- Particules animées en arrière-plan -->
+    <div class="particles" id="particles"></div>
+
     <!-- ===== HEADER ===== -->
-    <header class="header">
+    <header class="header" id="header">
         <div class="header-content">
             <div class="logo">
                 <div class="logo-icon">⚙️</div>
@@ -540,5 +775,78 @@
     <!-- 100% privacy-first analytics -->
     <script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
     
+    <script>
+        // Création des particules animées
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Taille aléatoire
+                const size = Math.random() * 50 + 10;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Position aléatoire
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Délai d'animation aléatoire
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Animation au défilement
+            const sections = document.querySelectorAll('.section');
+            const cards = document.querySelectorAll('.card');
+            const header = document.getElementById('header');
+            let lastScrollTop = 0;
+            
+            // Observer pour les sections
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            sections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+            
+            // Observer pour les cartes avec délai
+            const cardObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 100);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            cards.forEach(card => {
+                cardObserver.observe(card);
+            });
+            
+            // Cacher/montrer le header au défilement
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    header.classList.add('hidden');
+                } else {
+                    header.classList.remove('hidden');
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+        });
+    </script>
 </body>
 </html>
