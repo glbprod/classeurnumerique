@@ -89,6 +89,15 @@
       "addedDate": "2025-11-09T19:34:04.322Z",
       "lastModified": "2025-11-09T19:34:04.324Z",
       "favorite": false
+    },
+    {
+      "id": "page-1762717635690",
+      "title": "bienvenue en technologie",
+      "githubPath": "src/Pages/bienvenue-en-technologie.html",
+      "description": "",
+      "addedDate": "2025-11-09T19:47:15.690Z",
+      "lastModified": "2025-11-09T19:47:15.701Z",
+      "favorite": false
     }
   ]
 }
