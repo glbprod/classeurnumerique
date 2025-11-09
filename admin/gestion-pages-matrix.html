@@ -465,6 +465,8 @@
       <button type="submit" class="btn" id="submitBtn">[ AJOUTER ]</button>
       <button type="button" class="btn btn-browse" onclick="toggleFileBrowser()">[ PARCOURIR ]</button>
       <button type="button" class="btn" onclick="loadPages()">[ REFRESH ]</button>
+      <button type="button" class="btn" onclick="checkAllPages()">[ 🔍 VÉRIFIER LIENS ]</button>
+      <button type="button" class="btn btn-delete" onclick="cleanBrokenLinks()">[ 🧹 NETTOYER ]</button>
     </form>
 
     <!-- Navigateur de fichiers -->
@@ -529,6 +531,135 @@
       }, 5000);
     }
 
+    // ==========================================
+// ✅ NOUVELLES FONCTIONS - VÉRIFICATION LIENS
+// ==========================================
+
+// Fonction pour vérifier le statut d'une page
+async function checkPageStatus(page) {
+  try {
+    const response = await fetch(`${API_BASE}/check-page-status`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ githubPath: page.githubPath })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      return { ...page, statusCheck: data };
+    }
+    return page;
+  } catch (error) {
+    console.error('Erreur vérification:', error);
+    return { ...page, statusCheck: { isError: true, message: 'Erreur de vérification' } };
+  }
+}
+
+// Fonction pour vérifier toutes les pages
+async function checkAllPages() {
+  const btn = event.target;
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '[ VÉRIFICATION... ]';
+  
+  showMessage('[ 🔍 VÉRIFICATION DES LIENS EN COURS... ]', 'success');
+  
+  try {
+    // Récupérer les pages actuelles
+    const response = await fetch(`${API_BASE}/get-pages`);
+    const data = await response.json();
+    
+    if (!data.success || !data.pages) {
+      throw new Error('Impossible de charger les pages');
+    }
+    
+    allPages = data.pages;
+    
+    // Vérifier par lots de 5 pour ne pas surcharger
+    const batchSize = 5;
+    const results = [];
+    
+    for (let i = 0; i < allPages.length; i += batchSize) {
+      const batch = allPages.slice(i, i + batchSize);
+      const batchResults = await Promise.all(batch.map(checkPageStatus));
+      results.push(...batchResults);
+      
+      // Afficher la progression
+      showMessage(`[ 🔍 VÉRIFICATION ${results.length}/${allPages.length}... ]`, 'success');
+    }
+    
+    // Mettre à jour avec les statuts
+    allPages = results;
+    
+    // Ré-afficher avec les icônes de statut
+    displayPages(allPages);
+    
+    // Statistiques
+    const okCount = results.filter(p => p.statusCheck?.isOk).length;
+    const errorCount = results.filter(p => p.statusCheck?.isError).length;
+    const redirectCount = results.filter(p => p.statusCheck?.isRedirect).length;
+    
+    let message = `[ ✓ VÉRIFICATION TERMINÉE ]\n`;
+    message += `🟢 OK: ${okCount} | `;
+    message += `🔴 ERREURS: ${errorCount} | `;
+    message += `🟡 REDIRECTIONS: ${redirectCount}`;
+    
+    showMessage(message, errorCount > 0 ? 'error' : 'success');
+    
+  } catch (error) {
+    showMessage(`[ ✗ ERREUR : ${error.message} ]`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+}
+
+// Fonction pour nettoyer les liens cassés
+async function cleanBrokenLinks() {
+  // Trouver les pages avec erreur
+  const brokenPages = allPages.filter(p => p.statusCheck?.isError);
+  
+  if (brokenPages.length === 0) {
+    showMessage('[ ✓ AUCUN LIEN MORT À NETTOYER ]', 'success');
+    return;
+  }
+  
+  // Créer la liste pour la confirmation
+  const list = brokenPages.map((p, index) => 
+    `${index + 1}. ${p.title}\n   └─ ${p.githubPath}`
+  ).join('\n\n');
+  
+  const confirmMessage = `[ ? ] SUPPRIMER ${brokenPages.length} PAGE(S) MORTE(S) ?\n\n${list}\n\nCette action est irréversible !`;
+  
+  if (!confirm(confirmMessage)) {
+    return;
+  }
+  
+  try {
+    // Supprimer via l'API batch
+    const ids = brokenPages.map(p => p.id);
+    
+    const response = await fetch(`${API_BASE}/delete-pages-batch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ids })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      showMessage(`[ ✓ ${data.deleted} PAGE(S) SUPPRIMÉE(S) ]`, 'success');
+      loadPages(); // Recharger la liste
+    } else {
+      throw new Error(data.error || 'Erreur inconnue');
+    }
+    
+  } catch (error) {
+    showMessage(`[ ✗ ERREUR : ${error.message} ]`, 'error');
+  }
+}
+    
     // Charger les pages
     async function loadPages() {
       const container = document.getElementById('pagesContainer');
@@ -565,8 +696,20 @@
         const favoriteClass = page.favorite ? 'active' : '';
         const favoriteIcon = page.favorite ? '★' : '☆';
         
+        // Icône de statut si vérification effectuée
+        let statusIcon = '';
+        if (page.statusCheck) {
+          if (page.statusCheck.isOk) {
+            statusIcon = '<span style="color:#00ff00;text-shadow:0 0 10px #00ff00;">🟢</span> ';
+          } else if (page.statusCheck.isRedirect) {
+            statusIcon = '<span style="color:#ffff00;text-shadow:0 0 10px #ffff00;">🟡</span> ';
+          } else if (page.statusCheck.isError) {
+            statusIcon = '<span style="color:#ff0000;text-shadow:0 0 10px #ff0000;">🔴</span> ';
+          }
+        }
+        
         card.innerHTML = `
-          <h3>[ ${page.title} ]</h3>
+          <h3>${statusIcon}[ ${page.title} ]</h3>
           <p class="path">► ${page.githubPath}</p>
           ${page.description ? `<p class="description">// ${page.description}</p>` : ''}
           <p class="date">// ${lastModified}</p>
