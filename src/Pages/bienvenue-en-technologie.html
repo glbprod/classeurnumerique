@@ -15,7 +15,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0066cc;
             color: #333;
             padding: 20px;
         }
@@ -24,30 +24,33 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background: #f5f5f5;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             overflow: hidden;
         }
         
         /* === EN-TÊTE === */
         header {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: #0066cc;
             color: white;
             padding: 40px 30px;
             text-align: center;
+            border-bottom: 3px solid #0052a3;
         }
         
         header h1 {
             font-size: 2.5em;
             margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 400;
+            letter-spacing: 2px;
         }
         
         header p {
             font-size: 1.2em;
             max-width: 800px;
             margin: 0 auto;
+            font-weight: 300;
         }
         
         /* === CONTENU PRINCIPAL === */
@@ -61,12 +64,13 @@
         }
         
         section h2 {
-            color: #667eea;
+            color: #0066cc;
             font-size: 2em;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 4px solid #f093fb;
+            border-bottom: 3px solid #0066cc;
             display: inline-block;
+            font-weight: 400;
         }
         
         /* === GRILLE DE CARTES === */
@@ -78,17 +82,18 @@
         }
         
         .card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: white;
+            color: #333;
             padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            border: 2px solid #0066cc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,102,204,0.3);
         }
         
         .card h3 {
@@ -97,6 +102,8 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            color: #0066cc;
+            font-weight: 500;
         }
         
         .card-icon {
@@ -110,35 +117,38 @@
         }
         
         .styled-list li {
-            background: #f8f9fa;
+            background: white;
             padding: 15px 20px;
             margin-bottom: 10px;
-            border-left: 5px solid #f093fb;
-            border-radius: 5px;
+            border-left: 5px solid #0066cc;
+            border-radius: 4px;
             transition: background 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         
         .styled-list li:hover {
-            background: #e9ecef;
+            background: #e6f2ff;
         }
         
         .styled-list li strong {
-            color: #667eea;
+            color: #0066cc;
         }
         
         /* === ENCADRÉ SPÉCIAL === */
         .highlight-box {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            background: white;
             padding: 30px;
-            border-radius: 15px;
+            border-radius: 8px;
             margin: 30px 0;
-            border: 3px solid #f5576c;
+            border: 3px solid #0066cc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         .highlight-box h3 {
-            color: #d63031;
+            color: #0066cc;
             font-size: 1.8em;
             margin-bottom: 15px;
+            font-weight: 500;
         }
         
         .highlight-box p {
@@ -155,13 +165,20 @@
         }
         
         .activity-item {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            background: white;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 8px;
             text-align: center;
             font-weight: bold;
-            color: #2d3436;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            color: #0066cc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #e6f2ff;
+            transition: all 0.3s ease;
+        }
+        
+        .activity-item:hover {
+            border-color: #0066cc;
+            box-shadow: 0 4px 12px rgba(0,102,204,0.2);
         }
         
         /* === POINTS FORTS === */
@@ -174,13 +191,14 @@
         }
         
         .strength-badge {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            color: #2d3436;
+            background: white;
+            color: #0066cc;
             padding: 15px 30px;
             border-radius: 50px;
             font-weight: bold;
             font-size: 1.1em;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #0066cc;
         }
         
         /* === SECTION LABORATOIRE === */
@@ -194,9 +212,10 @@
         .lab-item {
             text-align: center;
             padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border: 2px solid #667eea;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #0066cc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         .lab-item-icon {
@@ -206,12 +225,13 @@
         
         /* === APPEL À L'ACTION === */
         .cta-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0066cc;
             color: white;
             padding: 40px;
-            border-radius: 15px;
+            border-radius: 8px;
             text-align: center;
             margin-top: 50px;
+            border: 3px solid #0052a3;
         }
         
         .cta-section h2 {
@@ -219,6 +239,7 @@
             border: none;
             font-size: 2.2em;
             margin-bottom: 20px;
+            font-weight: 400;
         }
         
         .cta-section p {
@@ -246,7 +267,7 @@
     <div class="container">
         <!-- EN-TÊTE -->
         <header>
-            <h1>🚀 La Technologie au Collège</h1>
+            <h1>🚀 Bienvenue en Technologie !</h1>
             <p>Découvre une matière où tu pourras créer, innover, programmer et comprendre le monde qui t'entoure !</p>
         </header>
         
