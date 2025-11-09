@@ -822,6 +822,65 @@ async function cleanBrokenLinks() {
         loadFiles('');
       }
     }
+
+    // ==========================================
+    // ✅ FONCTION D'AFFICHAGE DES PAGES
+    // ==========================================
+    function displayPages(pages) {
+      const container = document.getElementById('pagesContainer');
+      
+      if (!pages || pages.length === 0) {
+        container.innerHTML = '<p class="loading">[ AUCUNE PAGE TROUVÉE ]</p>';
+        return;
+      }
+    
+      // Créer la grille de cards
+      const grid = document.createElement('div');
+      grid.className = 'pages-grid';
+    
+      pages.forEach(page => {
+        const card = document.createElement('div');
+        card.className = 'page-card';
+        
+        card.onclick = (e) => {
+          if (!e.target.classList.contains('btn-delete') && !e.target.classList.contains('btn-favorite')) {
+            window.open(`/${page.githubPath}`, '_blank');
+          }
+        };
+        
+        const lastModified = new Date(page.lastModified).toLocaleDateString('fr-FR');
+        const favoriteClass = page.favorite ? 'active' : '';
+        const favoriteIcon = page.favorite ? '★' : '☆';
+        
+        // ✅ Icône de statut si vérification effectuée
+        let statusIcon = '';
+        if (page.statusCheck) {
+          if (page.statusCheck.isOk) {
+            statusIcon = '<span style="color:#00ff00;text-shadow:0 0 10px #00ff00;">🟢</span> ';
+          } else if (page.statusCheck.isRedirect) {
+            statusIcon = '<span style="color:#ffff00;text-shadow:0 0 10px #ffff00;">🟡</span> ';
+          } else if (page.statusCheck.isError) {
+            statusIcon = '<span style="color:#ff0000;text-shadow:0 0 10px #ff0000;">🔴</span> ';
+          }
+        }
+        
+        card.innerHTML = `
+          <h3>${statusIcon}[ ${page.title} ]</h3>
+          <p class="path">► ${page.githubPath}</p>
+          ${page.description ? `<p class="description">// ${page.description}</p>` : ''}
+          <p class="date">// ${lastModified}</p>
+          <div class="actions">
+            <button class="btn-favorite ${favoriteClass}" onclick="toggleFavorite('${page.id}'); event.stopPropagation();">${favoriteIcon}</button>
+            <button class="btn-delete" onclick="deletePage('${page.id}'); event.stopPropagation();">[ DEL ]</button>
+          </div>
+        `;
+        
+        grid.appendChild(card);
+      });
+    
+      container.innerHTML = '';
+      container.appendChild(grid);
+    }
     
     // Charger les fichiers d'un dossier
     async function loadFiles(path) {
@@ -916,64 +975,6 @@ async function cleanBrokenLinks() {
       }
     }
     
-// ==========================================
-// ✅ FONCTION D'AFFICHAGE DES PAGES
-// ==========================================
-function displayPages(pages) {
-  const container = document.getElementById('pagesContainer');
-  
-  if (!pages || pages.length === 0) {
-    container.innerHTML = '<p class="loading">[ AUCUNE PAGE TROUVÉE ]</p>';
-    return;
-  }
-
-  // Créer la grille de cards
-  const grid = document.createElement('div');
-  grid.className = 'pages-grid';
-
-  pages.forEach(page => {
-    const card = document.createElement('div');
-    card.className = 'page-card';
-    
-    card.onclick = (e) => {
-      if (!e.target.classList.contains('btn-delete') && !e.target.classList.contains('btn-favorite')) {
-        window.open(`/${page.githubPath}`, '_blank');
-      }
-    };
-    
-    const lastModified = new Date(page.lastModified).toLocaleDateString('fr-FR');
-    const favoriteClass = page.favorite ? 'active' : '';
-    const favoriteIcon = page.favorite ? '★' : '☆';
-    
-    // ✅ Icône de statut si vérification effectuée
-    let statusIcon = '';
-    if (page.statusCheck) {
-      if (page.statusCheck.isOk) {
-        statusIcon = '<span style="color:#00ff00;text-shadow:0 0 10px #00ff00;">🟢</span> ';
-      } else if (page.statusCheck.isRedirect) {
-        statusIcon = '<span style="color:#ffff00;text-shadow:0 0 10px #ffff00;">🟡</span> ';
-      } else if (page.statusCheck.isError) {
-        statusIcon = '<span style="color:#ff0000;text-shadow:0 0 10px #ff0000;">🔴</span> ';
-      }
-    }
-    
-    card.innerHTML = `
-      <h3>${statusIcon}[ ${page.title} ]</h3>
-      <p class="path">► ${page.githubPath}</p>
-      ${page.description ? `<p class="description">// ${page.description}</p>` : ''}
-      <p class="date">// ${lastModified}</p>
-      <div class="actions">
-        <button class="btn-favorite ${favoriteClass}" onclick="toggleFavorite('${page.id}'); event.stopPropagation();">${favoriteIcon}</button>
-        <button class="btn-delete" onclick="deletePage('${page.id}'); event.stopPropagation();">[ DEL ]</button>
-      </div>
-    `;
-    
-    grid.appendChild(card);
-  });
-
-  container.innerHTML = '';
-  container.appendChild(grid);
-}
     // Charger les pages au démarrage
     loadPages();
   </script>
