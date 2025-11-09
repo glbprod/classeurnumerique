@@ -53,6 +53,15 @@
       "addedDate": "2025-11-09T17:56:29.380Z",
       "lastModified": "2025-11-09T17:56:29.380Z",
       "favorite": false
+    },
+    {
+      "id": "page-1762712532190",
+      "title": "fiche activité ia",
+      "githubPath": "src/Pages/fiche-activité-ia.html",
+      "description": "",
+      "addedDate": "2025-11-09T18:22:12.190Z",
+      "lastModified": "2025-11-09T18:22:12.203Z",
+      "favorite": false
     }
   ]
 }
