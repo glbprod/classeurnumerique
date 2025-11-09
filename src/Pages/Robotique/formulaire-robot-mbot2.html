@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche Activité - Robot de patrouille mBot 2</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .competence-box {
+            background-color: #e8eaf6;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .competence-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .intro {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+        
+        .intro h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .intro ul {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+        
+        .question {
+            background-color: #ffffff;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .question h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .question h3 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+        
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 2px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        td input[type="text"] {
+            margin: 0;
+        }
+        
+        .info-box {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .info-box::before {
+            content: "💡 ";
+            font-size: 1.2em;
+        }
+        
+        .attention-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .attention-box::before {
+            content: "⚠️ ";
+            font-size: 1.2em;
+        }
+        
+        .mission-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        #result h3 {
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+        
+        .code-example {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 15px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        
+        .code-comment {
+            color: #95a5a6;
+            font-style: italic;
+        }
+        
+        label {
+            display: block;
+            margin: 10px 0 5px 0;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 FICHE ACTIVITÉ - Robot de patrouille autonome</h1>
+        
+        <div class="section-title">
+            <h3 style="margin: 0; color: white;">Séquence : Systèmes de protection automatisés</h3>
+            <p style="margin: 5px 0 0 0; color: white;">Projet intégrateur - Programmation du mBot 2 (CyberPi)</p>
+        </div>
+
+        <div class="competence-box">
+            <h3>Compétences travaillées</h3>
+            <p><strong>CT 5.6 :</strong> Structurer un programme</p>
+            <p><strong>CT 5.7 :</strong> Programmation</p>
+            <p><strong>CT 2.4 :</strong> Flux d'information et capteurs</p>
+        </div>
+
+        <div class="intro">
+            <h3>🎯 Objectifs de l'activité :</h3>
+            <ul>
+                <li>Programmer un robot mBot 2 autonome capable de patrouiller dans une zone définie</li>
+                <li>Intégrer les capteurs du mBot 2 pour la détection d'obstacles et d'intrusions</li>
+                <li>Créer des comportements adaptatifs selon les situations rencontrées</li>
+            </ul>
+        </div>
+
+        <form id="robotForm">
+            <!-- Identification de l'élève -->
+            <div class="question" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
+                <p><strong>Nom et Prénom :</strong></p>
+                <input type="text" id="studentName" name="studentName" placeholder="Votre nom complet" required>
+                
+                <p style="margin-top: 15px;"><strong>Classe :</strong></p>
+                <input type="text" id="studentClass" name="studentClass" placeholder="Ex: 3ème A" required>
+                
+                <p style="margin-top: 15px;"><strong>Numéro de groupe :</strong></p>
+                <input type="text" id="groupNumber" name="groupNumber" placeholder="Ex: Groupe 1" required>
+            </div>
+
+            <div class="mission-box">
+                🎯 MISSION : Créer un robot capable de surveiller une zone en patrouille automatique et de détecter toute intrusion
+            </div>
+
+            <!-- Partie 1: Découverte du mBot 2 -->
+            <div class="question">
+                <h2>PHASE 1 : Découverte du mBot 2</h2>
+                
+                <h3>1/ Les capteurs du mBot 2</h3>
+                <p><strong>Complétez le tableau suivant en identifiant les capteurs et leurs fonctions :</strong></p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Capteur</th>
+                            <th>À quoi sert-il ?</th>
+                            <th>Type d'information fournie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Capteur ultrason</strong></td>
+                            <td><input type="text" name="ultrason_fonction" placeholder="Sa fonction..." required></td>
+                            <td><input type="text" name="ultrason_info" placeholder="Type d'information..." required></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Capteur suiveur de ligne (quad RGB)</strong></td>
+                            <td><input type="text" name="ligne_fonction" placeholder="Sa fonction..." required></td>
+                            <td><input type="text" name="ligne_info" placeholder="Type d'information..." required></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Écran couleur CyberPi</strong></td>
+                            <td><input type="text" name="ecran_fonction" placeholder="Sa fonction..." required></td>
+                            <td><input type="text" name="ecran_info" placeholder="Type d'information..." required></td>
+                        </tr>
+                        <tr>
+                            <td><strong>LED RGB</strong></td>
+                            <td><input type="text" name="led_fonction" placeholder="Sa fonction..." required></td>
+                            <td><input type="text" name="led_info" placeholder="Type d'information..." required></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="margin-top: 30px;">2/ Tests de base réalisés</h3>
+                <p><strong>Notez les résultats de vos tests :</strong></p>
+                
+                <label>Vitesse moteur optimale trouvée (0-100) :</label>
+                <input type="text" name="vitesse_optimale" placeholder="Ex: 50" required>
+                
+                <label>Distance de détection maximale du capteur ultrason :</label>
+                <input type="text" name="distance_max" placeholder="Ex: 200 cm" required>
+                
+                <label>Observations sur le suiveur de ligne :</label>
+                <textarea name="obs_ligne" placeholder="Comment réagit le capteur sur ligne noire / surface blanche..." required></textarea>
+            </div>
+
+            <!-- Partie 2: Analyse des comportements -->
+            <div class="question">
+                <h2>PHASE 2 : Analyse des comportements</h2>
+                
+                <p><strong>Le robot doit adopter différents comportements selon les situations. Complétez le tableau du cahier des charges :</strong></p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Comportement</th>
+                            <th>Condition de déclenchement</th>
+                            <th>Actions à réaliser</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Patrouille normale</strong></td>
+                            <td><input type="text" name="patrouille_condition" placeholder="Quand...?" required></td>
+                            <td><input type="text" name="patrouille_actions" placeholder="Le robot doit..." required></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Évitement d'obstacle</strong></td>
+                            <td><input type="text" name="evitement_condition" placeholder="Si distance < ... cm" required></td>
+                            <td><input type="text" name="evitement_actions" placeholder="Le robot doit..." required></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Détection d'intrusion</strong></td>
+                            <td><input type="text" name="intrusion_condition" placeholder="Si distance < ... cm" required></td>
+                            <td><input type="text" name="intrusion_actions" placeholder="Alertes visuelles et sonores..." required></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reprise de patrouille</strong></td>
+                            <td><input type="text" name="reprise_condition" placeholder="Après combien de temps..." required></td>
+                            <td><input type="text" name="reprise_actions" placeholder="Le robot doit..." required></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="attention-box" style="margin-top: 20px;">
+                    <strong>Réflexion importante :</strong> Pourquoi la détection d'intrusion doit-elle avoir la priorité sur les autres comportements ?
+                </div>
+                <textarea name="reflexion_priorite" placeholder="Expliquez votre raisonnement..." required></textarea>
+            </div>
+
+            <!-- Partie 3: Algorithme -->
+            <div class="question">
+                <h2>PHASE 3 : Conception de l'algorithme</h2>
+                
+                <div class="info-box">
+                    Un algorithme est une suite d'instructions logiques qui permet de résoudre un problème. Pour le robot de patrouille, il faut définir l'ordre des actions.
+                </div>
+
+                <h3>Structure de l'algorithme</h3>
+                <p><strong>Complétez les étapes manquantes de l'algorithme :</strong></p>
+                
+                <div class="code-example">DÉBUT du programme
+
+RÉPÉTER INDÉFINIMENT :
+    
+    // ÉTAPE 1 : ACQUISITION - Lire tous les capteurs
+    Lire distance_avant (capteur ultrason)
+    Lire état_ligne (capteur suiveur de ligne)
+    
+    // ÉTAPE 2 : TRAITEMENT - Décider du comportement
+    
+    SI distance_avant < <input type="text" name="algo_seuil1" placeholder="?" style="width: 60px; display: inline-block;"> cm ALORS
+        → Comportement : <input type="text" name="algo_comportement1" placeholder="?" style="width: 150px; display: inline-block;">
+        
+    SINON SI distance_avant < <input type="text" name="algo_seuil2" placeholder="?" style="width: 60px; display: inline-block;"> cm ALORS
+        → Comportement : <input type="text" name="algo_comportement2" placeholder="?" style="width: 150px; display: inline-block;">
+        
+    SINON
+        → Comportement : <input type="text" name="algo_comportement3" placeholder="?" style="width: 150px; display: inline-block;">
+        
+    FIN SI
+    
+FIN RÉPÉTER
+
+FIN du programme</div>
+
+                <h3 style="margin-top: 30px;">Questions de compréhension</h3>
+                
+                <label>1. Pourquoi utilise-t-on une boucle "RÉPÉTER INDÉFINIMENT" ?</label>
+                <textarea name="question_boucle" placeholder="Votre réponse..." required></textarea>
+                
+                <label>2. Que se passe-t-il si on inverse les conditions (tester d'abord 20 cm puis 10 cm) ?</label>
+                <textarea name="question_ordre" placeholder="Votre réponse..." required></textarea>
+                
+                <label>3. Citez un problème qui pourrait survenir si le robot ne détecte pas correctement la ligne :</label>
+                <textarea name="question_probleme" placeholder="Votre réponse..." required></textarea>
+            </div>
+
+            <!-- Partie 4: Programmation Scratch -->
+            <div class="question">
+                <h2>PHASE 4 : Programmation en blocs (mBlock)</h2>
+                
+                <h3>Blocs utilisés</h3>
+                <p><strong>Pour chaque action, indiquez quelle catégorie de blocs Scratch vous devez utiliser :</strong></p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Action à programmer</th>
+                            <th>Catégorie de blocs</th>
+                            <th>Exemple de bloc</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Faire avancer le robot</td>
+                            <td><input type="text" name="bloc_avancer" placeholder="Ex: Mouvement" required></td>
+                            <td><input type="text" name="bloc_avancer_exemple" placeholder="Ex: avancer à vitesse..." required></td>
+                        </tr>
+                        <tr>
+                            <td>Lire la distance du capteur ultrason</td>
+                            <td><input type="text" name="bloc_ultrason" placeholder="Quelle catégorie?" required></td>
+                            <td><input type="text" name="bloc_ultrason_exemple" placeholder="Exemple de bloc..." required></td>
+                        </tr>
+                        <tr>
+                            <td>Afficher un message sur l'écran</td>
+                            <td><input type="text" name="bloc_ecran" placeholder="Quelle catégorie?" required></td>
+                            <td><input type="text" name="bloc_ecran_exemple" placeholder="Exemple de bloc..." required></td>
+                        </tr>
+                        <tr>
+                            <td>Allumer les LED en rouge</td>
+                            <td><input type="text" name="bloc_led" placeholder="Quelle catégorie?" required></td>
+                            <td><input type="text" name="bloc_led_exemple" placeholder="Exemple de bloc..." required></td>
+                        </tr>
+                        <tr>
+                            <td>Attendre 3 secondes</td>
+                            <td><input type="text" name="bloc_attendre" placeholder="Quelle catégorie?" required></td>
+                            <td><input type="text" name="bloc_attendre_exemple" placeholder="Exemple de bloc..." required></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="margin-top: 30px;">Difficultés rencontrées</h3>
+                <label>Décrivez les principales difficultés que vous avez rencontrées lors de la programmation :</label>
+                <textarea name="difficultes" placeholder="Problèmes techniques, erreurs de logique, capteurs..." required></textarea>
+                
+                <label>Comment les avez-vous résolues ?</label>
+                <textarea name="solutions" placeholder="Vos solutions..." required></textarea>
+            </div>
+
+            <!-- Partie 5: Tests et validation -->
+            <div class="question">
+                <h2>PHASE 5 : Tests et validation</h2>
+                
+                <h3>Résultats des tests</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Critère du cahier des charges</th>
+                            <th>Validé ? (Oui/Non)</th>
+                            <th>Commentaires</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Navigation autonome sur le circuit</td>
+                            <td><input type="text" name="test_navigation" placeholder="Oui/Non" required></td>
+                            <td><input type="text" name="test_navigation_com" placeholder="Commentaires..." required></td>
+                        </tr>
+                        <tr>
+                            <td>Détection d'obstacles < 20 cm</td>
+                            <td><input type="text" name="test_obstacle" placeholder="Oui/Non" required></td>
+                            <td><input type="text" name="test_obstacle_com" placeholder="Commentaires..." required></td>
+                        </tr>
+                        <tr>
+                            <td>Alerte en cas d'intrusion < 10 cm</td>
+                            <td><input type="text" name="test_intrusion" placeholder="Oui/Non" required></td>
+                            <td><input type="text" name="test_intrusion_com" placeholder="Commentaires..." required></td>
+                        </tr>
+                        <tr>
+                            <td>Reprise de patrouille après alerte</td>
+                            <td><input type="text" name="test_reprise" placeholder="Oui/Non" required></td>
+                            <td><input type="text" name="test_reprise_com" placeholder="Commentaires..." required></td>
+                        </tr>
+                        <tr>
+                            <td>Autonomie de 5 minutes</td>
+                            <td><input type="text" name="test_autonomie" placeholder="Oui/Non" required></td>
+                            <td><input type="text" name="test_autonomie_com" placeholder="Commentaires..." required></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <label style="margin-top: 20px;">Note globale de votre groupe sur le projet (1 à 10) :</label>
+                <input type="text" name="note_groupe" placeholder="Ex: 8/10" required>
+            </div>
+
+            <!-- Partie 6: Réflexion éthique -->
+            <div class="question">
+                <h2>PHASE 6 : Réflexion éthique et sociétale</h2>
+                
+                <div class="info-box">
+                    Les robots de surveillance posent des questions importantes sur la vie privée, la sécurité et l'éthique.
+                </div>
+
+                <label>1. Quels sont les avantages d'utiliser un robot de patrouille dans un entrepôt ?</label>
+                <textarea name="ethique_avantages" placeholder="Listez au moins 3 avantages..." required></textarea>
+                
+                <label>2. Quels sont les risques ou les inconvénients de ce type de technologie ?</label>
+                <textarea name="ethique_risques" placeholder="Réfléchissez aux aspects négatifs possibles..." required></textarea>
+                
+                <label>3. Selon vous, dans quels lieux ce type de robot DEVRAIT être utilisé ? Dans quels lieux il NE DEVRAIT PAS être utilisé ? Justifiez.</label>
+                <textarea name="ethique_lieux" placeholder="Votre opinion argumentée..." required></textarea>
+                
+                <label>4. Si vous étiez un employé de cet entrepôt, comment réagiriez-vous à l'arrivée de ce robot ?</label>
+                <textarea name="ethique_reaction" placeholder="Votre ressenti..." required></textarea>
+            </div>
+
+            <div style="display: flex; gap: 15px; margin-top: 30px;">
+                <button type="button" id="sendToFirebase" class="submit-btn" style="flex: 1;">
+                    📤 Envoyer mes réponses
+                </button>
+                <button type="reset" class="submit-btn" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); flex: 0.3;">
+                    🔄 Réinitialiser
+                </button>
+            </div>
+        </form>
+
+        <div id="result">
+            <h3>✅ Réponses enregistrées !</h3>
+            <p>Vos réponses ont été sauvegardées avec succès. Vous pouvez maintenant les relire ou demander une correction à votre professeur.</p>
+        </div>
+    </div>
+
+    <script>
+        // Protection par mot de passe
+        (function() {
+            const MOT_DE_PASSE = 'mbot2024'; // ← Changez ici
+            let tentatives = 5;
+            
+            while (tentatives > 0) {
+                const saisie = prompt('🔒 Mot de passe requis pour accéder au formulaire :');
+                
+                if (saisie === null) {
+                    document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès annulé</h1>';
+                    throw new Error('Accès annulé');
+                }
+                
+                if (saisie === MOT_DE_PASSE) {
+                    return; // ✅ Mot de passe correct
+                }
+                
+                tentatives--;
+                if (tentatives > 0) {
+                    alert('❌ Mot de passe incorrect ! Il vous reste ' + tentatives + ' tentative(s).');
+                }
+            }
+            
+            alert('🚫 Nombre de tentatives dépassé !');
+            document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès refusé</h1>';
+            throw new Error('Accès refusé');
+        })();
+        
+        // Confirmation avant fermeture
+        let formModified = false;
+
+        document.getElementById('robotForm').addEventListener('input', function() {
+            formModified = true;
+        });
+
+        window.addEventListener('beforeunload', function(e) {
+            if (formModified) {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+           
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        console.log('✅ Firebase initialisé');
+
+        // Bouton d'envoi
+        document.getElementById('sendToFirebase').addEventListener('click', async function() {
+            const form = document.getElementById('robotForm');
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            const originalText = this.textContent;
+            this.disabled = true;
+            this.textContent = '⏳ Envoi en cours...';
+            
+            
