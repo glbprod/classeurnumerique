@@ -107,6 +107,15 @@
       "addedDate": "2025-11-09T21:18:48.264Z",
       "lastModified": "2025-11-09T21:18:48.265Z",
       "favorite": false
+    },
+    {
+      "id": "page-1762723143233",
+      "title": "activite mbot2 patrouille",
+      "githubPath": "src/Pages/Robotique/activite_mbot2_patrouille.html",
+      "description": "",
+      "addedDate": "2025-11-09T21:19:03.233Z",
+      "lastModified": "2025-11-09T21:19:03.233Z",
+      "favorite": false
     }
   ]
 }
