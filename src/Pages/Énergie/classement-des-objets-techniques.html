@@ -443,22 +443,6 @@
     </style>
 </head>
 <body>
-    <!-- BOUTONS D'ACTION -->
-    <div class="controls-container">
-        <button id="saveBtn" class="btn-action btn-save">
-            💾 Sauvegarder dans Firebase
-        </button>
-        <button id="exportPdfBtn" class="btn-action btn-pdf">
-            📄 Exporter en PDF
-        </button>
-        <button id="exportJsonBtn" class="btn-action btn-json">
-            📦 Exporter en JSON
-        </button>
-        <button id="resetBtn" class="btn-action btn-reset">
-            🔄 Réinitialiser
-        </button>
-    </div>
-
     <div class="container" id="ficheContent">
         <!-- EN-TÊTE AVEC INFORMATIONS DE L'ÉLÈVE -->
         <header class="header">
@@ -814,6 +798,22 @@
             </table>
         </section>
 
+        <!-- BOUTONS D'ACTION -->
+        <div class="controls-container">
+            <button id="saveBtn" class="btn-action btn-save">
+                💾 Envoyer
+            </button>
+            <button id="exportPdfBtn" class="btn-action btn-pdf">
+                📄 Exporter en PDF
+            </button>
+            <!-- <button id="exportJsonBtn" class="btn-action btn-json">
+                📦 Exporter en JSON
+            </button>
+            <button id="resetBtn" class="btn-action btn-reset">
+                🔄 Réinitialiser
+            </button> -->
+        </div>
+
         <!-- SYNTHÈSE -->
         <section class="section" style="background-color: #e8f4f8;">
             <div class="section-title">
@@ -969,7 +969,7 @@
         <!-- FOOTER -->
         <footer class="footer">
             <p>Collège Moulin à Vent – Technologie au collège</p>
-            <p>Fiche d'activité Cycle 3/4 – Classer les objets techniques</p>
+            <p>Fiche d'activité Cycle 4 – Classer les objets techniques</p>
         </footer>
     </div>
 
@@ -977,7 +977,7 @@
 
         // Protection par mot de passe
         (function() {
-            const MOT_DE_PASSE = 'techno2025'; // ← Changez ici
+            const MOT_DE_PASSE = 'techno'; // ← Changez ici
             let tentatives = 3;
             
             while (tentatives > 0) {
