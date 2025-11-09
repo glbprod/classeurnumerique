@@ -134,6 +134,15 @@
       "addedDate": "2025-11-09T22:04:09.471Z",
       "lastModified": "2025-11-09T22:04:09.473Z",
       "favorite": false
+    },
+    {
+      "id": "page-1762727317067",
+      "title": "quiz programmation robotique",
+      "githubPath": "src/Pages/Robotique/quiz-programmation-robotique.html",
+      "description": "",
+      "addedDate": "2025-11-09T22:28:37.067Z",
+      "lastModified": "2025-11-09T22:28:37.086Z",
+      "favorite": false
     }
   ]
 }
