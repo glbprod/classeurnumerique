@@ -1,7 +1,5 @@
-const fs = require('fs');
-const path = require('path');
-
-exports.handler = async (event) => {
+// Supprime une page du fichier pages-config.json
+exports.handler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -12,55 +10,117 @@ exports.handler = async (event) => {
     return { statusCode: 200, headers, body: '' };
   }
 
+  // Uniquement en DELETE ou POST
+  if (event.httpMethod !== 'DELETE' && event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({ error: 'Method not allowed' })
+    };
+  }
+
   try {
-    const { ids } = JSON.parse(event.body);
+    const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+    const GITHUB_REPO = process.env.GITHUB_REPO;
     
-    if (!Array.isArray(ids) || ids.length === 0) {
+    if (!GITHUB_TOKEN || !GITHUB_REPO) {
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: 'Variables manquantes' })
+      };
+    }
+
+    // Récupération de l'ID de la page à supprimer
+    const { id } = JSON.parse(event.body);
+
+    if (!id) {
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({
-          success: false,
-          error: 'IDs invalides'
-        })
+        body: JSON.stringify({ error: 'ID de la page requis' })
       };
     }
-    
-    // Chemin vers pages.json
-    const pagesPath = path.join(process.cwd(), 'pages.json');
-    
-    // Lire les pages
-    let pages = [];
-    if (fs.existsSync(pagesPath)) {
-      pages = JSON.parse(fs.readFileSync(pagesPath, 'utf8'));
+
+    // 1. Récupération du fichier actuel
+    const getResponse = await fetch(
+      `https://api.github.com/repos/${GITHUB_REPO}/contents/data/pages-config.json`,
+      {
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'Netlify-Function'
+        }
+      }
+    );
+
+    if (!getResponse.ok) {
+      throw new Error(`Erreur GitHub GET: ${getResponse.status}`);
     }
+
+    const fileData = await getResponse.json();
+    const currentContent = Buffer.from(fileData.content, 'base64').toString('utf-8');
+    const pagesConfig = JSON.parse(currentContent);
+
+    // 2. Trouver et supprimer la page
+    const pageIndex = pagesConfig.pages.findIndex(p => p.id === id);
     
-    // Filtrer pour supprimer les pages avec les IDs donnés
-    const beforeCount = pages.length;
-    pages = pages.filter(page => !ids.includes(page.id));
-    const deletedCount = beforeCount - pages.length;
+    if (pageIndex === -1) {
+      return {
+        statusCode: 404,
+        headers,
+        body: JSON.stringify({ error: 'Page non trouvée' })
+      };
+    }
+
+    const deletedPage = pagesConfig.pages[pageIndex];
+    pagesConfig.pages.splice(pageIndex, 1);
+
+    // 3. Mise à jour sur GitHub
+    const newContent = Buffer.from(JSON.stringify(pagesConfig, null, 2)).toString('base64');
     
-    // Sauvegarder
-    fs.writeFileSync(pagesPath, JSON.stringify(pages, null, 2));
-    
+    const updateResponse = await fetch(
+      `https://api.github.com/repos/${GITHUB_REPO}/contents/data/pages-config.json`,
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'Netlify-Function',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: `Suppression de la page: ${deletedPage.title}`,
+          content: newContent,
+          sha: fileData.sha
+        })
+      }
+    );
+
+    if (!updateResponse.ok) {
+      const errorData = await updateResponse.json();
+      throw new Error(`Erreur GitHub PUT: ${updateResponse.status} - ${JSON.stringify(errorData)}`);
+    }
+
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
         success: true,
-        deleted: deletedCount,
-        remaining: pages.length
+        deletedPage: deletedPage,
+        message: 'Page supprimée avec succès'
       })
     };
-    
+
   } catch (error) {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({
+      body: JSON.stringify({ 
         success: false,
-        error: error.message
+        error: error.message 
       })
     };
   }
 };
+    └── ... (autres fonctions)
