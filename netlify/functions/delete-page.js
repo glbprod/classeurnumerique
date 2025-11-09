@@ -1,4 +1,4 @@
-// Supprime plusieurs pages en une seule fois du fichier pages-config.json
+// Supprime une page du fichier pages-config.json
 exports.handler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -10,7 +10,8 @@ exports.handler = async (event, context) => {
     return { statusCode: 200, headers, body: '' };
   }
 
-  if (event.httpMethod !== 'POST') {
+  // Uniquement en DELETE ou POST
+  if (event.httpMethod !== 'DELETE' && event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
       headers,
@@ -30,14 +31,14 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Récupération des IDs à supprimer
-    const { ids } = JSON.parse(event.body);
+    // Récupération de l'ID de la page à supprimer
+    const { id } = JSON.parse(event.body);
 
-    if (!Array.isArray(ids) || ids.length === 0) {
+    if (!id) {
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({ error: 'Liste d\'IDs requise' })
+        body: JSON.stringify({ error: 'ID de la page requis' })
       };
     }
 
@@ -61,22 +62,19 @@ exports.handler = async (event, context) => {
     const currentContent = Buffer.from(fileData.content, 'base64').toString('utf-8');
     const pagesConfig = JSON.parse(currentContent);
 
-    // 2. Filtrer pour supprimer toutes les pages dont l'ID est dans la liste
-    const beforeCount = pagesConfig.pages.length;
-    const deletedPages = pagesConfig.pages.filter(p => ids.includes(p.id));
-    pagesConfig.pages = pagesConfig.pages.filter(p => !ids.includes(p.id));
-    const deletedCount = beforeCount - pagesConfig.pages.length;
-
-    if (deletedCount === 0) {
+    // 2. Trouver et supprimer la page
+    const pageIndex = pagesConfig.pages.findIndex(p => p.id === id);
+    
+    if (pageIndex === -1) {
       return {
         statusCode: 404,
         headers,
-        body: JSON.stringify({ 
-          success: false,
-          error: 'Aucune page trouvée avec ces IDs' 
-        })
+        body: JSON.stringify({ error: 'Page non trouvée' })
       };
     }
+
+    const deletedPage = pagesConfig.pages[pageIndex];
+    pagesConfig.pages.splice(pageIndex, 1);
 
     // 3. Mise à jour sur GitHub
     const newContent = Buffer.from(JSON.stringify(pagesConfig, null, 2)).toString('base64');
@@ -92,7 +90,7 @@ exports.handler = async (event, context) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          message: `🧹 Nettoyage automatique: suppression de ${deletedCount} page(s) morte(s)`,
+          message: `Suppression de la page: ${deletedPage.title}`,
           content: newContent,
           sha: fileData.sha
         })
@@ -109,9 +107,8 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: true,
-        deleted: deletedCount,
-        remaining: pagesConfig.pages.length,
-        deletedPages: deletedPages.map(p => p.title)
+        deletedPage: deletedPage,
+        message: 'Page supprimée avec succès'
       })
     };
 
@@ -126,3 +123,4 @@ exports.handler = async (event, context) => {
     };
   }
 };
+    └── ... (autres fonctions)
