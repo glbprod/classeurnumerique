@@ -284,13 +284,13 @@
             <!-- Identification de l'élève -->
             <div class="question" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
                 <p><strong>Nom et Prénom :</strong></p>
-                <input type="text" id="studentName" name="studentName" placeholder="Votre nom complet" required>
+                <input type="text" id="studentName" name="studentName" placeholder="" required>
                 
                 <p style="margin-top: 15px;"><strong>Classe :</strong></p>
-                <input type="text" id="studentClass" name="studentClass" placeholder="Ex: 3ème A" required>
+                <input type="text" id="studentClass" name="studentClass" placeholder="" required>
                 
                 <p style="margin-top: 15px;"><strong>Numéro de groupe :</strong></p>
-                <input type="text" id="groupNumber" name="groupNumber" placeholder="Ex: Groupe 1" required>
+                <input type="text" id="groupNumber" name="groupNumber" placeholder="" required>
             </div>
 
             <div class="mission-box">
@@ -406,28 +406,28 @@
                 
                 <div class="code-example">DÉBUT du programme
 
-RÉPÉTER INDÉFINIMENT :
-    
-    // ÉTAPE 1 : ACQUISITION - Lire tous les capteurs
-    Lire distance_avant (capteur ultrason)
-    Lire état_ligne (capteur suiveur de ligne)
-    
-    // ÉTAPE 2 : TRAITEMENT - Décider du comportement
-    
-    SI distance_avant < <input type="text" name="algo_seuil1" placeholder="?" style="width: 60px; display: inline-block;"> cm ALORS
-        → Comportement : <input type="text" name="algo_comportement1" placeholder="?" style="width: 150px; display: inline-block;">
-        
-    SINON SI distance_avant < <input type="text" name="algo_seuil2" placeholder="?" style="width: 60px; display: inline-block;"> cm ALORS
-        → Comportement : <input type="text" name="algo_comportement2" placeholder="?" style="width: 150px; display: inline-block;">
-        
-    SINON
-        → Comportement : <input type="text" name="algo_comportement3" placeholder="?" style="width: 150px; display: inline-block;">
-        
-    FIN SI
-    
-FIN RÉPÉTER
-
-FIN du programme</div>
+                RÉPÉTER INDÉFINIMENT :
+                    
+                    // ÉTAPE 1 : ACQUISITION - Lire tous les capteurs
+                    Lire distance_avant (capteur ultrason)
+                    Lire état_ligne (capteur suiveur de ligne)
+                    
+                    // ÉTAPE 2 : TRAITEMENT - Décider du comportement
+                    
+                    SI distance_avant < <input type="text" name="algo_seuil1" placeholder="?" style="width: 60px; display: inline-block;"> cm ALORS
+                        → Comportement : <input type="text" name="algo_comportement1" placeholder="?" style="width: 150px; display: inline-block;">
+                        
+                    SINON SI distance_avant < <input type="text" name="algo_seuil2" placeholder="?" style="width: 60px; display: inline-block;"> cm ALORS
+                        → Comportement : <input type="text" name="algo_comportement2" placeholder="?" style="width: 150px; display: inline-block;">
+                        
+                    SINON
+                        → Comportement : <input type="text" name="algo_comportement3" placeholder="?" style="width: 150px; display: inline-block;">
+                        
+                    FIN SI
+                    
+                FIN RÉPÉTER
+                
+                FIN du programme</div>
 
                 <h3 style="margin-top: 30px;">Questions de compréhension</h3>
                 
@@ -579,12 +579,12 @@ FIN du programme</div>
 
     <script>
 
-        // ============================================
+      // ============================================
         // CONFIRMATION AVANT FERMETURE
         // ============================================
         let formModified = false;
     
-        document.getElementById('quizForm').addEventListener('input', function() {
+        document.getElementById('activitiesForm').addEventListener('input', function() {
             formModified = true;
         });
     
@@ -595,7 +595,7 @@ FIN du programme</div>
                 return '';
             }
         });
-        
+            
         // Protection par mot de passe
         (function() {
             const MOT_DE_PASSE = 'dnb'; // ← Changez ici
