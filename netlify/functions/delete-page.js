@@ -123,4 +123,3 @@ exports.handler = async (event, context) => {
     };
   }
 };
-    └── ... (autres fonctions)
