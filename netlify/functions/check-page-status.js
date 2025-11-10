@@ -1,8 +1,3 @@
-// ❌ SUPPRIMER cette ligne :
-// const fetch = require('node-fetch');
-
-// ✅ Fetch est déjà disponible nativement dans Node.js 18+
-
 exports.handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -17,17 +12,21 @@ exports.handler = async (event) => {
   try {
     const { githubPath } = JSON.parse(event.body);
     
+    // ✅ Nettoyer le chemin pour correspondre aux URLs Netlify
+    let cleanPath = githubPath
+      .replace(/\.html$/, '')           // Retire .html à la fin
+      .replace('/Pages/', '/pages/');   // Pages → pages (minuscule)
+    
     const baseUrl = 'https://latechnologieaucollege.netlify.app';
-    const fullUrl = `${baseUrl}/${githubPath}`;
+    const fullUrl = `${baseUrl}/${cleanPath}`;
     
     console.log(`Vérification de : ${fullUrl}`);
     
     try {
-      // fetch est disponible nativement
       const response = await fetch(fullUrl, {
         method: 'HEAD',
         redirect: 'manual',
-        signal: AbortSignal.timeout(5000) // Timeout de 5 secondes
+        signal: AbortSignal.timeout(5000)
       });
       
       return {
