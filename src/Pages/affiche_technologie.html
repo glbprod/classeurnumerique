@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affiche - Poste Technologie avec Le Chat</title>
+    <style>
+        @media print {
+            body { margin: 0; padding: 0; }
+            .poster { 
+                box-shadow: none; 
+                margin: 0;
+                padding: 15mm;
+                page-break-inside: avoid;
+                width: 297mm;
+                height: 210mm;
+                max-width: none;
+                min-height: auto;
+            }
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #2c3e50;
+            margin: 0;
+            padding: 10px;
+        }
+        
+        .poster {
+            width: 100%;
+            max-width: 1122px; /* Équivalent A4 paysage à 96 DPI */
+            height: auto;
+            min-height: 794px; /* Équivalent A4 paysage à 96 DPI */
+            margin: 0 auto;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .poster::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #3498db20, #e74c3c20);
+            border-radius: 50%;
+            transform: translate(50px, -50px);
+        }
+        
+        .header {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .main-title {
+            background: linear-gradient(45deg, #3498db, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1em;
+            margin: 5px 0;
+            font-style: italic;
+        }
+        
+        .left-column, .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #3498db;
+        }
+        
+        .section-alt {
+            border-left-color: #e74c3c;
+        }
+        
+        .section-accent {
+            border-left-color: #f39c12;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            font-size: 1.1em;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .icon {
+            font-size: 1.2em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0;
+            font-size: 0.8em;
+        }
+        
+        th, td {
+            border: 1px solid #e0e6ed;
+            padding: 6px;
+            text-align: left;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .activity-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        ol, ul {
+            margin: 8px 0;
+            padding-left: 18px;
+        }
+        
+        li {
+            margin: 4px 0;
+            line-height: 1.3;
+            font-size: 0.9em;
+        }
+        
+        .rules-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 8px 0;
+        }
+        
+        .do, .dont {
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.8em;
+        }
+        
+        .do {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        
+        .dont {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .do h4, .dont h4 {
+            margin: 0 0 8px 0;
+            font-size: 1em;
+        }
+        
+        .examples-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 8px 0;
+        }
+        
+        .example-item {
+            background: #e3f2fd;
+            padding: 8px;
+            border-radius: 6px;
+            border-left: 3px solid #2196f3;
+            font-size: 0.75em;
+            line-height: 1.2;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 8px 0;
+        }
+        
+        .project-card {
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            border: 2px solid #667eea40;
+            font-size: 0.8em;
+        }
+        
+        .project-emoji {
+            font-size: 1.2em;
+            display: block;
+            margin-bottom: 3px;
+        }
+        
+        .steps {
+            counter-reset: step-counter;
+        }
+        
+        .steps li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 25px;
+            margin: 8px 0;
+            font-size: 0.9em;
+        }
+        
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #3498db;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+        
+        .footer {
+            grid-column: 1 / -1;
+            text-align: center;
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 6px;
+            border-radius: 5px;
+            border-left: 3px solid #ffc107;
+            margin: 8px 0;
+            font-style: italic;
+            font-size: 0.85em;
+        }
+        
+        strong {
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <div class="header">
+            <h1 class="main-title">🚀 Poste de travail avec Le Chat de Mistral 🤖</h1>
+            <p class="subtitle">Ton assistant intelligent pour coder, dessiner et créer en technologie</p>
+        </div>
+        
+        <div class="left-column">
+            <div class="section">
+                <h2><span class="icon">🎯</span>À quoi sert Le Chat ?</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Activité</th>
+                            <th>Exemples de prompts</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="activity-name">🌐 Édition web (HTML)</span></td>
+                            <td>"Aide-moi à créer une page web avec un titre et une image en HTML."</td>
+                        </tr>
+                        <tr>
+                            <td><span class="activity-name">🎨 Dessin vectoriel</span></td>
+                            <td>"Comment dessiner une roue dentée sur Inkscape ?"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="activity-name">🔧 CAO (OnShape)</span></td>
+                            <td>"Quelles sont les étapes pour modéliser une pièce en 3D ?"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="activity-name">🐍 Programmation Python</span></td>
+                            <td>"Aide-moi à créer un Serious Game en Python"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="activity-name">💡 Conseils techniques</span></td>
+                            <td>"Comment vectoriser une image en fichier SVG ?"</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="section section-alt">
+                <h2><span class="icon">📋</span>Comment utiliser Le Chat ?</h2>
+                <ol class="steps">
+                    <li><strong>Remplis la fiche d'utilisation</strong> (nom, classe, date, prompt)</li>
+                    <li><strong>Envoie ton prompt</strong> à Le Chat</li>
+                    <li><strong>Attends la réponse</strong> et utilise les conseils</li>
+                    <li><strong>Note les réponses utiles</strong> dans ton cahier</li>
+                </ol>
+                <div class="highlight">
+                    💡 <strong>Astuce :</strong> Plus ton prompt est précis, plus la réponse sera utile !
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-column">
+            <div class="section section-accent">
+                <h2><span class="icon">⭐</span>Règles d'or pour bien communiquer</h2>
+                <div class="rules-grid">
+                    <div class="do">
+                        <h4>✅ À FAIRE</h4>
+                        <ul>
+                            <li><strong>Sois clair</strong> : Décris ton problème en détail</li>
+                            <li><strong>Sois poli</strong> : Dis "merci" ou "s'il te plaît"</li>
+                            <li><strong>Sois précis</strong> : Indique le logiciel utilisé</li>
+                        </ul>
+                    </div>
+                    <div class="dont">
+                        <h4>❌ À ÉVITER</h4>
+                        <ul>
+                            <li>Des réponses toutes faites pour tes devoirs</li>
+                            <li>Des sujets hors technologie</li>
+                            <li>Des demandes floues ou imprécises</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2><span class="icon">💬</span>Exemples de prompts efficaces</h2>
+                <div class="examples-grid">
+                    <div class="example-item">
+                        "Peux-tu m'expliquer comment centrer du texte en HTML ?"
+                    </div>
+                    <div class="example-item">
+                        "Je veux dessiner un engrenage sur Inkscape, par où commencer ?"
+                    </div>
+                    <div class="example-item">
+                        "Mon code Python affiche une erreur, peux-tu m'aider à la corriger ?"
+                    </div>
+                    <div class="example-item">
+                        "Différences entre esquisse et extrusion sur OnShape ?"
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section section-alt">
+                <h2><span class="icon">🚀</span>Besoin d'inspiration ?</h2>
+                <p style="margin: 5px 0;">Voici des idées de projets à réaliser avec Le Chat :</p>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <span class="project-emoji">🌐</span>
+                        <strong>Page web</strong><br>
+                        sur un sujet de ton choix
+                    </div>
+                    <div class="project-card">
+                        <span class="project-emoji">🎨</span>
+                        <strong>Logo vectoriel</strong><br>
+                        pour une entreprise imaginaire
+                    </div>
+                    <div class="project-card">
+                        <span class="project-emoji">🔧</span>
+                        <strong>Objet 3D</strong><br>
+                        du quotidien modélisé
+                    </div>
+                    <div class="project-card">
+                        <span class="project-emoji">🎮</span>
+                        <strong>Mini-jeu</strong><br>
+                        écrit en Python
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
