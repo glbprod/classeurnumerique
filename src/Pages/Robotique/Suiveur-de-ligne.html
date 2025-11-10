@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programme Intermédiaire mBot2 - Suiveur de Ligne avec Évitement d'Obstacles</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        h3 {
+            color: #3498db;
+            margin: 15px 0 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        .code-container {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            line-height: 1.4;
+        }
+        
+        .code-comment {
+            color: #7f8c8d;
+        }
+        
+        .code-keyword {
+            color: #e74c3c;
+        }
+        
+        .code-function {
+            color: #3498db;
+        }
+        
+        .code-variable {
+            color: #f39c12;
+        }
+        
+        .code-number {
+            color: #9b59b6;
+        }
+        
+        .explanation {
+            background-color: #e8f4fc;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .components {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .component {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            flex: 1 1 200px;
+            text-align: center;
+        }
+        
+        .component img {
+            max-width: 80px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Programme Intermédiaire mBot2</h1>
+            <p class="subtitle">Suiveur de Ligne avec Évitement d'Obstacles</p>
+        </header>
+        
+        <div class="content">
+            <div class="section">
+                <h2>Description du Programme</h2>
+                <p>Ce programme intermédiaire pour mBot2 combine plusieurs fonctionnalités avancées :</p>
+                <ul>
+                    <li>Suivi de ligne avec les capteurs infrarouges</li>
+                    <li>Détection et évitement d'obstacles avec le capteur à ultrasons</li>
+                    <li>Affichage d'informations sur la matrice LED</li>
+                    <li>Utilisation des capteurs de couleur</li>
+                </ul>
+                
+                <div class="explanation">
+                    <p>Le robot suit une ligne noire sur fond blanc. Lorsqu'il détecte un obstacle sur son chemin, il s'arrête, recule légèrement, affiche un avertissement sur sa matrice LED, puis cherche un chemin alternatif. Il utilise également les capteurs de couleur pour détecter des marqueurs spécifiques sur la piste.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Composants Utilisés</h2>
+                <div class="components">
+                    <div class="component">
+                        <h3>Capteurs Infrarouges</h3>
+                        <p>Détection de la ligne à suivre</p>
+                    </div>
+                    <div class="component">
+                        <h3>Capteur à Ultrasons</h3>
+                        <p>Détection d'obstacles</p>
+                    </div>
+                    <div class="component">
+                        <h3>Matrice LED</h3>
+                        <p>Affichage d'états et d'avertissements</p>
+                    </div>
+                    <div class="component">
+                        <h3>Capteur de Couleur</h3>
+                        <p>Détection de marqueurs colorés</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Code du Programme</h2>
+                <p>Voici le code complet du programme pour mBot2, écrit en langage graphique mBlock (repris en pseudo-code pour la compréhension) :</p>
+                
+                <div class="code-container">
+                    <pre><code><span class="code-comment">// Programme mBot2 - Suiveur de ligne avec évitement d'obstacles</span>
+
+<span class="code-keyword">Quand</span> le drapeau vert est cliqué
+    <span class="code-function">définir la vitesse des moteurs à</span> 30%
+    <span class="code-function">afficher sur la matrice LED</span> "GO"
+
+<span class="code-keyword">Répéter indéfiniment</span>
+    <span class="code-keyword">Si</span> <span class="code-function">distance de l'obstacle</span> &lt; 15 cm <span class="code-keyword">alors</span>
+        <span class="code-comment">// Obstacle détecté - procédure d'évitement</span>
+        <span class="code-function">arrêter les moteurs</span>
+        <span class="code-function">afficher sur la matrice LED</span> "STOP"
+        <span class="code-function">attendre</span> 0.5 secondes
+        <span class="code-function">reculer</span> pendant 0.5 secondes
+        <span class="code-function">tourner à droite</span> pendant 0.8 secondes
+        <span class="code-function">afficher sur la matrice LED</span> "GO"
+    
+    <span class="code-keyword">Sinon</span>
+        <span class="code-comment">// Suivi de ligne normal</span>
+        <span class="code-keyword">Si</span> <span class="code-function">capteur infrarouge gauche détecte la ligne</span> <span class="code-keyword">et</span> <span class="code-function">capteur infrarouge droit détecte la ligne</span> <span class="code-keyword">alors</span>
+            <span class="code-comment">// Les deux capteurs voient la ligne - avancer tout droit</span>
+            <span class="code-function">avancer</span>
+        
+        <span class="code-keyword">Sinon si</span> <span class="code-function">capteur infrarouge gauche détecte la ligne</span> <span class="code-keyword">alors</span>
+            <span class="code-comment">// Seul le capteur gauche voit la ligne - tourner légèrement à gauche</span>
+            <span class="code-function">ajuster à gauche</span>
+        
+        <span class="code-keyword">Sinon si</span> <span class="code-function">capteur infrarouge droit détecte la ligne</span> <span class="code-keyword">alors</span>
+            <span class="code-comment">// Seul le capteur droit voit la ligne - tourner légèrement à droite</span>
+            <span class="code-function">ajuster à droite</span>
+        
+        <span class="code-keyword">Sinon</span>
+            <span class="code-comment">// Aucun capteur ne voit la ligne - rechercher la ligne</span>
+            <span class="code-function">tourner à gauche lentement</span>
+        
+        <span class="code-comment">// Vérifier les marqueurs de couleur</span>
+        <span class="code-keyword">Si</span> <span class="code-function">couleur détectée</span> = rouge <span class="code-keyword">alors</span>
+            <span class="code-function">arrêter les moteurs</span>
+            <span class="code-function">afficher sur la matrice LED</span> "RED"
+            <span class="code-function">attendre</span> 2 secondes
+            <span class="code-function">afficher sur la matrice LED</span> "GO"
+        
+        <span class="code-keyword">Si</span> <span class="code-function">couleur détectée</span> = vert <span class="code-keyword">alors</span>
+            <span class="code-function">accélérer</span> pendant 3 secondes
+            <span class="code-function">afficher sur la matrice LED</span> "FAST"</code></pre>
+                </div>
+                
+                <div class="explanation">
+                    <h3>Explication du Code</h3>
+                    <p>Le programme fonctionne selon une boucle principale qui vérifie en permanence :</p>
+                    <ol>
+                        <li><strong>La présence d'obstacles</strong> : Si un obstacle est détecté à moins de 15 cm, le robot s'arrête, recule et cherche un chemin alternatif.</li>
+                        <li><strong>La position par rapport à la ligne</strong> : En fonction des lectures des capteurs infrarouges, le robot ajuste sa trajectoire pour rester sur la ligne.</li>
+                        <li><strong>Les marqueurs de couleur</strong> : Lorsqu'un marqueur rouge est détecté, le robot s'arrête temporairement. Un marqueur vert lui fait accélérer.</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Conseils d'Implémentation</h2>
+                <ul>
+                    <li>Calibrez correctement les capteurs infrarouges pour votre piste spécifique (ligne noire sur fond blanc).</li>
+                    <li>Ajustez les seuils de détection d'obstacle en fonction de l'environnement.</li>
+                    <li>Testez les vitesses de rotation pour un suivi de ligne fluide.</li>
+                    <li>Utilisez une piste avec des marqueurs de couleur bien distincts pour une détection fiable.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Programme mBot2 - Niveau Intermédiaire | Conçu pour l'apprentissage de la robotique éducative</p>
+        </footer>
+    </div>
+</body>
+</html>
