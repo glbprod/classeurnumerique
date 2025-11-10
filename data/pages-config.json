@@ -8,6 +8,15 @@
       "addedDate": "2025-11-10T17:46:10.702Z",
       "lastModified": "2025-11-10T17:46:10.702Z",
       "favorite": true
+    },
+    {
+      "id": "page-1762796799824",
+      "title": "activite robot patrouille",
+      "githubPath": "src/Pages/Robotique/activite_robot_patrouille.html",
+      "description": "",
+      "addedDate": "2025-11-10T17:46:39.824Z",
+      "lastModified": "2025-11-10T17:46:39.824Z",
+      "favorite": false
     }
   ]
 }
