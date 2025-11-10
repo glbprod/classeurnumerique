@@ -179,6 +179,15 @@
       "addedDate": "2025-11-10T01:32:56.118Z",
       "lastModified": "2025-11-10T01:32:56.120Z",
       "favorite": false
+    },
+    {
+      "id": "page-1762738522343",
+      "title": "Programmation mBot2",
+      "githubPath": "src/Pages/Robotique/Programmation-mBot2.html",
+      "description": "",
+      "addedDate": "2025-11-10T01:35:22.343Z",
+      "lastModified": "2025-11-10T01:35:22.343Z",
+      "favorite": false
     }
   ]
 }
