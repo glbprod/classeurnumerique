@@ -26,6 +26,15 @@
       "addedDate": "2025-11-11T19:32:34.006Z",
       "lastModified": "2025-11-11T19:32:34.009Z",
       "favorite": false
+    },
+    {
+      "id": "page-1762891438974",
+      "title": "tableau de bord",
+      "githubPath": "src/Pages/Gestion/tableau_de_bord.html",
+      "description": "",
+      "addedDate": "2025-11-11T20:03:58.974Z",
+      "lastModified": "2025-11-11T20:03:58.976Z",
+      "favorite": false
     }
   ]
 }
