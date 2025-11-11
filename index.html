@@ -807,21 +807,6 @@
 
                 lastScrollTop = scrollTop;
             });
-
-            // Toggle theme functionality
-            const themeToggle = document.getElementById('themeToggle');
-            const themeToggleIcon = themeToggle.querySelector('.theme-toggle-icon');
-            
-            themeToggle.addEventListener('click', function() {
-                document.body.classList.toggle('light-theme');
-                
-                if (document.body.classList.contains('light-theme')) {
-                    themeToggleIcon.textContent = '☀️';
-                    // Vous pouvez ajouter ici les variables CSS pour le thème clair
-                } else {
-                    themeToggleIcon.textContent = '🌙';
-                }
-            });
         });
     </script>
 </body>
