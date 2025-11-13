@@ -152,6 +152,15 @@
       "addedDate": "2025-11-13T22:58:59.763Z",
       "lastModified": "2025-11-13T22:58:59.764Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763076901256",
+      "title": "fiche activite energies",
+      "githubPath": "src/Pages/Énergie/fiche-activite-energies.html",
+      "description": "",
+      "addedDate": "2025-11-13T23:35:01.256Z",
+      "lastModified": "2025-11-13T23:35:01.273Z",
+      "favorite": false
     }
   ]
 }
