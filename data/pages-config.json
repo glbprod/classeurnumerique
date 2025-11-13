@@ -134,6 +134,15 @@
       "addedDate": "2025-11-13T20:43:32.134Z",
       "lastModified": "2025-11-13T20:43:32.135Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763069341707",
+      "title": "TechnoLab sombre",
+      "githubPath": "src/components/TechnoLab-sombre.html",
+      "description": "",
+      "addedDate": "2025-11-13T21:29:01.707Z",
+      "lastModified": "2025-11-13T21:29:01.726Z",
+      "favorite": false
     }
   ]
 }
