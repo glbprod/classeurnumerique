@@ -3,400 +3,516 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Technologie au Collège</title>
+    <title>Bienvenue en Technologie | TechnoLab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
     <style>
-        /* === STYLES GÉNÉRAUX === */
+        /* === BASE STYLES === */
+        :root {
+            --primary: #4a90e2;
+            --primary-dark: #357abd;
+            --primary-light: #e3f2fd;
+            --accent: #4ade80;
+            --text: #333;
+            --text-light: #666;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --border: #e0e0e0;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
             line-height: 1.6;
-            background: #0066cc;
-            color: #333;
-            padding: 20px;
+            color: var(--text);
+            background-color: var(--bg);
+            padding: 0;
         }
-        
-        /* === CONTENEUR PRINCIPAL === */
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: #f5f5f5;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            overflow: hidden;
+            padding: 2rem;
         }
-        
-        /* === EN-TÊTE === */
-        header {
-            background: #0066cc;
-            color: white;
-            padding: 40px 30px;
+
+        /* === TYPOGRAPHY === */
+        h1, h2, h3, h4 {
+            font-weight: 500;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-dark);
             text-align: center;
-            border-bottom: 3px solid #0052a3;
+            margin: 1.5rem 0;
         }
-        
-        header h1 {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            font-weight: 400;
-            letter-spacing: 2px;
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary-light);
+            display: inline-block;
+            margin-bottom: 1.5rem;
         }
-        
-        header p {
-            font-size: 1.2em;
+
+        p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        /* === HEADER === */
+        header {
+            text-align: center;
+            padding: 2rem 0;
+            background-color: transparent;
+        }
+
+        .hero-image {
+            width: 100%;
             max-width: 800px;
-            margin: 0 auto;
+            height: auto;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin: 0 auto 1.5rem;
+            display: block;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto 2rem;
             font-weight: 300;
         }
-        
-        /* === CONTENU PRINCIPAL === */
-        main {
-            padding: 40px 30px;
-        }
-        
-        /* === SECTIONS === */
-        section {
-            margin-bottom: 50px;
-        }
-        
-        section h2 {
-            color: #0066cc;
-            font-size: 2em;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #0066cc;
-            display: inline-block;
-            font-weight: 400;
-        }
-        
-        /* === GRILLE DE CARTES === */
+
+        /* === CARDS GRID === */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+            gap: 1.5rem;
+            margin: 2rem 0;
         }
-        
+
         .card {
-            background: white;
-            color: #333;
-            padding: 25px;
-            border-radius: 8px;
-            border: 2px solid #0066cc;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
         }
-        
+
         .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,102,204,0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-light);
         }
-        
+
+        .card-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+
         .card h3 {
-            font-size: 1.4em;
-            margin-bottom: 10px;
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: #0066cc;
-            font-weight: 500;
+            gap: 0.5rem;
         }
-        
-        .card-icon {
-            font-size: 2em;
-        }
-        
-        /* === LISTE STYLISÉE === */
+
+        /* === STYLED LIST === */
         .styled-list {
             list-style: none;
-            margin-top: 20px;
+            margin: 1.5rem 0;
         }
-        
+
         .styled-list li {
-            background: white;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            border-left: 5px solid #0066cc;
-            border-radius: 4px;
-            transition: background 0.3s ease;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: var(--card-bg);
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.8rem;
+            border-left: 4px solid var(--primary);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
-        
+
         .styled-list li:hover {
-            background: #e6f2ff;
+            background: var(--primary-light);
+            transform: translateX(5px);
         }
-        
-        .styled-list li strong {
-            color: #0066cc;
+
+        .styled-list strong {
+            color: var(--primary-dark);
         }
-        
-        /* === ENCADRÉ SPÉCIAL === */
-        .highlight-box {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            margin: 30px 0;
-            border: 3px solid #0066cc;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .highlight-box h3 {
-            color: #0066cc;
-            font-size: 1.8em;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-        
-        .highlight-box p {
-            font-size: 1.1em;
-            line-height: 1.8;
-        }
-        
-        /* === GRILLE D'ACTIVITÉS === */
+
+        /* === ACTIVITIES GRID === */
         .activities-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
         }
-        
+
         .activity-item {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
+            background: var(--card-bg);
+            padding: 1.2rem;
+            border-radius: var(--radius);
             text-align: center;
-            font-weight: bold;
-            color: #0066cc;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border: 2px solid #e6f2ff;
-            transition: all 0.3s ease;
+            font-weight: 500;
+            color: var(--primary);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            font-size: 1.1rem;
         }
-        
+
         .activity-item:hover {
-            border-color: #0066cc;
-            box-shadow: 0 4px 12px rgba(0,102,204,0.2);
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            transform: scale(1.03);
         }
-        
-        /* === POINTS FORTS === */
+
+        /* === LAB FEATURES === */
+        .lab-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1.2rem;
+            margin: 1.5rem 0;
+        }
+
+        .lab-item {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .lab-item:hover {
+            background: var(--primary-light);
+            transform: translateY(-3px);
+        }
+
+        .lab-item-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .lab-item strong {
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+        }
+
+        /* === HIGHLIGHT BOX === */
+        .highlight-box {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--radius);
+            margin: 2rem 0;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 4px 12px rgba(74, 222, 128, 0.1);
+        }
+
+        .highlight-box h3 {
+            color: var(--accent);
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-box p {
+            margin-bottom: 1rem;
+        }
+
+        .highlight-box strong {
+            color: var(--accent);
+        }
+
+        /* === STRENGTHS BADGES === */
         .strengths {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 1rem;
             justify-content: center;
-            margin-top: 30px;
+            margin: 2rem 0;
         }
-        
+
         .strength-badge {
-            background: white;
-            color: #0066cc;
-            padding: 15px 30px;
+            background: var(--card-bg);
+            color: var(--primary);
+            padding: 0.8rem 1.5rem;
             border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1em;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border: 2px solid #0066cc;
+            font-weight: 500;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            font-size: 0.95rem;
         }
-        
-        /* === SECTION LABORATOIRE === */
-        .lab-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .lab-item {
-            text-align: center;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            border: 2px solid #0066cc;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .lab-item-icon {
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
-        
-        /* === APPEL À L'ACTION === */
-        .cta-section {
-            background: #0066cc;
+
+        .strength-badge:hover {
+            background: var(--primary);
             color: white;
-            padding: 40px;
-            border-radius: 8px;
-            text-align: center;
-            margin-top: 50px;
-            border: 3px solid #0052a3;
+            transform: scale(1.05);
         }
-        
+
+        /* === CTA SECTION === */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: var(--radius);
+            text-align: center;
+            margin: 3rem 0 0;
+        }
+
         .cta-section h2 {
             color: white;
             border: none;
-            font-size: 2.2em;
-            margin-bottom: 20px;
-            font-weight: 400;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
         }
-        
+
         .cta-section p {
-            font-size: 1.3em;
-            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
         }
-        
+
+        .cta-section strong {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2em;
+            .container {
+                padding: 1rem;
             }
-            
-            section h2 {
-                font-size: 1.5em;
+
+            h1 {
+                font-size: 2rem;
             }
-            
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
             .cards-grid {
                 grid-template-columns: 1fr;
             }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
         }
+
+        /* === ANIMATIONS === */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        section {
+            animation: fadeIn 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        section:nth-child(1) { animation-delay: 0.1s; }
+        section:nth-child(2) { animation-delay: 0.2s; }
+        section:nth-child(3) { animation-delay: 0.3s; }
+        section:nth-child(4) { animation-delay: 0.4s; }
     </style>
 </head>
 <body>
-        <div class="container">
+    <div class="container">
         <!-- EN-TÊTE -->
         <header>
-
-        <div class="card">
-            <img
-            src="/src/Pages/img/Bienvenue-en-technologie.png" alt="Bienvenu en Technologie"
-            alt="Description de l'image"
-            style="width: 640px; height: auto; border-radius: 50px;"
-            >
-        </div>
-                        <h3>Découvre une matière où tu pourras créer, innover, programmer<br>et comprendre le monde qui t'entoure&nbsp;!</h3>
-
-
+            <img src="/src/Pages/img/Bienvenue-en-technologie.png"
+                 alt="Bienvenue en Technologie - Illustration montrant des élèves travaillant sur des projets technologiques"
+                 class="hero-image">
+            <h1>Bienvenue en Technologie</h1>
+            <p class="hero-subtitle">Découvre une matière où tu pourras <strong>créer, innover, programmer</strong> et comprendre le monde qui t'entoure !</p>
         </header>
-        
+
         <!-- CONTENU PRINCIPAL -->
         <main>
             <!-- SECTION OBJECTIFS -->
             <section>
                 <h2>🎯 Les Objectifs de la Technologie</h2>
-                <p>En technologie, tu vas développer de nombreuses compétences essentielles pour ton avenir :</p>
-                
+                <p>En technologie, tu vas développer des compétences essentielles pour ton avenir :</p>
+
                 <div class="cards-grid">
                     <div class="card">
-                        <h3><span class="card-icon">🧠</span> Culture Technologique</h3>
-                        <p>Comprendre les innovations qui façonnent notre quotidien</p>
+                        <div class="card-icon">🧠</div>
+                        <h3>Culture Technologique</h3>
+                        <p>Comprendre les innovations qui façonnent notre quotidien et anticiper les technologies de demain</p>
                     </div>
-                    
+
                     <div class="card">
-                        <h3><span class="card-icon">🔧</span> Objets Techniques</h3>
-                        <p>Analyser et comprendre comment fonctionnent les objets autour de toi</p>
+                        <div class="card-icon">🔧</div>
+                        <h3>Objets Techniques</h3>
+                        <p>Analyser et comprendre le fonctionnement des objets qui nous entourent, du vélo au smartphone</p>
                     </div>
-                    
+
                     <div class="card">
-                        <h3><span class="card-icon">💡</span> Créativité</h3>
-                        <p>Imaginer, concevoir et réaliser tes propres projets</p>
+                        <div class="card-icon">💡</div>
+                        <h3>Créativité</h3>
+                        <p>Donner vie à tes idées en concevant et réalisant tes propres projets techniques</p>
                     </div>
-                    
-                    <!-- <div class="card">
-                        <h3><span class="card-icon">🎓</span> Orientation</h3>
-                        <p>Découvrir des métiers passionnants pour ton futur</p>
-                    </div> -->
+
+                    <div class="card">
+                        <div class="card-icon">🎓</div>
+                        <h3>Orientation</h3>
+                        <p>Découvrir des métiers passionnants dans les domaines scientifiques et techniques</p>
+                    </div>
                 </div>
             </section>
-            
+
             <!-- SECTION THÈMES -->
             <section>
                 <h2>📚 Les Thèmes Abordés</h2>
+                <p>Voici les grands domaines que nous explorerons ensemble :</p>
+
                 <ul class="styled-list">
-                    <li><strong>Objets et Systèmes Techniques :</strong> Comment ça marche ? Pourquoi c'est conçu comme ça ?</li>
-                    <li><strong>Innovation :</strong> Les dernières technologies et comment elles évoluent</li>
-                    <li><strong>Programmation :</strong> Créer tes propres programmes et contrôler des robots</li>
-                    <li><strong>Transition Écologique :</strong> Concevoir en respectant notre planète</li>
-                    <li><strong>Fabrication & Prototypage :</strong> Donner vie à tes idées avec des outils modernes</li>
+                    <li><strong>Design, innovation et créativité :</strong> Comment naissent les nouvelles idées et produits ?</li>
+                    <li><strong>Les objets techniques :</strong> Analyse de leur fonctionnement et de leur évolution</li>
+                    <li><strong>Informatique et programmation :</strong> Création d'algorithmes et développement de programmes</li>
+                    <li><strong>Transition écologique :</strong> Concevoir en respectant notre environnement</li>
+                    <li><strong>Fabrication numérique :</strong> Prototypage et utilisation d'outils modernes comme les imprimantes 3D</li>
+                    <li><strong>Robotique :</strong> Conception et programmation de robots pour résoudre des problèmes</li>
                 </ul>
             </section>
-            
+
             <!-- SECTION ACTIVITÉS -->
             <section>
                 <h2>🎨 Exemples d'Activités en Classe</h2>
+                <p>En technologie, on apprend en <strong>faisant</strong> ! Voici quelques exemples d'activités :</p>
+
                 <div class="activities-grid">
-                    <div class="activity-item">🔍 Analyse d'Objets</div>
-                    <div class="activity-item">✏️ Conception & Design</div>
+                    <div class="activity-item">🔍 Analyse d'objets</div>
+                    <div class="activity-item">✏️ Croquis & design</div>
                     <div class="activity-item">💻 Programmation</div>
                     <div class="activity-item">🤖 Robotique</div>
-                    <div class="activity-item">👥 Projets Collaboratifs</div>
+                    <div class="activity-item">👥 Projets collaboratifs</div>
+                    <div class="activity-item">📐 Modélisation 3D</div>
+                    <div class="activity-item">🔌 Électronique</div>
+                    <div class="activity-item">♻️ Développement durable</div>
                 </div>
             </section>
-            
+
             <!-- SECTION LABORATOIRE -->
             <section>
                 <h2>🔬 Le Laboratoire de Technologie</h2>
-                <p>Un espace unique où tu pourras manipuler, expérimenter et créer !</p>
-                
+                <p>Un espace équipé pour <strong>expérimenter, créer et innover</strong> :</p>
+
                 <div class="lab-features">
                     <div class="lab-item">
                         <div class="lab-item-icon">🛠️</div>
-                        <strong>Outils Modernes</strong>
+                        <div>Outils<br>modernes</div>
                     </div>
                     <div class="lab-item">
                         <div class="lab-item-icon">🤖</div>
-                        <strong>Robots</strong>
+                        <div>Kits<br>robotiques</div>
                     </div>
                     <div class="lab-item">
                         <div class="lab-item-icon">🖨️</div>
-                        <strong>Imprimante 3D</strong>
+                        <div>Imprimantes<br>3D</div>
                     </div>
                     <div class="lab-item">
                         <div class="lab-item-icon">⚙️</div>
-                        <strong>Fablab</strong>
+                        <div>Machines<br>à commande numérique</div>
                     </div>
                     <div class="lab-item">
                         <div class="lab-item-icon">💻</div>
-                        <strong>Ordinateurs</strong>
+                        <div>Postes<br>informatique</div>
                     </div>
                     <div class="lab-item">
                         <div class="lab-item-icon">👨‍🔬</div>
-                        <strong>Expérimentations</strong>
+                        <div>Espace<br>expérimentation</div>
                     </div>
                 </div>
             </section>
-            
+
             <!-- ENCADRÉ UTILITÉ -->
             <div class="highlight-box">
                 <h3>🌟 Pourquoi la Technologie est Importante ?</h3>
-                <p><strong>Dans la vie quotidienne :</strong> Comprendre ton smartphone, ton vélo, les objets connectés, les énergies renouvelables...</p>
-                <p><strong>Pour ton avenir :</strong> La technologie te prépare à de nombreux métiers : ingénieur, designer, développeur, architecte, technicien, chercheur... et bien d'autres !</p>
-                <p><strong>Pour la société :</strong> Participer aux innovations qui amélioreront le monde de demain !</p>
+
+                <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+                    <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                        <div style="color: var(--accent); font-size: 1.5rem;">🏠</div>
+                        <div>
+                            <strong>Dans la vie quotidienne :</strong>
+                            <p>Comprendre ton smartphone, les objets connectés, les énergies renouvelables, ou même comment fonctionne ton vélo !</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                        <div style="color: var(--accent); font-size: 1.5rem;">🚀</div>
+                        <div>
+                            <strong>Pour ton avenir :</strong>
+                            <p>La technologie ouvre les portes à de nombreux métiers : ingénieur, designer, développeur, architecte, technicien, chercheur...</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                        <div style="color: var(--accent); font-size: 1.5rem;">🌍</div>
+                        <div>
+                            <strong>Pour la société :</strong>
+                            <p>Participer aux innovations qui amélioreront le monde de demain, en tenant compte des enjeux écologiques et sociaux.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
+
             <!-- POINTS FORTS -->
             <section>
                 <h2>⭐ Les Points Forts de la Discipline</h2>
                 <div class="strengths">
-                    <div class="strength-badge">✨ Créativité</div>
-                    <div class="strength-badge">🤝 Collaboration</div>
-                    <div class="strength-badge">🚀 Innovation</div>
-                    <div class="strength-badge">🌍 Impact sur la Société</div>
-                    <div class="strength-badge">🎯 Concrètes & Pratiques</div>
-                    <div class="strength-badge">🔮 Tournée vers l'Avenir</div>
+                    <div class="strength-badge">✨ Créativité & innovation</div>
+                    <div class="strength-badge">🤝 Travail collaboratif</div>
+                    <div class="strength-badge">💡 Approche concrète</div>
+                    <div class="strength-badge">🌍 Sensibilisation écologique</div>
+                    <div class="strength-badge">🎯 Liens avec le monde réel</div>
+                    <div class="strength-badge">🚀 Préparation au futur</div>
+                    <div class="strength-badge">🧠 Développement de la logique</div>
+                    <div class="strength-badge">🛠️ Apprentissage par la pratique</div>
                 </div>
             </section>
-            
+
             <!-- APPEL À L'ACTION -->
             <div class="cta-section">
                 <h2>❓ Et toi, qu'aimerais-tu inventer ?</h2>
-                <p>Un robot qui t'aide dans tes tâches ?</p>
+                <p>Un robot qui t'aide dans tes tâches quotidiennes ?</p>
+                <p>Une application pour faciliter la vie à l'école ?</p>
                 <p>Un objet innovant pour protéger l'environnement ?</p>
-                <p>Un programme qui facilite la vie ?</p>
-                <p><strong>En technologie, tout est possible ! Prêt(e) à relever le défi ? 🚀</strong></p>
+                <p><strong>En technologie, ton imagination est la seule limite !<br>Prêt(e) à relever le défi ? 🚀</strong></p>
             </div>
         </main>
     </div>
+
+    <!-- Petit easter egg pour les élèves curieux -->
+    <script>
+        console.log('%c 👨‍🏫 Un message pour les développeurs en herbe :', 'font-size: 16px; color: #4ade80; font-weight: bold;');
+        console.log('%c Cette page utilise HTML5 et CSS3 pur.\nTechnoLab (notre application principale) utilise React + Vite + TailwindCSS !', 'color: #4a90e2; font-family: "Fira Code", monospace;');
+        console.log('%c Intéressé(e) par le développement web ?\nParles-en à ton professeur de technologie ! 😊', 'color: #f59e0b;');
+    </script>
 </body>
 </html>
