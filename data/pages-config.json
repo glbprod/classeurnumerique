@@ -80,6 +80,15 @@
       "addedDate": "2025-11-13T01:18:58.905Z",
       "lastModified": "2025-11-13T01:18:58.905Z",
       "favorite": true
+    },
+    {
+      "id": "page-1763040421631",
+      "title": "Programmation mBot2",
+      "githubPath": "src/Pages/Robotique/Programmation-mBot2.html",
+      "description": "",
+      "addedDate": "2025-11-13T13:27:01.631Z",
+      "lastModified": "2025-11-13T13:27:01.633Z",
+      "favorite": false
     }
   ]
 }
