@@ -1,1 +1,643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechnoLab - Quiz Numérique & Bêta</title>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4ade80;
+            --secondary: #60a5fa;
+            --dark: #1a1a2e;
+            --light: #f8fafc;
+            --danger: #f87171;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark) 0%, #2d3748 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .header p {
+            color: #a0a0a0;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .student-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
+        }
+
+        .question-block {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .question-block h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .option.selected {
+            background: rgba(74, 222, 128, 0.2);
+            border-color: var(--primary);
+        }
+
+        .option input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            background: #2dd4bf;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(74, 222, 128, 0.1);
+            border-radius: 10px;
+            margin-top: 1.5rem;
+            border: 1px solid var(--primary);
+        }
+
+        .success-message h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .success-message p {
+            color: #a0a0a0;
+        }
+
+        .question-number {
+            background: var(--secondary);
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .student-info {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-laptop-code"></i> Quiz TechnoLab</h1>
+            <p>Testez vos connaissances sur l'évolution du numérique en technologie et les versions bêta</p>
+        </div>
+
+        <div class="student-info">
+            <div class="form-group">
+                <label for="studentName">Nom et prénom</label>
+                <input type="text" id="studentName" required placeholder="Ex: Dupont Jean">
+            </div>
+            <div class="form-group">
+                <label for="studentClass">Classe</label>
+                <select id="studentClass" required>
+                    <option value="">Sélectionnez...</option>
+                    <option value="5ème">5ème</option>
+                    <option value="4ème">4ème</option>
+                    <option value="3ème">3ème</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="studentDate">Date</label>
+                <input type="date" id="studentDate" required>
+            </div>
+        </div>
+
+        <form id="technoQuiz">
+            <!-- Question 1 -->
+            <div class="question-block">
+                <div class="question-number">1</div>
+                <h3>Quelle était la principale différence entre les cours de technologie il y a 20 ans et aujourd'hui ?</h3>
+                <div class="options-grid">
+                    <label class="option">
+                        <input type="radio" name="q1" value="a">
+                        <span>On utilisait uniquement des livres et des cahiers</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="b">
+                        <span>On n'avait pas d'ordinateurs en classe</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="c">
+                        <span>Les outils numériques (tablettes, logiciels, IA) ont révolutionné les méthodes d'apprentissage</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="d">
+                        <span>Les professeurs écrivaient tout au tableau</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-block">
+                <div class="question-number">2</div>
+                <h3>Qu'est-ce qu'une "version bêta" d'une application comme TechnoLab ?</h3>
+                <div class="options-grid">
+                    <label class="option">
+                        <input type="radio" name="q2" value="a">
+                        <span>La version finale et parfaite de l'application</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="b">
+                        <span>Une version de test qui permet aux utilisateurs de donner leur avis pour l'améliorer</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="c">
+                        <span>Une version payante réservée aux professionnels</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="d">
+                        <span>Un prototype qui ne fonctionne pas du tout</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-block">
+                <div class="question-number">3</div>
+                <h3>Quel outil numérique n'existait PAS dans les cours de technologie il y a 10 ans ?</h3>
+                <div class="options-grid">
+                    <label class="option">
+                        <input type="radio" name="q3" value="a">
+                        <span>Les ordinateurs</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="b">
+                        <span>Les imprimantes 3D</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="c">
+                        <span>Les chatbots intelligents comme TechnoChat</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="d">
+                        <span>Les logiciels de dessin technique</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-block">
+                <div class="question-number">4</div>
+                <h3>Pourquoi est-il important que les élèves testent TechnoLab en version bêta ?</h3>
+                <div class="options-grid">
+                    <label class="option">
+                        <input type="radio" name="q4" value="a">
+                        <span>Pour que le professeur ait moins de travail</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="b">
+                        <span>Pour créer une application qui répond vraiment à leurs besoins</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="c">
+                        <span>Pour gagner de l'argent</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="d">
+                        <span>Pour remplacer le classeur numérique actuel</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-block">
+                <div class="question-number">5</div>
+                <h3>Quel avantage les outils comme TechnoLab apportent-ils par rapport aux cahiers traditionnels ?</h3>
+                <div class="options-grid">
+                    <label class="option">
+                        <input type="radio" name="q5" value="a">
+                        <span>On peut les perdre plus facilement</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="b">
+                        <span>Ils permettent un suivi personnalisé des compétences et des activités</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="c">
+                        <span>Ils coûtent plus cher</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="d">
+                        <span>Ils ne fonctionnent que sur un seul ordinateur</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-block">
+                <div class="question-number">6</div>
+                <h3>Quelle technologie moderne n'est PAS utilisée dans TechnoLab ?</h3>
+                <div class="options-grid">
+                    <label class="option">
+                        <input type="radio" name="q6" value="a">
+                        <span>React (pour créer l'interface)</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="b">
+                        <span>Firebase (pour sauvegarder les données)</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="c">
+                        <span>La réalité virtuelle avec des casques</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="d">
+                        <span>JavaScript (pour les interactions)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question-block">
+                <div class="question-number">7</div>
+                <h3>Que doivent faire les élèves s'ils trouvent un bug dans TechnoLab ?</h3>
+                <div class="options-grid">
+                    <label class="option">
+                        <input type="radio" name="q7" value="a">
+                        <span>Ne rien dire pour ne pas embêter le professeur</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="b">
+                        <span>Noter précisément ce qui ne marche pas et le signaler</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="c">
+                        <span>Essayer de le réparer eux-mêmes</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="d">
+                        <span>Arrêter d'utiliser l'application</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question-block">
+                <div class="question-number">8</div>
+                <h3>Quelle compétence du cycle 4 est la plus liée au développement d'applications comme TechnoLab ?</h3>
+                <div class="options-grid">
+                    <label class="option">
+                        <input type="radio" name="q8" value="a">
+                        <span>Imaginer une solution en réponse à un besoin</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="b">
+                        <span>Concevoir, écrire et tester un programme</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="c">
+                        <span>Analyser le fonctionnement d'un système</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="d">
+                        <span>Utiliser des outils numériques</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question-block">
+                <div class="question-number">9</div>
+                <h3>Quel est l'avantage d'utiliser des outils comme Firebase dans TechnoLab ?</h3>
+                <div class="options-grid">
+                    <label class="option">
+                        <input type="radio" name="q9" value="a">
+                        <span>Ça permet de jouer à des jeux vidéo</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="b">
+                        <span>Ça sauvegarde les données en temps réel et les synchronise entre tous les appareils</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="c">
+                        <span>Ça remplace complètement le professeur</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="d">
+                        <span>Ça permet d'imprimer des documents</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question-block">
+                <div class="question-number">10</div>
+                <h3>Si tu pouvais ajouter une fonctionnalité à TechnoLab, ce serait :</h3>
+                <div class="options-grid">
+                    <label class="option">
+                        <input type="radio" name="q10" value="a">
+                        <span>Un système de chat entre élèves</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="b">
+                        <span>Un générateur automatique de fiches de révision</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="c">
+                        <span>Un simulateur de circuits électroniques</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="d">
+                        <span>Un autre chose (à préciser dans les commentaires)</span>
+                    </label>
+                </div>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label for="q10_comment">Précisez votre idée :</label>
+                    <input type="text" id="q10_comment" placeholder="Votre suggestion...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="comments">Autres commentaires ou suggestions pour TechnoLab :</label>
+                <textarea id="comments" rows="3" placeholder="Dites-nous ce que vous en pensez..."></textarea>
+            </div>
+
+            <button type="button" id="sendToFirebase" class="btn">
+                <i class="fas fa-paper-plane"></i> Envoyer mes réponses
+            </button>
+        </form>
+
+        <div id="successMessage" class="success-message">
+            <h3>✅ Merci pour votre participation !</h3>
+            <p>Vos réponses ont été enregistrées et aideront à améliorer TechnoLab.</p>
+            <p>Vous pouvez maintenant fermer cette fenêtre.</p>
+        </div>
+    </div>
+
+    <script>
+        // Configuration Firebase (à remplacer par vos identifiants)
+        const firebaseConfig = {
+            apiKey: "VOTRE_API_KEY",
+            authDomain: "VOTRE_PROJET.firebaseapp.com",
+            projectId: "VOTRE_PROJET",
+            storageBucket: "VOTRE_PROJET.appspot.com",
+            messagingSenderId: "VOTRE_SENDER_ID",
+            appId: "VOTRE_APP_ID"
+        };
+
+        // Initialisation Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        console.log('✅ Firebase initialisé');
+
+        // Gestion des options sélectionnées
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const options = this.parentElement.querySelectorAll('.option');
+                options.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Envoi des données à Firebase
+        document.getElementById('sendToFirebase').addEventListener('click', async function() {
+            const form = document.getElementById('technoQuiz');
+            const successMessage = document.getElementById('successMessage');
+
+            // Vérifier la validité du formulaire
+            const requiredFields = ['studentName', 'studentClass', 'studentDate'];
+            let isValid = true;
+
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value) {
+                    field.style.borderColor = 'var(--danger)';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                }
+            });
+
+            if (!isValid) {
+                alert('Veuillez remplir tous les champs obligatoires (nom, classe, date).');
+                return;
+            }
+
+            // Désactiver le bouton
+            const originalText = this.textContent;
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
+
+            try {
+                // Collecter les réponses
+                const responses = {
+                    nom_eleve: document.getElementById('studentName').value,
+                    classe: document.getElementById('studentClass').value,
+                    date: document.getElementById('studentDate').value,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    date_soumission: new Date().toISOString(),
+
+                    // Réponses aux questions
+                    q1: document.querySelector('input[name="q1"]:checked')?.value || 'non_repondu',
+                    q2: document.querySelector('input[name="q2"]:checked')?.value || 'non_repondu',
+                    q3: document.querySelector('input[name="q3"]:checked')?.value || 'non_repondu',
+                    q4: document.querySelector('input[name="q4"]:checked')?.value || 'non_repondu',
+                    q5: document.querySelector('input[name="q5"]:checked')?.value || 'non_repondu',
+                    q6: document.querySelector('input[name="q6"]:checked')?.value || 'non_repondu',
+                    q7: document.querySelector('input[name="q7"]:checked')?.value || 'non_repondu',
+                    q8: document.querySelector('input[name="q8"]:checked')?.value || 'non_repondu',
+                    q9: document.querySelector('input[name="q9"]:checked')?.value || 'non_repondu',
+                    q10: document.querySelector('input[name="q10"]:checked')?.value || 'non_repondu',
+                    q10_comment: document.getElementById('q10_comment').value,
+                    commentaires: document.getElementById('comments').value
+                };
+
+                console.log('📤 Envoi des données:', responses);
+
+                // Envoyer à Firebase
+                const docRef = await db.collection('techno_quiz_beta').add(responses);
+
+                console.log('✅ Document enregistré avec ID:', docRef.id);
+
+                // Afficher le message de succès
+                document.getElementById('technoQuiz').style.display = 'none';
+                successMessage.style.display = 'block';
+
+                // Réinitialiser le formulaire après 5 secondes (optionnel)
+                setTimeout(() => {
+                    document.getElementById('technoQuiz').reset();
+                    document.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    document.getElementById('technoQuiz').style.display = 'block';
+                    successMessage.style.display = 'none';
+                    this.disabled = false;
+                    this.textContent = originalText;
+                }, 5000);
+
+            } catch (error) {
+                console.error('❌ Erreur lors de l\'envoi:', error);
+                alert('Une erreur est survenue lors de l\'envoi. Veuillez réessayer.');
+                this.disabled = false;
+                this.textContent = originalText;
+            }
+        });
+
+        // Protection par mot de passe (optionnel)
+        (function() {
+            const MOT_DE_PASSE = 'techno2024'; // Changez ici ou supprimez cette section
+            let tentatives = 3;
+
+            while (tentatives > 0) {
+                const saisie = prompt('🔒 Mot de passe requis pour accéder au quiz (demandez-le à votre professeur) :');
+
+                if (saisie === null) {
+                    document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès annulé</h1>';
+                    throw new Error('Accès annulé');
+                }
+
+                if (saisie === MOT_DE_PASSE) {
+                    return; // ✅ Mot de passe correct
+                }
+
+                tentatives--;
+                if (tentatives > 0) {
+                    alert('❌ Mot de passe incorrect ! Il vous reste ' + tentatives + ' tentative(s).');
+                }
+            }
+
+            document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;color:#f87171;">🔒 Accès refusé</h1><p style="text-align:center;">Veuillez contacter votre professeur pour obtenir le mot de passe.</p>';
+            throw new Error('Trop de tentatives');
+        })();
+    </script>
+</body>
+</html>
