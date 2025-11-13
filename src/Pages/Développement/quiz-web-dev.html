@@ -203,6 +203,74 @@
             margin-bottom: 1rem;
         }
 
+        /* Ajoutez ce code dans la balise <style> de votre HTML */
+
+        /* Style de base pour les selects */
+        select {
+            background-color: rgba(30, 41, 59, 0.8); /* Fond sombre légèrement transparent */
+            color: white; /* Texte blanc */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Bordure subtile */
+            border-radius: 8px;
+            padding: 0.75rem;
+            width: 100%;
+            font-size: 1rem;
+            appearance: none; /* Supprime l'apparence par défaut */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1em;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        /* Style au survol */
+        select:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            background-color: rgba(30, 41, 59, 0.9);
+        }
+        
+        /* Style quand le select est focus */
+        select:focus {
+            outline: none;
+            border-color: #4ade80; /* Couleur primaire (vert) */
+            box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
+            background-color: rgba(30, 41, 59, 0.95);
+        }
+        
+        /* Style des options dans le dropdown */
+        select option {
+            background-color: #2d3748; /* Fond des options */
+            color: white; /* Texte blanc */
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        /* Style de l'option sélectionnée */
+        select option:checked {
+            background-color: rgba(74, 222, 128, 0.3); /* Fond vert clair pour la sélection */
+            font-weight: bold;
+        }
+        
+        /* Style de l'option survolée */
+        select option:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Pour les navigateurs WebKit (Chrome, Safari) */
+        select::-ms-expand {
+            display: none;
+        }
+        
+        /* Flèche personnalisée pour Firefox */
+        @-moz-document url-prefix() {
+            select {
+                padding-right: 2rem;
+            }
+        }
+
+
         @media (min-width: 768px) {
             .options-grid {
                 grid-template-columns: 1fr 1fr;
