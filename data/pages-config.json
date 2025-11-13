@@ -107,6 +107,15 @@
       "addedDate": "2025-11-13T13:27:26.113Z",
       "lastModified": "2025-11-13T13:27:26.113Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763040479712",
+      "title": "activite robot prompt",
+      "githubPath": "src/Pages/Robotique/activite-robot-prompt.html",
+      "description": "",
+      "addedDate": "2025-11-13T13:27:59.712Z",
+      "lastModified": "2025-11-13T13:27:59.712Z",
+      "favorite": false
     }
   ]
 }
