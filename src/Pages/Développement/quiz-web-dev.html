@@ -554,10 +554,10 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="comments">Autres commentaires ou suggestions pour TechnoLab :</label>
                 <textarea id="comments" rows="3" placeholder="Dites-nous ce que vous en pensez..."></textarea>
-            </div>
+            </div> -->
 
             <button type="button" id="sendToFirebase" class="btn">
                 <i class="fas fa-paper-plane"></i> Envoyer mes réponses
@@ -646,7 +646,7 @@
                     q9: document.querySelector('input[name="q9"]:checked')?.value || 'non_repondu',
                     q10: document.querySelector('input[name="q10"]:checked')?.value || 'non_repondu',
                     q10_comment: document.getElementById('q10_comment').value,
-                    commentaires: document.getElementById('comments').value
+                    // commentaires: document.getElementById('comments').value
                 };
 
                 console.log('📤 Envoi des données:', responses);
