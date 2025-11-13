@@ -89,6 +89,15 @@
       "addedDate": "2025-11-13T13:27:01.631Z",
       "lastModified": "2025-11-13T13:27:01.633Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763040433168",
+      "title": "Suiveur de ligne",
+      "githubPath": "src/Pages/Robotique/Suiveur-de-ligne.html",
+      "description": "",
+      "addedDate": "2025-11-13T13:27:13.168Z",
+      "lastModified": "2025-11-13T13:27:13.168Z",
+      "favorite": false
     }
   ]
 }
