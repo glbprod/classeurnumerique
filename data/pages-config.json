@@ -179,6 +179,15 @@
       "addedDate": "2025-11-14T00:35:01.963Z",
       "lastModified": "2025-11-14T00:35:01.965Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763127555677",
+      "title": "quiz web dev",
+      "githubPath": "src/Pages/Développement/quiz-web-dev.html",
+      "description": "",
+      "addedDate": "2025-11-14T13:39:15.677Z",
+      "lastModified": "2025-11-14T13:39:15.679Z",
+      "favorite": false
     }
   ]
 }
