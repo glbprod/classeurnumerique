@@ -188,6 +188,15 @@
       "addedDate": "2025-11-14T13:39:15.677Z",
       "lastModified": "2025-11-14T13:39:15.679Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763142012525",
+      "title": "visualisation reponses dnb",
+      "githubPath": "src/Pages/DNB/visualisation-reponses-dnb.html",
+      "description": "",
+      "addedDate": "2025-11-14T17:40:12.525Z",
+      "lastModified": "2025-11-14T17:40:12.527Z",
+      "favorite": false
     }
   ]
 }
