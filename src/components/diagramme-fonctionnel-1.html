@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technologie - Le Sèche-Cheveux</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+        }
+        .question {
+            margin: 25px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .points {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 2px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 2px solid #34495e;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+        td input[type="text"] {
+            border: 1px solid #95a5a6;
+        }
+        .submit-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+        .submit-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .info-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .diagram-image {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+        }
+        .functional-table {
+            margin: 20px 0;
+        }
+        .functional-table td {
+            vertical-align: middle;
+        }
+        .function-usage {
+            background-color: #d1ecf1;
+            font-weight: bold;
+        }
+        .function-tech {
+            background-color: #fff3cd;
+        }
+        .solution-tech {
+            background-color: #d4edda;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Le Diagramme Fonctionnel d'un Sèche-Cheveux</h1>
+        
+        <div class="info-box">
+            <strong>📌 Consigne :</strong> Complète ce formulaire en t'aidant du document sur le sèche-cheveux. 
+            Lis bien chaque question avant de répondre.
+        </div>
+
+        <form id="dnbForm">
+            <!-- IDENTITÉ DE L'ÉLÈVE -->
+            <h2>👤 Identification</h2>
+            <div class="question">
+                <label for="studentName"><strong>Nom et Prénom :</strong></label>
+                <input type="text" id="studentName" name="studentName" required 
+                       placeholder="Ex : Dupont Jean">
+                
+                <label for="studentClass" style="margin-top: 15px; display: block;"><strong>Classe :</strong></label>
+                <input type="text" id="studentClass" name="studentClass" required 
+                       placeholder="Ex : 3ème A">
+            </div>
+
+            <!-- PARTIE 1 : COMPRÉHENSION DU FONCTIONNEMENT -->
+            <h2>🔍 Partie 1 : Comprendre le fonctionnement du sèche-cheveux</h2>
+            
+            <div class="question">
+                <p><strong>Question 1 :</strong> Explique avec tes propres mots comment fonctionne un sèche-cheveux. <span class="points">(3 points)</span></p>
+                <p style="font-size: 13px; color: #666; font-style: italic;">
+                    Aide : Pense aux différentes étapes : qu'est-ce qui est actionné en premier ? Que se passe-t-il ensuite ?
+                </p>
+                <textarea name="q1_explication" rows="6" required 
+                          placeholder="Le sèche-cheveux fonctionne en plusieurs étapes..."></textarea>
+            </div>
+
+            <div class="question">
+                <p><strong>Question 2 :</strong> Quels sont les deux éléments principaux qui permettent au sèche-cheveux de produire de l'air chaud ? <span class="points">(2 points)</span></p>
+                
+                <label>Élément 1 :</label>
+                <input type="text" name="q2_element1" required 
+                       placeholder="Ex : Le moteur électrique">
+                
+                <label style="margin-top: 10px; display: block;">Élément 2 :</label>
+                <input type="text" name="q2_element2" required 
+                       placeholder="Ex : Les résistances électriques">
+            </div>
+
+            <div class="question">
+                <p><strong>Question 3 :</strong> Quel est le rôle de la turbine dans le sèche-cheveux ? <span class="points">(2 points)</span></p>
+                <textarea name="q3_role_turbine" rows="3" required 
+                          placeholder="La turbine sert à..."></textarea>
+            </div>
+
+            <!-- PARTIE 2 : DIAGRAMME FONCTIONNEL -->
+            <h2>📊 Partie 2 : Compléter le diagramme fonctionnel</h2>
+
+            <div class="warning-box">
+                <strong>⚠️ Rappel :</strong> Un diagramme fonctionnel permet de représenter les différentes fonctions d'un objet technique 
+                et les solutions techniques associées.
+            </div>
+
+            <div class="question">
+                <p><strong>Question 4 :</strong> Complète le tableau du diagramme fonctionnel ci-dessous. <span class="points">(7 points)</span></p>
+                <p style="font-size: 13px; color: #666;">
+                    Indique pour chaque fonction technique la solution technique correspondante parmi : 
+                    <strong>Manche, Prise électrique, Turbine, Résistance, Fils électriques, Buse, Interrupteur</strong>
+                </p>
+
+                <table class="functional-table">
+                    <thead>
+                        <tr>
+                            <th class="function-usage">Fonction d'usage</th>
+                            <th class="function-tech">Fonction technique</th>
+                            <th class="solution-tech">Solution technique</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="7" class="function-usage" style="vertical-align: middle; font-size: 15px;">
+                                <strong>Propulser de l'air chaud pour sécher les cheveux</strong>
+                            </td>
+                            <td class="function-tech">Transformer l'énergie électrique en mouvement</td>
+                            <td class="solution-tech">
+                                <input type="text" name="q4_transformer_mouvement" required 
+                                       placeholder="Votre réponse">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="function-tech">Distribuer l'électricité</td>
+                            <td class="solution-tech">
+                                <input type="text" name="q4_distribuer_electricite" required 
+                                       placeholder="Votre réponse">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="function-tech">Produire un mouvement</td>
+                            <td class="solution-tech">
+                                <input type="text" name="q4_produire_mouvement" required 
+                                       placeholder="Votre réponse">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="function-tech">Produire de la chaleur</td>
+                            <td class="solution-tech">
+                                <input type="text" name="q4_produire_chaleur" required 
+                                       placeholder="Votre réponse">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="function-tech">Aspirer l'air ambiant</td>
+                            <td class="solution-tech">
+                                <input type="text" name="q4_aspirer_air" required 
+                                       placeholder="Votre réponse">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="function-tech">Diffuser l'air chaud</td>
+                            <td class="solution-tech">
+                                <input type="text" name="q4_diffuser_air" required 
+                                       placeholder="Votre réponse">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="function-tech">Commander le fonctionnement</td>
+                            <td class="solution-tech">
+                                <input type="text" name="q4_commander" required 
+                                       placeholder="Votre réponse">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PARTIE 3 : TRANSFORMATION D'ÉNERGIE -->
+            <h2>⚡ Partie 3 : Les transformations d'énergie</h2>
+
+            <div class="question">
+                <p><strong>Question 5 :</strong> Complète la chaîne d'énergie du sèche-cheveux : <span class="points">(4 points)</span></p>
+                
+                <div style="background-color: #f0f0f0; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <div style="text-align: center; font-size: 16px; line-height: 2;">
+                        <strong style="color: #3498db;">Énergie électrique</strong>
+                        <br>⬇️<br>
+                        <input type="text" name="q5_transformation1" required 
+                               style="width: 300px; text-align: center;" 
+                               placeholder="Transformation 1">
+                        <br>⬇️<br>
+                        <input type="text" name="q5_transformation2" required 
+                               style="width: 300px; text-align: center;" 
+                               placeholder="Transformation 2">
+                        <br>⬇️<br>
+                        <strong style="color: #e74c3c;">Énergie utile pour sécher</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question">
+                <p><strong>Question 6 :</strong> Quelle est l'énergie perdue (gaspillée) lors du fonctionnement du sèche-cheveux ? <span class="points">(1 point)</span></p>
+                <input type="text" name="q6_energie_perdue" required 
+                       placeholder="Ex : Énergie thermique dissipée dans l'air">
+            </div>
+
+            <!-- PARTIE 4 : SÉCURITÉ ET EFFICACITÉ -->
+            <h2>🛡️ Partie 4 : Sécurité et efficacité</h2>
+
+            <div class="question">
+                <p><strong>Question 7 :</strong> Pourquoi est-il dangereux d'utiliser un sèche-cheveux près de l'eau ? <span class="points">(2 points)</span></p>
+                <textarea name="q7_danger_eau" rows="4" required 
+                          placeholder="C'est dangereux car..."></textarea>
+            </div>
+
+            <div class="question">
+                <p><strong>Question 8 :</strong> Le changement de diamètre de la buse permet d'accélérer le flux d'air. 
+                Explique pourquoi. <span class="points">(2 points)</span></p>
+                <textarea name="q8_buse" rows="4" required 
+                          placeholder="Le changement de diamètre..."></textarea>
+            </div>
+
+            <!-- PARTIE 5 : RÉFLEXION TECHNOLOGIQUE -->
+            <h2>💡 Partie 5 : Réflexion et évolution</h2>
+
+            <div class="question">
+                <p><strong>Question 9 :</strong> Cite deux améliorations technologiques récentes des sèche-cheveux modernes 
+                par rapport aux anciens modèles. <span class="points">(2 points)</span></p>
+                
+                <label>Amélioration 1 :</label>
+                <input type="text" name="q9_amelioration1" required 
+                       placeholder="Ex : Moteur plus silencieux">
+                
+                <label style="margin-top: 10px; display: block;">Amélioration 2 :</label>
+                <input type="text" name="q9_amelioration2" required 
+                       placeholder="Ex : Système ionique">
+            </div>
+
+            <div class="question">
+                <p><strong>Question 10 :</strong> Propose une amélioration que tu aimerais voir sur un sèche-cheveux du futur. 
+                Explique ton idée. <span class="points">(2 points)</span></p>
+                <textarea name="q10_innovation" rows="4" required 
+                          placeholder="Mon idée d'amélioration : ..."></textarea>
+            </div>
+
+            <!-- BOUTONS D'ACTION -->
+            <div style="display: flex; gap: 15px; margin-top: 30px;">
+                <button type="button" id="sendToFirebase" class="submit-btn" style="background-color: #27ae60; flex: 1;">
+                    📤 Envoyer mes réponses
+                </button>
+                <button type="reset" class="submit-btn" style="background-color: #e74c3c; flex: 0.3;">
+                    🔄 Réinitialiser
+                </button>
+            </div>
+        </form>
+
+        <div id="result" style="margin-top: 20px; padding: 15px; display: none; background-color: #d4edda; border: 2px solid #28a745; border-radius: 5px;">
+            <h3>✅ Réponses enregistrées !</h3>
+            <p>Tes réponses ont été sauvegardées avec succès. Tu peux maintenant les relire ou demander une correction à ton professeur.</p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // PROTECTION PAR MOT DE PASSE
+        // ============================================
+        (function() {
+            const MOT_DE_PASSE = 'seche'; // ← Mot de passe : "seche"
+            let tentatives = 3;
+            
+            while (tentatives > 0) {
+                const saisie = prompt('🔒 Mot de passe requis pour accéder au formulaire :');
+                
+                if (saisie === null) {
+                    document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès annulé</h1>';
+                    throw new Error('Accès annulé');
+                }
+                
+                if (saisie === MOT_DE_PASSE) {
+                    return; // ✅ Mot de passe correct
+                }
+                
+                tentatives--;
+                if (tentatives > 0) {
+                    alert('❌ Mot de passe incorrect ! Il te reste ' + tentatives + ' tentative(s).');
+                }
+            }
+            
+            alert('🚫 Nombre de tentatives dépassé !');
+            document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès refusé</h1>';
+            throw new Error('Accès refusé');
+        })();
+        
+        // ============================================
+        // CONFIRMATION AVANT FERMETURE
+        // ============================================
+        let formModified = false;
+
+        document.getElementById('dnbForm').addEventListener('input', function() {
+            formModified = true;
+        });
+
+        window.addEventListener('beforeunload', function(e) {
+            if (formModified) {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+           
+        // ============================================
+        // CONFIGURATION FIREBASE
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        console.log('✅ Firebase initialisé');
+
+        // ============================================
+        // BOUTON D'ENVOI VERS FIREBASE
+        // ============================================
+        document.getElementById('sendToFirebase').addEventListener('click', async function() {
+            const form = document.getElementById('dnbForm');
+            
+            // Vérifier la validité du formulaire
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Désactiver le bouton
+            const originalText = this.textContent;
+            this.disabled = true;
+            this.textContent = '⏳ Envoi en cours...';
+            
+            try {
+                // Collecter les données
+                const formData = new FormData(form);
+                
+                const responses = {
+                    // Identification
+                    nom_eleve: formData.get('studentName'),
+                    classe: formData.get('studentClass'),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    date_soumission: new Date().toISOString(),
+                    
+                    // Partie 1 - Compréhension
+                    q1_explication: formData.get('q1_explication'),
+                    q2_element1: formData.get('q2_element1'),
+                    q2_element2: formData.get('q2_element2'),
+                    q3_role_turbine: formData.get('q3_role_turbine'),
+                    
+                    // Partie 2 - Diagramme fonctionnel
+                    q4_transformer_mouvement: formData.get('q4_transformer_mouvement'),
+                    q4_distribuer_electricite: formData.get('q4_distribuer_electricite'),
+                    q4_produire_mouvement: formData.get('q4_produire_mouvement'),
+                    q4_produire_chaleur: formData.get('q4_produire_chaleur'),
+                    q4_aspirer_air: formData.get('q4_aspirer_air'),
+                    q4_diffuser_air: formData.get('q4_diffuser_air'),
+                    q4_commander: formData.get('q4_commander'),
+                    
+                    // Partie 3 - Transformations d'énergie
+                    q5_transformation1: formData.get('q5_transformation1'),
+                    q5_transformation2: formData.get('q5_transformation2'),
+                    q6_energie_perdue: formData.get('q6_energie_perdue'),
+                    
+                    // Partie 4 - Sécurité
+                    q7_danger_eau: formData.get('q7_danger_eau'),
+                    q8_buse: formData.get('q8_buse'),
+                    
+                    // Partie 5 - Réflexion
+                    q9_amelioration1: formData.get('q9_amelioration1'),
+                    q9_amelioration2: formData.get('q9_amelioration2'),
+                    q10_innovation: formData.get('q10_innovation')
+                };
+                
+                console.log('📤 Envoi des données:', responses);
+                
+                // Envoyer à Firebase dans la collection "seche_cheveux"
+                const docRef = await db.collection('seche_cheveux').add(responses);
+                
+                console.log('✅ Document enregistré avec ID:', docRef.id);
+                
+                // Réactiver le bouton
+                this.disabled = false;
+                this.textContent = originalText;
+                
+                // Notification de succès
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+                
+                // Réinitialiser le formulaire après 3 secondes
+                setTimeout(() => {
+                    form.reset();
+                    formModified = false;
+                    document.getElementById('result').style.display = 'none';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('❌ Erreur Firebase:', error);
+                
+                // Réactiver le bouton
+                this.disabled = false;
+                this.textContent = originalText;
+                
+                // Notification d'erreur
+                alert('❌ Erreur lors de l\'envoi : ' + error.message);
+            }
+        });
+
+        // ============================================
+        // GESTION DU BOUTON RÉINITIALISER
+        // ============================================
+        document.getElementById('dnbForm').addEventListener('reset', function() {
+            if (confirm('Es-tu sûr de vouloir effacer toutes tes réponses ?')) {
+                formModified = false;
+                document.getElementById('result').style.display = 'none';
+            } else {
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>
