@@ -23,394 +23,256 @@
             padding: 20px;
         }
         
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        
         .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
+            background: white;
             padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
             text-align: center;
         }
         
         .header h1 {
-            font-size: 2em;
+            color: #2c3e50;
             margin-bottom: 10px;
-        }
-        
-        .header p {
-            opacity: 0.9;
-            font-size: 1.1em;
-        }
-        
-        .controls {
-            padding: 25px;
-            background-color: #f8f9fa;
-            border-bottom: 2px solid #e9ecef;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
+            font-size: 2.5em;
         }
         
         .stats {
             display: flex;
-            gap: 20px;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
         
         .stat-box {
-            background: white;
-            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-left: 4px solid #3498db;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
-        .stat-box strong {
-            display: block;
-            font-size: 0.9em;
-            color: #7f8c8d;
-            margin-bottom: 5px;
-        }
-        
-        .stat-box span {
-            font-size: 1.8em;
-            color: #2c3e50;
+        .stat-box .number {
+            font-size: 2em;
             font-weight: bold;
         }
         
-        .buttons {
+        .stat-box .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
             display: flex;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
         .btn {
             padding: 12px 25px;
             border: none;
-            border-radius: 8px;
-            font-size: 1em;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
         
-        .btn-refresh {
-            background-color: #3498db;
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
         
-        .btn-refresh:hover {
-            background-color: #2980b9;
-        }
-        
-        .btn-download {
-            background-color: #27ae60;
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             color: white;
         }
         
-        .btn-download:hover {
-            background-color: #229954;
-        }
-        
-        .btn-clear {
-            background-color: #e74c3c;
+        .btn-secondary {
+            background: #95a5a6;
             color: white;
         }
         
-        .btn-clear:hover {
-            background-color: #c0392b;
+        .responses-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 25px;
         }
         
-        .content {
+        .response-card {
+            background: white;
+            border-radius: 15px;
             padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .response-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .card-header h3 {
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+        
+        .card-header .meta {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .question-block {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .question-block h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .answer {
+            padding: 8px 12px;
+            background: white;
+            border-radius: 5px;
+            margin: 5px 0;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .answer.empty {
+            background: #fff3cd;
+            color: #856404;
+            font-style: italic;
+        }
+        
+        .checkbox-answer {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 3px;
+        }
+        
+        .checkbox-answer.checked {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .checkbox-answer.unchecked {
+            background: #f8d7da;
+            color: #721c24;
         }
         
         .loading {
             text-align: center;
             padding: 50px;
-            color: #7f8c8d;
-            font-size: 1.2em;
-        }
-        
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            color: white;
+            font-size: 1.5em;
         }
         
         .no-data {
             text-align: center;
             padding: 50px;
-            color: #95a5a6;
-            font-size: 1.2em;
-        }
-        
-        .student-card {
             background: white;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: all 0.3s;
-        }
-        
-        .student-card:hover {
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            border-color: #3498db;
-        }
-        
-        .student-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #ecf0f1;
-        }
-        
-        .student-info {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .student-name {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-        
-        .student-class {
-            background-color: #3498db;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-        }
-        
-        .submission-time {
-            color: #7f8c8d;
-            font-size: 0.9em;
-        }
-        
-        .responses-grid {
-            display: grid;
-            gap: 20px;
-        }
-        
-        .question-block {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #3498db;
-        }
-        
-        .question-title {
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.1em;
-        }
-        
-        .response-item {
-            margin-bottom: 10px;
-            padding: 10px;
-            background: white;
-            border-radius: 5px;
-        }
-        
-        .response-label {
-            font-weight: 600;
-            color: #34495e;
-            margin-bottom: 5px;
-            font-size: 0.9em;
-        }
-        
-        .response-value {
-            color: #2c3e50;
-            padding: 8px;
-            background-color: #fff;
-            border: 1px solid #e9ecef;
-            border-radius: 4px;
-            min-height: 30px;
-        }
-        
-        .response-value.empty {
-            color: #e74c3c;
-            font-style: italic;
-        }
-        
-        .checkbox-response {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 5px;
-            font-weight: 600;
-        }
-        
-        .checkbox-response.checked {
-            background-color: #27ae60;
-            color: white;
-        }
-        
-        .checkbox-response.unchecked {
-            background-color: #e74c3c;
-            color: white;
-        }
-        
-        .search-filter {
-            margin-bottom: 20px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-        }
-        
-        .search-input {
-            width: 100%;
-            padding: 12px;
-            font-size: 1em;
-            border: 2px solid #bdc3c7;
-            border-radius: 8px;
-            transition: border-color 0.3s;
-        }
-        
-        .search-input:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-        
-        .alert {
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-        }
-        
-        .alert.success {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-        }
-        
-        .alert.error {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-        
-        .alert.info {
-            background-color: #d1ecf1;
-            border: 1px solid #bee5eb;
-            color: #0c5460;
+            border-radius: 15px;
+            color: #6c757d;
         }
         
         @media (max-width: 768px) {
+            .responses-container {
+                grid-template-columns: 1fr;
+            }
+            
             .controls {
                 flex-direction: column;
-                align-items: stretch;
             }
             
-            .stats {
-                flex-direction: column;
-            }
-            
-            .buttons {
-                flex-direction: column;
-            }
-            
-            .btn {
+            .search-box {
                 width: 100%;
-                justify-content: center;
-            }
-            
-            .student-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📊 Tableau de bord - DNB Technologie</h1>
-            <p>Visualisation des réponses des élèves - Trottinette Électrique</p>
-        </div>
-        
-        <div class="controls">
-            <div class="stats">
-                <div class="stat-box">
-                    <strong>Total de réponses</strong>
-                    <span id="totalCount">0</span>
-                </div>
-                <div class="stat-box" style="border-left-color: #27ae60;">
-                    <strong>Dernière mise à jour</strong>
-                    <span id="lastUpdate" style="font-size: 1em;">-</span>
-                </div>
+    <div class="header">
+        <h1>📊 Visualisation des réponses - DNB Technologie</h1>
+        <div class="stats">
+            <div class="stat-box">
+                <div class="number" id="totalResponses">0</div>
+                <div class="label">Réponses reçues</div>
             </div>
-            
-            <div class="buttons">
-                <button class="btn btn-refresh" onclick="loadResponses()">
-                    🔄 Actualiser
-                </button>
-                <button class="btn btn-download" onclick="downloadCSV()">
-                    📥 Télécharger CSV
-                </button>
-                <button class="btn btn-clear" onclick="clearFilter()">
-                    🗑️ Effacer le filtre
-                </button>
+            <div class="stat-box">
+                <div class="number" id="lastUpdate">--:--</div>
+                <div class="label">Dernière mise à jour</div>
             </div>
         </div>
-        
-        <div class="content">
-            <div id="alertBox" class="alert"></div>
-            
-            <div class="search-filter">
-                <input type="text" 
-                       id="searchInput" 
-                       class="search-input" 
-                       placeholder="🔍 Rechercher par nom, prénom ou classe..."
-                       oninput="filterResults()">
-            </div>
-            
-            <div id="loadingDiv" class="loading">
-                <div class="spinner"></div>
-                <p>Chargement des réponses...</p>
-            </div>
-            
-            <div id="noDataDiv" class="no-data" style="display: none;">
-                <p>📭 Aucune réponse disponible pour le moment</p>
-            </div>
-            
-            <div id="responsesContainer"></div>
+    </div>
+    
+    <div class="controls">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Rechercher par nom, prénom ou classe...">
         </div>
+        <button class="btn btn-primary" onclick="loadResponses()">🔄 Actualiser</button>
+        <button class="btn btn-success" onclick="exportToCSV()">📥 Télécharger CSV</button>
+        <button class="btn btn-secondary" onclick="clearSearch()">✖ Effacer filtre</button>
+    </div>
+    
+    <div id="loading" class="loading">
+        ⏳ Chargement des données...
+    </div>
+    
+    <div id="responsesContainer" class="responses-container" style="display: none;"></div>
+    
+    <div id="noData" class="no-data" style="display: none;">
+        <h2>📭 Aucune réponse trouvée</h2>
+        <p>Les réponses des élèves s'afficheront ici automatiquement.</p>
     </div>
 
     <script>
@@ -431,239 +293,186 @@
         let allResponses = [];
 
         // Charger les réponses au démarrage
-        window.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('load', () => {
             loadResponses();
         });
 
-        function showAlert(message, type = 'info') {
-            const alertBox = document.getElementById('alertBox');
-            alertBox.textContent = message;
-            alertBox.className = 'alert ' + type;
-            alertBox.style.display = 'block';
-            
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 4000);
-        }
-
+        // Fonction de chargement des réponses
         async function loadResponses() {
-            const loadingDiv = document.getElementById('loadingDiv');
-            const noDataDiv = document.getElementById('noDataDiv');
-            const container = document.getElementById('responsesContainer');
-            
-            loadingDiv.style.display = 'block';
-            noDataDiv.style.display = 'none';
-            container.innerHTML = '';
-            
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('responsesContainer').style.display = 'none';
+            document.getElementById('noData').style.display = 'none';
+
             try {
-                const snapshot = await db.collection('dnb_trottinette')
-                    .orderBy('timestamp', 'desc')
-                    .get();
+                const snapshot = await db.collection('dnb_reponses').orderBy('timestamp', 'desc').get();
                 
                 allResponses = [];
-                
                 snapshot.forEach(doc => {
                     allResponses.push({
                         id: doc.id,
                         ...doc.data()
                     });
                 });
-                
-                loadingDiv.style.display = 'none';
-                
-                if (allResponses.length === 0) {
-                    noDataDiv.style.display = 'block';
-                } else {
-                    displayResponses(allResponses);
-                    updateStats();
-                    showAlert('✅ Données chargées avec succès !', 'success');
-                }
+
+                displayResponses(allResponses);
+                updateStats();
                 
             } catch (error) {
-                console.error('Erreur:', error);
-                loadingDiv.style.display = 'none';
-                showAlert('❌ Erreur lors du chargement des données: ' + error.message, 'error');
+                console.error('Erreur lors du chargement:', error);
+                alert('Erreur lors du chargement des données: ' + error.message);
+                document.getElementById('loading').style.display = 'none';
             }
         }
 
+        // Afficher les réponses
         function displayResponses(responses) {
-            const container = document.getElementById('responsesContainer');
-            container.innerHTML = '';
+            document.getElementById('loading').style.display = 'none';
             
             if (responses.length === 0) {
-                document.getElementById('noDataDiv').style.display = 'block';
+                document.getElementById('noData').style.display = 'block';
                 return;
             }
-            
-            document.getElementById('noDataDiv').style.display = 'none';
-            
-            responses.forEach((response, index) => {
-                const card = createStudentCard(response, index + 1);
+
+            const container = document.getElementById('responsesContainer');
+            container.style.display = 'grid';
+            container.innerHTML = '';
+
+            responses.forEach(response => {
+                const card = createResponseCard(response);
                 container.appendChild(card);
             });
         }
 
-        function createStudentCard(data, index) {
+        // Créer une carte de réponse
+        function createResponseCard(data) {
             const card = document.createElement('div');
-            card.className = 'student-card';
+            card.className = 'response-card';
             
-            const timestamp = data.timestamp ? 
-                new Date(data.timestamp.toDate()).toLocaleString('fr-FR') : 
-                'Date inconnue';
+            const timestamp = data.timestamp ? new Date(data.timestamp.seconds * 1000).toLocaleString('fr-FR') : 'Date inconnue';
             
             card.innerHTML = `
-                <div class="student-header">
-                    <div class="student-info">
-                        <div class="student-name">${index}. ${data.studentName || 'Nom non renseigné'}</div>
-                        <div class="student-class">${data.studentClass || 'Classe non renseignée'}</div>
-                    </div>
-                    <div class="submission-time">📅 ${timestamp}</div>
+                <div class="card-header">
+                    <h3>${data.nom_eleve || 'Anonyme'}</h3>
+                    <div class="meta">Classe: ${data.classe || 'Non renseignée'} | ${timestamp}</div>
                 </div>
-                
-                <div class="responses-grid">
-                    <!-- Question 1 -->
-                    <div class="question-block">
-                        <div class="question-title">Question 1 - Avantages et inconvénients (4 points)</div>
-                        <div class="response-item">
-                            <div class="response-label">Avantage 1:</div>
-                            <div class="response-value ${!data.q1_avantage1 ? 'empty' : ''}">${data.q1_avantage1 || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Avantage 2:</div>
-                            <div class="response-value ${!data.q1_avantage2 ? 'empty' : ''}">${data.q1_avantage2 || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Avantage 3:</div>
-                            <div class="response-value ${!data.q1_avantage3 ? 'empty' : ''}">${data.q1_avantage3 || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Inconvénient:</div>
-                            <div class="response-value ${!data.q1_inconvenient ? 'empty' : ''}">${data.q1_inconvenient || 'Non renseigné'}</div>
-                        </div>
+
+                <div class="question-block">
+                    <h4>Question 1 (4 points) - Avantages et inconvénients</h4>
+                    <div class="answer ${!data.q1_avantage1 ? 'empty' : ''}">
+                        Avantage 1: ${data.q1_avantage1 || 'Non répondu'}
                     </div>
-                    
-                    <!-- Question 2 -->
-                    <div class="question-block">
-                        <div class="question-title">Question 2 - Solutions techniques (7 points)</div>
-                        <div class="response-item">
-                            <div class="response-label">Avertir:</div>
-                            <div class="response-value ${!data.q2_avertir ? 'empty' : ''}">${data.q2_avertir || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Avancer (1):</div>
-                            <div class="response-value ${!data.q2_avancer1 ? 'empty' : ''}">${data.q2_avancer1 || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Avancer (2):</div>
-                            <div class="response-value ${!data.q2_avancer2 ? 'empty' : ''}">${data.q2_avancer2 || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Avancer (3):</div>
-                            <div class="response-value ${!data.q2_avancer3 ? 'empty' : ''}">${data.q2_avancer3 || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Éclairer (1):</div>
-                            <div class="response-value ${!data.q2_eclairer1 ? 'empty' : ''}">${data.q2_eclairer1 || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Éclairer (2):</div>
-                            <div class="response-value ${!data.q2_eclairer2 ? 'empty' : ''}">${data.q2_eclairer2 || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Fonction batterie:</div>
-                            <div class="response-value ${!data.q2_fonction_batterie ? 'empty' : ''}">${data.q2_fonction_batterie || 'Non renseigné'}</div>
-                        </div>
+                    <div class="answer ${!data.q1_avantage2 ? 'empty' : ''}">
+                        Avantage 2: ${data.q1_avantage2 || 'Non répondu'}
                     </div>
-                    
-                    <!-- Question 3 -->
-                    <div class="question-block">
-                        <div class="question-title">Question 3 - Règlement (4 points)</div>
-                        <div class="response-item">
-                            <div class="response-label">Freiner:</div>
-                            <span class="checkbox-response ${data.q3_freiner ? 'checked' : 'unchecked'}">
-                                ${data.q3_freiner ? '✓ Coché' : '✗ Non coché'}
-                            </span>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Avertir:</div>
-                            <span class="checkbox-response ${data.q3_avertir ? 'checked' : 'unchecked'}">
-                                ${data.q3_avertir ? '✓ Coché' : '✗ Non coché'}
-                            </span>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Avancer:</div>
-                            <span class="checkbox-response ${data.q3_avancer ? 'checked' : 'unchecked'}">
-                                ${data.q3_avancer ? '✓ Coché' : '✗ Non coché'}
-                            </span>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Éclairer:</div>
-                            <span class="checkbox-response ${data.q3_eclairer ? 'checked' : 'unchecked'}">
-                                ${data.q3_eclairer ? '✓ Coché' : '✗ Non coché'}
-                            </span>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Batterie:</div>
-                            <span class="checkbox-response ${data.q3_batterie ? 'checked' : 'unchecked'}">
-                                ${data.q3_batterie ? '✓ Coché' : '✗ Non coché'}
-                            </span>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Vitesse:</div>
-                            <span class="checkbox-response ${data.q3_vitesse ? 'checked' : 'unchecked'}">
-                                ${data.q3_vitesse ? '✓ Coché' : '✗ Non coché'}
-                            </span>
-                        </div>
+                    <div class="answer ${!data.q1_avantage3 ? 'empty' : ''}">
+                        Avantage 3: ${data.q1_avantage3 || 'Non répondu'}
                     </div>
-                    
-                    <!-- Question 4 -->
-                    <div class="question-block">
-                        <div class="question-title">Question 4 - Algorigramme (6 points)</div>
-                        <div class="response-item">
-                            <div class="response-label">Box 1:</div>
-                            <div class="response-value ${!data.q4_box1 ? 'empty' : ''}">${data.q4_box1 || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Box 2:</div>
-                            <div class="response-value ${!data.q4_box2 ? 'empty' : ''}">${data.q4_box2 || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Box 3:</div>
-                            <div class="response-value ${!data.q4_box3 ? 'empty' : ''}">${data.q4_box3 || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Diamond (condition):</div>
-                            <div class="response-value ${!data.q4_diamond ? 'empty' : ''}">${data.q4_diamond || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Réponse 1:</div>
-                            <div class="response-value ${!data.q4_reponse1 ? 'empty' : ''}">${data.q4_reponse1 || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Réponse 2:</div>
-                            <div class="response-value ${!data.q4_reponse2 ? 'empty' : ''}">${data.q4_reponse2 || 'Non renseigné'}</div>
-                        </div>
+                    <div class="answer ${!data.q1_inconvenient ? 'empty' : ''}">
+                        Inconvénient: ${data.q1_inconvenient || 'Non répondu'}
                     </div>
-                    
-                    <!-- Question 5 -->
-                    <div class="question-block">
-                        <div class="question-title">Question 5 - Programme (4 points)</div>
-                        <div class="response-item">
-                            <div class="response-label">Autoriser l'accélération:</div>
-                            <div class="response-value ${!data.q5_autoriser ? 'empty' : ''}">${data.q5_autoriser || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Gâchette de freinage:</div>
-                            <div class="response-value ${!data.q5_gachette ? 'empty' : ''}">${data.q5_gachette || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Bouton d'éclairage:</div>
-                            <div class="response-value ${!data.q5_bouton ? 'empty' : ''}">${data.q5_bouton || 'Non renseigné'}</div>
-                        </div>
-                        <div class="response-item">
-                            <div class="response-label">Ne pas autoriser l'accélération:</div>
-                            <div class="response-value ${!data.q5_ne_pas_autoriser ? 'empty' : ''}">${data.q5_ne_pas_autoriser || 'Non renseigné'}</div>
-                        </div>
+                </div>
+
+                <div class="question-block">
+                    <h4>Question 2 (7 points) - Solutions techniques</h4>
+                    <div class="answer ${!data.q2_avertir ? 'empty' : ''}">
+                        Avertir: ${data.q2_avertir || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q2_avancer1 ? 'empty' : ''}">
+                        Avancer 1: ${data.q2_avancer1 || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q2_avancer2 ? 'empty' : ''}">
+                        Avancer 2: ${data.q2_avancer2 || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q2_avancer3 ? 'empty' : ''}">
+                        Avancer 3: ${data.q2_avancer3 || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q2_eclairer1 ? 'empty' : ''}">
+                        Éclairer 1: ${data.q2_eclairer1 || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q2_eclairer2 ? 'empty' : ''}">
+                        Éclairer 2: ${data.q2_eclairer2 || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q2_fonction_batterie ? 'empty' : ''}">
+                        Fonction batterie: ${data.q2_fonction_batterie || 'Non répondu'}
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <h4>Question 3 (4 points) - Règlement</h4>
+                    <span class="checkbox-answer ${data.q3_freiner ? 'checked' : 'unchecked'}">
+                        Freiner: ${data.q3_freiner ? '✓' : '✗'}
+                    </span>
+                    <span class="checkbox-answer ${data.q3_avertir ? 'checked' : 'unchecked'}">
+                        Avertir: ${data.q3_avertir ? '✓' : '✗'}
+                    </span>
+                    <span class="checkbox-answer ${data.q3_avancer ? 'checked' : 'unchecked'}">
+                        Avancer: ${data.q3_avancer ? '✓' : '✗'}
+                    </span>
+                    <span class="checkbox-answer ${data.q3_eclairer ? 'checked' : 'unchecked'}">
+                        Éclairer: ${data.q3_eclairer ? '✓' : '✗'}
+                    </span>
+                    <span class="checkbox-answer ${data.q3_batterie ? 'checked' : 'unchecked'}">
+                        Batterie: ${data.q3_batterie ? '✓' : '✗'}
+                    </span>
+                    <span class="checkbox-answer ${data.q3_vitesse ? 'checked' : 'unchecked'}">
+                        Vitesse: ${data.q3_vitesse ? '✓' : '✗'}
+                    </span>
+                </div>
+
+                <div class="question-block">
+                    <h4>Question 4 (6 points) - Algorigramme</h4>
+                    <div class="answer ${!data.q4_box1 ? 'empty' : ''}">
+                        Boîte 1: ${data.q4_box1 || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q4_box2 ? 'empty' : ''}">
+                        Boîte 2: ${data.q4_box2 || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q4_box3 ? 'empty' : ''}">
+                        Boîte 3: ${data.q4_box3 || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q4_diamond ? 'empty' : ''}">
+                        Losange: ${data.q4_diamond || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q4_reponse1 ? 'empty' : ''}">
+                        Réponse 1: ${data.q4_reponse1 || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q4_reponse2 ? 'empty' : ''}">
+                        Réponse 2: ${data.q4_reponse2 || 'Non répondu'}
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <h4>Question 5 (4 points) - Programme</h4>
+                    <div class="answer ${!data.q5_autoriser ? 'empty' : ''}">
+                        Autoriser: ${data.q5_autoriser || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q5_freinage ? 'empty' : ''}">
+                        Freinage demandé: ${data.q5_freinage || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q5_pas_autoriser ? 'empty' : ''}">
+                        Pas autoriser: ${data.q5_pas_autoriser || 'Non répondu'}
+                    </div>
+                    <div class="answer ${!data.q5_capteur ? 'empty' : ''}">
+                        Capteur présence: ${data.q5_capteur || 'Non répondu'}
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <h4>Question 6 (5 points) - Stockage d'énergie</h4>
+                    <div class="answer ${!data.q6_capacite ? 'empty' : ''}">
+                        Capacité: ${data.q6_capacite || 'Non répondu'} Ah
+                    </div>
+                    <div class="answer ${!data.q6_tension ? 'empty' : ''}">
+                        Tension: ${data.q6_tension || 'Non répondu'} V
+                    </div>
+                    <div class="answer ${!data.q6_energie ? 'empty' : ''}">
+                        Énergie: ${data.q6_energie || 'Non répondu'} Wh
+                    </div>
+                    <div class="answer ${!data.q6_duree ? 'empty' : ''}">
+                        Durée: ${data.q6_duree || 'Non répondu'} heures
+                    </div>
+                    <div class="answer ${!data.q6_distance ? 'empty' : ''}">
+                        Distance: ${data.q6_distance || 'Non répondu'} km
                     </div>
                 </div>
             `;
@@ -671,141 +480,117 @@
             return card;
         }
 
+        // Mettre à jour les statistiques
         function updateStats() {
-            document.getElementById('totalCount').textContent = allResponses.length;
+            document.getElementById('totalResponses').textContent = allResponses.length;
             document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('fr-FR');
         }
 
-        function filterResults() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        // Fonction de recherche
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
             
             const filtered = allResponses.filter(response => {
-                const name = (response.studentName || '').toLowerCase();
-                const studentClass = (response.studentClass || '').toLowerCase();
-                
-                return name.includes(searchTerm) || studentClass.includes(searchTerm);
+                const nom = (response.nom_eleve || '').toLowerCase();
+                const classe = (response.classe || '').toLowerCase();
+                return nom.includes(searchTerm) || classe.includes(searchTerm);
             });
             
             displayResponses(filtered);
-        }
+        });
 
-        function clearFilter() {
+        // Effacer la recherche
+        function clearSearch() {
             document.getElementById('searchInput').value = '';
             displayResponses(allResponses);
         }
 
-        function downloadCSV() {
+        // Export CSV
+        function exportToCSV() {
             if (allResponses.length === 0) {
-                showAlert('⚠️ Aucune donnée à télécharger', 'error');
+                alert('Aucune donnée à exporter');
                 return;
             }
-            
-            // En-têtes du CSV
+
+            // En-têtes CSV
             const headers = [
-                'Timestamp',
-                'Nom et Prénom',
-                'Classe',
-                'Q1 - Avantage 1',
-                'Q1 - Avantage 2',
-                'Q1 - Avantage 3',
-                'Q1 - Inconvénient',
-                'Q2 - Avertir',
-                'Q2 - Avancer 1',
-                'Q2 - Avancer 2',
-                'Q2 - Avancer 3',
-                'Q2 - Éclairer 1',
-                'Q2 - Éclairer 2',
-                'Q2 - Fonction batterie',
-                'Q3 - Freiner',
-                'Q3 - Avertir',
-                'Q3 - Avancer',
-                'Q3 - Éclairer',
-                'Q3 - Batterie',
-                'Q3 - Vitesse',
-                'Q4 - Box 1',
-                'Q4 - Box 2',
-                'Q4 - Box 3',
-                'Q4 - Diamond',
-                'Q4 - Réponse 1',
-                'Q4 - Réponse 2',
-                'Q5 - Autoriser',
-                'Q5 - Gâchette',
-                'Q5 - Bouton',
-                'Q5 - Ne pas autoriser'
+                'Nom', 'Classe', 'Date',
+                'Q1_Avantage1', 'Q1_Avantage2', 'Q1_Avantage3', 'Q1_Inconvénient',
+                'Q2_Avertir', 'Q2_Avancer1', 'Q2_Avancer2', 'Q2_Avancer3', 'Q2_Éclairer1', 'Q2_Éclairer2', 'Q2_Fonction_Batterie',
+                'Q3_Freiner', 'Q3_Avertir', 'Q3_Avancer', 'Q3_Éclairer', 'Q3_Batterie', 'Q3_Vitesse',
+                'Q4_Box1', 'Q4_Box2', 'Q4_Box3', 'Q4_Diamond', 'Q4_Reponse1', 'Q4_Reponse2',
+                'Q5_Autoriser', 'Q5_Freinage', 'Q5_PasAutoriser', 'Q5_Capteur',
+                'Q6_Capacité', 'Q6_Tension', 'Q6_Énergie', 'Q6_Durée', 'Q6_Distance'
             ];
-            
-            // Fonction pour échapper les valeurs CSV
-            function escapeCSV(value) {
-                if (value === null || value === undefined) return '';
-                const stringValue = String(value);
-                if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('
-')) {
-                    return '"' + stringValue.replace(/"/g, '""') + '"';
-                }
-                return stringValue;
-            }
-            
-            // Construire les lignes du CSV
-            let csvContent = headers.join(',') + '
-';
-            
-            allResponses.forEach(response => {
-                const timestamp = response.timestamp ? 
-                    new Date(response.timestamp.toDate()).toLocaleString('fr-FR') : 
-                    '';
+
+            // Construire les lignes
+            const rows = allResponses.map(r => {
+                const timestamp = r.timestamp ? new Date(r.timestamp.seconds * 1000).toLocaleString('fr-FR') : '';
                 
-                const row = [
+                return [
+                    escapeCSV(r.nom_eleve || ''),
+                    escapeCSV(r.classe || ''),
                     timestamp,
-                    response.studentName || '',
-                    response.studentClass || '',
-                    response.q1_avantage1 || '',
-                    response.q1_avantage2 || '',
-                    response.q1_avantage3 || '',
-                    response.q1_inconvenient || '',
-                    response.q2_avertir || '',
-                    response.q2_avancer1 || '',
-                    response.q2_avancer2 || '',
-                    response.q2_avancer3 || '',
-                    response.q2_eclairer1 || '',
-                    response.q2_eclairer2 || '',
-                    response.q2_fonction_batterie || '',
-                    response.q3_freiner ? 'Oui' : 'Non',
-                    response.q3_avertir ? 'Oui' : 'Non',
-                    response.q3_avancer ? 'Oui' : 'Non',
-                    response.q3_eclairer ? 'Oui' : 'Non',
-                    response.q3_batterie ? 'Oui' : 'Non',
-                    response.q3_vitesse ? 'Oui' : 'Non',
-                    response.q4_box1 || '',
-                    response.q4_box2 || '',
-                    response.q4_box3 || '',
-                    response.q4_diamond || '',
-                    response.q4_reponse1 || '',
-                    response.q4_reponse2 || '',
-                    response.q5_autoriser || '',
-                    response.q5_gachette || '',
-                    response.q5_bouton || '',
-                    response.q5_ne_pas_autoriser || ''
-                ];
-                
-                csvContent += row.map(escapeCSV).join(',') + '
-';
+                    escapeCSV(r.q1_avantage1 || ''),
+                    escapeCSV(r.q1_avantage2 || ''),
+                    escapeCSV(r.q1_avantage3 || ''),
+                    escapeCSV(r.q1_inconvenient || ''),
+                    escapeCSV(r.q2_avertir || ''),
+                    escapeCSV(r.q2_avancer1 || ''),
+                    escapeCSV(r.q2_avancer2 || ''),
+                    escapeCSV(r.q2_avancer3 || ''),
+                    escapeCSV(r.q2_eclairer1 || ''),
+                    escapeCSV(r.q2_eclairer2 || ''),
+                    escapeCSV(r.q2_fonction_batterie || ''),
+                    r.q3_freiner ? 'OUI' : 'NON',
+                    r.q3_avertir ? 'OUI' : 'NON',
+                    r.q3_avancer ? 'OUI' : 'NON',
+                    r.q3_eclairer ? 'OUI' : 'NON',
+                    r.q3_batterie ? 'OUI' : 'NON',
+                    r.q3_vitesse ? 'OUI' : 'NON',
+                    escapeCSV(r.q4_box1 || ''),
+                    escapeCSV(r.q4_box2 || ''),
+                    escapeCSV(r.q4_box3 || ''),
+                    escapeCSV(r.q4_diamond || ''),
+                    escapeCSV(r.q4_reponse1 || ''),
+                    escapeCSV(r.q4_reponse2 || ''),
+                    escapeCSV(r.q5_autoriser || ''),
+                    escapeCSV(r.q5_freinage || ''),
+                    escapeCSV(r.q5_pas_autoriser || ''),
+                    escapeCSV(r.q5_capteur || ''),
+                    escapeCSV(r.q6_capacite || ''),
+                    escapeCSV(r.q6_tension || ''),
+                    escapeCSV(r.q6_energie || ''),
+                    escapeCSV(r.q6_duree || ''),
+                    escapeCSV(r.q6_distance || '')
+                ].join(';');
             });
-            
-            // Créer le fichier et le télécharger
-            const blob = new Blob(['﻿' + csvContent], { type: 'text/csv;charset=utf-8;' });
+
+            // Créer le contenu CSV
+            const csvContent = '\uFEFF' + headers.join(';') + '\n' + rows.join('\n');
+
+            // Télécharger
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             const url = URL.createObjectURL(blob);
             
-            const dateStr = new Date().toISOString().split('T')[0];
             link.setAttribute('href', url);
-            link.setAttribute('download', `reponses_dnb_trottinette_${dateStr}.csv`);
+            link.setAttribute('download', `reponses_dnb_${new Date().toISOString().split('T')[0]}.csv`);
             link.style.visibility = 'hidden';
             
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
-            showAlert('✅ Fichier CSV téléchargé avec succès !', 'success');
+        }
+
+        // Échapper les valeurs CSV
+        function escapeCSV(value) {
+            if (value === null || value === undefined) return '';
+            value = String(value);
+            if (value.includes(';') || value.includes('"') || value.includes('\n')) {
+                return '"' + value.replace(/"/g, '""') + '"';
+            }
+            return value;
         }
     </script>
 </body>
