@@ -306,7 +306,7 @@
         
             try {
                 console.log('📡 Connexion à Firestore...');
-                const snapshot = await db.collection('dnb_reponses').orderBy('timestamp', 'desc').get();
+                const snapshot = await db.collection('dnb_trottinette').orderBy('timestamp', 'desc').get();
                 
                 console.log('✅ Snapshot reçu, nombre de documents:', snapshot.size);
                 
