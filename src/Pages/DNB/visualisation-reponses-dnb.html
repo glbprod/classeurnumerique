@@ -299,30 +299,40 @@
 
         // Fonction de chargement des réponses
         async function loadResponses() {
+            console.log('🔍 Début du chargement des réponses...');
             document.getElementById('loading').style.display = 'block';
             document.getElementById('responsesContainer').style.display = 'none';
             document.getElementById('noData').style.display = 'none';
-
+        
             try {
+                console.log('📡 Connexion à Firestore...');
                 const snapshot = await db.collection('dnb_reponses').orderBy('timestamp', 'desc').get();
+                
+                console.log('✅ Snapshot reçu, nombre de documents:', snapshot.size);
                 
                 allResponses = [];
                 snapshot.forEach(doc => {
+                    console.log('📄 Document trouvé:', doc.id, doc.data());
                     allResponses.push({
                         id: doc.id,
                         ...doc.data()
                     });
                 });
-
+        
+                console.log('📊 Total de réponses chargées:', allResponses.length);
                 displayResponses(allResponses);
                 updateStats();
                 
             } catch (error) {
-                console.error('Erreur lors du chargement:', error);
+                console.error('❌ Erreur complète:', error);
+                console.error('Code erreur:', error.code);
+                console.error('Message:', error.message);
                 alert('Erreur lors du chargement des données: ' + error.message);
                 document.getElementById('loading').style.display = 'none';
+                document.getElementById('noData').style.display = 'block';
             }
         }
+
 
         // Afficher les réponses
         function displayResponses(responses) {
