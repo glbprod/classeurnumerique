@@ -160,11 +160,8 @@ nav {
     box-shadow: 0 6px 20px var(--shadow-hover);
 }
 
-/* Hero Section avec Carrousel */
 .hero {
     padding: 60px 0;
-    position: relative;
-    z-index: 2;
 }
 
 .hero-header {
@@ -174,20 +171,19 @@ nav {
 
 .hero-header h2 {
     font-size: 2.5rem;
-    color: var(--dark-blue);
+    color: #2C3E50;
     margin-bottom: 10px;
     font-weight: 700;
 }
 
 .hero-subtitle {
     font-size: 1.2rem;
-    color: var(--text-light);
+    color: #6C757D;
 }
 
-/* Carrousel */
 .carousel-container {
     position: relative;
-    max-width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 60px;
 }
@@ -199,26 +195,23 @@ nav {
 
 .carousel-track {
     display: flex;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.5s ease;
 }
 
 .carousel-card {
     min-width: 100%;
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
     padding: 40px;
     border-radius: 40px;
-    box-shadow: 0 10px 40px var(--shadow);
+    box-shadow: 0 10px 40px rgba(74, 144, 226, 0.3);
     border: 2px solid rgba(74, 144, 226, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
 }
 
 .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .card-icon-large {
@@ -231,39 +224,39 @@ nav {
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 1px;
+    color: white;
 }
 
 .badge-dnb {
     background: linear-gradient(135deg, #FF6B6B, #FF8E53);
-    color: white;
 }
 
 .badge-robotique {
     background: linear-gradient(135deg, #4A90E2, #7B68EE);
-    color: white;
 }
 
 .badge-energie {
     background: linear-gradient(135deg, #FFD93D, #FFA500);
-    color: white;
 }
 
 .carousel-card h3 {
     font-size: 2rem;
-    color: var(--dark-blue);
-    margin: 0;
+    color: #2C3E50;
+    margin-bottom: 15px;
 }
 
 .card-description {
     font-size: 1.1rem;
-    color: var(--text-light);
+    color: #6C757D;
     line-height: 1.6;
+    margin-bottom: 20px;
 }
 
 .card-meta {
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
+    margin-bottom: 25px;
 }
 
 .meta-item {
@@ -271,37 +264,49 @@ nav {
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 0.9rem;
-    color: var(--text-dark);
+    color: #2C3E50;
     font-weight: 600;
 }
 
-/* Boutons du carrousel */
+.btn-card {
+    background: linear-gradient(135deg, #50C878, #45B168);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(80, 200, 120, 0.4);
+}
+
 .carousel-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 2px solid var(--primary-color);
-    color: var(--primary-color);
+    background: white;
+    border: 2px solid #4A90E2;
+    color: #4A90E2;
     font-size: 2.5rem;
     width: 50px;
     height: 50px;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     z-index: 10;
-    line-height: 1;
 }
 
 .carousel-btn:hover {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: #4A90E2;
     color: white;
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 8px 25px var(--shadow-hover);
 }
 
 .carousel-btn-prev {
@@ -312,7 +317,6 @@ nav {
     right: 0;
 }
 
-/* Dots de navigation */
 .carousel-dots {
     display: flex;
     justify-content: center;
@@ -331,11 +335,10 @@ nav {
 
 .dot:hover {
     background: rgba(74, 144, 226, 0.6);
-    transform: scale(1.2);
 }
 
 .dot.active {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: #4A90E2;
     width: 30px;
     border-radius: 6px;
 }
