@@ -220,6 +220,17 @@
             background: rgba(76, 201, 240, 0.1);
         }
 
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(76, 201, 240, 0.4);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(76, 201, 240, 0.8);
+                transform: scale(1.02);
+            }
+        }
+
         .footer {
             text-align: center;
             padding: 1.5rem;
@@ -513,6 +524,12 @@
             <a href="#" class="btn">📝 Je veux donner mon avis</a>
         </div> -->
     </section>
+
+        <!-- CTA Button to TechnoLab -->
+        <a href="TechnoLab.html" class="btn" style="font-size: 1.2rem; padding: 1rem 2.5rem; background: linear-gradient(135deg, #4cc9f0, #9b59b6); box-shadow: 0 0 30px rgba(76, 201, 240, 0.4); animation: pulse-glow 2s ease-in-out infinite;">
+            Retour à TechnoLab →
+        </a>
+
 
         <!-- Footer -->
         <footer class="footer">
