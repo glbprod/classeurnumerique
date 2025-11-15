@@ -428,6 +428,9 @@ nav {
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 1rem;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
 }
 
 .btn-card:hover {
