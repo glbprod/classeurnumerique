@@ -3,413 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechnoLab - Plateforme d'Apprentissage</title>
-    <link rel="stylesheet" href="style.css">
+    <title>TechnoLab - Test Carrousel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E8F4F8 0%, #D4E8F5 25%, #C0DCF2 50%, #ACD0EF 75%, #98C4EC 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .hero {
+            padding: 60px 0;
+        }
+
+        .hero-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero-header h2 {
+            font-size: 2.5rem;
+            color: #2C3E50;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #6C757D;
+        }
+
+        .carousel-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 60px;
+        }
+
+        .carousel-wrapper {
+            overflow: hidden;
+            border-radius: 40px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-card {
+            min-width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 40px;
+            box-shadow: 0 10px 40px rgba(74, 144, 226, 0.3);
+            border: 2px solid rgba(74, 144, 226, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon-large {
+            font-size: 4rem;
+        }
+
+        .card-badge {
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: white;
+        }
+
+        .badge-dnb {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+        }
+
+        .badge-robotique {
+            background: linear-gradient(135deg, #4A90E2, #7B68EE);
+        }
+
+        .badge-energie {
+            background: linear-gradient(135deg, #FFD93D, #FFA500);
+        }
+
+        .carousel-card h3 {
+            font-size: 2rem;
+            color: #2C3E50;
+            margin-bottom: 15px;
+        }
+
+        .card-description {
+            font-size: 1.1rem;
+            color: #6C757D;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+            background: rgba(74, 144, 226, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #2C3E50;
+            font-weight: 600;
+        }
+
+        .btn-card {
+            background: linear-gradient(135deg, #50C878, #45B168);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(80, 200, 120, 0.4);
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border: 2px solid #4A90E2;
+            color: #4A90E2;
+            font-size: 2.5rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: #4A90E2;
+            color: white;
+        }
+
+        .carousel-btn-prev {
+            left: 0;
+        }
+
+        .carousel-btn-next {
+            right: 0;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(74, 144, 226, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot:hover {
+            background: rgba(74, 144, 226, 0.6);
+        }
+
+        .dot.active {
+            background: #4A90E2;
+            width: 30px;
+            border-radius: 6px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Particules de papier en arrière-plan -->
-    <div class="paper-particles"></div>
-
-    <!-- Header avec navigation -->
-    <header>
-        <div class="container">
-            <div class="logo">
-                <span class="logo-icon">🚀</span>
-                <h1>TechnoLab</h1>
-                <span class="beta-badge">BÊTA</span>
-            </div>
-            <nav>
-                <a href="Presentation-TechnoLab.html" class="nav-link">Présentation</a>
-                <!-- <a href="#activites" class="nav-link">📚 Activités</a>
-                <a href="#ressources" class="nav-link">📖 Ressources</a>
-                <a href="#outils" class="nav-link">🛠️ Outils</a> -->
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Section - Carrousel des activités du jour -->
     <section class="hero">
-        <div class="container">
-            <div class="hero-header">
-                <h2>✨ Activités du jour</h2>
-                <p class="hero-subtitle">Découvre les activités programmées pour aujourd'hui</p>
-            </div>
+        <div class="hero-header">
+            <h2>✨ Activités du jour</h2>
+            <p class="hero-subtitle">Découvre les activités programmées pour aujourd'hui</p>
+        </div>
 
-            <div class="carousel-container">
-                <button class="carousel-btn carousel-btn-prev" onclick="previousSlide()">‹</button>
-                
-                <div class="carousel-wrapper">
-                    <div class="carousel-track" id="carousel-track">
-                        <!-- Card 1 : Prépa DNB Techno -->
-                        <div class="carousel-card">
-                            <div class="card-header">
-                                <div class="card-icon-large">📝</div>
-                                <span class="card-badge badge-dnb">DNB</span>
-                            </div>
-                            <h3>Prépa DNB Techno</h3>
-                            <p class="card-description">Révisions et entraînement pour l'épreuve de technologie du Brevet</p>
-                            <div class="card-meta">
-                                <span class="meta-item">⏱️ 45 min</span>
-                                <span class="meta-item">🎯 3ème</span>
-                                <span class="meta-item">📊 Niveau avancé</span>
-                            </div>
-                            <a href="prepa-dnb.html" class="btn-card btn-card-primary">Commencer →</a>
+        <div class="carousel-container">
+            <button class="carousel-btn carousel-btn-prev" onclick="previousSlide()">‹</button>
+            
+            <div class="carousel-wrapper">
+                <div class="carousel-track" id="carousel-track">
+                    <!-- Card 1 -->
+                    <div class="carousel-card">
+                        <div class="card-header">
+                            <div class="card-icon-large">📝</div>
+                            <span class="card-badge badge-dnb">DNB</span>
                         </div>
+                        <h3>Prépa DNB Techno</h3>
+                        <p class="card-description">Révisions et entraînement pour l'épreuve de technologie du Brevet</p>
+                        <div class="card-meta">
+                            <span class="meta-item">⏱️ 45 min</span>
+                            <span class="meta-item">🎯 3ème</span>
+                            <span class="meta-item">📊 Niveau avancé</span>
+                        </div>
+                        <a href="prepa-dnb.html" class="btn-card">Commencer →</a>
+                    </div>
 
-                        <!-- Card 2 : Robotique -->
-                        <div class="carousel-card">
-                            <div class="card-header">
-                                <div class="card-icon-large">🤖</div>
-                                <span class="card-badge badge-robotique">ROBOTIQUE</span>
-                            </div>
-                            <h3>Robotique</h3>
-                            <p class="card-description">Programmation et pilotage de robots : découverte des capteurs et actionneurs</p>
-                            <div class="card-meta">
-                                <span class="meta-item">⏱️ 1h</span>
-                                <span class="meta-item">🎯 4ème</span>
-                                <span class="meta-item">📊 Intermédiaire</span>
-                            </div>
-                            <a href="robotique.html" class="btn-card btn-card-primary">Commencer →</a>
+                    <!-- Card 2 -->
+                    <div class="carousel-card">
+                        <div class="card-header">
+                            <div class="card-icon-large">🤖</div>
+                            <span class="card-badge badge-robotique">ROBOTIQUE</span>
                         </div>
+                        <h3>Robotique</h3>
+                        <p class="card-description">Programmation et pilotage de robots : découverte des capteurs et actionneurs</p>
+                        <div class="card-meta">
+                            <span class="meta-item">⏱️ 1h</span>
+                            <span class="meta-item">🎯 4ème</span>
+                            <span class="meta-item">📊 Intermédiaire</span>
+                        </div>
+                        <a href="robotique.html" class="btn-card">Commencer →</a>
+                    </div>
 
-                        <!-- Card 3 : Énergie -->
-                        <div class="carousel-card">
-                            <div class="card-header">
-                                <div class="card-icon-large">⚡</div>
-                                <span class="card-badge badge-energie">ÉNERGIE</span>
-                            </div>
-                            <h3>Énergie</h3>
-                            <p class="card-description">Les sources d'énergie et leur transformation : du solaire à l'électricité</p>
-                            <div class="card-meta">
-                                <span class="meta-item">⏱️ 50 min</span>
-                                <span class="meta-item">🎯 5ème</span>
-                                <span class="meta-item">📊 Débutant</span>
-                            </div>
-                            <a href="energie.html" class="btn-card btn-card-primary">Commencer →</a>
+                    <!-- Card 3 -->
+                    <div class="carousel-card">
+                        <div class="card-header">
+                            <div class="card-icon-large">⚡</div>
+                            <span class="card-badge badge-energie">ÉNERGIE</span>
                         </div>
+                        <h3>Énergie</h3>
+                        <p class="card-description">Les sources d'énergie et leur transformation : du solaire à l'électricité</p>
+                        <div class="card-meta">
+                            <span class="meta-item">⏱️ 50 min</span>
+                            <span class="meta-item">🎯 5ème</span>
+                            <span class="meta-item">📊 Débutant</span>
+                        </div>
+                        <a href="energie.html" class="btn-card">Commencer →</a>
                     </div>
                 </div>
-
-                <button class="carousel-btn carousel-btn-next" onclick="nextSlide()">›</button>
             </div>
 
-            <div class="carousel-dots" id="carousel-dots">
-                <span class="dot active" onclick="goToSlide(0)"></span>
-                <span class="dot" onclick="goToSlide(1)"></span>
-                <span class="dot" onclick="goToSlide(2)"></span>
-            </div>
+            <button class="carousel-btn carousel-btn-next" onclick="nextSlide()">›</button>
+        </div>
+
+        <div class="carousel-dots" id="carousel-dots">
+            <span class="dot active" onclick="goToSlide(0)"></span>
+            <span class="dot" onclick="goToSlide(1)"></span>
+            <span class="dot" onclick="goToSlide(2)"></span>
         </div>
     </section>
-
-    <!-- Section Activités -->
-    <section id="activites" class="section">
-        <div class="container">
-            <h2 class="section-title">📚 Activités</h2>
-            <!-- <p class="section-description">Explorez les 9 compétences du Cycle 4 à travers des activités pratiques</p> -->
-            
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">💡</div>
-                    <h3>1. Imaginer des solutions</h3>
-                    <p>Développez votre créativité pour résoudre des problèmes techniques</p>
-                    <button class="btn-card">Accéder →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">🏗️</div>
-                    <h3>2. Modéliser en 3D</h3>
-                    <p>Crée des objets en trois dimensions avec les outils de CAO</p>
-                    <button class="btn-card">Accéder →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">💻</div>
-                    <h3>3. Utiliser le numérique</h3>
-                    <p>Maîtrise les outils informatiques et les logiciels</p>
-                    <button class="btn-card">Accéder →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">🔍</div>
-                    <h3>4. Analyser des systèmes</h3>
-                    <p>Comprenez le fonctionnement des objets techniques</p>
-                    <button class="btn-card">Accéder →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">🌊</div>
-                    <h3>5. Comprendre les flux d'info</h3>
-                    <p>Étudiez la circulation de l'information dans les systèmes</p>
-                    <button class="btn-card">Accéder →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">⚙️</div>
-                    <h3>6. Programmer</h3>
-                    <p>Apprenez à coder avec Scratch, Python et Arduino</p>
-                    <button class="btn-card">Accéder →</button>
-                </div>
-
-                <!-- <div class="card">
-                    <div class="card-icon">📈</div>
-                    <h3>7. Étudier les évolutions</h3>
-                    <p>Découvrez l'histoire et l'évolution des technologies</p>
-                    <button class="btn-card">Accéder →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">🎯</div>
-                    <h3>8. Présenter un projet</h3>
-                    <p>Apprenez à communiquer et présenter tes réalisations</p>
-                    <button class="btn-card">Accéder →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">🧪</div>
-                    <h3>9. Tester des programmes</h3>
-                    <p>Vérifiez et améliorez votre code</p>
-                    <button class="btn-card">Accéder →</button>
-                </div> -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Section Ressources -->
-    <!-- <section id="ressources" class="section section-alt">
-        <div class="container">
-            <h2 class="section-title">📖 Ressources</h2>
-            <p class="section-description">Tous les documents et supports pour réussir en technologie</p>
-            
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">🎨</div>
-                    <h3>Design Moderne</h3>
-                    <p>Une interface claire et colorée, spécialement pensée pour vous, collégiens !</p>
-                    <button class="btn-card">Explorer →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">🎨</div>
-                    <h3>Visuels Attractifs</h3>
-                    <p>Des graphiques et des icônes pour mieux comprendre les concepts techniques</p>
-                    <button class="btn-card">Explorer →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">🔍</div>
-                    <h3>Recherche Puissante</h3>
-                    <p>Trouvez une activité par mot-clé, niveau ou compétence en quelques clics !</p>
-                    <button class="btn-card">Explorer →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">📊</div>
-                    <h3>Tableau de Bord</h3>
-                    <p>Voyez d'un coup d'œil vos progrès et les compétences à travailler</p>
-                    <button class="btn-card">Explorer →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">📚</div>
-                    <h3>Cours Complets</h3>
-                    <p>Accèdez à tous les cours de technologie du Cycle 4</p>
-                    <button class="btn-card">Explorer →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">🎥</div>
-                    <h3>Tutoriels Vidéo</h3>
-                    <p>Apprenez en vidéo avec des explications pas à pas</p>
-                    <button class="btn-card">Explorer →</button>
-                </div>
-            </div>
-        </div>
-    </section> -->
-
-    <!-- Section Outils -->
-    <section id="outils" class="section">
-        <div class="container">
-            <h2 class="section-title">🛠️ Outils</h2>
-            <p class="section-description">Des outils intelligents pour t'accompagner dans ton apprentissage</p>
-            
-            <div class="cards-grid">
-                <div class="card card-featured">
-                    <div class="card-icon">🤖</div>
-                    <h3>Assistant Intelligent</h3>
-                    <p>Un chatbot pour répondre à vos questions sur les cours (en développement)</p>
-                    <button class="btn-card btn-card-primary">Essayer →</button>
-                </div>
-
-                <div class="card card-featured">
-                    <div class="card-icon">💾</div>
-                    <h3>Tout Toujours Dispo</h3>
-                    <p>Plus besoin de chercher vos fiches, tout est sauvegardé et organisé</p>
-                    <button class="btn-card btn-card-primary">Accéder →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">📝</div>
-                    <h3>Générateur d'Exercices</h3>
-                    <p>Créez des exercices personnalisés selon tes besoins</p>
-                    <button class="btn-card">Utiliser →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">🎯</div>
-                    <h3>Quiz Interactifs</h3>
-                    <p>Testez vos connaissances avec des quiz ludiques</p>
-                    <button class="btn-card">Démarrer →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">📐</div>
-                    <h3>Simulateurs</h3>
-                    <p>Expérimentez virtuellement avec des systèmes techniques</p>
-                    <button class="btn-card">Simuler →</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">📊</div>
-                    <h3>Suivi de Progrès</h3>
-                    <p>Visualisez votre progression sur les 9 compétences</p>
-                    <button class="btn-card">Voir →</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>🚀 TechnoLab - Plateforme d'apprentissage en Technologie | Version Bêta</p>
-            <p>Collège Moulin à Vent - Cycle 4 (5ème, 4ème, 3ème)</p>
-        </div>
-    </footer>
 
     <script>
-        // Smooth scroll pour la navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Fonction pour sauvegarder l'API key (stockage local pour démo)
-        function saveApiKey() {
-            const apiKey = document.getElementById('api-key').value;
-            if (apiKey.trim()) {
-                localStorage.setItem('anthropic_api_key', apiKey);
-                alert('✅ Clé API sauvegardée !');
-            } else {
-                alert('⚠️ Veuillez entrer une clé API valide');
-            }
-        }
-
-        // Charger l'API key au chargement de la page
-        window.addEventListener('load', function() {
-            const savedKey = localStorage.getItem('anthropic_api_key');
-            if (savedKey) {
-                document.getElementById('api-key').value = savedKey;
-            }
-        });
-
-        // Fonction pour envoyer le prompt (à implémenter avec l'API réelle)
-        async function sendPrompt() {
-            const prompt = document.getElementById('prompt-input').value;
-            const apiKey = document.getElementById('api-key').value;
-            const responseDiv = document.getElementById('response');
-            const responseContent = document.getElementById('response-content');
-
-            if (!apiKey.trim()) {
-                alert('⚠️ Veuillez d\'abord entrer votre clé API Anthropic');
-                return;
-            }
-
-            if (!prompt.trim()) {
-                alert('⚠️ Veuillez entrer une question');
-                return;
-            }
-
-            // Afficher le loader
-            responseDiv.style.display = 'block';
-            responseContent.innerHTML = '<div class="loader">⏳ Réflexion en cours...</div>';
-
-            try {
-                // Appel à l'API Claude (exemple simplifié)
-                const response = await fetch('https://api.anthropic.com/v1/messages', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': apiKey,
-                        'anthropic-version': '2023-06-01'
-                    },
-                    body: JSON.stringify({
-                        model: 'claude-sonnet-4-20250514',
-                        max_tokens: 1024,
-                        messages: [{
-                            role: 'user',
-                            content: `Tu es un assistant pédagogique pour des collégiens en cours de technologie. Réponds de manière claire et adaptée à leur niveau. Question : ${prompt}`
-                        }]
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Erreur API');
-                }
-
-                const data = await response.json();
-                responseContent.innerHTML = `<p>${data.content[0].text}</p>`;
-            } catch (error) {
-                responseContent.innerHTML = '<p style="color: #e74c3c;">❌ Erreur : Vérifiez votre clé API ou votre connexion internet.</p>';
-            }
-        }
-
-        // Animation des particules
-        function createPaperParticles() {
-            const container = document.querySelector('.paper-particles');
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-                container.appendChild(particle);
-            }
-        }
-
-        createPaperParticles();
-
-        // Carrousel des activités du jour
         let currentSlide = 0;
         const track = document.getElementById('carousel-track');
         const dots = document.querySelectorAll('.dot');
-        const totalSlides = 3;
 
         function updateCarousel() {
-            // Déplacer le carrousel
-            const offset = -currentSlide * 100;
-            track.style.transform = `translateX(${offset}%)`;
-
-            // Mettre à jour les dots
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
             dots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentSlide);
             });
         }
 
         function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
+            currentSlide = (currentSlide + 1) % 3;
             updateCarousel();
         }
 
         function previousSlide() {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            currentSlide = (currentSlide - 1 + 3) % 3;
             updateCarousel();
         }
 
@@ -418,40 +301,8 @@
             updateCarousel();
         }
 
-        // Auto-play du carrousel (optionnel)
-        let autoplayInterval = setInterval(nextSlide, 5000);
-
-        // Arrêter l'auto-play au survol
-        const carouselContainer = document.querySelector('.carousel-container');
-        carouselContainer.addEventListener('mouseenter', () => {
-            clearInterval(autoplayInterval);
-        });
-
-        carouselContainer.addEventListener('mouseleave', () => {
-            autoplayInterval = setInterval(nextSlide, 5000);
-        });
-
-        // Support du swipe sur mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        carouselContainer.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        carouselContainer.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            if (touchEndX < touchStartX - 50) {
-                nextSlide();
-            }
-            if (touchEndX > touchStartX + 50) {
-                previousSlide();
-            }
-        }
+        // Auto-play
+        setInterval(nextSlide, 5000);
     </script>
 </body>
 </html>
