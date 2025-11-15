@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technologie - Chaînes d'Énergie et d'Information</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <link rel="stylesheet" href="seche-form.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🔋 Chaînes d'Énergie et d'Information</h1>
+        
+        <div class="info-box">
+            <strong>📌 Consigne :</strong> Dans cet exercice, tu vas compléter 3 chaînes différentes : 
+            une chaîne d'énergie pour le sèche-cheveux, une pour la trottinette électrique, et une chaîne d'information pour une alarme de piscine.
+        </div>
+
+        <form id="dnbForm">
+            <!-- IDENTITÉ DE L'ÉLÈVE -->
+            <h2>👤 Identification</h2>
+            <div class="question">
+                <label for="studentName"><strong>Nom et Prénom :</strong></label>
+                <input type="text" id="studentName" name="studentName" required 
+                       placeholder="Ex : Dupont Jean">
+                
+                <label for="studentClass" style="margin-top: 15px; display: block;"><strong>Classe :</strong></label>
+                <input type="text" id="studentClass" name="studentClass" required 
+                       placeholder="Ex : 3ème A">
+            </div>
+
+            <!-- EXERCICE 5 : CHAÎNE D'ÉNERGIE SÈCHE-CHEVEUX -->
+            <h2>🔌 Exercice 5 : La chaîne d'énergie du sèche-cheveux</h2>
+            
+            <div class="info-box">
+                <strong>💡 Rappel :</strong> Une chaîne d'énergie décrit le parcours de l'énergie dans un objet technique, 
+                depuis sa source jusqu'à son utilisation finale. Elle comporte 4 fonctions : Alimenter, Distribuer, Convertir, Transmettre.
+            </div>
+
+            <div class="question">
+                <p><strong>Consigne :</strong> Complète le schéma de la chaîne d'énergie en écrivant la nature des énergies 
+                qui circulent entre les blocs fonctionnels. <span class="points">(4 points)</span></p>
+                
+                <div style="background-color: #e8f4f8; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <table style="width: 100%; text-align: center;">
+                        <tr>
+                            <td style="border: none; padding: 10px;">
+                                <div style="background-color: #5dade2; color: white; padding: 15px; border-radius: 5px; font-weight: bold;">
+                                    ALIMENTER<br>
+                                    <span style="font-size: 13px; font-weight: normal;">Prise électrique</span>
+                                </div>
+                            </td>
+                            <td style="border: none; padding: 5px;">→</td>
+                            <td style="border: none; padding: 10px;">
+                                <div style="background-color: #5dade2; color: white; padding: 15px; border-radius: 5px; font-weight: bold;">
+                                    DISTRIBUER<br>
+                                    <span style="font-size: 13px; font-weight: normal;">Bouton marche/arrêt</span>
+                                </div>
+                            </td>
+                            <td style="border: none; padding: 5px;">→</td>
+                            <td style="border: none; padding: 10px;">
+                                <div style="background-color: #5dade2; color: white; padding: 15px; border-radius: 5px; font-weight: bold;">
+                                    CONVERTIR<br>
+                                    <span style="font-size: 13px; font-weight: normal;">Résistance chauffante + ventilateur + moteur</span>
+                                </div>
+                            </td>
+                            <td style="border: none; padding: 5px;">→</td>
+                            <td style="border: none; padding: 10px;">
+                                <div style="background-color: #5dade2; color: white; padding: 15px; border-radius: 5px; font-weight: bold;">
+                                    TRANSMETTRE<br>
+                                    <span style="font-size: 13px; font-weight: normal;">Embout sifflet</span>
+                                </div>
+                            </td>
+                            <td style="border: none; padding: 5px;">→</td>
+                            <td style="border: none; padding: 10px;">
+                                <div style="background-color: #e74c3c; color: white; padding: 15px; border-radius: 5px; font-weight: bold;">
+                                    Souffler de l'air chaud
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: none;"></td>
+                            <td style="border: none;"></td>
+                            <td colspan="7" style="border: none; padding-top: 15px;">
+                                <div style="display: flex; justify-content: space-between; gap: 10px;">
+                                    <div style="flex: 1;">
+                                        <label style="font-size: 12px; display: block; margin-bottom: 5px;">Énergie 1 :</label>
+                                        <input type="text" name="q5_energie1" required 
+                                               placeholder="Nature de l'énergie">
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <label style="font-size: 12px; display: block; margin-bottom: 5px;">Énergie 2 :</label>
+                                        <input type="text" name="q5_energie2" required 
+                                               placeholder="Nature de l'énergie">
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <label style="font-size: 12px; display: block; margin-bottom: 5px;">Énergie 3 :</label>
+                                        <input type="text" name="q5_energie3" required 
+                                               placeholder="Nature de l'énergie">
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <label style="font-size: 12px; display: block; margin-bottom: 5px;">Énergie 4 :</label>
+                                        <input type="text" name="q5_energie4" required 
+                                               placeholder="Nature de l'énergie">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- EXERCICE 6 : CHAÎNE D'ÉNERGIE TROTTINETTE -->
+            <h2>🛴 Exercice 6 : La chaîne d'énergie de la trottinette électrique</h2>
+            
+            <div class="info-box">
+                <strong>📖 Contexte :</strong> La trottinette électrique permet à un utilisateur de se déplacer sur la route. 
+                Lorsque la batterie est chargée, l'utilisateur se positionne et allume le système grâce au bouton marche/arrêt. 
+                Ensuite, il contrôle sa vitesse avec l'accélérateur relié au moteur par des câbles. 
+                Une fois sous tension, le moteur électrique va faire tourner un système poulies/courroie, 
+                qui fait à son tour tourner la roue arrière de l'objet.
+            </div>
+
+            <div class="question">
+                <p><strong>Consigne :</strong> Complète la chaîne d'énergie de la trottinette électrique en indiquant 
+                les éléments techniques et la nature des énergies. <span class="points">(8 points)</span></p>
+                
+                <div style="background-color: #e8f4f8; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <table style="width: 100%; text-align: center;">
+                        <tr>
+                            <td style="border: none; padding: 10px;">
+                                <div style="background-color: #5dade2; color: white; padding: 15px; border-radius: 5px; font-weight: bold;">
+                                    ALIMENTER
+                                </div>
+                            </td>
+                            <td style="border: none; padding: 5px;">→</td>
+                            <td style="border: none; padding: 10px;">
+                                <div style="background-color: #5dade2; color: white; padding: 15px; border-radius: 5px; font-weight: bold;">
+                                    DISTRIBUER
+                                </div>
+                            </td>
+                            <td style="border: none; padding: 5px;">→</td>
+                            <td style="border: none; padding: 10px;">
+                                <div style="background-color: #5dade2; color: white; padding: 15px; border-radius: 5px; font-weight: bold;">
+                                    CONVERTIR
+                                </div>
+                            </td>
+                            <td style="border: none; padding: 5px;">→</td>
+                            <td style="border: none; padding: 10px;">
+                                <div style="background-color: #5dade2; color: white; padding: 15px; border-radius: 5px; font-weight: bold;">
+                                    TRANSMETTRE
+                                </div>
+                            </td>
+                            <td style="border: none; padding: 5px;">→</td>
+                            <td style="border: none; padding: 10px;">
+                                <div style="background-color: #e74c3c; color: white; padding: 15px; border-radius: 5px; font-weight: bold;">
+                                    Se déplacer
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4 style="text-align: left;">Compléter avec les éléments techniques :</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 5px;"><strong>ALIMENTER - Élément :</strong></label>
+                                <input type="text" name="q6_alimenter" required 
+                                       placeholder="Ex : La batterie">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px;"><strong>DISTRIBUER - Élément :</strong></label>
+                                <input type="text" name="q6_distribuer" required 
+                                       placeholder="Ex : Le bouton marche/arrêt">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px;"><strong>CONVERTIR - Élément :</strong></label>
+                                <input type="text" name="q6_convertir" required 
+                                       placeholder="Ex : Le moteur électrique">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px;"><strong>TRANSMETTRE - Élément :</strong></label>
+                                <input type="text" name="q6_transmettre" required 
+                                       placeholder="Ex : Le système poulies/courroie">
+                            </div>
+                        </div>
+                        
+                        <h4 style="text-align: left; margin-top: 25px;">Compléter avec la nature des énergies :</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 5px;"><strong>Énergie électrique :</strong></label>
+                                <input type="text" name="q6_energie_electrique" required 
+                                       placeholder="Où apparaît-elle ? (ex: entre Alimenter et Distribuer)">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px;"><strong>Énergie électrique :</strong></label>
+                                <input type="text" name="q6_energie_electrique2" required 
+                                       placeholder="Où apparaît-elle encore ?">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px;"><strong>Énergie cinétique :</strong></label>
+                                <input type="text" name="q6_energie_cinetique1" required 
+                                       placeholder="Où apparaît-elle ?">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px;"><strong>Énergie cinétique :</strong></label>
+                                <input type="text" name="q6_energie_cinetique2" required 
+                                       placeholder="Où apparaît-elle encore ?">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXERCICE 7 : CHAÎNE D'INFORMATION ALARME PISCINE -->
+            <h2>🚨 Exercice 7 : La chaîne d'information d'une alarme de piscine</h2>
+            
+            <div class="info-box">
+                <strong>💡 Rappel :</strong> Une chaîne d'information décrit le traitement de l'information dans un système automatisé.
+                En Technologie, le pupitre est l'interface entre l'humain et la machine.
+            </div>
+
+            <div class="question">
+                <p><strong>Question 1 :</strong> Complète cette chaîne d'information avec les mots suivants : 
+                <strong>Traiter ; Pupitre ; Communiquer ; Pupitre ; Acquérir</strong>. <span class="points">(5 points)</span></p>
+                
+                <div style="background-color: #f4a460; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <div style="text-align: center; font-size: 16px; line-height: 2.5;">
+                        <input type="text" name="q7_1_bloc1" required 
+                               style="width: 200px; text-align: center;" 
+                               placeholder="Bloc 1">
+                        <span style="margin: 0 10px;">→</span>
+                        <input type="text" name="q7_1_bloc2" required 
+                               style="width: 200px; text-align: center;" 
+                               placeholder="Bloc 2">
+                        <span style="margin: 0 10px;">→</span>
+                        <input type="text" name="q7_1_bloc3" required 
+                               style="width: 200px; text-align: center;" 
+                               placeholder="Bloc 3">
+                        <span style="margin: 0 10px;">→</span>
+                        <input type="text" name="q7_1_bloc4" required 
+                               style="width: 200px; text-align: center;" 
+                               placeholder="Bloc 4">
+                        <span style="margin: 0 10px;">→</span>
+                        <input type="text" name="q7_1_bloc5" required 
+                               style="width: 200px; text-align: center;" 
+                               placeholder="Bloc 5">
+                    </div>
+                </div>
+            </div>
+
+            <div class="question">
+                <p><strong>Question 2 :</strong> Pierre a un enfant de 3 ans et souhaite installer une alarme pour sa piscine. 
+                Il choisit une alarme munie d'un capteur d'ondes placée sous le niveau d'eau qui détecte les ondulations de l'eau.</p>
+                
+                <p style="margin-top: 15px;">En cas d'immersion ou de chute dans la piscine, la carte programmable traite l'information 
+                reçue par le capteur d'ondes et la communique à la centrale installée dans sa maison grâce à un émetteur radio.</p>
+                
+                <p style="margin-top: 15px;"><strong>Complète la chaîne d'information de l'alarme de piscine.</strong> 
+                <span class="points">(6 points)</span></p>
+                
+                <div style="background-color: #f4a460; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <table style="width: 100%; text-align: center;">
+                        <tr>
+                            <td style="border: none; padding: 10px;">
+                                <div style="background-color: #d2691e; color: white; padding: 15px; border-radius: 5px; font-weight: bold;">
+                                    ACQUÉRIR
+                                </div>
+                            </td>
+                            <td style="border: none; padding: 5px;">→</td>
+                            <td style="border: none; padding: 10px;">
+                                <div style="background-color: #d2691e; color: white; padding: 15px; border-radius: 5px; font-weight: bold;">
+                                    TRAITER
+                                </div>
+                            </td>
+                            <td style="border: none; padding: 5px;">→</td>
+                            <td style="border: none; padding: 10px;">
+                                <div style="background-color: #d2691e; color: white; padding: 15px; border-radius: 5px; font-weight: bold;">
+                                    COMMUNIQUER
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <div style="margin-top: 20px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 5px;"><strong>ACQUÉRIR - Élément 1 :</strong></label>
+                                <input type="text" name="q7_2_acquerir1" required 
+                                       placeholder="Premier élément">
+                                <label style="display: block; margin-top: 10px; margin-bottom: 5px;"><strong>ACQUÉRIR - Élément 2 :</strong></label>
+                                <input type="text" name="q7_2_acquerir2" required 
+                                       placeholder="Deuxième élément">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px;"><strong>TRAITER - Élément 1 :</strong></label>
+                                <input type="text" name="q7_2_traiter1" required 
+                                       placeholder="Premier élément">
+                                <label style="display: block; margin-top: 10px; margin-bottom: 5px;"><strong>TRAITER - Élément 2 :</strong></label>
+                                <input type="text" name="q7_2_traiter2" required 
+                                       placeholder="Deuxième élément">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 5px;"><strong>COMMUNIQUER - Élément 1 :</strong></label>
+                                <input type="text" name="q7_2_communiquer1" required 
+                                       placeholder="Premier élément">
+                                <label style="display: block; margin-top: 10px; margin-bottom: 5px;"><strong>COMMUNIQUER - Élément 2 :</strong></label>
+                                <input type="text" name="q7_2_communiquer2" required 
+                                       placeholder="Deuxième élément">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOUTONS D'ACTION -->
+            <div style="display: flex; gap: 15px; margin-top: 30px;">
+                <button type="button" id="sendToFirebase" class="submit-btn" style="background-color: #27ae60; flex: 1;">
+                    📤 Envoyer mes réponses
+                </button>
+                <button type="reset" class="submit-btn" style="background-color: #e74c3c; flex: 0.3;">
+                    🔄 Réinitialiser
+                </button>
+            </div>
+        </form>
+
+        <div id="result" style="margin-top: 20px; padding: 15px; display: none; background-color: #d4edda; border: 2px solid #28a745; border-radius: 5px;">
+            <h3>✅ Réponses enregistrées !</h3>
+            <p>Tes réponses ont été sauvegardées avec succès. Tu peux maintenant les relire ou demander une correction à ton professeur.</p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // PROTECTION PAR MOT DE PASSE
+        // ============================================
+        (function() {
+            const MOT_DE_PASSE = 'chaines'; // ← Mot de passe : "chaines"
+            let tentatives = 3;
+            
+            while (tentatives > 0) {
+                const saisie = prompt('🔒 Mot de passe requis pour accéder au formulaire :');
+                
+                if (saisie === null) {
+                    document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès annulé</h1>';
+                    throw new Error('Accès annulé');
+                }
+                
+                if (saisie === MOT_DE_PASSE) {
+                    return; // ✅ Mot de passe correct
+                }
+                
+                tentatives--;
+                if (tentatives > 0) {
+                    alert('❌ Mot de passe incorrect ! Il te reste ' + tentatives + ' tentative(s).');
+                }
+            }
+            
+            alert('🚫 Nombre de tentatives dépassé !');
+            document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès refusé</h1>';
+            throw new Error('Accès refusé');
+        })();
+        
+        // ============================================
+        // CONFIRMATION AVANT FERMETURE
+        // ============================================
+        let formModified = false;
+
+        document.getElementById('dnbForm').addEventListener('input', function() {
+            formModified = true;
+        });
+
+        window.addEventListener('beforeunload', function(e) {
+            if (formModified) {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+           
+        // ============================================
+        // CONFIGURATION FIREBASE
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        console.log('✅ Firebase initialisé');
+
+        // ============================================
+        // BOUTON D'ENVOI VERS FIREBASE
+        // ============================================
+        document.getElementById('sendToFirebase').addEventListener('click', async function() {
+            const form = document.getElementById('dnbForm');
+            
+            // Vérifier la validité du formulaire
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Désactiver le bouton
+            const originalText = this.textContent;
+            this.disabled = true;
+            this.textContent = '⏳ Envoi en cours...';
+            
+            try {
+                // Collecter les données
+                const formData = new FormData(form);
+                
+                const responses = {
+                    // Identification
+                    nom_eleve: formData.get('studentName'),
+                    classe: formData.get('studentClass'),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    date_soumission: new Date().toISOString(),
+                    
+                    // Exercice 5 - Chaîne énergie sèche-cheveux
+                    q5_energie1: formData.get('q5_energie1'),
+                    q5_energie2: formData.get('q5_energie2'),
+                    q5_energie3: formData.get('q5_energie3'),
+                    q5_energie4: formData.get('q5_energie4'),
+                    
+                    // Exercice 6 - Chaîne énergie trottinette
+                    q6_alimenter: formData.get('q6_alimenter'),
+                    q6_distribuer: formData.get('q6_distribuer'),
+                    q6_convertir: formData.get('q6_convertir'),
+                    q6_transmettre: formData.get('q6_transmettre'),
+                    q6_energie_electrique: formData.get('q6_energie_electrique'),
+                    q6_energie_electrique2: formData.get('q6_energie_electrique2'),
+                    q6_energie_cinetique1: formData.get('q6_energie_cinetique1'),
+                    q6_energie_cinetique2: formData.get('q6_energie_cinetique2'),
+                    
+                    // Exercice 7.1 - Chaîne information théorique
+                    q7_1_bloc1: formData.get('q7_1_bloc1'),
+                    q7_1_bloc2: formData.get('q7_1_bloc2'),
+                    q7_1_bloc3: formData.get('q7_1_bloc3'),
+                    q7_1_bloc4: formData.get('q7_1_bloc4'),
+                    q7_1_bloc5: formData.get('q7_1_bloc5'),
+                    
+                    // Exercice 7.2 - Chaîne information alarme piscine
+                    q7_2_acquerir1: formData.get('q7_2_acquerir1'),
+                    q7_2_acquerir2: formData.get('q7_2_acquerir2'),
+                    q7_2_traiter1: formData.get('q7_2_traiter1'),
+                    q7_2_traiter2: formData.get('q7_2_traiter2'),
+                    q7_2_communiquer1: formData.get('q7_2_communiquer1'),
+                    q7_2_communiquer2: formData.get('q7_2_communiquer2')
+                };
+                
+                console.log('📤 Envoi des données:', responses);
+                
+                // Envoyer à Firebase dans la collection "chaines_energie_info"
+                const docRef = await db.collection('chaines_energie_info').add(responses);
+                
+                console.log('✅ Document enregistré avec ID:', docRef.id);
+                
+                // Réactiver le bouton
+                this.disabled = false;
+                this.textContent = originalText;
+                
+                // Notification de succès
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+                
+                // Réinitialiser le formulaire après 3 secondes
+                setTimeout(() => {
+                    form.reset();
+                    formModified = false;
+                    document.getElementById('result').style.display = 'none';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('❌ Erreur Firebase:', error);
+                
+                // Réactiver le bouton
+                this.disabled = false;
+                this.textContent = originalText;
+                
+                // Notification d'erreur
+                alert('❌ Erreur lors de l\'envoi : ' + error.message);
+            }
+        });
+
+        // ============================================
+        // GESTION DU BOUTON RÉINITIALISER
+        // ============================================
+        document.getElementById('dnbForm').addEventListener('reset', function() {
+            if (confirm('Es-tu sûr de vouloir effacer toutes tes réponses ?')) {
+                formModified = false;
+                document.getElementById('result').style.display = 'none';
+            } else {
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>
