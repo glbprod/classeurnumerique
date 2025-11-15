@@ -301,75 +301,75 @@
             });
         });
 
-        // Fonction pour sauvegarder l'API key (stockage local pour démo)
-        function saveApiKey() {
-            const apiKey = document.getElementById('api-key').value;
-            if (apiKey.trim()) {
-                localStorage.setItem('anthropic_api_key', apiKey);
-                alert('✅ Clé API sauvegardée !');
-            } else {
-                alert('⚠️ Veuillez entrer une clé API valide');
-            }
-        }
+        // // Fonction pour sauvegarder l'API key (stockage local pour démo)
+        // function saveApiKey() {
+        //     const apiKey = document.getElementById('api-key').value;
+        //     if (apiKey.trim()) {
+        //         localStorage.setItem('anthropic_api_key', apiKey);
+        //         alert('✅ Clé API sauvegardée !');
+        //     } else {
+        //         alert('⚠️ Veuillez entrer une clé API valide');
+        //     }
+        // }
 
-        // Charger l'API key au chargement de la page
-        window.addEventListener('load', function() {
-            const savedKey = localStorage.getItem('anthropic_api_key');
-            if (savedKey) {
-                document.getElementById('api-key').value = savedKey;
-            }
-        });
+        // // Charger l'API key au chargement de la page
+        // window.addEventListener('load', function() {
+        //     const savedKey = localStorage.getItem('anthropic_api_key');
+        //     if (savedKey) {
+        //         document.getElementById('api-key').value = savedKey;
+        //     }
+        // });
 
-        // Fonction pour envoyer le prompt (à implémenter avec l'API réelle)
-        async function sendPrompt() {
-            const prompt = document.getElementById('prompt-input').value;
-            const apiKey = document.getElementById('api-key').value;
-            const responseDiv = document.getElementById('response');
-            const responseContent = document.getElementById('response-content');
+        // // Fonction pour envoyer le prompt (à implémenter avec l'API réelle)
+        // async function sendPrompt() {
+        //     const prompt = document.getElementById('prompt-input').value;
+        //     const apiKey = document.getElementById('api-key').value;
+        //     const responseDiv = document.getElementById('response');
+        //     const responseContent = document.getElementById('response-content');
 
-            if (!apiKey.trim()) {
-                alert('⚠️ Veuillez d\'abord entrer votre clé API Anthropic');
-                return;
-            }
+        //     if (!apiKey.trim()) {
+        //         alert('⚠️ Veuillez d\'abord entrer votre clé API Anthropic');
+        //         return;
+        //     }
 
-            if (!prompt.trim()) {
-                alert('⚠️ Veuillez entrer une question');
-                return;
-            }
+        //     if (!prompt.trim()) {
+        //         alert('⚠️ Veuillez entrer une question');
+        //         return;
+        //     }
 
-            // Afficher le loader
-            responseDiv.style.display = 'block';
-            responseContent.innerHTML = '<div class="loader">⏳ Réflexion en cours...</div>';
+        //     // Afficher le loader
+        //     responseDiv.style.display = 'block';
+        //     responseContent.innerHTML = '<div class="loader">⏳ Réflexion en cours...</div>';
 
-            try {
-                // Appel à l'API Claude (exemple simplifié)
-                const response = await fetch('https://api.anthropic.com/v1/messages', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': apiKey,
-                        'anthropic-version': '2023-06-01'
-                    },
-                    body: JSON.stringify({
-                        model: 'claude-sonnet-4-20250514',
-                        max_tokens: 1024,
-                        messages: [{
-                            role: 'user',
-                            content: `Tu es un assistant pédagogique pour des collégiens en cours de technologie. Réponds de manière claire et adaptée à leur niveau. Question : ${prompt}`
-                        }]
-                    })
-                });
+        //     try {
+        //         // Appel à l'API Claude (exemple simplifié)
+        //         const response = await fetch('https://api.anthropic.com/v1/messages', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'x-api-key': apiKey,
+        //                 'anthropic-version': '2023-06-01'
+        //             },
+        //             body: JSON.stringify({
+        //                 model: 'claude-sonnet-4-20250514',
+        //                 max_tokens: 1024,
+        //                 messages: [{
+        //                     role: 'user',
+        //                     content: `Tu es un assistant pédagogique pour des collégiens en cours de technologie. Réponds de manière claire et adaptée à leur niveau. Question : ${prompt}`
+        //                 }]
+        //             })
+        //         });
 
-                if (!response.ok) {
-                    throw new Error('Erreur API');
-                }
+        //         if (!response.ok) {
+        //             throw new Error('Erreur API');
+        //         }
 
-                const data = await response.json();
-                responseContent.innerHTML = `<p>${data.content[0].text}</p>`;
-            } catch (error) {
-                responseContent.innerHTML = '<p style="color: #e74c3c;">❌ Erreur : Vérifiez votre clé API ou votre connexion internet.</p>';
-            }
-        }
+        //         const data = await response.json();
+        //         responseContent.innerHTML = `<p>${data.content[0].text}</p>`;
+        //     } catch (error) {
+        //         responseContent.innerHTML = '<p style="color: #e74c3c;">❌ Erreur : Vérifiez votre clé API ou votre connexion internet.</p>';
+        //     }
+        // }
 
         // Animation des particules
         function createPaperParticles() {
@@ -386,30 +386,24 @@
 
         createPaperParticles();
 
-        // Carrousel des activités du jour
         let currentSlide = 0;
         const track = document.getElementById('carousel-track');
         const dots = document.querySelectorAll('.dot');
-        const totalSlides = 3;
 
         function updateCarousel() {
-            // Déplacer le carrousel
-            const offset = -currentSlide * 100;
-            track.style.transform = `translateX(${offset}%)`;
-
-            // Mettre à jour les dots
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
             dots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentSlide);
             });
         }
 
         function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
+            currentSlide = (currentSlide + 1) % 3;
             updateCarousel();
         }
 
         function previousSlide() {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            currentSlide = (currentSlide - 1 + 3) % 3;
             updateCarousel();
         }
 
@@ -418,40 +412,8 @@
             updateCarousel();
         }
 
-        // Auto-play du carrousel (optionnel)
-        let autoplayInterval = setInterval(nextSlide, 5000);
-
-        // Arrêter l'auto-play au survol
-        const carouselContainer = document.querySelector('.carousel-container');
-        carouselContainer.addEventListener('mouseenter', () => {
-            clearInterval(autoplayInterval);
-        });
-
-        carouselContainer.addEventListener('mouseleave', () => {
-            autoplayInterval = setInterval(nextSlide, 5000);
-        });
-
-        // Support du swipe sur mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        carouselContainer.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        carouselContainer.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            if (touchEndX < touchStartX - 50) {
-                nextSlide();
-            }
-            if (touchEndX > touchStartX + 50) {
-                previousSlide();
-            }
-        }
+        // Auto-play
+        setInterval(nextSlide, 5000);
     </script>
 </body>
 </html>
