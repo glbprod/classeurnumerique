@@ -278,6 +278,15 @@
       "addedDate": "2025-11-16T14:38:32.982Z",
       "lastModified": "2025-11-16T14:38:32.983Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763314062545",
+      "title": "sujets dnb",
+      "githubPath": "src/components/sujets-dnb.html",
+      "description": "",
+      "addedDate": "2025-11-16T17:27:42.545Z",
+      "lastModified": "2025-11-16T17:27:42.547Z",
+      "favorite": false
     }
   ]
 }
