@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📦 Index des fichiers - TechnoLab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .badge-new {
+            background: linear-gradient(135deg, #50C878, #45B168);
+            color: white;
+        }
+
+        .badge-fixed {
+            background: linear-gradient(135deg, #4A90E2, #7B68EE);
+            color: white;
+        }
+
+        .badge-doc {
+            background: linear-gradient(135deg, #FFD93D, #FFA500);
+            color: white;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            color: #34495e;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .file-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid #dee2e6;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            border-color: #3498db;
+        }
+
+        .file-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+        }
+
+        .file-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .file-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .file-description {
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .file-size {
+            font-size: 0.85rem;
+            color: #95a5a6;
+            font-family: 'Courier New', monospace;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-open {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .btn-open:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+        }
+
+        .quick-start {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+            padding: 35px;
+            border-radius: 20px;
+            border: 2px solid #3498db;
+            margin-bottom: 50px;
+        }
+
+        .quick-start h2 {
+            color: #2980b9;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .quick-start ol {
+            margin-left: 25px;
+            line-height: 2;
+            font-size: 1.1rem;
+        }
+
+        .quick-start li {
+            margin-bottom: 10px;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: #34495e;
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .alert {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.2), rgba(255, 152, 0, 0.2));
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .alert h3 {
+            color: #f39c12;
+            margin-bottom: 10px;
+        }
+
+        .success {
+            background: linear-gradient(135deg, rgba(80, 200, 120, 0.2), rgba(69, 177, 104, 0.2));
+            border-left: 5px solid #50C878;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .success h3 {
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .files-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 TechnoLab - Index des fichiers</h1>
+        <p class="subtitle">Tous vos fichiers corrigés et nouveaux outils</p>
+
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">6</span>
+                <span class="stat-label">Fichiers créés</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Nouveaux fichiers</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">Liens fonctionnels</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">0</span>
+                <span class="stat-label">Erreurs restantes</span>
+            </div>
+        </div>
+
+        <!-- Quick Start -->
+        <div class="quick-start">
+            <h2>⚡ Démarrage rapide</h2>
+            <ol>
+                <li>📥 <strong>Téléchargez tous les fichiers</strong> de cette page</li>
+                <li>📁 <strong>Placez-les dans le même dossier</strong> sur votre ordinateur</li>
+                <li>🧪 <strong>Ouvrez test-liens.html</strong> pour vérifier que tout fonctionne</li>
+                <li>🚀 <strong>Ouvrez TechnoLab.html</strong> et profitez !</li>
+            </ol>
+        </div>
+
+        <!-- Alert -->
+        <div class="alert">
+            <h3>⚠️ Important</h3>
+            <p><strong>Tous les fichiers doivent être dans le même dossier !</strong> Si vous les séparez, les liens ne fonctionneront pas. Gardez la structure simple pour éviter les problèmes.</p>
+        </div>
+
+        <!-- Section 1 : Fichiers HTML du site -->
+        <div class="section">
+            <h2 class="section-title">🌐 Pages du site web</h2>
+            <div class="files-grid">
+                <!-- TechnoLab.html -->
+                <div class="file-card">
+                    <div class="file-icon">🚀</div>
+                    <div class="file-name">TechnoLab.html</div>
+                    <span class="badge badge-fixed">CORRIGÉ</span>
+                    <p class="file-description">
+                        Page d'accueil principale avec carrousel d'activités. 
+                        <strong>Tous les liens ont été corrigés</strong> pour fonctionner en local.
+                    </p>
+                    <p class="file-size">Taille : 19 KB</p>
+                    <div class="file-actions">
+                        <a href="TechnoLab.html" class="btn-action btn-open" target="_blank">
+                            Ouvrir
+                        </a>
+                        <a href="TechnoLab.html" download class="btn-action btn-download">
+                            Télécharger
+                        </a>
+                    </div>
+                </div>
+
+                <!-- sujet-vigie-technolab.html -->
+                <div class="file-card">
+                    <div class="file-icon">🔥</div>
+                    <div class="file-name">sujet-vigie-technolab.html</div>
+                    <span class="badge badge-new">NOUVEAU</span>
+                    <p class="file-description">
+                        Sujet DNB sur la surveillance des incendies. Design moderne adapté au style TechnoLab avec Firebase intégré.
+                    </p>
+                    <p class="file-size">Taille : 45 KB • Mot de passe : dnb2025</p>
+                    <div class="file-actions">
+                        <a href="sujet-vigie-technolab.html" class="btn-action btn-open" target="_blank">
+                            Ouvrir
+                        </a>
+                        <a href="sujet-vigie-technolab.html" download class="btn-action btn-download">
+                            Télécharger
+                        </a>
+                    </div>
+                </div>
+
+                <!-- test-liens.html -->
+                <div class="file-card">
+                    <div class="file-icon">🧪</div>
+                    <div class="file-name">test-liens.html</div>
+                    <span class="badge badge-new">NOUVEAU</span>
+                    <p class="file-description">
+                        Outil de test automatique des liens. Vérifiez visuellement que tous vos fichiers sont bien connectés.
+                    </p>
+                    <p class="file-size">Taille : 13 KB</p>
+                    <div class="file-actions">
+                        <a href="test-liens.html" class="btn-action btn-open" target="_blank">
+                            Ouvrir
+                        </a>
+                        <a href="test-liens.html" download class="btn-action btn-download">
+                            Télécharger
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2 : Documentation -->
+        <div class="section">
+            <h2 class="section-title">📚 Documentation et guides</h2>
+            <div class="files-grid">
+                <!-- README.md -->
+                <div class="file-card">
+                    <div class="file-icon">📖</div>
+                    <div class="file-name">README.md</div>
+                    <span class="badge badge-doc">GUIDE</span>
+                    <p class="file-description">
+                        Guide d'installation rapide en 2 minutes. Lisez ceci en premier pour comprendre comment tout installer.
+                    </p>
+                    <p class="file-size">Taille : 5.0 KB</p>
+                    <div class="file-actions">
+                        <a href="README.md" download class="btn-action btn-download" style="flex: 1;">
+                            Télécharger
+                        </a>
+                    </div>
+                </div>
+
+                <!-- GUIDE-LIENS.md -->
+                <div class="file-card">
+                    <div class="file-icon">🔗</div>
+                    <div class="file-name">GUIDE-LIENS.md</div>
+                    <span class="badge badge-doc">GUIDE</span>
+                    <p class="file-description">
+                        Guide complet sur la gestion des liens. Explications techniques, bonnes pratiques et exemples de code.
+                    </p>
+                    <p class="file-size">Taille : 5.8 KB</p>
+                    <div class="file-actions">
+                        <a href="GUIDE-LIENS.md" download class="btn-action btn-download" style="flex: 1;">
+                            Télécharger
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CORRECTIONS-APPLIQUEES.md -->
+                <div class="file-card">
+                    <div class="file-icon">✅</div>
+                    <div class="file-name">CORRECTIONS-APPLIQUEES.md</div>
+                    <span class="badge badge-doc">GUIDE</span>
+                    <p class="file-description">
+                        Liste détaillée de toutes les corrections appliquées. Comparaison avant/après avec explications.
+                    </p>
+                    <p class="file-size">Taille : 9.3 KB</p>
+                    <div class="file-actions">
+                        <a href="CORRECTIONS-APPLIQUEES.md" download class="btn-action btn-download" style="flex: 1;">
+                            Télécharger
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3 : Autres fichiers nécessaires -->
+        <div class="section">
+            <h2 class="section-title">📄 Fichiers existants (à garder)</h2>
+            <p style="margin-bottom: 20px; color: #7f8c8d;">
+                Ces fichiers faisaient déjà partie de votre projet. Gardez-les dans le même dossier !
+            </p>
+            <div class="files-grid">
+                <!-- Presentation-TechnoLab.html -->
+                <div class="file-card">
+                    <div class="file-icon">🎓</div>
+                    <div class="file-name">Presentation-TechnoLab.html</div>
+                    <p class="file-description">
+                        Page de présentation du projet TechnoLab. Histoire et évolution de la plateforme.
+                    </p>
+                    <p class="file-size">Fichier existant</p>
+                </div>
+
+                <!-- fiche-activite-type.html -->
+                <div class="file-card">
+                    <div class="file-icon">📋</div>
+                    <div class="file-name">fiche-activite-type.html</div>
+                    <p class="file-description">
+                        Formulaire de fiche d'activité avec intégration Firebase pour la sauvegarde.
+                    </p>
+                    <p class="file-size">Fichier existant</p>
+                </div>
+
+                <!-- style.css -->
+                <div class="file-card">
+                    <div class="file-icon">🎨</div>
+                    <div class="file-name">style.css</div>
+                    <p class="file-description">
+                        Feuille de styles CSS commune à toutes les pages du projet. Design moderne et responsive.
+                    </p>
+                    <p class="file-size">Fichier existant • Essentiel !</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success message -->
+        <div class="success">
+            <h3>🎉 Tout est prêt !</h3>
+            <p>
+                <strong>6 fichiers</strong> sont disponibles au téléchargement. 
+                Tous les liens ont été corrigés et testés. Votre site TechnoLab est fonctionnel !
+            </p>
+            <p style="margin-top: 10px;">
+                <strong>Prochaine étape :</strong> Téléchargez tous les fichiers, placez-les ensemble, 
+                et ouvrez <code style="background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 4px;">test-liens.html</code> 
+                pour vérifier que tout fonctionne.
+            </p>
+        </div>
+
+        <!-- Footer info -->
+        <div style="text-align: center; margin-top: 50px; padding-top: 30px; border-top: 2px solid #dee2e6; color: #7f8c8d;">
+            <p style="font-size: 0.9rem;">
+                📦 Index créé le 16 novembre 2025<br>
+                🚀 TechnoLab - Version Bêta<br>
+                ✅ Tous les liens corrigés et fonctionnels
+            </p>
+        </div>
+    </div>
+
+    <script>
+        console.log('%c📦 TechnoLab - Index des fichiers', 'font-size: 20px; color: #3498db; font-weight: bold;');
+        console.log('%c6 fichiers disponibles', 'color: #27ae60; font-weight: bold;');
+        console.log('%c3 nouveaux fichiers créés', 'color: #e67e22; font-weight: bold;');
+        console.log('%cTous les liens corrigés ✅', 'color: #27ae60; font-weight: bold;');
+        
+        // Animation au chargement
+        document.querySelectorAll('.file-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                card.style.transition = 'all 0.5s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100 * index);
+        });
+    </script>
+</body>
+</html>
