@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classeur Numérique</title>
+    
+    <!-- SVG pour navigateurs modernes -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <!-- ICO pour anciens navigateurs -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        /* ===== HEADER ===== */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5em;
+        }
+        
+        .logo-text h1 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+        
+        .logo-text p {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .header-nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .header-nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .header-nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* ===== HERO SECTION ===== */
+        .hero {
+            text-align: center;
+            color: white;
+            padding: 20px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s;
+        }
+        
+        .hero p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-cta {
+            padding: 15px 35px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+        
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* ===== SECTIONS ===== */
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #f0f0f0;
+        }
+        
+        .section-icon {
+            font-size: 2.5em;
+        }
+        
+        .section-title {
+            flex: 1;
+        }
+        
+        .section-title h3 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        
+        .section-title p {
+            color: #666;
+            font-size: 1em;
+        }
+        
+        /* ===== CARDS GRID ===== */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+        
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .card h4 {
+            color: #333;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+        
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .card-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+        
+        .badge {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        
+        .card-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .card-link:hover {
+            color: #764ba2;
+            transform: translateX(5px);
+        }
+        
+        /* ===== ADMIN CARD (spécial) ===== */
+        .card-admin {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .card-admin h4,
+        .card-admin p {
+            color: white;
+        }
+        
+        .card-admin .badge {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .card-admin .card-link {
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        
+        .card-admin .card-link:hover {
+            background: white;
+            color: #667eea;
+        }
+        
+        /* ===== FOOTER ===== */
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 20px;
+            text-align: center;
+            color: #666;
+        }
+        
+        .footer p {
+            margin-bottom: 10px;
+        }
+        
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .hero h2 {
+                font-size: 2em;
+            }
+            
+            .hero p {
+                font-size: 1.1em;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">⚙️</div>
+                <div class="logo-text">
+                    <h1>La Technologie au Collège</h1>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="#ressources">Ressources</a>
+                <a href="/Pages/Gestion/tableau_de_bord.html">Tableau de Bord</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="container">
+        
+        <!-- ========================================
+             SECTION : FORMULAIRES ÉLÈVES
+             Pour ajouter un formulaire :
+             1. Copiez un bloc <div class="card">
+             2. Modifiez : icon, titre, description, niveau, lien
+        ======================================== -->
+        <section id="formulaires" class="section">
+            <div class="section-header">
+                <div class="section-icon">📝</div>
+                <div class="section-title">
+                    <h3>Exercices interactifs</h3>
+                    <p>Formulaires en ligne pour les élèves</p>
+                </div>
+            </div>
+            
+            <div class="cards-grid">
+                <!-- CARD 1 : Fonction d'usage et d'estime -->
+                <div class="card" onclick="window.location.href='pages/evolution/fonction-usage-estime-quiz.html'">
+                    <div class="card-icon">🔧</div>
+                    <h4>Fonction d'usage et d'estime</h4>
+                    <p>Identifie et distingue les fonctions d'usage et d'estime des objets techniques.</p>
+                    <div class="card-meta">
+                        <span class="badge">5ème</span>
+                        <span class="badge">3 exercices</span>
+                    </div>
+                </div>
+                
+                <!-- CARD 2 : Évolution des objets -->
+                <div class="card" onclick="window.location.href='pages/evolution/evolution-objets-quiz.html'">
+                    <div class="card-icon">📱</div>
+                    <h4>Évolution des objets techniques</h4>
+                    <p>Analyse l'évolution des objets techniques et comprends les raisons de leurs changements.</p>
+                    <div class="card-meta">
+                        <span class="badge">5ème</span>
+                        <span class="badge">3 exercices</span>
+                    </div>
+                </div>
+
+                <!-- CARD 3 : LLM et Cybersécurité -->
+                <div class="card" onclick="window.location.href='pages/cybersécurité/devoir_llm_cybersécurité.html'">
+                    <div class="card-icon">🤖</div>
+                    <h4>LLM et Cybersécurité</h4>
+                    <p>Utilisations des LLM et analyse de messages</p>
+                    <div class="card-meta">
+                        <span class="badge">4ème</span>
+                        <span class="badge">Devoir</span>
+                    </div>
+                </div>
+                
+                <!-- CARD À AJOUTER : Copiez ce modèle -->
+                <!--
+                <div class="card" onclick="window.location.href='votre-page.html'">
+                    <div class="card-icon">🎯</div>
+                    <h4>Titre du formulaire</h4>
+                    <p>Description courte et claire de l'exercice.</p>
+                    <div class="card-meta">
+                        <span class="badge">5ème</span>
+                        <span class="badge">X exercices</span>
+                    </div>
+                    <a href="votre-page.html" class="card-link">Accéder au formulaire →</a>
+                </div>
+                -->
+            </div>
+        </section>
+
+        <!-- ========================================
+             SECTION : ESPACE PROFESSEUR
+        ======================================== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">👨‍🏫</div>
+                <div class="section-title">
+                    <h3>Espace professeur</h3>
+                    <p>Gestion et suivi des réponses</p>
+                </div>
+            </div>
+            
+            <div class="cards-grid">
+                <!-- CARD : Tableau de bord -->
+                <div class="card card-admin" onclick="window.location.href='/Pages/Gestion/tableau_de_bord.html'">
+                    <div class="card-icon">📊</div>
+                    <h4>Tableau de bord</h4>
+                    <p>Consultez les statistiques, gérez les formulaires et exportez les réponses des élèves au format CSV.</p>
+                    <div class="card-meta">
+                        <span class="badge">🔒 Accès prof</span>
+                    </div>
+                </div>
+                
+                <!-- CARD À AJOUTER : Export rapide, etc. -->
+                <!--
+                <div class="card">
+                    <div class="card-icon">📥</div>
+                    <h4>Export rapide</h4>
+                    <p>Téléchargez rapidement les données sans passer par le tableau de bord.</p>
+                    <a href="export.html" class="card-link">Accéder →</a>
+                </div>
+                -->
+            </div>
+        </section>
+
+        <!-- ========================================
+             SECTION : RESSOURCES (à venir)
+             Décommentez cette section quand vous aurez des ressources
+        ======================================== -->
+        <!--
+        <section id="ressources" class="section">
+            <div class="section-header">
+                <div class="section-icon">📚</div>
+                <div class="section-title">
+                    <h3>Ressources pédagogiques</h3>
+                    <p>Documents et supports de cours</p>
+                </div>
+            </div>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">📄</div>
+                    <h4>Fiches de cours</h4>
+                    <p>Téléchargez les fiches de cours en PDF.</p>
+                    <a href="#" class="card-link">Voir les fiches →</a>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🎥</div>
+                    <h4>Vidéos explicatives</h4>
+                    <p>Tutoriels et démonstrations vidéo.</p>
+                    <a href="#" class="card-link">Voir les vidéos →</a>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🔗</div>
+                    <h4>Liens utiles</h4>
+                    <p>Sites web et ressources externes recommandés.</p>
+                    <a href="#" class="card-link">Voir les liens →</a>
+                </div>
+            </div>
+        </section>
+        -->
+
+        <!-- ========================================
+             SECTION : NOUVEAUTÉS / ACTUALITÉS
+             Section optionnelle pour annoncer les nouveautés
+        ======================================== -->
+        <!--
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">🆕</div>
+                <div class="section-title">
+                    <h3>Nouveautés</h3>
+                    <p>Dernières mises à jour du site</p>
+                </div>
+            </div>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">✨</div>
+                    <h4>Nouveau formulaire disponible</h4>
+                    <p>Un nouvel exercice sur [sujet] est maintenant disponible pour les élèves de 5ème.</p>
+                    <small style="color: #999;">Publié le 18/10/2025</small>
+                </div>
+            </div>
+        </section>
+        -->
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <p style="font-size: 0.9em; color: #999; margin-top: 15px;">
+            GlbProd - ©2025 - Tous droits réservés
+        </p>
+    </footer>
+
+    <!-- 100% privacy-first analytics -->
+    <script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+    
+</body>
+</html>
