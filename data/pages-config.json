@@ -251,6 +251,15 @@
       "addedDate": "2025-11-16T14:14:01.413Z",
       "lastModified": "2025-11-16T14:14:01.413Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763302464147",
+      "title": "comparaison objets techniques",
+      "githubPath": "src/Pages/Evolution/comparaison-objets-techniques.html",
+      "description": "",
+      "addedDate": "2025-11-16T14:14:24.147Z",
+      "lastModified": "2025-11-16T14:14:24.147Z",
+      "favorite": false
     }
   ]
 }
