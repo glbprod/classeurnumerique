@@ -215,6 +215,15 @@
       "addedDate": "2025-11-15T12:04:30.082Z",
       "lastModified": "2025-11-15T12:04:30.084Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763293896675",
+      "title": "guide ressources autorisees",
+      "githubPath": "src/Pages/guide_ressources_autorisees.html",
+      "description": "",
+      "addedDate": "2025-11-16T11:51:36.675Z",
+      "lastModified": "2025-11-16T11:51:36.677Z",
+      "favorite": false
     }
   ]
 }
