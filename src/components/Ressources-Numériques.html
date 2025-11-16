@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ressources Numériques - TechnoLab</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Poppins:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .circuit-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, #00d4ff, #b39cd0, #fbbf24);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #a0a0a0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .nav-home {
+            display: inline-block;
+            background: linear-gradient(90deg, #4cc9f0, #4361ee);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .nav-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #4cc9f0;
+            margin-bottom: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            border-bottom: 2px solid #4cc9f0;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .resource-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.8rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(76, 201, 240, 0.3);
+        }
+
+        .resource-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .resource-title {
+            font-size: 1.4rem;
+            color: #4ade80;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-description {
+            color: #b8c5d6;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+
+        .resource-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin: 0.5rem 0;
+        }
+
+        .tag {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            border: 1px solid #4ade80;
+        }
+
+        .tag-orange {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border: 1px solid #fbbf24;
+        }
+
+        .tag-blue {
+            background: rgba(76, 201, 240, 0.2);
+            color: #4cc9f0;
+            border: 1px solid #4cc9f0;
+        }
+
+        .tag-purple {
+            background: rgba(155, 89, 182, 0.2);
+            color: #b39cd0;
+            border: 1px solid #b39cd0;
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(90deg, #4cc9f0, #4361ee);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            align-self: flex-start;
+        }
+
+        .resource-link:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(76, 201, 240, 0.4);
+        }
+
+        .teacher-note {
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid #fbbf24;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 5px;
+            font-style: italic;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="circuit-bg"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <a href="TechnoLab.html" class="nav-home">← Retour à TechnoLab</a>
+            <h1 class="main-title">📚 Ressources Numériques</h1>
+            <p class="subtitle">
+                Tous les outils et plateformes numériques autorisés pour vos cours de Technologie.<br>
+                Explorez, apprenez et créez avec ces ressources validées !
+            </p>
+        </header>
+
+        <!-- Introduction -->
+        <section class="section">
+            <h2 class="section-title">🎯 À propos de ces ressources</h2>
+            <p style="margin-bottom: 1rem;">
+                Cette page regroupe l'ensemble des <strong>outils numériques autorisés et recommandés</strong> 
+                pour vos cours de Technologie au collège. Chaque ressource a été sélectionnée pour sa qualité 
+                pédagogique et sa pertinence avec les compétences du Cycle 4.
+            </p>
+
+            <div class="teacher-note">
+                <p>💡 <strong>Conseil :</strong> Créez un compte sur ces plateformes avec votre adresse email 
+                académique pour bénéficier de toutes les fonctionnalités éducatives. Certains outils nécessitent 
+                une autorisation parentale pour les mineurs.</p>
+            </div>
+        </section>
+
+        <!-- Programmation & Algorithmique -->
+        <section class="section">
+            <div class="category-header">
+                <span class="category-icon">⚙️</span>
+                <h2 class="section-title">Programmation & Algorithmique</h2>
+            </div>
+            <p style="margin-bottom: 1.5rem; color: #b8c5d6;">
+                Apprenez à coder avec Scratch, Python, et Arduino grâce à ces plateformes interactives.
+            </p>
+
+            <div class="resources-grid">
+                <!-- Scratch -->
+                <div class="resource-card">
+                    <span class="resource-icon">🐱</span>
+                    <h3 class="resource-title">Scratch</h3>
+                    <p class="resource-description">
+                        Plateforme de programmation visuelle par blocs. Parfait pour débuter en algorithmique 
+                        et créer des animations, jeux et histoires interactives.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Débutant</span>
+                        <span class="tag tag-orange">Programmation</span>
+                        <span class="tag tag-blue">5ème-4ème-3ème</span>
+                    </div>
+                    <a href="https://scratch.mit.edu/" target="_blank" class="resource-link">
+                        Accéder à Scratch →
+                    </a>
+                </div>
+
+                <!-- Code.org -->
+                <div class="resource-card">
+                    <span class="resource-icon">💻</span>
+                    <h3 class="resource-title">Code.org</h3>
+                    <p class="resource-description">
+                        Cours de programmation ludiques et progressifs. Parcours "L'Heure de Code" et cours 
+                        complets en JavaScript, Python et programmation par blocs.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Débutant</span>
+                        <span class="tag tag-orange">Algorithmique</span>
+                        <span class="tag tag-blue">Tous niveaux</span>
+                    </div>
+                    <a href="https://code.org/" target="_blank" class="resource-link">
+                        Accéder à Code.org →
+                    </a>
+                </div>
+
+                <!-- Vittascience -->
+                <div class="resource-card">
+                    <span class="resource-icon">🤖</span>
+                    <h3 class="resource-title">Vittascience</h3>
+                    <p class="resource-description">
+                        Programmation de robots virtuels et réels (mBot, Arduino, micro:bit). Interface Scratch 
+                        et Python. Simulations 3D interactives et parcours pédagogiques.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Intermédiaire</span>
+                        <span class="tag tag-orange">Robotique</span>
+                        <span class="tag tag-blue">4ème-3ème</span>
+                    </div>
+                    <a href="https://fr.vittascience.com/" target="_blank" class="resource-link">
+                        Accéder à Vittascience →
+                    </a>
+                </div>
+
+                <!-- MicroStudio -->
+                <div class="resource-card">
+                    <span class="resource-icon">🎮</span>
+                    <h3 class="resource-title">MicroStudio</h3>
+                    <p class="resource-description">
+                        Créez vos propres jeux vidéo en ligne ! Éditeur de code, sprites et sons intégrés. 
+                        Programmation en microScript (similaire à JavaScript).
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Avancé</span>
+                        <span class="tag tag-orange">Game Dev</span>
+                        <span class="tag tag-blue">3ème</span>
+                    </div>
+                    <a href="https://microstudio.dev/" target="_blank" class="resource-link">
+                        Accéder à MicroStudio →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modélisation 3D & CAO -->
+        <section class="section">
+            <div class="category-header">
+                <span class="category-icon">🗿️</span>
+                <h2 class="section-title">Modélisation 3D & CAO</h2>
+            </div>
+            <p style="margin-bottom: 1.5rem; color: #b8c5d6;">
+                Concevez et modélisez vos projets en 3D avec des logiciels professionnels simplifiés.
+            </p>
+
+            <div class="resources-grid">
+                <!-- TinkerCad -->
+                <div class="resource-card">
+                    <span class="resource-icon">🧊</span>
+                    <h3 class="resource-title">TinkerCad</h3>
+                    <p class="resource-description">
+                        Logiciel de modélisation 3D en ligne par Autodesk. Interface intuitive pour créer 
+                        des objets 3D, circuits électroniques et programmer des blocs de code.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Débutant</span>
+                        <span class="tag tag-purple">CAO 3D</span>
+                        <span class="tag tag-blue">5ème-4ème-3ème</span>
+                    </div>
+                    <a href="https://www.tinkercad.com/" target="_blank" class="resource-link">
+                        Accéder à TinkerCad →
+                    </a>
+                </div>
+
+                <!-- OnShape -->
+                <div class="resource-card">
+                    <span class="resource-icon">⚙️</span>
+                    <h3 class="resource-title">OnShape</h3>
+                    <p class="resource-description">
+                        CAO professionnelle en ligne. Modélisation paramétrique avancée, assemblages complexes, 
+                        collaboration en temps réel. Gratuit pour l'éducation.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Avancé</span>
+                        <span class="tag tag-purple">CAO Pro</span>
+                        <span class="tag tag-blue">3ème</span>
+                    </div>
+                    <a href="https://www.onshape.com/en/education/" target="_blank" class="resource-link">
+                        Accéder à OnShape →
+                    </a>
+                </div>
+
+                <!-- SketchUp Free -->
+                <div class="resource-card">
+                    <span class="resource-icon">🏗️</span>
+                    <h3 class="resource-title">SketchUp Free</h3>
+                    <p class="resource-description">
+                        Modélisation 3D accessible pour l'architecture et le design. Bibliothèque d'objets 
+                        3D gratuits et communauté active.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Intermédiaire</span>
+                        <span class="tag tag-purple">Architecture</span>
+                        <span class="tag tag-blue">4ème-3ème</span>
+                    </div>
+                    <a href="https://www.sketchup.com/products/sketchup-free" target="_blank" class="resource-link">
+                        Accéder à SketchUp →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Électronique & Circuits -->
+        <section class="section">
+            <div class="category-header">
+                <span class="category-icon">⚡</span>
+                <h2 class="section-title">Électronique & Circuits</h2>
+            </div>
+            <p style="margin-bottom: 1.5rem; color: #b8c5d6;">
+                Simulez et testez vos circuits électroniques avant de les réaliser physiquement.
+            </p>
+
+            <div class="resources-grid">
+                <!-- Tinkercad Circuits -->
+                <div class="resource-card">
+                    <span class="resource-icon">🔌</span>
+                    <h3 class="resource-title">TinkerCad Circuits</h3>
+                    <p class="resource-description">
+                        Simulation de circuits électroniques et Arduino. Testez vos montages virtuellement 
+                        avec des composants réalistes (LED, moteurs, capteurs...).
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Débutant</span>
+                        <span class="tag tag-orange">Arduino</span>
+                        <span class="tag tag-blue">4ème-3ème</span>
+                    </div>
+                    <a href="https://www.tinkercad.com/circuits" target="_blank" class="resource-link">
+                        Accéder aux Circuits →
+                    </a>
+                </div>
+
+                <!-- CircuitJS -->
+                <div class="resource-card">
+                    <span class="resource-icon">🧲</span>
+                    <h3 class="resource-title">CircuitJS</h3>
+                    <p class="resource-description">
+                        Simulateur de circuits électroniques en temps réel. Visualisez le courant, la tension 
+                        et les oscillations. Parfait pour l'apprentissage de l'électricité.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Intermédiaire</span>
+                        <span class="tag tag-orange">Électricité</span>
+                        <span class="tag tag-blue">5ème-4ème</span>
+                    </div>
+                    <a href="https://www.falstad.com/circuit/circuitjs.html" target="_blank" class="resource-link">
+                        Accéder à CircuitJS →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Simulation & Physique -->
+        <section class="section">
+            <div class="category-header">
+                <span class="category-icon">🔬</span>
+                <h2 class="section-title">Simulation & Physique</h2>
+            </div>
+            <p style="margin-bottom: 1.5rem; color: #b8c5d6;">
+                Explorez les lois de la physique avec des simulations interactives.
+            </p>
+
+            <div class="resources-grid">
+                <!-- PhET Simulations -->
+                <div class="resource-card">
+                    <span class="resource-icon">🧪</span>
+                    <h3 class="resource-title">PhET Interactive Simulations</h3>
+                    <p class="resource-description">
+                        Simulations scientifiques gratuites par l'Université du Colorado. Physique, chimie, 
+                        mathématiques, biologie et sciences de la terre.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Tous niveaux</span>
+                        <span class="tag tag-purple">Sciences</span>
+                        <span class="tag tag-blue">5ème-4ème-3ème</span>
+                    </div>
+                    <a href="https://phet.colorado.edu/fr/" target="_blank" class="resource-link">
+                        Accéder à PhET →
+                    </a>
+                </div>
+
+                <!-- Algodoo -->
+                <div class="resource-card">
+                    <span class="resource-icon">⚽</span>
+                    <h3 class="resource-title">Algodoo</h3>
+                    <p class="resource-description">
+                        Simulateur de physique 2D ludique. Créez des scènes avec gravité, friction, ressorts 
+                        et observez les interactions en temps réel.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Débutant</span>
+                        <span class="tag tag-purple">Mécanique</span>
+                        <span class="tag tag-blue">5ème-4ème</span>
+                    </div>
+                    <a href="http://www.algodoo.com/" target="_blank" class="resource-link">
+                        Accéder à Algodoo →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ressources Documentaires -->
+        <section class="section">
+            <div class="category-header">
+                <span class="category-icon">📖</span>
+                <h2 class="section-title">Ressources Documentaires</h2>
+            </div>
+            <p style="margin-bottom: 1.5rem; color: #b8c5d6;">
+                Cours, tutoriels vidéo et documentation pour approfondir vos connaissances.
+            </p>
+
+            <div class="resources-grid">
+                <!-- Lumni -->
+                <div class="resource-card">
+                    <span class="resource-icon">📺</span>
+                    <h3 class="resource-title">Lumni</h3>
+                    <p class="resource-description">
+                        Plateforme éducative de l'Audiovisuel public. Vidéos, podcasts, articles sur toutes 
+                        les matières scolaires dont la Technologie.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Tous niveaux</span>
+                        <span class="tag tag-orange">Vidéos</span>
+                        <span class="tag tag-blue">Collège</span>
+                    </div>
+                    <a href="https://www.lumni.fr/" target="_blank" class="resource-link">
+                        Accéder à Lumni →
+                    </a>
+                </div>
+
+                <!-- Khan Academy -->
+                <div class="resource-card">
+                    <span class="resource-icon">🎓</span>
+                    <h3 class="resource-title">Khan Academy</h3>
+                    <p class="resource-description">
+                        Cours gratuits en mathématiques, sciences et informatique. Exercices interactifs 
+                        et parcours personnalisés selon votre niveau.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Tous niveaux</span>
+                        <span class="tag tag-orange">Cours</span>
+                        <span class="tag tag-blue">Autonomie</span>
+                    </div>
+                    <a href="https://fr.khanacademy.org/" target="_blank" class="resource-link">
+                        Accéder à Khan Academy →
+                    </a>
+                </div>
+
+                <!-- Techno-Flash -->
+                <div class="resource-card">
+                    <span class="resource-icon">⚡</span>
+                    <h3 class="resource-title">Techno-Flash</h3>
+                    <p class="resource-description">
+                        Site spécialisé en Technologie au collège. Animations interactives, quiz et activités 
+                        pour toutes les compétences du Cycle 4.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Spécialisé</span>
+                        <span class="tag tag-orange">Techno</span>
+                        <span class="tag tag-blue">Cycle 4</span>
+                    </div>
+                    <a href="http://techno-flash.com/" target="_blank" class="resource-link">
+                        Accéder à Techno-Flash →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conseils d'utilisation -->
+        <section class="section">
+            <h2 class="section-title">💡 Conseils d'utilisation</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                <div class="teacher-note" style="margin: 0;">
+                    <h3 style="color: #4ade80; margin-bottom: 0.8rem;">✅ Créez vos comptes</h3>
+                    <p>Utilisez votre adresse email académique (@ac-versailles.fr) pour bénéficier des 
+                    fonctionnalités éducatives gratuites et du stockage cloud.</p>
+                </div>
+
+                <div class="teacher-note" style="margin: 0; border-left-color: #4cc9f0;">
+                    <h3 style="color: #4cc9f0; margin-bottom: 0.8rem;">💾 Sauvegardez vos projets</h3>
+                    <p>Pensez à sauvegarder régulièrement vos créations. Utilisez des noms de fichiers 
+                    clairs : "Nom_Prenom_Projet_Date".</p>
+                </div>
+
+                <div class="teacher-note" style="margin: 0; border-left-color: #b39cd0;">
+                    <h3 style="color: #b39cd0; margin-bottom: 0.8rem;">🤝 Collaborez</h3>
+                    <p>Plusieurs plateformes permettent le travail collaboratif. Partagez vos projets 
+                    avec vos camarades pour apprendre ensemble !</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Retour vers TechnoLab -->
+        <section class="section" style="text-align: center; background: linear-gradient(135deg, rgba(76, 201, 240, 0.1), rgba(155, 89, 182, 0.1)); border: 2px solid #4cc9f0;">
+            <h2 class="section-title" style="text-align: center;">🚀 Prêt à vous lancer ?</h2>
+            
+            <p style="font-size: 1.2rem; margin: 1.5rem 0; color: #b8c5d6;">
+                Explorez ces ressources et utilisez-les dans vos projets TechnoLab !
+            </p>
+
+            <a href="TechnoLab.html" class="nav-home" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                ← Retour à TechnoLab
+            </a>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>TechnoLab - Ressources Numériques pour la Technologie au Collège</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                Collège Moulin à Vent - Novembre 2025
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Animation des cartes au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.resource-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, index * 50);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.5s ease';
+                observer.observe(card);
+            });
+        });
+
+        // Message console pour les curieux
+        console.log('%c🎓 Ressources Numériques TechnoLab', 'font-size: 18px; color: #4cc9f0; font-weight: bold;');
+        console.log('%cToutes ces ressources sont gratuites et validées pour l\'éducation !', 'color: #4ade80;');
+        console.log('%cBon apprentissage ! 🚀', 'color: #fbbf24;');
+    </script>
+</body>
+</html>
