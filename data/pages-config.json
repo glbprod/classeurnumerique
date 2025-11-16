@@ -332,6 +332,15 @@
       "addedDate": "2025-11-16T21:43:02.935Z",
       "lastModified": "2025-11-16T21:43:02.935Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763336742018",
+      "title": "correction trottinette dnb",
+      "githubPath": "src/components/sujets-dnb/correction-trottinette-dnb.html",
+      "description": "",
+      "addedDate": "2025-11-16T23:45:42.018Z",
+      "lastModified": "2025-11-16T23:45:42.020Z",
+      "favorite": false
     }
   ]
 }
