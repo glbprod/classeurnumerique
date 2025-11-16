@@ -3,521 +3,932 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DNB Technologie - Vigie de Surveillance</title>
+    <title>DNB Techno - Vigie de Surveillance | TechnoLab</title>
+    <link rel="stylesheet" href="style.css">
     
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
+        /* Styles spécifiques au sujet DNB */
+        .dnb-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 35px;
+            box-shadow: 0 10px 40px var(--shadow);
+            margin-bottom: 40px;
+            border: 2px solid rgba(74, 144, 226, 0.1);
+            text-align: center;
         }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #e74c3c;
-            padding-bottom: 10px;
+
+        .dnb-title {
+            font-size: 2.5rem;
+            color: var(--dark-blue);
+            margin-bottom: 10px;
+            font-weight: 700;
         }
-        h2 {
-            color: #34495e;
-            margin-top: 30px;
-            background-color: #ecf0f1;
-            padding: 10px;
-            border-left: 4px solid #e74c3c;
-        }
-        .question {
-            margin: 25px 0;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-        }
-        .points {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            border: 2px solid #bdc3c7;
-            border-radius: 4px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-        input[type="text"]:focus, textarea:focus {
-            outline: none;
-            border-color: #e74c3c;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-        th, td {
-            border: 2px solid #34495e;
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #34495e;
-            color: white;
-        }
-        td input[type="text"], td select {
-            border: 1px solid #95a5a6;
-            width: 100%;
-        }
-        .submit-btn {
-            background-color: #27ae60;
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .submit-btn:hover {
-            background-color: #229954;
-        }
-        .intro {
-            background-color: #fff5f5;
-            padding: 15px;
-            border-left: 4px solid #e74c3c;
+
+        .dnb-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
             margin-bottom: 20px;
         }
-        .doc-box {
-            background-color: #e8f4f8;
-            padding: 15px;
-            margin: 15px 0;
-            border: 2px dashed #3498db;
-            text-align: center;
-        }
-        .solution-box {
+
+        .dnb-badge {
             display: inline-block;
-            border: 2px solid #e74c3c;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            line-height: 40px;
-            font-weight: bold;
-            margin: 5px;
-            background-color: white;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
+
+        .context-box {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 142, 83, 0.1));
+            padding: 30px;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            margin-bottom: 40px;
+            border-left: 5px solid #FF6B6B;
+        }
+
+        .context-box h3 {
+            color: #FF6B6B;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .context-box p {
+            color: var(--text-dark);
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 30px;
+            box-shadow: 0 8px 30px var(--shadow);
+            margin-bottom: 30px;
+            border: 2px solid rgba(74, 144, 226, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px var(--shadow-hover);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(74, 144, 226, 0.2);
+        }
+
+        .question-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .question-points {
+            background: linear-gradient(135deg, var(--accent-color), #45B168);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .question-content h4 {
+            color: var(--dark-blue);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .question-content p {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(74, 144, 226, 0.3);
+            border-radius: 15px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        textarea.input-field {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .table-modern {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-modern th {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .table-modern td {
+            padding: 15px;
+            background: white;
+            border-bottom: 1px solid rgba(74, 144, 226, 0.1);
+        }
+
+        .table-modern tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-modern td input,
+        .table-modern td select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid rgba(74, 144, 226, 0.3);
+            border-radius: 10px;
+            font-size: 0.95rem;
+        }
+
+        .document-box {
+            background: rgba(232, 244, 248, 0.5);
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px dashed var(--primary-color);
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .document-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin: 15px 0;
+        }
+
+        .document-box figcaption {
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: 15px;
+        }
+
         .solutions-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
             margin: 20px 0;
         }
+
         .solution-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background-color: white;
-            border-radius: 5px;
-            border: 1px solid #ddd;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(74, 144, 226, 0.05);
+            border-radius: 15px;
+            border: 2px solid rgba(74, 144, 226, 0.1);
+            transition: all 0.3s ease;
         }
-        .binary-input {
-            display: flex;
-            gap: 5px;
+
+        .solution-item:hover {
+            background: rgba(74, 144, 226, 0.1);
+            transform: translateX(5px);
+        }
+
+        .solution-number {
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
-            margin: 10px 0;
-        }
-        .binary-input input {
             width: 40px;
             height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .binary-input-group {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .binary-box {
+            width: 50px;
+            height: 50px;
             text-align: center;
-            font-size: 18px;
+            font-size: 1.2rem;
             font-weight: bold;
-            border: 2px solid #34495e;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            background: white;
+            transition: all 0.3s ease;
         }
+
+        .binary-box:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(80, 200, 120, 0.2);
+            transform: scale(1.05);
+        }
+
         .binary-label {
-            font-size: 12px;
+            font-size: 0.85rem;
+            color: var(--text-light);
             text-align: center;
-            color: #7f8c8d;
+            margin-top: 5px;
         }
+
         .radio-group {
             display: flex;
             gap: 20px;
-            margin: 10px 0;
+            margin: 15px 0;
+            flex-wrap: wrap;
         }
-        .radio-group label {
+
+        .radio-option {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 10px;
+            padding: 12px 20px;
+            background: rgba(74, 144, 226, 0.05);
+            border-radius: 15px;
+            border: 2px solid rgba(74, 144, 226, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .radio-group input[type="radio"] {
+
+        .radio-option:hover {
+            background: rgba(74, 144, 226, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .radio-option input[type="radio"] {
             width: 20px;
             height: 20px;
+            cursor: pointer;
         }
-        .program-block {
-            background-color: #fff;
-            border: 2px solid #34495e;
+
+        .formula-box {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(123, 104, 238, 0.1));
             padding: 20px;
+            border-radius: 15px;
+            border: 2px solid rgba(74, 144, 226, 0.2);
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .calc-zone {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid var(--primary-color);
             margin: 15px 0;
         }
+
+        .program-block {
+            background: rgba(44, 62, 80, 0.05);
+            border: 2px solid var(--dark-blue);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
         .program-line {
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-left: 3px solid #e74c3c;
-        }
-        select {
-            padding: 8px;
-            border: 2px solid #bdc3c7;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        .calc-zone {
-            background-color: #fff;
-            padding: 15px;
-            border: 2px solid #3498db;
-            border-radius: 5px;
-            margin: 10px 0;
-        }
-        .formula {
-            background-color: #e8f4f8;
-            padding: 10px;
-            border-radius: 5px;
+            margin: 12px 0;
+            padding: 12px;
+            background: rgba(74, 144, 226, 0.05);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
             font-family: 'Courier New', monospace;
-            font-size: 16px;
-            margin: 10px 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn-submit {
+            flex: 1;
+            min-width: 200px;
+            background: linear-gradient(135deg, var(--accent-color), #45B168);
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(80, 200, 120, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(80, 200, 120, 0.4);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-reset {
+            flex: 0.3;
+            min-width: 150px;
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            border: none;
+            padding: 18px 25px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reset:hover {
+            background: rgba(231, 76, 60, 1);
+            transform: translateY(-3px);
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, rgba(80, 200, 120, 0.1), rgba(69, 177, 104, 0.1));
+            border: 2px solid var(--accent-color);
+            border-left: 5px solid var(--accent-color);
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 30px;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .success-message h3 {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.1));
+            border: 2px solid #e74c3c;
+            border-left: 5px solid #e74c3c;
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .error-message h3 {
+            color: #e74c3c;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .student-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--dark-blue);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dnb-title {
+                font-size: 1.8rem;
+            }
+
+            .question-card {
+                padding: 25px;
+            }
+
+            .solutions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .binary-input-group {
+                gap: 5px;
+            }
+
+            .binary-box {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-reset {
+                flex: 1;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🔥 DNB Technologie - Vigie de Surveillance</h1>
-        <p style="text-align: right; font-style: italic;">Durée conseillée : 30 minutes - 25 points</p>
+    <!-- Particules de papier en arrière-plan -->
+    <div class="paper-particles"></div>
 
-        <div class="intro">
-            <p><strong>Contexte :</strong> En 2022, les feux de forêt ont détruit 62 000 hectares en France. Pour lutter contre les incendies, les forêts sont surveillées depuis des postes appelés vigies.</p>
-            <p>Depuis une vigie, les pompiers ont une vue dégagée à 360 degrés et peuvent localiser des départs de feu sur une distance de plus de 20 km.</p>
-            <p>Le système automatisé de surveillance installé sur le toit de la vigie est constitué de deux appareils photo.</p>
+    <!-- Header avec navigation -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon">🚀</span>
+                <h1>TechnoLab</h1>
+                <span class="beta-badge">BÊTA</span>
+            </div>
+            <nav>
+                <a href="TechnoLab.html" class="nav-link">← Retour</a>
+                <a href="Presentation-TechnoLab.html" class="nav-link">Présentation</a>
+            </nav>
         </div>
+    </header>
 
-        <div class="doc-box">
-            <figure style="margin: 0; padding: 10px;">
-                <img src="https://latechnologieaucollege.netlify.app/src/Pages/DNB/img/vigie.png" 
-                     alt="Schéma de la vigie avec dimensions et composants"
-                     style="max-width: 100%; height: auto;">
-                <figcaption style="margin-top: 10px; color: #7f8c8d;">
-                    Document 1 : Vigie et son système automatisé de surveillance
-                </figcaption>
-            </figure>
-        </div>
-        
-        <form id="dnbForm">
-            <!-- Identification de l'élève -->
-            <div class="question" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
-                <p><strong>Nom et Prénom :</strong></p>
-                <input type="text" id="studentName" name="studentName" placeholder="" required>
-                
-                <p style="margin-top: 15px;"><strong>Classe :</strong></p>
-                <input type="text" id="studentClass" name="studentClass" placeholder="" required>
+    <!-- Contenu principal -->
+    <section class="section">
+        <div class="container">
+            <!-- En-tête du sujet -->
+            <div class="dnb-header">
+                <h1 class="dnb-title">🔥 DNB Technologie</h1>
+                <p class="dnb-subtitle">Vigie de Surveillance des Incendies</p>
+                <span class="dnb-badge">30 MINUTES • 25 POINTS</span>
             </div>
 
-            <!-- Question 1 -->
-            <div class="question">
-                <h2>Question 1 <span class="points">(5 points)</span></h2>
-                <p><strong>Identifier le besoin auquel répond la vigie :</strong></p>
-                <textarea name="q1_besoin" rows="3" placeholder="Décrivez le besoin..." required></textarea>
+            <!-- Contexte -->
+            <div class="context-box">
+                <h3>📋 Contexte</h3>
+                <p><strong>En 2022, les feux de forêt ont détruit 62 000 hectares en France.</strong> Pour lutter contre les incendies, les forêts sont surveillées depuis des postes appelés vigies.</p>
+                <p>Depuis une vigie, les pompiers ont une vue dégagée à 360 degrés et peuvent localiser des départs de feu sur une distance de plus de 20 km.</p>
+                <p>Le système automatisé de surveillance installé sur le toit de la vigie est constitué de deux appareils photo.</p>
+            </div>
 
-                <p style="margin-top: 20px;"><strong>Associer les solutions techniques aux fonctions techniques (6 réponses attendues) :</strong></p>
-                
-                <div class="doc-box">
-                <figure style="margin: 0; padding: 10px;">
-                    <img src="https://latechnologieaucollege.netlify.app/src/Pages/DNB/img/diagramme_fonctionnel.png" 
-                         alt="Diagramme des fonctions de la vigie"
-                         style="max-width: 100%; height: auto;">
-                    <figcaption style="margin-top: 10px; color: #7f8c8d;">
-                        Document 2 : Diagramme des fonctions de la vigie
-                    </figcaption>
-                </figure>
-                </div>
-
-                <div class="solutions-grid">
-                    <div class="solution-item">
-                        <span class="solution-box">1</span>
-                        <span>Volets pliants</span>
+            <!-- Formulaire -->
+            <form id="dnbForm">
+                <!-- Informations élève -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">👤 Informations</span>
                     </div>
-                    <div class="solution-item">
-                        <span class="solution-box">2</span>
-                        <span>Appareil photo 1</span>
-                    </div>
-                    <div class="solution-item">
-                        <span class="solution-box">3</span>
-                        <span>Isolation laine de bois</span>
-                    </div>
-                    <div class="solution-item">
-                        <span class="solution-box">4</span>
-                        <span>Panneau photovoltaïque et batterie</span>
-                    </div>
-                    <div class="solution-item">
-                        <span class="solution-box">5</span>
-                        <span>Appareil photo 2</span>
-                    </div>
-                    <div class="solution-item">
-                        <span class="solution-box">6</span>
-                        <span>Ventilation</span>
-                    </div>
-                    <div class="solution-item">
-                        <span class="solution-box">7</span>
-                        <span>Structure métallique acier</span>
+                    <div class="student-info">
+                        <div class="info-group">
+                            <label class="info-label">Nom et Prénom <span style="color: #e74c3c;">*</span></label>
+                            <input type="text" id="studentName" class="input-field" placeholder="Nom Prénom" required>
+                        </div>
+                        <div class="info-group">
+                            <label class="info-label">Classe <span style="color: #e74c3c;">*</span></label>
+                            <input type="text" id="studentClass" class="input-field" placeholder="Ex: 3ème A" required>
+                        </div>
                     </div>
                 </div>
 
-                <table style="margin-top: 20px;">
-                    <thead>
-                        <tr>
-                            <th>Fonction</th>
-                            <th>N° Solution(s)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>E1 - Surélever le bâtiment tout en résistant aux vents</strong></td>
-                            <td>
-                                <input type="text" name="q1_e1" placeholder="N°" style="width: 60px;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>E2 - Éviter les intrusions</strong></td>
-                            <td>
-                                <input type="text" name="q1_e2" placeholder="N°" style="width: 60px;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>E3 - Assurer le confort des pompiers malgré les contraintes climatiques</strong></td>
-                            <td>
-                                <input type="text" name="q1_e3" placeholder="N°" style="width: 60px;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>E4 - Permettre une surveillance automatique</strong></td>
-                            <td>
-                                <input type="text" name="q1_e4" placeholder="N° (séparés par des virgules)" style="width: 150px;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>E5 - Être autonome en énergie</strong></td>
-                            <td>
-                                <input type="text" name="q1_e5" placeholder="N°" style="width: 60px;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>E6 - S'intégrer dans le paysage</strong></td>
-                            <td>
-                                <input type="text" name="q1_e6" placeholder="N°" style="width: 60px;">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Question 2 -->
-            <div class="question">
-                <h2>Question 2 <span class="points">(4 points)</span></h2>
-                
-                <div class="doc-box">
-                    <p><strong>Document 2 : Étude du cycle de mouvement de l'appareil photo 1</strong></p>
-                    <figure style="margin: 0; padding: 10px;">
-                        <img src="/img/schema_radial.png" 
-                             alt="Schéma de la vigie avec dimensions et composants"
-                             style="max-width: 75%; height: auto;">
-                    </figure>
-                    <figure style="margin: 0; padding: 10px;">
-                        <img src="https://latechnologieaucollege.netlify.app/Pages/DNB/img/cycle_mouvement_apn.png" 
-                             alt="Schéma de la vigie avec dimensions et composants"
-                             style="max-width: 100%; height: auto;">
-                        <figcaption style="margin-top: 10px; color: #7f8c8d;">
-                            Document 2 – étude du cycle de mouvement de l’appareil photo 1
+                <!-- Document 1 -->
+                <div class="document-box">
+                    <figure style="margin: 0;">
+                        <img src="https://latechnologieaucollege.netlify.app/src/Pages/DNB/img/vigie.png" 
+                             alt="Schéma de la vigie avec dimensions et composants">
+                        <figcaption>
+                            <strong>Document 1 :</strong> Vigie et son système automatisé de surveillance
                         </figcaption>
-                    </figure> 
+                    </figure>
                 </div>
 
-                <p><strong>Nature du mouvement de l'appareil photo 1 :</strong></p>
-                <input type="text" name="q2_nature" placeholder="Type de mouvement..." required>
-
-                <p style="margin-top: 15px;"><strong>Pour la position 6 (60°), déterminer le temps écoulé entre deux prises de vue :</strong></p>
-                <textarea name="q2_temps" rows="3" placeholder="Calculs et résultat..." required></textarea>
-            </div>
-
-            <!-- Question 3 -->
-            <div class="question">
-                <h2>Question 3 <span class="points">(6 points)</span></h2>
-                
-                <div class="doc-box">
-                    <p><strong>Document 3 : Présentation de la gestion de l'énergie du système</strong></p>
- 
-                </div>
-
-                <p><strong>Calculer la capacité de la batterie pour assurer une autonomie énergétique du système pendant 12 heures, sans apport solaire :</strong></p>
-                
-                <div class="calc-zone">
-                    <p><strong>Données :</strong></p>
-                    <ul>
-                        <li>Intensité par appareil photo : 0,7 A</li>
-                        <li>Intensité par moteur : 0,5 A</li>
-                        <li>Nombre d'appareils photo : 2</li>
-                        <li>Nombre de moteurs : 2</li>
-                        <li>Autonomie souhaitée : 12 heures</li>
-                    </ul>
-                    
-                    <div class="formula">
-                        <strong>Formule : Q = I × t</strong><br>
-                        Q : capacité de la batterie en A·h (Ampère × heure)<br>
-                        I : intensité moyenne consommée par le système en A (Ampère)<br>
-                        t : durée d'utilisation du système en h (heure)
+                <!-- Question 1 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">❓ Question 1</span>
+                        <span class="question-points">5 points</span>
                     </div>
-                </div>
+                    <div class="question-content">
+                        <h4>Analyse du besoin</h4>
+                        <p><strong>1.1.</strong> Identifier le besoin que répond ce système automatisé.</p>
+                        <textarea name="q1_besoin" class="input-field" placeholder="Décrivez le besoin..."></textarea>
 
-                <p><strong>Détails des calculs :</strong></p>
-                <textarea name="q3_calculs" rows="6" placeholder="Écrivez vos calculs détaillés ici...&#10;Exemple:&#10;- Intensité totale = ...&#10;- Capacité Q = I × t = ..." required></textarea>
-
-                <p style="margin-top: 10px;"><strong>Résultat final :</strong></p>
-                <input type="text" name="q3_resultat" placeholder="Q = ... A·h" required>
-            </div>
-
-            <!-- Question 4 -->
-            <div class="question">
-                <h2>Question 4 <span class="points">(5 points)</span></h2>
-                
-                <div class="doc-box">
-                    <p><strong>Document 4 : Détection d'une anomalie par comparaison d'images</strong></p>
-                    <p style="color: #7f8c8d; font-style: italic;">[Insérer ici les images A et B avec les pixels]</p>
-                </div>
-
-                <div class="doc-box">
-                    <p><strong>Document 5 : Tableau de correspondance</strong></p>
-                    <p style="color: #7f8c8d; font-style: italic;">[Insérer ici le tableau de correspondance binaire/décimal]</p>
-                </div>
-
-                <p><strong>Valeur en écriture binaire du pixel P pour le cycle 2 :</strong></p>
-                <div class="binary-input">
-                    <div>
-                        <input type="text" name="q4_b8" maxlength="1" pattern="[0-1]" required>
-                        <div class="binary-label">b8</div>
-                    </div>
-                    <div>
-                        <input type="text" name="q4_b7" maxlength="1" pattern="[0-1]" required>
-                        <div class="binary-label">b7</div>
-                    </div>
-                    <div>
-                        <input type="text" name="q4_b6" maxlength="1" pattern="[0-1]" required>
-                        <div class="binary-label">b6</div>
-                    </div>
-                    <div>
-                        <input type="text" name="q4_b5" maxlength="1" pattern="[0-1]" required>
-                        <div class="binary-label">b5</div>
-                    </div>
-                    <div>
-                        <input type="text" name="q4_b4" maxlength="1" pattern="[0-1]" required>
-                        <div class="binary-label">b4</div>
-                    </div>
-                    <div>
-                        <input type="text" name="q4_b3" maxlength="1" pattern="[0-1]" required>
-                        <div class="binary-label">b3</div>
-                    </div>
-                    <div>
-                        <input type="text" name="q4_b2" maxlength="1" pattern="[0-1]" required>
-                        <div class="binary-label">b2</div>
-                    </div>
-                    <div>
-                        <input type="text" name="q4_b1" maxlength="1" pattern="[0-1]" required>
-                        <div class="binary-label">b1</div>
+                        <p style="margin-top: 25px;"><strong>1.2.</strong> Compléter le tableau ci-dessous :</p>
+                        <table class="table-modern">
+                            <thead>
+                                <tr>
+                                    <th>Entrées</th>
+                                    <th>Élément associé</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>E1. Ordre de fonctionnement</td>
+                                    <td><input type="text" name="q1_e1" placeholder="Élément..."></td>
+                                </tr>
+                                <tr>
+                                    <td>E2. Commande de mise en marche</td>
+                                    <td><input type="text" name="q1_e2" placeholder="Élément..."></td>
+                                </tr>
+                                <tr>
+                                    <td>E3. Température mesurée</td>
+                                    <td><input type="text" name="q1_e3" placeholder="Élément..."></td>
+                                </tr>
+                                <tr>
+                                    <td>E4. Image de la forêt</td>
+                                    <td><input type="text" name="q1_e4" placeholder="Élément..."></td>
+                                </tr>
+                                <tr>
+                                    <td>E5. Alimentation électrique</td>
+                                    <td><input type="text" name="q1_e5" placeholder="Élément..."></td>
+                                </tr>
+                                <tr>
+                                    <td>E6. Alerte donnée</td>
+                                    <td><input type="text" name="q1_e6" placeholder="Élément..."></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <p style="margin-top: 20px;"><strong>Valeur en écriture décimale du pixel P pour le cycle 1 :</strong></p>
-                <input type="number" name="q4_decimal_c1" placeholder="Valeur décimale" required>
-
-                <p style="margin-top: 15px;"><strong>Valeur en écriture décimale du pixel P pour le cycle 2 :</strong></p>
-                <input type="number" name="q4_decimal_c2" placeholder="Valeur décimale" required>
-
-                <p style="margin-top: 20px;"><strong>Une alerte est-elle donnée suite à la comparaison des images A et B ?</strong></p>
-                <div class="radio-group">
-                    <label>
-                        <input type="radio" name="q4_alerte" value="oui" required> Oui
-                    </label>
-                    <label>
-                        <input type="radio" name="q4_alerte" value="non" required> Non
-                    </label>
+                <!-- Document 2 -->
+                <div class="document-box">
+                    <figure style="margin: 0;">
+                        <img src="https://latechnologieaucollege.netlify.app/src/Pages/DNB/img/chaine-energie.png" 
+                             alt="Chaîne d'énergie">
+                        <figcaption>
+                            <strong>Document 2 :</strong> Chaîne d'énergie du système
+                        </figcaption>
+                    </figure>
                 </div>
 
-                <p style="margin-top: 10px;"><strong>Argumentation :</strong></p>
-                <textarea name="q4_argumentation" rows="3" placeholder="Justifiez votre réponse (rappel : une alerte est déclenchée si la variation est supérieure à 50)..." required></textarea>
-            </div>
-
-            <!-- Question 5 -->
-            <div class="question">
-                <h2>Question 5 <span class="points">(5 points)</span></h2>
-                
-                <div class="doc-box">
-                    <p style="color: #7f8c8d; font-style: italic;">[Insérer ici l'image du programme à compléter]</p>
-                </div>
-
-                <p><strong>Compléter le programme (5 éléments attendus) :</strong></p>
-                
-                <div class="program-block">
-                    <div class="program-line">
-                        <strong>1. Mettre "angle app. photo" à :</strong>
-                        <input type="text" name="q5_element1" placeholder="Complétez..." required>
+                <!-- Question 2 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">❓ Question 2</span>
+                        <span class="question-points">4 points</span>
                     </div>
+                    <div class="question-content">
+                        <h4>Chaîne d'énergie</h4>
+                        <p><strong>2.1.</strong> Quelle est la nature de l'énergie en sortie du régulateur de tension ?</p>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="q2_nature" value="mecanique" required>
+                                <span>Mécanique</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="q2_nature" value="electrique">
+                                <span>Électrique</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="q2_nature" value="thermique">
+                                <span>Thermique</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="q2_nature" value="lumineuse">
+                                <span>Lumineuse</span>
+                            </label>
+                        </div>
 
-                    <div class="program-line">
-                        <strong>2. Mettre "détection anomalie" à :</strong>
-                        <input type="text" name="q5_element2" placeholder="Complétez..." required>
-                    </div>
-
-                    <div class="program-line">
-                        <strong>3. Répéter jusqu'à ce que "angle app. photo" = :</strong>
-                        <input type="text" name="q5_element3" placeholder="Complétez..." required>
-                    </div>
-
-                    <div class="program-line">
-                        <strong>4. Ajouter _______ à "angle app. photo" :</strong>
-                        <input type="text" name="q5_element4" placeholder="Complétez..." required>
-                    </div>
-
-                    <div class="program-line">
-                        <strong>5. Si "détection anomalie" = :</strong>
-                        <input type="text" name="q5_element5" placeholder="Complétez..." required>
+                        <p style="margin-top: 25px;"><strong>2.2.</strong> Combien de temps au maximum l'accumulateur permet-il de faire fonctionner le système ?</p>
+                        <textarea name="q2_temps" class="input-field" placeholder="Montrez vos calculs et donnez le résultat..."></textarea>
                     </div>
                 </div>
-            </div>
 
-            <div style="display: flex; gap: 15px; margin-top: 20px;">
-                <button type="button" id="sendToFirebase" class="submit-btn" style="background-color: #27ae60; flex: 1;">
-                    📤 Envoyer mes réponses
-                </button>
-                <button type="reset" class="submit-btn" style="background-color: #e74c3c; flex: 0.3;">
-                    🔄 Réinitialiser
-                </button>
-            </div>
-        </form>
+                <!-- Document 3 -->
+                <div class="document-box">
+                    <figure style="margin: 0;">
+                        <img src="https://latechnologieaucollege.netlify.app/src/Pages/DNB/img/chaine-information.png" 
+                             alt="Chaîne d'information">
+                        <figcaption>
+                            <strong>Document 3 :</strong> Chaîne d'information du système
+                        </figcaption>
+                    </figure>
+                </div>
 
-        <div id="result" style="margin-top: 20px; padding: 15px; display: none; background-color: #d4edda; border: 2px solid #28a745; border-radius: 5px;">
-            <h3>✅ Réponses enregistrées !</h3>
-            <p>Vos réponses ont été sauvegardées. Vous pouvez maintenant les relire ou demander une correction à votre professeur.</p>
+                <!-- Question 3 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">❓ Question 3</span>
+                        <span class="question-points">6 points</span>
+                    </div>
+                    <div class="question-content">
+                        <h4>Calcul de la distance entre la vigie et le départ de feu</h4>
+                        <p>La longueur de la base de la vigie est <strong>L = 1,5 m</strong>. L'angle de vision du départ de feu est <strong>α = 0,45°</strong>.</p>
+                        
+                        <div class="formula-box">
+                            <strong>Formule :</strong> tan(α) = L / D
+                        </div>
+
+                        <p>Pour trouver D, on peut utiliser : <strong>D = L / tan(α)</strong></p>
+
+                        <div class="calc-zone">
+                            <p><strong>Montrez vos calculs :</strong></p>
+                            <textarea name="q3_calculs" class="input-field" placeholder="Détaillez vos calculs ici..."></textarea>
+
+                            <p style="margin-top: 15px;"><strong>Résultat final :</strong></p>
+                            <input type="text" name="q3_resultat" class="input-field" placeholder="Distance en mètres...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Document 4 -->
+                <div class="document-box">
+                    <figure style="margin: 0;">
+                        <img src="https://latechnologieaucollege.netlify.app/src/Pages/DNB/img/binaire-decimal.png" 
+                             alt="Table de conversion binaire-décimal">
+                        <figcaption>
+                            <strong>Document 4 :</strong> Table de conversion binaire-décimal
+                        </figcaption>
+                    </figure>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">❓ Question 4</span>
+                        <span class="question-points">5 points</span>
+                    </div>
+                    <div class="question-content">
+                        <h4>Codage binaire de la température</h4>
+                        <p><strong>4.1.</strong> Le capteur de température relève <strong>56°C</strong>. Complétez la conversion en binaire :</p>
+                        
+                        <div class="binary-input-group">
+                            <div>
+                                <input type="text" name="q4_b8" maxlength="1" pattern="[01]" class="binary-box" placeholder="0">
+                                <div class="binary-label">128</div>
+                            </div>
+                            <div>
+                                <input type="text" name="q4_b7" maxlength="1" pattern="[01]" class="binary-box" placeholder="0">
+                                <div class="binary-label">64</div>
+                            </div>
+                            <div>
+                                <input type="text" name="q4_b6" maxlength="1" pattern="[01]" class="binary-box" placeholder="0">
+                                <div class="binary-label">32</div>
+                            </div>
+                            <div>
+                                <input type="text" name="q4_b5" maxlength="1" pattern="[01]" class="binary-box" placeholder="0">
+                                <div class="binary-label">16</div>
+                            </div>
+                            <div>
+                                <input type="text" name="q4_b4" maxlength="1" pattern="[01]" class="binary-box" placeholder="0">
+                                <div class="binary-label">8</div>
+                            </div>
+                            <div>
+                                <input type="text" name="q4_b3" maxlength="1" pattern="[01]" class="binary-box" placeholder="0">
+                                <div class="binary-label">4</div>
+                            </div>
+                            <div>
+                                <input type="text" name="q4_b2" maxlength="1" pattern="[01]" class="binary-box" placeholder="0">
+                                <div class="binary-label">2</div>
+                            </div>
+                            <div>
+                                <input type="text" name="q4_b1" maxlength="1" pattern="[01]" class="binary-box" placeholder="0">
+                                <div class="binary-label">1</div>
+                            </div>
+                        </div>
+
+                        <p style="margin-top: 25px;"><strong>4.2.</strong> Convertissez en décimal les valeurs binaires suivantes :</p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                            <div>
+                                <p><strong>0 0 1 0 1 0 1 1</strong> =</p>
+                                <input type="text" name="q4_decimal_c1" class="input-field" placeholder="Valeur décimale...">
+                            </div>
+                            <div>
+                                <p><strong>1 0 0 1 0 0 0 0</strong> =</p>
+                                <input type="text" name="q4_decimal_c2" class="input-field" placeholder="Valeur décimale...">
+                            </div>
+                        </div>
+
+                        <p style="margin-top: 25px;"><strong>4.3.</strong> L'alarme se déclenche si la température dépasse 70°C. Parmi les deux valeurs converties, laquelle déclencherait l'alerte ?</p>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="q4_alerte" value="c1" required>
+                                <span>La première (0 0 1 0 1 0 1 1)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="q4_alerte" value="c2">
+                                <span>La deuxième (1 0 0 1 0 0 0 0)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="q4_alerte" value="aucune">
+                                <span>Aucune des deux</span>
+                            </label>
+                        </div>
+
+                        <p style="margin-top: 15px;"><strong>Argumentez votre réponse :</strong></p>
+                        <textarea name="q4_argumentation" class="input-field" placeholder="Justifiez votre choix..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Document 5 -->
+                <div class="document-box">
+                    <figure style="margin: 0;">
+                        <img src="https://latechnologieaucollege.netlify.app/src/Pages/DNB/img/programme.png" 
+                             alt="Programme de surveillance">
+                        <figcaption>
+                            <strong>Document 5 :</strong> Programme de surveillance
+                        </figcaption>
+                    </figure>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">❓ Question 5</span>
+                        <span class="question-points">5 points</span>
+                    </div>
+                    <div class="question-content">
+                        <h4>Compléter le programme</h4>
+                        <p>Le programme ci-dessous gère la rotation et la prise de photos. Complétez les éléments manquants en choisissant parmi les propositions suivantes :</p>
+
+                        <div class="solutions-grid">
+                            <div class="solution-item">
+                                <span class="solution-number">1</span>
+                                <span>Capteur de température</span>
+                            </div>
+                            <div class="solution-item">
+                                <span class="solution-number">2</span>
+                                <span>Carte programmable</span>
+                            </div>
+                            <div class="solution-item">
+                                <span class="solution-number">3</span>
+                                <span>Prendre une photo</span>
+                            </div>
+                            <div class="solution-item">
+                                <span class="solution-number">4</span>
+                                <span>180°</span>
+                            </div>
+                            <div class="solution-item">
+                                <span class="solution-number">5</span>
+                                <span>Moteur pas-à-pas</span>
+                            </div>
+                        </div>
+
+                        <div class="program-block">
+                            <div class="program-line">
+                                <strong>Élément 1 :</strong>
+                                <select name="q5_element1" required>
+                                    <option value="">-- Choisir --</option>
+                                    <option value="1">Capteur de température</option>
+                                    <option value="2">Carte programmable</option>
+                                    <option value="3">Prendre une photo</option>
+                                    <option value="4">180°</option>
+                                    <option value="5">Moteur pas-à-pas</option>
+                                </select>
+                            </div>
+                            <div class="program-line">
+                                <strong>Élément 2 :</strong>
+                                <select name="q5_element2" required>
+                                    <option value="">-- Choisir --</option>
+                                    <option value="1">Capteur de température</option>
+                                    <option value="2">Carte programmable</option>
+                                    <option value="3">Prendre une photo</option>
+                                    <option value="4">180°</option>
+                                    <option value="5">Moteur pas-à-pas</option>
+                                </select>
+                            </div>
+                            <div class="program-line">
+                                <strong>Élément 3 :</strong>
+                                <select name="q5_element3" required>
+                                    <option value="">-- Choisir --</option>
+                                    <option value="1">Capteur de température</option>
+                                    <option value="2">Carte programmable</option>
+                                    <option value="3">Prendre une photo</option>
+                                    <option value="4">180°</option>
+                                    <option value="5">Moteur pas-à-pas</option>
+                                </select>
+                            </div>
+                            <div class="program-line">
+                                <strong>Élément 4 :</strong>
+                                <select name="q5_element4" required>
+                                    <option value="">-- Choisir --</option>
+                                    <option value="1">Capteur de température</option>
+                                    <option value="2">Carte programmable</option>
+                                    <option value="3">Prendre une photo</option>
+                                    <option value="4">180°</option>
+                                    <option value="5">Moteur pas-à-pas</option>
+                                </select>
+                            </div>
+                            <div class="program-line">
+                                <strong>Élément 5 :</strong>
+                                <select name="q5_element5" required>
+                                    <option value="">-- Choisir --</option>
+                                    <option value="1">Capteur de température</option>
+                                    <option value="2">Carte programmable</option>
+                                    <option value="3">Prendre une photo</option>
+                                    <option value="4">180°</option>
+                                    <option value="5">Moteur pas-à-pas</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="action-buttons">
+                    <button type="button" id="sendToFirebase" class="btn-submit">
+                        📤 Envoyer mes réponses
+                    </button>
+                    <button type="reset" class="btn-reset">
+                        🔄 Réinitialiser
+                    </button>
+                </div>
+
+                <!-- Messages de feedback -->
+                <div id="successMessage" class="success-message">
+                    <h3>✅ Réponses enregistrées !</h3>
+                    <p>Vos réponses ont été sauvegardées avec succès. Vous pouvez maintenant les relire ou demander une correction à votre professeur.</p>
+                </div>
+
+                <div id="errorMessage" class="error-message">
+                    <h3>❌ Erreur</h3>
+                    <p id="errorText">Une erreur s'est produite lors de l'envoi.</p>
+                </div>
+            </form>
         </div>
-    </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>🚀 TechnoLab - Plateforme d'apprentissage en Technologie | Version Bêta</p>
+            <p>Collège Moulin à Vent - Préparation DNB</p>
+        </div>
+    </footer>
 
     <script>
+        // Animation des particules
+        function createPaperParticles() {
+            const container = document.querySelector('.paper-particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        createPaperParticles();
+
         // ============================================
-        // CONFIRMATION AVANT FERMETURE
+        // GESTION FORMULAIRE
         // ============================================
         let formModified = false;
 
@@ -533,34 +944,34 @@
             }
         });
 
-      // Protection par mot de passe
-      (function() {
-          const MOT_DE_PASSE = 'dnb2025'; // ← Changez ici
-          let tentatives = 3;
-          
-          while (tentatives > 0) {
-              const saisie = prompt('🔒 Mot de passe requis pour accéder au formulaire :');
-              
-              if (saisie === null) {
-                  document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès annulé</h1>';
-                  throw new Error('Accès annulé');
-              }
-              
-              if (saisie === MOT_DE_PASSE) {
-                  return; // ✅ Mot de passe correct
-              }
-              
-              tentatives--;
-              if (tentatives > 0) {
-                  alert('❌ Mot de passe incorrect ! Il vous reste ' + tentatives + ' tentative(s).');
-              }
-          }
-          
-          alert('🚫 Nombre de tentatives dépassé !');
-          document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès refusé</h1>';
-          throw new Error('Accès refusé');
-      })();
-           
+        // Protection par mot de passe (optionnel)
+        (function() {
+            const MOT_DE_PASSE = 'dnb2025';
+            let tentatives = 3;
+            
+            while (tentatives > 0) {
+                const saisie = prompt('🔒 Mot de passe requis pour accéder au sujet DNB :');
+                
+                if (saisie === null) {
+                    document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès annulé</h1>';
+                    throw new Error('Accès annulé');
+                }
+                
+                if (saisie === MOT_DE_PASSE) {
+                    return;
+                }
+                
+                tentatives--;
+                if (tentatives > 0) {
+                    alert('❌ Mot de passe incorrect ! Il vous reste ' + tentatives + ' tentative(s).');
+                }
+            }
+            
+            alert('🚫 Nombre de tentatives dépassé !');
+            document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès refusé</h1>';
+            throw new Error('Accès refusé');
+        })();
+
         // ============================================
         // CONFIGURATION FIREBASE
         // ============================================
@@ -573,34 +984,30 @@
             appId: "1:662462446647:web:0fe6315cc0c189185513b2"
         };
 
-        // Initialiser Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         console.log('✅ Firebase initialisé');
 
         // ============================================
-        // BOUTON D'ENVOI
+        // ENVOI DES RÉPONSES
         // ============================================
         document.getElementById('sendToFirebase').addEventListener('click', async function() {
             const form = document.getElementById('dnbForm');
             
-            // Vérifier la validité du formulaire
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
             }
             
-            // Désactiver le bouton
-            const originalText = this.textContent;
-            this.disabled = true;
-            this.textContent = '⏳ Envoi en cours...';
+            const btn = this;
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = '⏳ Envoi en cours...';
             
             try {
-                // Collecter les données
                 const formData = new FormData(form);
                 
-                // Construire la valeur binaire complète
                 const binaryValue = 
                     (formData.get('q4_b8') || '') +
                     (formData.get('q4_b7') || '') +
@@ -617,7 +1024,6 @@
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     date_soumission: new Date().toISOString(),
                     
-                    // Question 1 (5 points)
                     q1_besoin: formData.get('q1_besoin') || '',
                     q1_e1: formData.get('q1_e1') || '',
                     q1_e2: formData.get('q1_e2') || '',
@@ -626,15 +1032,12 @@
                     q1_e5: formData.get('q1_e5') || '',
                     q1_e6: formData.get('q1_e6') || '',
                     
-                    // Question 2 (4 points)
                     q2_nature: formData.get('q2_nature') || '',
                     q2_temps: formData.get('q2_temps') || '',
                     
-                    // Question 3 (6 points)
                     q3_calculs: formData.get('q3_calculs') || '',
                     q3_resultat: formData.get('q3_resultat') || '',
                     
-                    // Question 4 (5 points)
                     q4_binaire_complet: binaryValue,
                     q4_b8: formData.get('q4_b8') || '',
                     q4_b7: formData.get('q4_b7') || '',
@@ -649,7 +1052,6 @@
                     q4_alerte: formData.get('q4_alerte') || '',
                     q4_argumentation: formData.get('q4_argumentation') || '',
                     
-                    // Question 5 (5 points)
                     q5_element1: formData.get('q5_element1') || '',
                     q5_element2: formData.get('q5_element2') || '',
                     q5_element3: formData.get('q5_element3') || '',
@@ -659,50 +1061,48 @@
                 
                 console.log('📤 Envoi des données:', responses);
                 
-                // Envoyer à Firebase
-                const docRef = await db.collection('dnb_vigie').add(responses);
+                const docRef = await db.collection('dnb_vigie_technolab').add(responses);
                 
                 console.log('✅ Document enregistré avec ID:', docRef.id);
                 
-                // Réactiver le bouton
-                this.disabled = false;
-                this.textContent = originalText;
+                btn.disabled = false;
+                btn.textContent = originalText;
                 
-                // Notification de succès
-                document.getElementById('result').style.display = 'block';
-                document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'none';
+                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
                 
-                // Réinitialiser le formulaire après 3 secondes
                 setTimeout(() => {
                     form.reset();
                     formModified = false;
-                    document.getElementById('result').style.display = 'none';
-                }, 3000);
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
                 
             } catch (error) {
                 console.error('❌ Erreur Firebase:', error);
                 
-                // Réactiver le bouton
-                this.disabled = false;
-                this.textContent = originalText;
+                btn.disabled = false;
+                btn.textContent = originalText;
                 
-                // Notification d'erreur
-                alert('❌ Erreur lors de l\'envoi : ' + error.message);
+                document.getElementById('errorText').textContent = error.message;
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
             }
         });
 
-        // Gestion du bouton de réinitialisation
-        document.getElementById('dnbForm').addEventListener('reset', function() {
-            if (confirm('Êtes-vous sûr de vouloir effacer toutes vos réponses ?')) {
-                formModified = false;
-                document.getElementById('result').style.display = 'none';
+        // Gestion réinitialisation
+        document.getElementById('dnbForm').addEventListener('reset', function(e) {
+            if (!confirm('Êtes-vous sûr de vouloir effacer toutes vos réponses ?')) {
+                e.preventDefault();
             } else {
-                return false;
+                formModified = false;
+                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'none';
             }
         });
 
-        // Auto-focus sur le prochain champ binaire
-        const binaryInputs = document.querySelectorAll('.binary-input input');
+        // Auto-focus champs binaires
+        const binaryInputs = document.querySelectorAll('.binary-box');
         binaryInputs.forEach((input, index) => {
             input.addEventListener('input', function() {
                 if (this.value.length === 1 && index < binaryInputs.length - 1) {
