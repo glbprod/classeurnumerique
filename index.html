@@ -3,775 +3,423 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classeur Numérique</title>
-
-    <!-- SVG pour navigateurs modernes -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <!-- ICO pour anciens navigateurs -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #0f0f23;
-            --bg-secondary: #1a1a2e;
-            --bg-card: #16213e;
-            --bg-header: rgba(26, 26, 46, 0.95);
-            --accent-primary: #667eea;
-            --accent-secondary: #764ba2;
-            --text-primary: #e2e8f0;
-            --text-secondary: #a0aec0;
-            --text-muted: #718096;
-            --border-color: #2d3748;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-            color: var(--text-primary);
-        }
-
-        /* Particules animées en arrière-plan */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(102, 126, 234, 0.1);
-            animation: float 15s infinite linear;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0) translateX(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        /* ===== HEADER ===== */
-        .header {
-            background: var(--bg-header);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
-            padding: 20px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            transform: translateY(0);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .header.hidden {
-            transform: translateY(-100%);
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-icon {
-            font-size: 2.5em;
-            transition: transform 0.5s ease;
-            filter: brightness(0.9);
-        }
-
-        .logo:hover .logo-icon {
-            transform: rotate(15deg) scale(1.1);
-        }
-
-        .logo-text h1 {
-            color: var(--accent-primary);
-            font-size: 1.8em;
-            margin-bottom: 5px;
-            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .logo-text p {
-            color: var(--text-secondary);
-            font-size: 0.9em;
-        }
-
-        .header-nav {
-            display: flex;
-            gap: 20px;
-        }
-
-        .header-nav a {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 5px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-primary);
-            transition: width 0.3s ease;
-        }
-
-        .header-nav a:hover::after {
-            width: 100%;
-        }
-
-        .header-nav a:hover {
-            background: rgba(102, 126, 234, 0.15);
-            color: var(--accent-primary);
-        }
-
-        /* ===== HERO SECTION ===== */
-        .hero {
-            text-align: center;
-            color: var(--text-primary);
-            padding: 100px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, rgba(102, 126, 234, 0) 70%);
-            animation: pulse 8s infinite alternate;
-            z-index: -1;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(0.8);
-                opacity: 0.3;
-            }
-            100% {
-                transform: scale(1.2);
-                opacity: 0.6;
-            }
-        }
-
-        .hero h2 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            animation: fadeInDown 1s;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        .hero p {
-            font-size: 1.3em;
-            opacity: 0.95;
-            margin-bottom: 40px;
-            animation: fadeInUp 1s;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            color: var(--text-secondary);
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-cta {
-            padding: 15px 35px;
-            font-size: 1.1em;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .btn-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 100%;
-            background: rgba(255,255,255,0.1);
-            transition: width 0.3s ease;
-            z-index: -1;
-        }
-
-        .btn-cta:hover::before {
-            width: 100%;
-        }
-
-        .btn-primary {
-            background: var(--accent-primary);
-            color: white;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-            background: #5a6fd8;
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-            border: 2px solid var(--accent-primary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--accent-primary);
-            color: white;
-        }
-
-        /* ===== CONTAINER ===== */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        /* ===== SECTIONS ===== */
-        .section {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
-            transform: translateY(50px);
-            opacity: 0;
-            transition: transform 0.8s ease, opacity 0.8s ease;
-            border: 1px solid var(--border-color);
-        }
-
-        .section.visible {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid var(--border-color);
-        }
-
-        .section-icon {
-            font-size: 2.5em;
-            transition: transform 0.5s ease;
-            filter: brightness(0.9);
-        }
-
-        .section-header:hover .section-icon {
-            transform: scale(1.2) rotate(10deg);
-        }
-
-        .section-title {
-            flex: 1;
-        }
-
-        .section-title h3 {
-            color: var(--text-primary);
-            font-size: 2em;
-            margin-bottom: 5px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title h3::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-            transition: width 0.5s ease;
-        }
-
-        .section-title:hover h3::after {
-            width: 100%;
-        }
-
-        .section-title p {
-            color: var(--text-secondary);
-            font-size: 1em;
-        }
-
-        /* ===== CARDS GRID ===== */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background: var(--bg-secondary);
-            border-radius: 15px;
-            padding: 25px;
-            transition: all 0.3s;
-            border: 2px solid var(--border-color);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transform: translateY(20px);
-            opacity: 0;
-        }
-
-        .card.visible {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-            border-color: var(--accent-primary);
-        }
-
-        .card-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-            transition: transform 0.3s ease;
-            filter: brightness(0.9);
-        }
-
-        .card:hover .card-icon {
-            transform: scale(1.2) rotate(5deg);
-        }
-
-        .card h4 {
-            color: var(--text-primary);
-            font-size: 1.4em;
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-
-        .card-meta {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            font-size: 0.9em;
-        }
-
-        .badge {
-            background: var(--accent-primary);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: bold;
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover .badge {
-            transform: scale(1.1);
-        }
-
-        .card-link {
-            display: inline-block;
-            color: var(--accent-primary);
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .card-link::after {
-            content: '→';
-            position: absolute;
-            right: -20px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .card-link:hover::after {
-            right: -25px;
-            opacity: 1;
-        }
-
-        .card-link:hover {
-            color: var(--accent-secondary);
-            transform: translateX(5px);
-        }
-
-        /* ===== ADMIN CARD (spécial) ===== */
-        .card-admin {
-            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-admin::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-            animation: adminPulse 6s infinite alternate;
-            z-index: 0;
-        }
-
-        @keyframes adminPulse {
-            0% {
-                transform: scale(0.8);
-                opacity: 0.3;
-            }
-            100% {
-                transform: scale(1.2);
-                opacity: 0.6;
-            }
-        }
-
-        .card-admin > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .card-admin h4,
-        .card-admin p {
-            color: white;
-        }
-
-        .card-admin .badge {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .card-admin .card-link {
-            color: white;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 8px;
-            display: inline-block;
-        }
-
-        .card-admin .card-link:hover {
-            background: white;
-            color: var(--accent-primary);
-        }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            background: var(--bg-header);
-            padding: 30px 20px;
-            text-align: center;
-            color: var(--text-secondary);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid var(--border-color);
-        }
-
-        .footer p {
-            margin-bottom: 10px;
-        }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .hero {
-                padding: 60px 20px;
-            }
-
-            .hero h2 {
-                font-size: 2em;
-            }
-
-            .hero p {
-                font-size: 1.1em;
-            }
-
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section {
-                padding: 25px;
-            }
-        }
-    </style>
+    <title>TechnoLab - Plateforme d'Apprentissage</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Particules animées en arrière-plan -->
-    <div class="particles" id="particles"></div>
+    <!-- Particules de papier en arrière-plan -->
+    <div class="paper-particles"></div>
 
-    <!-- ===== HEADER ===== -->
-    <header class="header" id="header">
-        <div class="header-content">
+    <!-- Header avec navigation -->
+    <header>
+        <div class="container">
             <div class="logo">
-                <div class="logo-icon">⚙️</div>
-                <div class="logo-text">
-                    <h1>La Technologie au Collège</h1>
-                </div>
+                <span class="logo-icon">🚀</span>
+                <h1>TechnoLab</h1>
+                <span class="beta-badge">BÊTA</span>
             </div>
-            <nav class="header-nav">
-                <a href="#ressources">Ressources</a>
-                <a href="">Index</a>
+            <nav>
+            <a href="Presentation-TechnoLab.html" class="btn-card">
+                Présentation
+            </a>
+            <!-- <a href="#activites" class="nav-link">📚 Activités</a>-->
+            <a href="Ressources-Numériques.html" class="btn-card">Ressources</a>
+            <!-- <a href="#outils" class="nav-link">🛠️ Outils</a> -->
             </nav>
         </div>
     </header>
 
-    <!-- ===== MAIN CONTENT ===== -->
-    <main class="container">
-
-        <section id="formulaires" class="section">
-            <div class="section-header">
-                <div class="section-icon">📝</div>
-                <div class="section-title">
-                    <h3>Contenus web</h3>
-                    <p>Gestions</p>
-                </div>
+    <!-- Hero Section - Carrousel des activités du jour -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-header">
+                <h2>✨ Activités du jour</h2>
+                <p class="hero-subtitle">Découvre les activités programmées pour aujourd'hui</p>
             </div>
 
+            <div class="carousel-container">
+                <button class="carousel-btn carousel-btn-prev" onclick="previousSlide()">‹</button>
+                    <div class="carousel-wrapper">
+                        <div class="carousel-track" id="carousel-track">
+                    <div class="carousel-card">
+                        <!-- <div class="card-image-container">
+                            <img src="/img/dnb-preview.png" alt="Prépa DNB Technologie">
+                        </div> -->
+                        
+                        <div class="card-header">
+                            <h3>Prépa DNB Techno</h3>
+                            <span class="card-badge badge-dnb">DNB</span>
+                        </div>
+                        
+                        <p class="card-description">Révisions et entraînement pour l'épreuve de technologie du Brevet</p>
+                        
+                        <div class="card-meta">
+                            <span class="meta-item">⏱️ 45 min</span>
+                            <span class="meta-item">🎯 3ème</span>
+                            <span class="meta-item">📊 Niveau avancé</span>
+                        </div>
+                        
+                        <a href="prepa-dnb.html" class="btn-card btn-card-primary">Commencer →</a>
+                    </div>
+
+                        <!-- Card 2 : Robotique -->
+                        <div class="carousel-card">
+                            <div class="card-header">
+                                <div class="card-icon-large">🤖</div>
+                                <span class="card-badge badge-robotique">ROBOTIQUE</span>
+                            </div>
+                            <h3>Robotique</h3>
+                            <p class="card-description">Programmation et pilotage de robots : découverte des capteurs et actionneurs</p>
+                            <div class="card-meta">
+                                <span class="meta-item">⏱️ 1h</span>
+                                <span class="meta-item">🎯 4ème</span>
+                                <span class="meta-item">📊 Intermédiaire</span>
+                            </div>
+                            <a href="robotique.html" class="btn-card btn-card-primary">Commencer →</a>
+                        </div>
+
+                        <!-- Card 3 : Énergie -->
+                        <div class="carousel-card">
+                            <div class="card-header">
+                                <div class="card-icon-large">⚡</div>
+                                <span class="card-badge badge-energie">ÉNERGIE</span>
+                            </div>
+                            <h3>Énergie</h3>
+                            <p class="card-description">Les sources d'énergie et leur transformation : du solaire à l'électricité</p>
+                            <div class="card-meta">
+                                <span class="meta-item">⏱️ 50 min</span>
+                                <span class="meta-item">🎯 5ème</span>
+                                <span class="meta-item">📊 Débutant</span>
+                            </div>
+                            <a href="energie.html" class="btn-card btn-card-primary">Commencer →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-btn carousel-btn-next" onclick="nextSlide()">›</button>
+            </div>
+
+            <div class="carousel-dots" id="carousel-dots">
+                <span class="dot active" onclick="goToSlide(0)"></span>
+                <span class="dot" onclick="goToSlide(1)"></span>
+                <span class="dot" onclick="goToSlide(2)"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Activités -->
+    <section id="activites" class="section">
+        <div class="container">
+            <h2 class="section-title">📚 Activités</h2>
+            <!-- <p class="section-description">Explorez les 9 compétences du Cycle 4 à travers des activités pratiques</p> -->
+            
             <div class="cards-grid">
-                <!-- CARD 1 : Fonction d'usage et d'estime -->
-                <div class="card" onclick="window.location.href='pages/evolution/fonction-usage-estime-quiz.html'">
-                    <div class="card-icon">🔧</div>
-                    <h4>Fonction d'usage et d'estime</h4>
-                    <p>Identifie et distingue les fonctions d'usage et d'estime des objets techniques.</p>
-                    <div class="card-meta">
-                        <span class="badge">5ème</span>
-                        <span class="badge">3 exercices</span>
-                    </div>
+                <div class="card">
+                    <div class="card-icon">💡</div>
+                    <h3>1. Imaginer des solutions</h3>
+                    <p>Développez votre créativité pour résoudre des problèmes techniques</p>
+                    <button class="btn-card">Accéder →</button>
                 </div>
 
-                <!-- CARD 2 : Évolution des objets -->
-                <div class="card" onclick="window.location.href='pages/evolution/evolution-objets-quiz.html'">
-                    <div class="card-icon">📱</div>
-                    <h4>Évolution des objets techniques</h4>
-                    <p>Analyse l'évolution des objets techniques et comprends les raisons de leurs changements.</p>
-                    <div class="card-meta">
-                        <span class="badge">5ème</span>
-                        <span class="badge">3 exercices</span>
-                    </div>
+                <div class="card">
+                    <div class="card-icon">🏗️</div>
+                    <h3>2. Modéliser en 3D</h3>
+                    <p>Crée des objets en trois dimensions avec les outils de CAO</p>
+                    <button class="btn-card">Accéder →</button>
                 </div>
 
-                <!-- CARD 3 : LLM et Cybersécurité -->
-                <div class="card" onclick="window.location.href='pages/cybersécurité/devoir_llm_cybersécurité.html'">
+                <div class="card">
+                    <div class="card-icon">💻</div>
+                    <h3>3. Utiliser le numérique</h3>
+                    <p>Maîtrise les outils informatiques et les logiciels</p>
+                    <button class="btn-card">Accéder →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🔍</div>
+                    <h3>4. Analyser des systèmes</h3>
+                    <p>Comprenez le fonctionnement des objets techniques</p>
+                    <button class="btn-card">Accéder →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🌊</div>
+                    <h3>5. Comprendre les flux d'info</h3>
+                    <p>Étudiez la circulation de l'information dans les systèmes</p>
+                    <button class="btn-card">Accéder →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">⚙️</div>
+                    <h3>6. Programmer</h3>
+                    <p>Apprenez à coder avec Scratch, Python et Arduino</p>
+                    <button class="btn-card">Accéder →</button>
+                </div>
+
+                <!-- <div class="card">
+                    <div class="card-icon">📈</div>
+                    <h3>7. Étudier les évolutions</h3>
+                    <p>Découvrez l'histoire et l'évolution des technologies</p>
+                    <button class="btn-card">Accéder →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🎯</div>
+                    <h3>8. Présenter un projet</h3>
+                    <p>Apprenez à communiquer et présenter tes réalisations</p>
+                    <button class="btn-card">Accéder →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🧪</div>
+                    <h3>9. Tester des programmes</h3>
+                    <p>Vérifiez et améliorez votre code</p>
+                    <button class="btn-card">Accéder →</button>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Ressources -->
+    <!-- <section id="ressources" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">📖 Ressources</h2>
+            <p class="section-description">Tous les documents et supports pour réussir en technologie</p>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">🎨</div>
+                    <h3>Design Moderne</h3>
+                    <p>Une interface claire et colorée, spécialement pensée pour vous, collégiens !</p>
+                    <button class="btn-card">Explorer →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🎨</div>
+                    <h3>Visuels Attractifs</h3>
+                    <p>Des graphiques et des icônes pour mieux comprendre les concepts techniques</p>
+                    <button class="btn-card">Explorer →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🔍</div>
+                    <h3>Recherche Puissante</h3>
+                    <p>Trouvez une activité par mot-clé, niveau ou compétence en quelques clics !</p>
+                    <button class="btn-card">Explorer →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <h3>Tableau de Bord</h3>
+                    <p>Voyez d'un coup d'œil vos progrès et les compétences à travailler</p>
+                    <button class="btn-card">Explorer →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📚</div>
+                    <h3>Cours Complets</h3>
+                    <p>Accèdez à tous les cours de technologie du Cycle 4</p>
+                    <button class="btn-card">Explorer →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🎥</div>
+                    <h3>Tutoriels Vidéo</h3>
+                    <p>Apprenez en vidéo avec des explications pas à pas</p>
+                    <button class="btn-card">Explorer →</button>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Section Outils -->
+    <section id="outils" class="section">
+        <div class="container">
+            <h2 class="section-title">🛠️ Outils</h2>
+            <p class="section-description">Des outils intelligents pour t'accompagner dans ton apprentissage</p>
+            
+            <div class="cards-grid">
+                <div class="card card-featured">
                     <div class="card-icon">🤖</div>
-                    <h4>LLM et Cybersécurité</h4>
-                    <p>Utilisations des LLM et analyse de messages</p>
-                    <div class="card-meta">
-                        <span class="badge">4ème</span>
-                        <span class="badge">Devoir</span>
-                    </div>
+                    <h3>Assistant Intelligent</h3>
+                    <p>Un chatbot pour répondre à vos questions sur les cours (en développement)</p>
+                    <button class="btn-card btn-card-primary">Essayer →</button>
+                </div>
+
+                <div class="card card-featured">
+                    <div class="card-icon">💾</div>
+                    <h3>Tout Toujours Dispo</h3>
+                    <p>Plus besoin de chercher vos fiches, tout est sauvegardé et organisé</p>
+                    <button class="btn-card btn-card-primary">Accéder →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📝</div>
+                    <h3>Générateur d'Exercices</h3>
+                    <p>Créez des exercices personnalisés selon tes besoins</p>
+                    <button class="btn-card">Utiliser →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🎯</div>
+                    <h3>Quiz Interactifs</h3>
+                    <p>Testez vos connaissances avec des quiz ludiques</p>
+                    <button class="btn-card">Démarrer →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📐</div>
+                    <h3>Simulateurs</h3>
+                    <p>Expérimentez virtuellement avec des systèmes techniques</p>
+                    <button class="btn-card">Simuler →</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <h3>Suivi de Progrès</h3>
+                    <p>Visualisez votre progression sur les 9 compétences</p>
+                    <button class="btn-card">Voir →</button>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- ========================================
-             SECTION : ESPACE PROFESSEUR
-        ======================================== -->
-        <section class="section">
-            <div class="section-header">
-                <div class="section-icon">👨‍🏫</div>
-                <div class="section-title">
-                    <h3>Techno Kit</h3>
-                    <p>L'appli côté prof</p>
-                </div>
-            </div>
-
-            <div class="cards-grid">
-                <!-- CARD : Tableau de bord -->
-                <div class="card card-admin" onclick="window.location.href='/src/pages/gestion/tableau_de_bord'">
-                    <h4>Tableau de bord</h4>
-                    <div class="card-meta">
-                        <span class="badge">🔒 Accès prof</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- ===== FOOTER ===== -->
-    <footer class="footer">
-        <p style="font-size: 0.9em; color: var(--text-muted); margin-top: 15px;">
-            GlbProd - ©2025 - Tous droits réservés
-        </p>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>🚀 TechnoLab - Plateforme d'apprentissage en Technologie | Version Bêta</p>
+            <p>Collège Moulin à Vent - Cycle 4 (5ème, 4ème, 3ème)</p>
+        </div>
     </footer>
 
-    <!-- 100% privacy-first analytics -->
-    <script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
-
     <script>
-        // Création des particules animées
-        document.addEventListener('DOMContentLoaded', function() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 20;
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-
-                // Taille aléatoire
-                const size = Math.random() * 50 + 10;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-
-                // Position aléatoire
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.top = `${Math.random() * 100}%`;
-
-                // Délai d'animation aléatoire
-                particle.style.animationDelay = `${Math.random() * 15}s`;
-
-                particlesContainer.appendChild(particle);
-            }
-
-            // Animation au défilement
-            const sections = document.querySelectorAll('.section');
-            const cards = document.querySelectorAll('.card');
-            const header = document.getElementById('header');
-            let lastScrollTop = 0;
-
-            // Observer pour les sections
-            const sectionObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            sections.forEach(section => {
-                sectionObserver.observe(section);
-            });
-
-            // Observer pour les cartes avec délai
-            const cardObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, index * 100);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            cards.forEach(card => {
-                cardObserver.observe(card);
-            });
-
-            // Cacher/montrer le header au défilement
-            window.addEventListener('scroll', function() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-                if (scrollTop > lastScrollTop && scrollTop > 100) {
-                    header.classList.add('hidden');
-                } else {
-                    header.classList.remove('hidden');
+        // Smooth scroll pour la navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
-
-                lastScrollTop = scrollTop;
             });
         });
+
+        // // Fonction pour sauvegarder l'API key (stockage local pour démo)
+        // function saveApiKey() {
+        //     const apiKey = document.getElementById('api-key').value;
+        //     if (apiKey.trim()) {
+        //         localStorage.setItem('anthropic_api_key', apiKey);
+        //         alert('✅ Clé API sauvegardée !');
+        //     } else {
+        //         alert('⚠️ Veuillez entrer une clé API valide');
+        //     }
+        // }
+
+        // // Charger l'API key au chargement de la page
+        // window.addEventListener('load', function() {
+        //     const savedKey = localStorage.getItem('anthropic_api_key');
+        //     if (savedKey) {
+        //         document.getElementById('api-key').value = savedKey;
+        //     }
+        // });
+
+        // // Fonction pour envoyer le prompt (à implémenter avec l'API réelle)
+        // async function sendPrompt() {
+        //     const prompt = document.getElementById('prompt-input').value;
+        //     const apiKey = document.getElementById('api-key').value;
+        //     const responseDiv = document.getElementById('response');
+        //     const responseContent = document.getElementById('response-content');
+
+        //     if (!apiKey.trim()) {
+        //         alert('⚠️ Veuillez d\'abord entrer votre clé API Anthropic');
+        //         return;
+        //     }
+
+        //     if (!prompt.trim()) {
+        //         alert('⚠️ Veuillez entrer une question');
+        //         return;
+        //     }
+
+        //     // Afficher le loader
+        //     responseDiv.style.display = 'block';
+        //     responseContent.innerHTML = '<div class="loader">⏳ Réflexion en cours...</div>';
+
+        //     try {
+        //         // Appel à l'API Claude (exemple simplifié)
+        //         const response = await fetch('https://api.anthropic.com/v1/messages', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'x-api-key': apiKey,
+        //                 'anthropic-version': '2023-06-01'
+        //             },
+        //             body: JSON.stringify({
+        //                 model: 'claude-sonnet-4-20250514',
+        //                 max_tokens: 1024,
+        //                 messages: [{
+        //                     role: 'user',
+        //                     content: `Tu es un assistant pédagogique pour des collégiens en cours de technologie. Réponds de manière claire et adaptée à leur niveau. Question : ${prompt}`
+        //                 }]
+        //             })
+        //         });
+
+        //         if (!response.ok) {
+        //             throw new Error('Erreur API');
+        //         }
+
+        //         const data = await response.json();
+        //         responseContent.innerHTML = `<p>${data.content[0].text}</p>`;
+        //     } catch (error) {
+        //         responseContent.innerHTML = '<p style="color: #e74c3c;">❌ Erreur : Vérifiez votre clé API ou votre connexion internet.</p>';
+        //     }
+        // }
+
+        // Animation des particules
+        function createPaperParticles() {
+            const container = document.querySelector('.paper-particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        createPaperParticles();
+
+        let currentSlide = 0;
+        const track = document.getElementById('carousel-track');
+        const dots = document.querySelectorAll('.dot');
+
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % 3;
+            updateCarousel();
+        }
+
+        function previousSlide() {
+            currentSlide = (currentSlide - 1 + 3) % 3;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+
+        // Auto-play
+        setInterval(nextSlide, 5000);
     </script>
 </body>
 </html>
