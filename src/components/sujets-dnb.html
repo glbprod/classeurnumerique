@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sujets DNB Technologie - TechnoLab</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Styles spécifiques pour la page des sujets */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .subject-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 35px;
+            box-shadow: 0 8px 30px var(--shadow);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(74, 144, 226, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 50px var(--shadow-hover);
+        }
+
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .subject-year {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subject-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+        }
+
+        .subject-session {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .subject-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .meta-tag {
+            background: rgba(74, 144, 226, 0.1);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .subject-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-subject {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-subject:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--shadow-hover);
+        }
+
+        .btn-subject-secondary {
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+        }
+
+        .btn-subject-secondary:hover {
+            background: rgba(74, 144, 226, 0.2);
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+            font-size: 1.2rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(74, 144, 226, 0.2);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-state {
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid #e74c3c;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            color: #e74c3c;
+            margin: 40px 0;
+        }
+
+        .filter-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 30px;
+            box-shadow: 0 4px 20px var(--shadow);
+            margin-bottom: 40px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .filter-select {
+            padding: 10px 20px;
+            border: 2px solid rgba(74, 144, 226, 0.2);
+            border-radius: 20px;
+            font-size: 0.95rem;
+            background: white;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .stats-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-radius: 30px;
+            box-shadow: 0 4px 20px var(--shadow);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particules de papier en arrière-plan -->
+    <div class="paper-particles"></div>
+
+    <!-- Header avec navigation -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon">🚀</span>
+                <h1>TechnoLab</h1>
+                <span class="beta-badge">BÊTA</span>
+            </div>
+            <nav>
+                <a href="TechnoLab.html" class="nav-link">🏠 Accueil</a>
+                <a href="Presentation-TechnoLab.html" class="nav-link">Présentation</a>
+                <a href="sujets-dnb.html" class="nav-link" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white;">📝 Sujets DNB</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-header">
+                <h2>📝 Sujets DNB Technologie</h2>
+                <p class="hero-subtitle">Tous les sujets du Brevet des Collèges en Technologie</p>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="stats-bar" id="statsBar" style="display: none;">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalSubjects">0</div>
+                    <div class="stat-label">Sujets disponibles</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="yearRange">-</div>
+                    <div class="stat-label">Années couvertes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalSessions">0</div>
+                    <div class="stat-label">Sessions</div>
+                </div>
+            </div>
+
+            <!-- Filtres -->
+            <div class="filter-section" id="filterSection" style="display: none;">
+                <span class="filter-label">🔍 Filtrer par :</span>
+                <select class="filter-select" id="yearFilter">
+                    <option value="all">Toutes les années</option>
+                </select>
+                <select class="filter-select" id="sessionFilter">
+                    <option value="all">Toutes les sessions</option>
+                    <option value="Métropole">Métropole</option>
+                    <option value="Amérique du Nord">Amérique du Nord</option>
+                    <option value="Asie-Pacifique">Asie-Pacifique</option>
+                    <option value="Centres étrangers">Centres étrangers</option>
+                    <option value="Polynésie">Polynésie</option>
+                </select>
+                <select class="filter-select" id="sortFilter">
+                    <option value="year-desc">Plus récent d'abord</option>
+                    <option value="year-asc">Plus ancien d'abord</option>
+                </select>
+            </div>
+
+            <!-- État de chargement -->
+            <div class="loading-state" id="loadingState">
+                <div class="loading-spinner"></div>
+                <p>Chargement des sujets...</p>
+            </div>
+
+            <!-- État d'erreur -->
+            <div class="error-state" id="errorState" style="display: none;">
+                <h3>❌ Erreur de chargement</h3>
+                <p id="errorMessage">Impossible de charger les sujets</p>
+            </div>
+
+            <!-- Grille des sujets -->
+            <div class="subjects-grid" id="subjectsGrid"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>🚀 TechnoLab - Plateforme d'apprentissage en Technologie | Version Bêta</p>
+            <p>Collège Moulin à Vent - Cycle 4 (5ème, 4ème, 3ème)</p>
+        </div>
+    </footer>
+
+    <script>
+        // Configuration - À adapter selon votre structure GitHub
+        const GITHUB_CONFIG = {
+            owner: 'votre-username',  // Remplacer par votre username GitHub
+            repo: 'votre-repo',       // Remplacer par le nom de votre repo
+            branch: 'main',           // ou 'master' selon votre branche
+            folder: 'sujets-dnb'      // Dossier contenant les sujets
+        };
+
+        // Variables globales
+        let allSubjects = [];
+        let filteredSubjects = [];
+
+        // Fonction pour créer les particules
+        function createPaperParticles() {
+            const container = document.querySelector('.paper-particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Fonction pour extraire les informations depuis le nom du fichier
+        function parseFileName(filename) {
+            // Format attendu: "DNB_2024_Metropole_Sujet.pdf" ou similaire
+            const parts = filename.replace('.pdf', '').split('_');
+            
+            return {
+                year: parts[1] || 'Année inconnue',
+                session: parts[2] || 'Session inconnue',
+                type: parts[3] || 'Sujet',
+                filename: filename
+            };
+        }
+
+        // Fonction pour charger les sujets depuis GitHub
+        async function loadSubjects() {
+            const loadingState = document.getElementById('loadingState');
+            const errorState = document.getElementById('errorState');
+            const subjectsGrid = document.getElementById('subjectsGrid');
+
+            try {
+                // URL de l'API GitHub pour lister les fichiers
+                const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.folder}?ref=${GITHUB_CONFIG.branch}`;
+                
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+
+                const files = await response.json();
+                
+                // Filtrer uniquement les fichiers PDF
+                const pdfFiles = files.filter(file => 
+                    file.name.toLowerCase().endsWith('.pdf') && file.type === 'file'
+                );
+
+                if (pdfFiles.length === 0) {
+                    throw new Error('Aucun sujet trouvé dans le dossier');
+                }
+
+                // Parser les informations des fichiers
+                allSubjects = pdfFiles.map(file => ({
+                    ...parseFileName(file.name),
+                    downloadUrl: file.download_url,
+                    htmlUrl: file.html_url,
+                    size: file.size
+                }));
+
+                // Trier par année décroissante par défaut
+                allSubjects.sort((a, b) => b.year - a.year);
+                filteredSubjects = [...allSubjects];
+
+                // Masquer le loading, afficher les sujets
+                loadingState.style.display = 'none';
+                document.getElementById('statsBar').style.display = 'flex';
+                document.getElementById('filterSection').style.display = 'flex';
+
+                // Mettre à jour les statistiques
+                updateStats();
+
+                // Remplir les filtres
+                populateFilters();
+
+                // Afficher les sujets
+                displaySubjects();
+
+            } catch (error) {
+                console.error('Erreur:', error);
+                loadingState.style.display = 'none';
+                errorState.style.display = 'block';
+                document.getElementById('errorMessage').textContent = error.message;
+            }
+        }
+
+        // Fonction pour mettre à jour les statistiques
+        function updateStats() {
+            const years = [...new Set(allSubjects.map(s => s.year))].sort();
+            const sessions = new Set(allSubjects.map(s => s.session));
+
+            document.getElementById('totalSubjects').textContent = allSubjects.length;
+            document.getElementById('yearRange').textContent = years.length > 0 
+                ? `${years[0]} - ${years[years.length - 1]}` 
+                : '-';
+            document.getElementById('totalSessions').textContent = sessions.size;
+        }
+
+        // Fonction pour remplir les filtres d'années
+        function populateFilters() {
+            const yearFilter = document.getElementById('yearFilter');
+            const years = [...new Set(allSubjects.map(s => s.year))].sort().reverse();
+
+            years.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearFilter.appendChild(option);
+            });
+        }
+
+        // Fonction pour afficher les sujets
+        function displaySubjects() {
+            const grid = document.getElementById('subjectsGrid');
+            grid.innerHTML = '';
+
+            if (filteredSubjects.length === 0) {
+                grid.innerHTML = '<div class="error-state" style="grid-column: 1/-1;">Aucun sujet ne correspond aux critères de recherche</div>';
+                return;
+            }
+
+            filteredSubjects.forEach(subject => {
+                const card = document.createElement('div');
+                card.className = 'subject-card';
+                
+                card.innerHTML = `
+                    <div class="subject-header">
+                        <div class="subject-year">${subject.year}</div>
+                        <span class="subject-badge">DNB</span>
+                    </div>
+                    <div class="subject-session">${subject.session}</div>
+                    <div class="subject-meta">
+                        <span class="meta-tag">📄 ${subject.type}</span>
+                        <span class="meta-tag">📦 ${formatFileSize(subject.size)}</span>
+                    </div>
+                    <div class="subject-actions">
+                        <a href="${subject.downloadUrl}" target="_blank" class="btn-subject" download>
+                            ⬇️ Télécharger
+                        </a>
+                        <a href="${subject.htmlUrl}" target="_blank" class="btn-subject btn-subject-secondary">
+                            👁️ Voir
+                        </a>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Fonction pour formater la taille des fichiers
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        // Fonction de filtrage
+        function applyFilters() {
+            const yearFilter = document.getElementById('yearFilter').value;
+            const sessionFilter = document.getElementById('sessionFilter').value;
+            const sortFilter = document.getElementById('sortFilter').value;
+
+            filteredSubjects = allSubjects.filter(subject => {
+                const yearMatch = yearFilter === 'all' || subject.year === yearFilter;
+                const sessionMatch = sessionFilter === 'all' || subject.session === sessionFilter;
+                return yearMatch && sessionMatch;
+            });
+
+            // Tri
+            if (sortFilter === 'year-desc') {
+                filteredSubjects.sort((a, b) => b.year - a.year);
+            } else if (sortFilter === 'year-asc') {
+                filteredSubjects.sort((a, b) => a.year - b.year);
+            }
+
+            displaySubjects();
+        }
+
+        // Écouteurs d'événements pour les filtres
+        document.getElementById('yearFilter').addEventListener('change', applyFilters);
+        document.getElementById('sessionFilter').addEventListener('change', applyFilters);
+        document.getElementById('sortFilter').addEventListener('change', applyFilters);
+
+        // Initialisation
+        createPaperParticles();
+        loadSubjects();
+    </script>
+</body>
+</html>
