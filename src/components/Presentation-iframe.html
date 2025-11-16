@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechnoLab - La Techno 2.0 !</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Poppins:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .circuit-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, #00d4ff, #b39cd0, #fbbf24);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #a0a0a0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #4cc9f0;
+            margin-bottom: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            border-bottom: 2px solid #4cc9f0;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #4cc9f0;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.75rem;
+            top: 0;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #4cc9f0;
+            border: 3px solid #1a1a2e;
+        }
+
+        .year {
+            font-family: 'Fira Code', monospace;
+            color: #fbbf24;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .old-title {
+            color: #fbbf24;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .new-title {
+            color: #4ade80;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .tech-tag {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid #4ade80;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #4cc9f0, #4361ee);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #4cc9f0;
+            color: #4cc9f0;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(76, 201, 240, 0.1);
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(76, 201, 240, 0.4);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(76, 201, 240, 0.8);
+                transform: scale(1.02);
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 3rem;
+        }
+
+        .teacher-note {
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid #fbbf24;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 5px;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="circuit-bg"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="main-title">TechnoLab</h1>
+            <p class="subtitle">
+                Découvrez comment la technologie au collège a évolué avec le numérique !
+                De vos cahiers à notre nouvelle application...
+            </p>
+        </header>
+
+        <!-- Introduction -->
+        <section class="section">
+            <h2 class="section-title">📚 La Techno, ça a changé !</h2>
+            <p>
+                Bonjour à tous ! Vous connaissez bien notre <strong>Classeur Numérique de Technologie</strong> sur Moodle.
+                Aujourd'hui, je veux vous montrer comment les outils numériques transforment notre façon d'apprendre
+                et d'enseigner la technologie. Regardez cette évolution :
+            </p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="year">2010-2015</div>
+                    <p>Cahiers papier, quelques vidéos projetées, peu d'interactivité</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2016-2020</div>
+                    <p>Premiers exercices en ligne, Moodle, début de la classe inversée</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2021-2023</div>
+                    <p>Classeur Numérique sur Moodle, plus de ressources interactives</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2024 →</div>
+                    <p><strong>TechnoLab</strong> : une application spécialement conçue pour vous !</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison -->
+        <section class="section">
+            <h2 class="section-title">⚖️ Avant/Après</h2>
+
+            <div class="comparison">
+                <div class="comparison-card">
+                    <h3 class="old-title">AVANT (Classeur classique)</h3>
+                    <ul>
+                        <li>📄 Fiches PDF à télécharger</li>
+                        <li>📎 Ressources séparées</li>
+                        <li>🔍 Recherche manuelle</li>
+                        <li>📊 Peu de visualisation des progrès</li>
+                        <li>💬 Pas d'interaction en temps réel</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card">
+                    <h3 class="new-title">APRÈS (TechnoLab)</h3>
+                    <ul>
+                        <li>📱 <strong>Tout en un seul endroit</strong></li>
+                        <li>🔍 <strong>Recherche intelligente</strong> par compétence</li>
+                        <li>🎯 <strong>Suivi visuel</strong> de vos progrès</li>
+                        <li>🤖 <strong>Assistant intelligent</strong> pour vous aider</li>
+                        <li>💬 <strong>Retours immédiats</strong> sur vos travaux</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="teacher-note">
+                <p>💡 <strong>Le saviez-vous ?</strong> TechnoLab utilise les mêmes 9 compétences du cycle 4 que vous connaissez,
+                mais avec des outils modernes pour mieux les visualiser et les travailler !</p>
+            </div>
+        </section>
+
+        <!-- Les 9 compétences -->
+        <section class="section">
+            <h2 class="section-title">🎯 Les 9 Compétences du Cycle 4</h2>
+            <p>En technologie, vous développez ces 9 compétences tout au long du collège. TechnoLab vous aide à les suivre :</p>
+
+            <div class="tech-stack">
+                <span class="tech-tag">1. Imaginer des solutions</span>
+                <span class="tech-tag">2. Modéliser en 3D</span>
+                <span class="tech-tag">3. Utiliser le numérique</span>
+                <span class="tech-tag">4. Analyser des systèmes</span>
+                <span class="tech-tag">5. Comprendre les flux d'info</span>
+                <span class="tech-tag">6. Programmer</span>
+                <span class="tech-tag">7. Étudier les évolutions</span>
+                <span class="tech-tag">8. Présenter un projet</span>
+                <span class="tech-tag">9. Tester des programmes</span>
+            </div>
+
+            <p style="margin-top: 1.5rem;">
+                Avec TechnoLab, vous pourrez voir <strong>votre progression</strong> sur chacune de ces compétences
+                grâce à des graphiques et des indicateurs visuels !
+            </p>
+        </section>
+
+        <!-- TechnoLab Features -->
+        <section class="section">
+            <h2 class="section-title">🚀 Les Super-Pouvoirs de TechnoLab</h2>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">📱</span>
+                    <h3>Design Moderne</h3>
+                    <p>Une interface claire et colorée, spécialement pensée pour vous, collégiens !</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🎨</span>
+                    <h3>Visuels Attractifs</h3>
+                    <p>Des graphiques et des icônes pour mieux comprendre les concepts techniques.</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🔍</span>
+                    <h3>Recherche Puissante</h3>
+                    <p>Trouvez une activité par mot-clé, niveau ou compétence en quelques clics !</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <h3>Tableau de Bord</h3>
+                    <p>Voyez d'un coup d'œil vos progrès et les compétences à travailler.</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <h3>Assistant Intelligent</h3>
+                    <p>Un chatbot pour répondre à vos questions sur les cours (en développement).</p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">💾</span>
+                    <h3>Tout Toujours Dispo</h3>
+                    <p>Plus besoin de chercher vos fiches, tout est sauvegardé et organisé.</p>
+                </div>
+            </div>
+
+            <div class="teacher-note">
+                <p>🔧 <strong>Pour les curieux :</strong> TechnoLab est développé avec React, une technologie utilisée
+                par des sites comme Facebook, Instagram ou Netflix ! Qui sait, peut-être qu'un jour vous
+                développerez vous aussi des applications comme celle-ci...</p>
+            </div>
+        </section>
+
+        <!-- Pourquoi ce changement -->
+        <section class="section">
+            <h2 class="section-title">🤔 Pourquoi ces changements ?</h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                <div>
+                    <h3 style="color: #4ade80; margin-bottom: 1rem;">Pour VOUS :</h3>
+                    <ul>
+                        <li>✅ <strong>Plus intuitif</strong> : moins de temps à chercher, plus de temps pour créer</li>
+                        <li>✅ <strong>Plus visuel</strong> : des graphiques pour mieux comprendre</li>
+                        <li>✅ <strong>Plus interactif</strong> : des retours immédiats sur votre travail</li>
+                        <li>✅ <strong>Plus motivant</strong> : voyez vos progrès en temps réel</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 style="color: #4cc9f0; margin-bottom: 1rem;">Pour MOI :</h3>
+                    <ul>
+                        <li>📊 Un meilleur suivi de vos apprentissages</li>
+                        <li>🔄 Plus de temps pour vous aider individuellement</li>
+                        <li>💡 Des activités plus adaptées à vos besoins</li>
+                        <li>🌍 Une préparation aux outils du futur</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p style="margin-top: 2rem; font-style: italic;">
+                "La technologie ne remplace pas les savoirs fondamentaux,
+                elle les rend plus accessibles et plus concrets !"
+            </p>
+        </section>
+
+        <!-- <!-- CTA
+        <section class="section" style="text-align: center;">
+            <h2 class="section-title" style="text-align: center;">👀 À vous de jouer !</h2>
+
+            <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                TechnoLab est encore en développement, mais vous serez parmi les premiers à l'utiliser !
+                En attendant, vous pouvez :
+            </p>
+
+            <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem;">
+                <a href="#" class="btn">📖 Voir le Classeur Actuel</a>
+                <a href="#" class="btn btn-secondary">🔮 Découvrir les Maquettes</a>
+                <a href="#" class="btn btn-secondary">💬 Donner votre avis</a>
+            </div>
+
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                <h3 style="color: #fbbf24; margin-bottom: 1.5rem; font-family: 'Fira Code', monospace;">
+                    📅 Prochaines étapes :
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: left;">
+                    <div>
+                        <strong>Décembre 2024 :</strong><br>
+                        Version bêta testée par vous !
+                    </div>
+                    <div>
+                        <strong>Janvier 2025 :</strong><br>
+                        Intégration des premières activités
+                    </div>
+                    <div>
+                        <strong>Juin 2025 :</strong><br>
+                        Tableau de bord complet des compétences
+                    </div>
+                </div>
+            </div>
+        </section> -->
+
+        <section class="section">
+        <h2 class="section-title">🔍 C'est quoi une "version bêta" ?</h2>
+    
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 2rem; margin: 2rem 0;">
+            <!-- Étape Alpha -->
+            <div style="text-align: center; max-width: 200px;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🍳</div>
+                <h3 style="color: #fbbf24; margin-bottom: 0.5rem;">Alpha</h3>
+                <p style="font-size: 0.9rem;">Idées de base, maquettes, code qui marche à moitié. <strong>Pas encore testable.</strong></p>
+            </div>
+    
+            <!-- Étape Bêta (surlignée) -->
+            <div style="text-align: center; max-width: 200px; background: rgba(74, 222, 128, 0.1); padding: 1rem; border-radius: 10px; border: 1px solid #4ade80;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🍰</div>
+                <h3 style="color: #4ade80; margin-bottom: 0.5rem;">Bêta</h3>
+                <p style="font-size: 0.9rem;"><strong>Version testable</strong> mais pas parfaite. <strong>Vos retours sont essentiels !</strong></p>
+                <div style="margin-top: 1rem;">
+                    <div style="background: #4ade80; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; display: inline-block;">NOUS SOMMES ICI</div>
+                </div>
+            </div>
+    
+            <!-- Étape Finale -->
+            <div style="text-align: center; max-width: 200px;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🎂</div>
+                <h3 style="color: #4cc9f0; margin-bottom: 0.5rem;">Finale</h3>
+                <p style="font-size: 0.9rem;">Version polie, testée, et prête pour tous ! <strong>Objectif : juin 2025.</strong></p>
+            </div>
+        </div>
+    
+        <div style="background: rgba(251, 191, 36, 0.1); border-left: 4px solid #fbbf24; padding: 1rem; border-radius: 5px; margin-top: 2rem;">
+            <h3 style="color: #fbbf24; margin-bottom: 1rem;">💡 Pourquoi "bêta" ?</h3>
+            <ul>
+                <li>✅ <strong>Corriger les bugs</strong> (ex : un bouton qui ne marche pas).</li>
+                <li>✅ <strong>Améliorer l’ergonomie</strong> (ex : rendre un menu plus clair).</li>
+                <li>✅ <strong>Ajouter des fonctionnalités</strong> selon vos besoins.</li>
+                <li>✅ <strong>Vous impliquer</strong> dans la création de l’outil !</li>
+            </ul>
+        </div>
+    
+        <!-- <div style="text-align: center; margin-top: 2rem;">
+            <p style="font-size: 1.1rem; margin-bottom: 1rem;"><strong>Vous serez mes "bêta-testeurs" officiels !</strong></p>
+            <a href="#" class="btn">📝 Je veux donner mon avis</a>
+        </div> -->
+    </section>
+
+    </div>
+
+    <script>
+        // Petit effet pour le titre
+        document.querySelector('.main-title').style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            document.querySelector('.main-title').style.transform = 'scale(1)';
+            document.querySelector('.main-title').style.transition = 'transform 0.5s ease';
+        }, 200);
+
+        // Animation des cartes
+        document.querySelectorAll('.feature-card').forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100 * index);
+        });
+
+        console.log('%c👨‍🏫 Un message pour les codeurs :', 'font-size: 16px; color: #4ade80;');
+        console.log('%cCette page a été créée avec HTML/CSS. \nTechnoLab utilisera React + Vite + TailwindCSS dans sa version finale !', 'color: #4cc9f0;');
+        console.log('%cEnvie d\'en savoir plus sur le développement web ? \nParlez-moi après le cours ! 😊', 'color: #fbbf24;');
+    </script>
+</body>
+</html>
