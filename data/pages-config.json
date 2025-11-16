@@ -287,6 +287,15 @@
       "addedDate": "2025-11-16T17:27:42.545Z",
       "lastModified": "2025-11-16T17:27:42.547Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763320017238",
+      "title": "Presentation TechnoLab",
+      "githubPath": "src/components/Presentation-TechnoLab.html",
+      "description": "",
+      "addedDate": "2025-11-16T19:06:57.238Z",
+      "lastModified": "2025-11-16T19:06:57.240Z",
+      "favorite": false
     }
   ]
 }
