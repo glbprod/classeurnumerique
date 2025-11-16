@@ -351,6 +351,11 @@
         const db = firebase.firestore();
         
         let allResponses = [];
+
+        // Charger les réponses au démarrage
+        window.addEventListener('load', () => {
+            loadResponses();
+        });
         
         // Structures de données pour les quiz
         const quizStructures = {
