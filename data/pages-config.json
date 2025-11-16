@@ -305,6 +305,15 @@
       "addedDate": "2025-11-16T19:19:03.194Z",
       "lastModified": "2025-11-16T19:19:03.211Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763329077568",
+      "title": "sujet trottinette",
+      "githubPath": "src/components/sujets-dnb/sujet-trottinette.html",
+      "description": "",
+      "addedDate": "2025-11-16T21:37:57.568Z",
+      "lastModified": "2025-11-16T21:37:57.570Z",
+      "favorite": false
     }
   ]
 }
