@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test des liens - TechnoLab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        .test-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+
+        .test-section h2 {
+            color: #34495e;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .link-test {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .link-test:hover {
+            border-color: #3498db;
+            transform: translateX(5px);
+        }
+
+        .link-test a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .link-test a:hover {
+            text-decoration: underline;
+        }
+
+        .status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-ok {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .instructions {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px dashed #3498db;
+            margin-bottom: 30px;
+        }
+
+        .instructions h3 {
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .btn-test-all {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-test-all:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .file-path {
+            font-family: 'Courier New', monospace;
+            background: #ecf0f1;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Test des liens - TechnoLab</h1>
+        <p class="subtitle">Vérifiez que tous vos liens fonctionnent correctement</p>
+
+        <div class="instructions">
+            <h3>📋 Instructions</h3>
+            <ol>
+                <li>Placez tous vos fichiers HTML dans le <strong>même dossier</strong></li>
+                <li>Cliquez sur chaque lien ci-dessous pour le tester</li>
+                <li>Si un lien ne fonctionne pas (erreur 404), vérifiez le nom du fichier</li>
+                <li>Utilisez le bouton "Tester tous les liens" pour une vérification automatique</li>
+            </ol>
+        </div>
+
+        <!-- Section 1 : Pages principales -->
+        <div class="test-section">
+            <h2>📄 Pages principales</h2>
+            
+            <div class="link-test">
+                <div>
+                    <a href="TechnoLab.html" target="_blank">🚀 Page d'accueil (TechnoLab.html)</a>
+                    <div style="font-size: 0.85rem; color: #7f8c8d; margin-top: 4px;">
+                        Page principale avec carrousel d'activités
+                    </div>
+                </div>
+                <span class="status status-pending" id="status-1">À tester</span>
+            </div>
+
+            <div class="link-test">
+                <div>
+                    <a href="Presentation-TechnoLab.html" target="_blank">📖 Présentation (Presentation-TechnoLab.html)</a>
+                    <div style="font-size: 0.85rem; color: #7f8c8d; margin-top: 4px;">
+                        Présentation du projet TechnoLab
+                    </div>
+                </div>
+                <span class="status status-pending" id="status-2">À tester</span>
+            </div>
+
+            <div class="link-test">
+                <div>
+                    <a href="style.css" target="_blank">🎨 Fichier CSS (style.css)</a>
+                    <div style="font-size: 0.85rem; color: #7f8c8d; margin-top: 4px;">
+                        Feuille de styles globale
+                    </div>
+                </div>
+                <span class="status status-pending" id="status-3">À tester</span>
+            </div>
+        </div>
+
+        <!-- Section 2 : Sujets DNB -->
+        <div class="test-section">
+            <h2>📝 Sujets DNB</h2>
+            
+            <div class="link-test">
+                <div>
+                    <a href="sujet-vigie-technolab.html" target="_blank">🔥 Vigie de Surveillance (sujet-vigie-technolab.html)</a>
+                    <div style="font-size: 0.85rem; color: #7f8c8d; margin-top: 4px;">
+                        Sujet DNB sur la surveillance des incendies
+                    </div>
+                </div>
+                <span class="status status-pending" id="status-4">À tester</span>
+            </div>
+
+            <div class="link-test">
+                <div>
+                    <span style="color: #7f8c8d;">🤖 Robotique (robotique.html)</span>
+                    <div style="font-size: 0.85rem; color: #7f8c8d; margin-top: 4px;">
+                        ⚠️ Fichier non créé - Lien en commentaire dans TechnoLab.html
+                    </div>
+                </div>
+                <span class="status status-error">Non créé</span>
+            </div>
+
+            <div class="link-test">
+                <div>
+                    <span style="color: #7f8c8d;">⚡ Énergie (energie.html)</span>
+                    <div style="font-size: 0.85rem; color: #7f8c8d; margin-top: 4px;">
+                        ⚠️ Fichier non créé - Lien désactivé
+                    </div>
+                </div>
+                <span class="status status-error">Non créé</span>
+            </div>
+        </div>
+
+        <!-- Section 3 : Outils -->
+        <div class="test-section">
+            <h2>🛠️ Outils et formulaires</h2>
+            
+            <div class="link-test">
+                <div>
+                    <a href="fiche-activite-type.html" target="_blank">📋 Fiche d'activité (fiche-activite-type.html)</a>
+                    <div style="font-size: 0.85rem; color: #7f8c8d; margin-top: 4px;">
+                        Formulaire de fiche d'activité avec Firebase
+                    </div>
+                </div>
+                <span class="status status-pending" id="status-5">À tester</span>
+            </div>
+        </div>
+
+        <!-- Section 4 : Structure recommandée -->
+        <div class="test-section">
+            <h2>📁 Structure de fichiers recommandée</h2>
+            <div style="background: white; padding: 15px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.9rem; margin-top: 10px;">
+                <div style="margin: 5px 0;">📁 <strong>TechnoLab/</strong></div>
+                <div style="margin: 5px 0; margin-left: 20px;">├─ 📄 TechnoLab.html</div>
+                <div style="margin: 5px 0; margin-left: 20px;">├─ 📄 Presentation-TechnoLab.html</div>
+                <div style="margin: 5px 0; margin-left: 20px;">├─ 📄 sujet-vigie-technolab.html</div>
+                <div style="margin: 5px 0; margin-left: 20px;">├─ 📄 fiche-activite-type.html</div>
+                <div style="margin: 5px 0; margin-left: 20px;">└─ 📄 style.css</div>
+            </div>
+        </div>
+
+        <!-- Section 5 : Vérifications -->
+        <div class="test-section">
+            <h2>✅ Checklist de vérification</h2>
+            <div style="line-height: 2;">
+                <label style="display: block; cursor: pointer;">
+                    <input type="checkbox" id="check1"> Tous les fichiers sont dans le même dossier
+                </label>
+                <label style="display: block; cursor: pointer;">
+                    <input type="checkbox" id="check2"> Les noms de fichiers correspondent exactement (majuscules/minuscules)
+                </label>
+                <label style="display: block; cursor: pointer;">
+                    <input type="checkbox" id="check3"> Le fichier style.css est présent
+                </label>
+                <label style="display: block; cursor: pointer;">
+                    <input type="checkbox" id="check4"> J'ai vidé le cache du navigateur (Ctrl+F5)
+                </label>
+                <label style="display: block; cursor: pointer;">
+                    <input type="checkbox" id="check5"> Tous les liens testés fonctionnent
+                </label>
+            </div>
+        </div>
+
+        <button class="btn-test-all" onclick="testAllLinks()">
+            🔍 Tester tous les liens automatiquement
+        </button>
+
+        <div id="auto-test-results" style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 10px; display: none;">
+            <h3 style="color: #2c3e50; margin-bottom: 15px;">Résultats du test automatique</h3>
+            <div id="test-output"></div>
+        </div>
+    </div>
+
+    <script>
+        // Test automatique des liens
+        async function testAllLinks() {
+            const links = [
+                { url: 'TechnoLab.html', id: 'status-1' },
+                { url: 'Presentation-TechnoLab.html', id: 'status-2' },
+                { url: 'style.css', id: 'status-3' },
+                { url: 'sujet-vigie-technolab.html', id: 'status-4' },
+                { url: 'fiche-activite-type.html', id: 'status-5' }
+            ];
+
+            document.getElementById('auto-test-results').style.display = 'block';
+            const output = document.getElementById('test-output');
+            output.innerHTML = '<p>🔄 Test en cours...</p>';
+
+            let results = [];
+
+            for (let link of links) {
+                try {
+                    const response = await fetch(link.url, { method: 'HEAD' });
+                    const statusElement = document.getElementById(link.id);
+                    
+                    if (response.ok) {
+                        statusElement.textContent = '✅ OK';
+                        statusElement.className = 'status status-ok';
+                        results.push(`✅ <strong>${link.url}</strong> - Fonctionne`);
+                    } else {
+                        statusElement.textContent = '❌ Erreur';
+                        statusElement.className = 'status status-error';
+                        results.push(`❌ <strong>${link.url}</strong> - Erreur ${response.status}`);
+                    }
+                } catch (error) {
+                    const statusElement = document.getElementById(link.id);
+                    statusElement.textContent = '❌ Introuvable';
+                    statusElement.className = 'status status-error';
+                    results.push(`❌ <strong>${link.url}</strong> - Fichier introuvable`);
+                }
+            }
+
+            output.innerHTML = results.join('<br>');
+        }
+
+        // Message de bienvenue
+        console.log('%c🚀 TechnoLab - Test des liens', 'font-size: 20px; color: #3498db; font-weight: bold;');
+        console.log('%cUtilisez cette page pour vérifier que tous vos liens fonctionnent correctement.', 'color: #7f8c8d;');
+    </script>
+</body>
+</html>
