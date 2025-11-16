@@ -314,6 +314,15 @@
       "addedDate": "2025-11-16T21:37:57.568Z",
       "lastModified": "2025-11-16T21:37:57.570Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763329292077",
+      "title": "sujet vigie",
+      "githubPath": "src/components/sujets-dnb/sujet-vigie.html",
+      "description": "",
+      "addedDate": "2025-11-16T21:41:32.077Z",
+      "lastModified": "2025-11-16T21:41:32.077Z",
+      "favorite": false
     }
   ]
 }
