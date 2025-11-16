@@ -224,6 +224,15 @@
       "addedDate": "2025-11-16T11:51:36.675Z",
       "lastModified": "2025-11-16T11:51:36.677Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763294208017",
+      "title": "Ressources Numériques",
+      "githubPath": "src/components/Ressources-Numériques.html",
+      "description": "",
+      "addedDate": "2025-11-16T11:56:48.017Z",
+      "lastModified": "2025-11-16T11:56:48.017Z",
+      "favorite": false
     }
   ]
 }
