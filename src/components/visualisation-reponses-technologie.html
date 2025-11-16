@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisation des réponses - Technologie 5ème</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .header h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            text-align: center;
+            color: #666;
+        }
+        
+        .controls {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .quiz-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .quiz-selector label {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .quiz-selector select {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #34a853 0%, #0f9d58 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+        }
+        
+        .stats {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card p {
+            opacity: 0.9;
+        }
+        
+        .search-box {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        
+        .responses-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+        }
+        
+        .response-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .response-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+        }
+        
+        .response-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .response-header h3 {
+            margin-bottom: 5px;
+        }
+        
+        .response-header p {
+            opacity: 0.9;
+            font-size: 0.9em;
+        }
+        
+        .question-block {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .question-block h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
+        
+        .answer {
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        
+        .answer.correct {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        
+        .answer.incorrect {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .loading h2 {
+            color: #667eea;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .no-data h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .responses-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .quiz-selector, .button-group {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Visualisation des réponses</h1>
+            <p>Technologie 5ème - Suivi des exercices</p>
+        </div>
+        
+        <div class="controls">
+            <div class="quiz-selector">
+                <label for="quizSelect">📝 Quiz :</label>
+                <select id="quizSelect">
+                    <option value="fonction_usage_estime">Fonction d'usage et d'estime</option>
+                    <option value="evolution_objets">Évolution des objets techniques</option>
+                </select>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="loadResponses()">🔄 Actualiser</button>
+                <button class="btn btn-success" onclick="exportToCSV()">📥 Télécharger CSV</button>
+                <button class="btn btn-secondary" onclick="clearSearch()">✖ Effacer filtre</button>
+            </div>
+        </div>
+        
+        <div class="stats" id="statsContainer" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="totalResponses">0</h3>
+                    <p>Réponses totales</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="lastUpdate">--:--</h3>
+                    <p>Dernière mise à jour</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Rechercher par nom, prénom ou classe...">
+        </div>
+        
+        <div id="loading" class="loading">
+            <h2>⏳ Chargement des données...</h2>
+        </div>
+        
+        <div id="responsesContainer" class="responses-container" style="display: none;"></div>
+        
+        <div id="noData" class="no-data" style="display: none;">
+            <h2>📭 Aucune réponse trouvée</h2>
+            <p>Les réponses des élèves s'afficheront ici automatiquement.</p>
+        </div>
+    </div>
+
+    <script>
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        let allResponses = [];
+        
+        // Structures de données pour les quiz
+        const quizStructures = {
+            fonction_usage_estime: {
+                collection: 'fonction_usage_estime',
+                title: 'Fonction d'usage et d'estime',
+                questions: {
+                    'q1_1': 'Exercice 1.1 - Un vélo',
+                    'q1_2': 'Exercice 1.2 - Un ordinateur',
+                    'q1_3': 'Exercice 1.3 - Un réfrigérateur',
+                    'q2_1': 'Exercice 2.1 - Montre rouge',
+                    'q2_2': 'Exercice 2.2 - Montre connaître l'heure',
+                    'q2_3': 'Exercice 2.3 - Sac tendance',
+                    'q2_4': 'Exercice 2.4 - Sac transporter affaires',
+                    'q2_5': 'Exercice 2.5 - Voiture design',
+                    'q2_6': 'Exercice 2.6 - Voiture transporter personnes',
+                    'q3_1': 'Exercice 3.1 - Objet choisi',
+                    'q3_2': 'Exercice 3.2 - Fonction d'usage',
+                    'q3_3': 'Exercice 3.3 - Fonction d'estime',
+                    'q3_4': 'Exercice 3.4 - Objet similaire'
+                }
+            },
+            evolution_objets: {
+                collection: 'evolution_objets',
+                title: 'Évolution des objets techniques',
+                questions: {
+                    'ex1_q1': 'Exercice 1.1 - Évolution poids téléphone',
+                    'ex1_q2': 'Exercice 1.2 - Ajout fonctions smartphone',
+                    'ex1_q3': 'Exercice 1.3 - Évolution matériaux',
+                    'ex2_q1': 'Exercice 2.1 - Bouteilles plastique recyclé',
+                    'ex2_q2': 'Exercice 2.2 - Fonctions connectées voitures',
+                    'ex2_q3': 'Exercice 2.3 - Sacs réutilisables'
+                }
+            }
+        };
+        
+        // Fonction de chargement des réponses
+        async function loadResponses() {
+            console.log('🔍 Début du chargement des réponses...');
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('responsesContainer').style.display = 'none';
+            document.getElementById('noData').style.display = 'none';
+            document.getElementById('statsContainer').style.display = 'none';
+
+            try {
+                const selectedQuiz = document.getElementById('quizSelect').value;
+                const quizConfig = quizStructures[selectedQuiz];
+                
+                console.log('📡 Connexion à Firestore, collection:', quizConfig.collection);
+                const snapshot = await db.collection(quizConfig.collection).orderBy('timestamp', 'desc').get();
+                
+                console.log('✅ Snapshot reçu, nombre de documents:', snapshot.size);
+                
+                allResponses = [];
+                snapshot.forEach(doc => {
+                    console.log('📄 Document trouvé:', doc.id, doc.data());
+                    allResponses.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+
+                console.log('📊 Total de réponses chargées:', allResponses.length);
+                displayResponses(allResponses);
+                updateStats();
+                
+            } catch (error) {
+                console.error('❌ Erreur complète:', error);
+                console.error('Code erreur:', error.code);
+                console.error('Message:', error.message);
+                alert('Erreur lors du chargement des données: ' + error.message);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('noData').style.display = 'block';
+            }
+        }
+        
+        // Fonction d'affichage des réponses
+        function displayResponses(responses) {
+            const container = document.getElementById('responsesContainer');
+            const selectedQuiz = document.getElementById('quizSelect').value;
+            const quizConfig = quizStructures[selectedQuiz];
+            
+            document.getElementById('loading').style.display = 'none';
+            
+            if (responses.length === 0) {
+                document.getElementById('noData').style.display = 'block';
+                container.style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('noData').style.display = 'none';
+            container.style.display = 'grid';
+            
+            container.innerHTML = responses.map(response => {
+                const timestamp = response.timestamp ? response.timestamp.toDate() : new Date();
+                const dateStr = timestamp.toLocaleString('fr-FR');
+                
+                let questionsHTML = '';
+                for (const [key, label] of Object.entries(quizConfig.questions)) {
+                    const answer = response[key] || 'Non renseigné';
+                    questionsHTML += `
+                        <div class="question-block">
+                            <h4>${label}</h4>
+                            <div class="answer">${answer}</div>
+                        </div>
+                    `;
+                }
+                
+                return `
+                    <div class="response-card">
+                        <div class="response-header">
+                            <h3>${response.nom_eleve || 'Anonyme'}</h3>
+                            <p>Classe: ${response.classe || 'Non renseignée'}</p>
+                            <p style="font-size: 0.85em;">📅 ${dateStr}</p>
+                        </div>
+                        ${questionsHTML}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Fonction de mise à jour des statistiques
+        function updateStats() {
+            document.getElementById('statsContainer').style.display = 'block';
+            document.getElementById('totalResponses').textContent = allResponses.length;
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('fr-FR');
+        }
+        
+        // Fonction de recherche
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            if (searchTerm === '') {
+                displayResponses(allResponses);
+                return;
+            }
+            
+            const filtered = allResponses.filter(response => {
+                const nom = (response.nom_eleve || '').toLowerCase();
+                const classe = (response.classe || '').toLowerCase();
+                return nom.includes(searchTerm) || classe.includes(searchTerm);
+            });
+            
+            displayResponses(filtered);
+        });
+        
+        // Fonction d'effacement de la recherche
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            displayResponses(allResponses);
+        }
+        
+        // Fonction d'export CSV
+        function exportToCSV() {
+            if (allResponses.length === 0) {
+                alert('Aucune donnée à exporter');
+                return;
+            }
+            
+            const selectedQuiz = document.getElementById('quizSelect').value;
+            const quizConfig = quizStructures[selectedQuiz];
+            
+            // En-têtes
+            const headers = ['Nom', 'Classe', 'Date'];
+            const questionKeys = Object.keys(quizConfig.questions);
+            headers.push(...questionKeys.map(key => quizConfig.questions[key]));
+            
+            // Lignes de données
+            const rows = allResponses.map(response => {
+                const timestamp = response.timestamp ? response.timestamp.toDate() : new Date();
+                const row = [
+                    response.nom_eleve || '',
+                    response.classe || '',
+                    timestamp.toLocaleString('fr-FR')
+                ];
+                
+                questionKeys.forEach(key => {
+                    row.push(response[key] || '');
+                });
+                
+                return row;
+            });
+            
+            // Création du CSV
+            let csv = headers.map(h => `"${h}"`).join(',') + '\n';
+            rows.forEach(row => {
+                csv += row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',') + '\n';
+            });
+            
+            // Téléchargement
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `reponses_${selectedQuiz}_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Changement de quiz
+        document.getElementById('quizSelect').addEventListener('change', loadResponses);
+        
+        // Chargement initial
+        loadResponses();
+    </script>
+</body>
+</html>
