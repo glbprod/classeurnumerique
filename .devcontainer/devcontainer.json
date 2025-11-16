@@ -1,0 +1,46 @@
+{
+  "name": "Environnement Web (HTML/CSS/JS)",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:18-bullseye", // Node.js 18 + outils web
+
+  // Extensions VS Code recommandées
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",       // Formattage automatique
+        "ritwickdey.liveserver",        // Serveur local pour HTML/CSS/JS
+        "ecmel.vscode-html-css",        // Autocomplétion CSS/HTML
+        "dbaeumer.vscode-eslint",       // Linting JS (optionnel)
+        "bradlc.vscode-tailwindcss"     // Si vous utilisez Tailwind (optionnel)
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "liveServer.settings.port": 5500, // Port par défaut pour Live Server
+        "files.autoSave": "afterDelay"
+      }
+    }
+  },
+
+  // Variables d'environnement (optionnel)
+  "containerEnv": {
+    "NODE_ENV": "development"
+  },
+
+  // Commandes après la création du conteneur
+  "postCreateCommand": "bash -c ' \
+    npm install -g live-server && \  # Installer Live Server globalement
+    echo \"✅ Environnement prêt ! Exécutez \\`live-server\\` pour lancer le serveur.\" \
+  '",
+
+  // Ports à exposer (pour Live Server)
+  "forwardPorts": [5500],
+
+  // Montage des dossiers (pour persister node_modules si besoin)
+  "mounts": [
+    "source=${localWorkspaceFolder}/node_modules,target=/workspace/node_modules,type=bind,consistency=cached"
+  ],
+
+  // Options avancées (optionnel)
+  "runArgs": ["--privileged"], // Utile si vous utilisez des outils comme Docker-in-Docker
+  "overrideCommand": false
+}
