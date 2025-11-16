@@ -323,6 +323,15 @@
       "addedDate": "2025-11-16T21:41:32.077Z",
       "lastModified": "2025-11-16T21:41:32.077Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763329382935",
+      "title": "accueil cnt",
+      "githubPath": "src/accueil-cnt.html",
+      "description": "",
+      "addedDate": "2025-11-16T21:43:02.935Z",
+      "lastModified": "2025-11-16T21:43:02.935Z",
+      "favorite": false
     }
   ]
 }
