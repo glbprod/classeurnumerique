@@ -341,6 +341,15 @@
       "addedDate": "2025-11-16T23:45:42.018Z",
       "lastModified": "2025-11-16T23:45:42.020Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763339491103",
+      "title": "correction activité énergie",
+      "githubPath": "src/Pages/Énergie/correction-activité-énergie.html",
+      "description": "",
+      "addedDate": "2025-11-17T00:31:31.103Z",
+      "lastModified": "2025-11-17T00:31:31.120Z",
+      "favorite": false
     }
   ]
 }
