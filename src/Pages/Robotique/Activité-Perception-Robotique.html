@@ -319,19 +319,6 @@
     </style>
 </head>
 <body>
-    <!-- Boutons de contrôle -->
-    <div class="controls-container">
-        <button type="button" id="saveBtn" class="btn-action btn-save">
-            💾 Enregistrer dans Firebase
-        </button>
-        <button type="button" id="exportJsonBtn" class="btn-action btn-json">
-            📦 Exporter JSON
-        </button>
-        <button type="button" id="resetBtn" class="btn-action btn-reset">
-            🔄 Réinitialiser
-        </button>
-    </div>
-
     <div class="container" id="ficheContent">
         <!-- En-tête -->
         <div class="header">
@@ -347,7 +334,7 @@
                     </div>
                     <div class="form-group">
                         <label>Classe <span class="required">*</span></label>
-                        <input type="text" id="classe" placeholder="Ex: 5èmeA" required>
+                        <input type="text" id="classe" placeholder="Ex: 304" required>
                     </div>
                     <div class="form-group">
                         <label>Date <span class="required">*</span></label>
@@ -546,6 +533,19 @@ Limites :
                 <textarea id="synthese_personnelle" placeholder="Les capteurs sont essentiels car..." required style="min-height: 120px;"></textarea>
                 <div class="help-text">Fais un lien entre perception, traitement de l'information et autonomie</div>
             </div>
+        </div>
+
+        <!-- Boutons de contrôle -->
+        <div class="controls-container">
+            <button type="button" id="saveBtn" class="btn-action btn-save">
+                💾 Enregistrer vos Réponses
+            </button>
+            <button type="button" id="exportJsonBtn" class="btn-action btn-json">
+                📦 Exporter
+            </button>
+            <button type="button" id="resetBtn" class="btn-action btn-reset">
+                🔄 Réinitialiser
+            </button>
         </div>
 
         <!-- Messages de feedback -->
