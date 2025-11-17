@@ -368,6 +368,15 @@
       "addedDate": "2025-11-17T06:49:34.188Z",
       "lastModified": "2025-11-17T06:49:34.191Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763362207578",
+      "title": "dashboard",
+      "githubPath": "src/components/correcteurs/dashboard.html",
+      "description": "",
+      "addedDate": "2025-11-17T06:50:07.578Z",
+      "lastModified": "2025-11-17T06:50:07.578Z",
+      "favorite": false
     }
   ]
 }
