@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche d'Activité - Perception Robotique - Collège Moulin à Vent</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .controls-container {
+            max-width: 900px;
+            margin: 0 auto 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-save {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background-color: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn-pdf {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-pdf:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-json {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-json:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-reset {
+            background-color: #95a5a6;
+            color: white;
+            flex: 0.3;
+        }
+
+        .btn-reset:hover {
+            background-color: #7f8c8d;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .header-left {
+            flex: 1;
+        }
+
+        .header-right {
+            text-align: center;
+        }
+
+        .college-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .logo-upload {
+            margin-top: 10px;
+        }
+
+        .logo-preview {
+            max-width: 150px;
+            max-height: 150px;
+            margin-top: 10px;
+            border: 2px dashed #3498db;
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .section {
+            background-color: #ecf0f1;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .content-box h3 {
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .content-box p, .content-box ul {
+            color: #34495e;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .content-box ul {
+            margin-left: 25px;
+        }
+
+        .content-box li {
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .help-text {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #28a745;
+            display: none;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #dc3545;
+            display: none;
+        }
+
+        .read-only-content {
+            background-color: #e8f4f8;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .sensor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .sensor-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .sensor-card h4 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .sensor-card p {
+            font-size: 13px;
+            color: #34495e;
+            line-height: 1.6;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .controls-container,
+            .btn-action,
+            .help-text {
+                display: none !important;
+            }
+            
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                padding: 20mm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Boutons de contrôle -->
+    <div class="controls-container">
+        <button type="button" id="saveBtn" class="btn-action btn-save">
+            💾 Enregistrer dans Firebase
+        </button>
+        <button type="button" id="exportJsonBtn" class="btn-action btn-json">
+            📦 Exporter JSON
+        </button>
+        <button type="button" id="resetBtn" class="btn-action btn-reset">
+            🔄 Réinitialiser
+        </button>
+    </div>
+
+    <div class="container" id="ficheContent">
+        <!-- En-tête -->
+        <div class="header">
+            <div class="header-left">
+                <div class="info-grid">
+                    <div class="form-group">
+                        <label>Prénom <span class="required">*</span></label>
+                        <input type="text" id="prenom" placeholder="Prénom" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nom <span class="required">*</span></label>
+                        <input type="text" id="nom" placeholder="Nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Classe <span class="required">*</span></label>
+                        <input type="text" id="classe" placeholder="Ex: 5èmeA" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date <span class="required">*</span></label>
+                        <input type="date" id="date" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="college-title">Collège Moulin à Vent</div>
+                <div style="font-size: 4rem; margin-top: 10px;">🏫</div>
+            </div>
+        </div>
+
+        <h1>Fiche d'Activité - Technologie</h1>
+
+        <!-- Objet Système Technique -->
+        <div class="read-only-content">
+            <label style="margin-bottom: 5px;">🔧 Objet Système Technique</label>
+            <p><strong>Robots et leurs capteurs</strong> (aspirateur autonome, drone, voiture autonome, robot mBot...)</p>
+        </div>
+
+        <!-- Problématique -->
+        <div class="read-only-content" style="background-color: #e8f4f8;">
+            <label style="margin-bottom: 5px;">❓ Problématique</label>
+            <p style="font-size: 18px; font-weight: 600; color: #2c3e50;">
+                Comment un robot perçoit-il son environnement ?
+            </p>
+        </div>
+
+        <!-- Activité 1 -->
+        <div class="section">
+            <div class="section-title">
+                📝 Activité 1 : Découverte des capteurs
+            </div>
+            
+            <div class="content-box">
+                <h3>Les 5 sens du robot</h3>
+                <p>Tout comme l'être humain possède 5 sens pour percevoir le monde qui l'entoure, le robot dispose de <strong>capteurs</strong> pour recueillir des informations sur son environnement.</p>
+                
+                <div class="sensor-grid">
+                    <div class="sensor-card">
+                        <h4>👁️ La vue - Capteur de lumière</h4>
+                        <p><strong>Détecte :</strong> La luminosité, les couleurs, les formes<br>
+                        <strong>Exemple :</strong> Caméra, capteur de ligne</p>
+                    </div>
+                    
+                    <div class="sensor-card">
+                        <h4>👂 L'ouïe - Capteur sonore</h4>
+                        <p><strong>Détecte :</strong> Les sons, le bruit<br>
+                        <strong>Exemple :</strong> Microphone, détecteur de son</p>
+                    </div>
+                    
+                    <div class="sensor-card">
+                        <h4>👃 L'odorat - Capteur de gaz</h4>
+                        <p><strong>Détecte :</strong> Les gaz, la qualité de l'air<br>
+                        <strong>Exemple :</strong> Détecteur de CO2, de fumée</p>
+                    </div>
+                    
+                    <div class="sensor-card">
+                        <h4>✋ Le toucher - Capteur tactile</h4>
+                        <p><strong>Détecte :</strong> Le contact, la pression<br>
+                        <strong>Exemple :</strong> Bouton-poussoir, capteur de choc</p>
+                    </div>
+                    
+                    <div class="sensor-card">
+                        <h4>📏 Distance - Capteur ultrason</h4>
+                        <p><strong>Détecte :</strong> La distance aux objets<br>
+                        <strong>Exemple :</strong> Capteur ultrason, infrarouge</p>
+                    </div>
+                    
+                    <div class="sensor-card">
+                        <h4>🧭 Orientation - Capteur de position</h4>
+                        <p><strong>Détecte :</strong> L'orientation, la position<br>
+                        <strong>Exemple :</strong> Gyroscope, accéléromètre, GPS</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Question 1 : Cite 3 capteurs que tu as déjà vus ou utilisés dans un robot ou un appareil du quotidien <span class="required">*</span></label>
+                <textarea id="question_capteurs_exemples" placeholder="Exemple : Le capteur de proximité de mon téléphone qui éteint l'écran quand je le mets à l'oreille..." required></textarea>
+                <div class="help-text">Pense aux objets que tu utilises tous les jours : smartphone, voiture, console de jeux...</div>
+            </div>
+
+            <div class="form-group">
+                <label>Question 2 : Quel sens humain n'a pas d'équivalent direct en robotique ? Pourquoi selon toi ? <span class="required">*</span></label>
+                <textarea id="question_sens_manquant" placeholder="Le sens ... n'a pas vraiment d'équivalent car..." required></textarea>
+                <div class="help-text">Réfléchis aux 5 sens : vue, ouïe, odorat, toucher, goût</div>
+            </div>
+        </div>
+
+        <!-- Activité 2 -->
+        <div class="section">
+            <div class="section-title">
+                🔍 Activité 2 : Comprendre le fonctionnement
+            </div>
+            
+            <div class="content-box">
+                <h3>Comment fonctionne un capteur ?</h3>
+                <p>Un capteur suit toujours le même principe :</p>
+                <ol style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>DÉTECTION</strong> : Le capteur capte un phénomène physique (lumière, son, distance...)</li>
+                    <li><strong>CONVERSION</strong> : Il transforme ce phénomène en signal électrique</li>
+                    <li><strong>TRANSMISSION</strong> : Le signal est envoyé au système de traitement (microcontrôleur)</li>
+                    <li><strong>TRAITEMENT</strong> : Le robot analyse l'information et prend une décision</li>
+                    <li><strong>ACTION</strong> : Le robot réagit en conséquence (s'arrêter, tourner, allumer une LED...)</li>
+                </ol>
+            </div>
+
+            <div class="content-box">
+                <h3>Exemple concret : L'aspirateur robot autonome</h3>
+                <p style="margin-bottom: 10px;"><strong>Situation :</strong> Un aspirateur robot nettoie une pièce</p>
+                <ul>
+                    <li><strong>Capteur ultrason</strong> → Détecte un mur à 10 cm</li>
+                    <li><strong>Capteur de vide</strong> → Détecte le bord d'un escalier</li>
+                    <li><strong>Capteur de contact</strong> → Détecte un choc avec un obstacle</li>
+                    <li><strong>Capteur de saleté</strong> → Détecte une zone très sale</li>
+                    <li><strong>Batterie faible</strong> → Retourne automatiquement à sa base</li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label>Question 3 : Explique avec tes mots comment un capteur ultrason permet à un robot d'éviter un obstacle <span class="required">*</span></label>
+                <textarea id="question_capteur_ultrason" placeholder="Le capteur ultrason envoie des ondes sonores qui..." required style="min-height: 100px;"></textarea>
+                <div class="help-text">Utilise les 5 étapes : Détection → Conversion → Transmission → Traitement → Action</div>
+            </div>
+
+            <div class="form-group">
+                <label>Question 4 : Un robot tondeuse utilise plusieurs capteurs. D'après toi, quels capteurs sont nécessaires et pourquoi ? <span class="required">*</span></label>
+                <textarea id="question_robot_tondeuse" placeholder="Un robot tondeuse a besoin de :
+1. ...
+2. ...
+3. ..." required style="min-height: 120px;"></textarea>
+                <div class="help-text">Pense à la sécurité, la navigation, et à éviter les obstacles</div>
+            </div>
+        </div>
+
+        <!-- Activité 3 -->
+        <div class="section">
+            <div class="section-title">
+                🧪 Activité 3 : Expérimentation
+            </div>
+            
+            <div class="content-box">
+                <h3>Mise en situation pratique</h3>
+                <p>Imagine que tu dois programmer un robot pour qu'il se déplace dans un labyrinthe sans toucher les murs.</p>
+                <p style="margin-top: 10px;"><strong>Matériel disponible :</strong></p>
+                <ul>
+                    <li>1 robot mobile avec moteurs</li>
+                    <li>2 capteurs ultrason (avant et avant-droit)</li>
+                    <li>1 capteur de contact</li>
+                    <li>1 carte programmable</li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label>Question 5 : Décris la stratégie que tu utiliserais pour que le robot évite les murs <span class="required">*</span></label>
+                <textarea id="question_strategie_labyrinthe" placeholder="Ma stratégie :
+1. Le robot avance tant que...
+2. Si le capteur détecte...
+3. Alors le robot..." required style="min-height: 120px;"></textarea>
+                <div class="help-text">Réfléchis en termes de "SI... ALORS..." (conditions et actions)</div>
+            </div>
+
+            <div class="form-group">
+                <label>Question 6 : Quels sont les avantages et les limites des capteurs pour un robot ? <span class="required">*</span></label>
+                <textarea id="question_avantages_limites" placeholder="Avantages :
+- ...
+
+Limites :
+- ..." required style="min-height: 120px;"></textarea>
+                <div class="help-text">Pense à la précision, la portée, les conditions d'utilisation...</div>
+            </div>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="section" style="border-left-color: #27ae60;">
+            <div class="section-title">
+                ✅ Conclusion : Ce qu'il faut retenir
+            </div>
+            
+            <div class="content-box" style="background-color: #d4edda; border-left: 5px solid #28a745;">
+                <h3>Les points essentiels</h3>
+                <ul>
+                    <li><strong>Un capteur</strong> est un composant qui détecte un phénomène physique et le transforme en signal électrique</li>
+                    <li><strong>Les capteurs sont les "sens" du robot</strong> : ils lui permettent de percevoir son environnement</li>
+                    <li><strong>Il existe de nombreux types de capteurs</strong> : distance, lumière, son, contact, température, position...</li>
+                    <li><strong>Un robot utilise plusieurs capteurs</strong> pour être autonome et s'adapter à différentes situations</li>
+                    <li><strong>La chaîne d'information</strong> : Capteur → Traitement → Action</li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label>Synthèse personnelle : Explique pourquoi les capteurs sont essentiels pour qu'un robot soit autonome <span class="required">*</span></label>
+                <textarea id="synthese_personnelle" placeholder="Les capteurs sont essentiels car..." required style="min-height: 120px;"></textarea>
+                <div class="help-text">Fais un lien entre perception, traitement de l'information et autonomie</div>
+            </div>
+        </div>
+
+        <!-- Messages de feedback -->
+        <div id="successMessage" class="success-message">
+            ✅ <strong>Succès !</strong> Ta fiche a été enregistrée avec succès dans la base de données.
+        </div>
+        <div id="errorMessage" class="error-message">
+            ❌ <strong>Erreur !</strong> <span id="errorText"></span>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; color: #7f8c8d; font-size: 12px;">
+            Collège Moulin à vent – Technologie au collège<br>
+            Compétences travaillées : Analyser des systèmes techniques • Comprendre les flux d'information
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION FIREBASE
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        console.log('✅ Firebase initialisé');
+
+        // Définir la date par défaut
+        document.getElementById('date').valueAsDate = new Date();
+
+        // ============================================
+        // SAUVEGARDE DANS FIREBASE
+        // ============================================
+        document.getElementById('saveBtn').addEventListener('click', async function() {
+            // Validation des champs requis
+            const requiredFields = ['prenom', 'nom', 'classe', 'date', 
+                                   'question_capteurs_exemples', 'question_sens_manquant',
+                                   'question_capteur_ultrason', 'question_robot_tondeuse',
+                                   'question_strategie_labyrinthe', 'question_avantages_limites',
+                                   'synthese_personnelle'];
+            
+            for (let field of requiredFields) {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    alert('⚠️ Veuillez remplir tous les champs obligatoires (*)');
+                    element.focus();
+                    return;
+                }
+            }
+
+            // Désactiver le bouton pendant le traitement
+            const btn = this;
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = '⏳ Enregistrement en cours...';
+
+            try {
+                // Générer un timestamp unique
+                const timestamp = Date.now();
+                const dateStr = new Date().toISOString();
+
+                // Préparer les données
+                const ficheData = {
+                    // Informations élève
+                    prenom: document.getElementById('prenom').value.trim(),
+                    nom: document.getElementById('nom').value.trim(),
+                    classe: document.getElementById('classe').value.trim(),
+                    date: document.getElementById('date').value,
+                    
+                    // Type de fiche
+                    typeFiche: 'perception-robotique',
+                    problematique: 'Comment un robot perçoit-il son environnement ?',
+                    
+                    // Réponses de l'élève
+                    questionCapteursExemples: document.getElementById('question_capteurs_exemples').value.trim(),
+                    questionSensManquant: document.getElementById('question_sens_manquant').value.trim(),
+                    questionCapteurUltrason: document.getElementById('question_capteur_ultrason').value.trim(),
+                    questionRobotTondeuse: document.getElementById('question_robot_tondeuse').value.trim(),
+                    questionStrategieLabyrinthe: document.getElementById('question_strategie_labyrinthe').value.trim(),
+                    questionAvantagesLimites: document.getElementById('question_avantages_limites').value.trim(),
+                    synthesePersonnelle: document.getElementById('synthese_personnelle').value.trim(),
+                    
+                    // Métadonnées
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    dateSoumission: dateStr,
+                    timestampLocal: timestamp
+                };
+
+                // Enregistrer dans Firestore
+                const docRef = await db.collection('fiches_perception_robotique').add(ficheData);
+                
+                console.log('✅ Fiche enregistrée avec ID:', docRef.id);
+
+                // Afficher le message de succès
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+
+            } catch (error) {
+                console.error('❌ Erreur:', error);
+                document.getElementById('errorText').textContent = error.message;
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            } finally {
+                // Réactiver le bouton
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+
+        // ============================================
+        // EXPORT JSON
+        // ============================================
+        document.getElementById('exportJsonBtn').addEventListener('click', function() {
+            const data = {
+                prenom: document.getElementById('prenom').value,
+                nom: document.getElementById('nom').value,
+                classe: document.getElementById('classe').value,
+                date: document.getElementById('date').value,
+                typeFiche: 'perception-robotique',
+                problematique: 'Comment un robot perçoit-il son environnement ?',
+                questionCapteursExemples: document.getElementById('question_capteurs_exemples').value,
+                questionSensManquant: document.getElementById('question_sens_manquant').value,
+                questionCapteurUltrason: document.getElementById('question_capteur_ultrason').value,
+                questionRobotTondeuse: document.getElementById('question_robot_tondeuse').value,
+                questionStrategieLabyrinthe: document.getElementById('question_strategie_labyrinthe').value,
+                questionAvantagesLimites: document.getElementById('question_avantages_limites').value,
+                synthesePersonnelle: document.getElementById('synthese_personnelle').value,
+                exportDate: new Date().toISOString(),
+            };
+
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `fiche-perception-robotique-${data.nom || 'sans-nom'}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            console.log('✅ JSON exporté');
+        });
+
+        // ============================================
+        // RÉINITIALISATION
+        // ============================================
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm('⚠️ Êtes-vous sûr de vouloir réinitialiser le formulaire ? Toutes les données non sauvegardées seront perdues.')) {
+                // Réinitialiser tous les champs
+                document.querySelectorAll('input[type="text"], input[type="number"], input[type="date"], textarea').forEach(field => {
+                    if (field.id !== 'date') {
+                        field.value = '';
+                    }
+                });
+                
+                // Remettre la date du jour
+                document.getElementById('date').valueAsDate = new Date();
+                
+                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                console.log('✅ Formulaire réinitialisé');
+            }
+        });
+
+        // ============================================
+        // CONFIRMATION AVANT FERMETURE
+        // ============================================
+        let formModified = false;
+
+        document.querySelectorAll('input, textarea').forEach(element => {
+            element.addEventListener('input', () => {
+                formModified = true;
+            });
+        });
+
+        window.addEventListener('beforeunload', function(e) {
+            if (formModified) {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+
+        // Désactiver le flag après sauvegarde
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            setTimeout(() => {
+                formModified = false;
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
