@@ -19,21 +19,6 @@
             line-height: 1.6;
         }
 
-        /* Animation de circuits en arrière-plan */
-        .circuit-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                linear-gradient(rgba(52, 152, 219, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(52, 152, 219, 0.1) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: 0;
-            animation: scroll-bg 20s linear infinite;
-        }
-
         @keyframes scroll-bg {
             0% { background-position: 0 0; }
             100% { background-position: 40px 40px; }
