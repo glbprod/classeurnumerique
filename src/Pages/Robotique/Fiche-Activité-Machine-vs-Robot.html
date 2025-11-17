@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fiche d'Activité - Machine vs Robot - Collège Moulin à Vent</title>
     
-    <!-- Firebase SDKs v9 (compat mode) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     
     <!-- html2pdf.js pour l'export PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -223,243 +222,380 @@
             font-size: 16px;
         }
 
-        .content-box p {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 10px;
+        .content-box p, .content-box ul {
+            color: #34495e;
+            line-height: 1.8;
+            font-size: 14px;
         }
 
-        .highlight {
-            background-color: #fff9e6;
-            padding: 3px 6px;
-            border-radius: 4px;
-            font-weight: 500;
+        .content-box ul {
+            margin-left: 25px;
         }
 
-        .image-upload {
-            margin-top: 15px;
+        .content-box li {
+            margin-bottom: 8px;
         }
 
-        .image-upload input[type="file"] {
-            padding: 8px;
-            border: 2px dashed #3498db;
-            border-radius: 8px;
-            background-color: #f8f9fa;
-            cursor: pointer;
+        .required {
+            color: #e74c3c;
         }
 
-        .image-preview {
-            max-width: 100%;
-            max-height: 300px;
-            margin-top: 10px;
-            border: 2px solid #3498db;
-            border-radius: 8px;
-            display: none;
-        }
-
-        .message {
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            display: none;
-            font-weight: bold;
+        .help-text {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-style: italic;
         }
 
         .success-message {
             background-color: #d4edda;
             color: #155724;
-            border: 2px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #28a745;
+            display: none;
         }
 
         .error-message {
             background-color: #f8d7da;
             color: #721c24;
-            border: 2px solid #f5c6cb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #dc3545;
+            display: none;
+        }
+
+        .upload-area {
+            border: 3px dashed #3498db;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .upload-area:hover {
+            background-color: #e8f4f8;
+            border-color: #2980b9;
+        }
+
+        .upload-area input[type="file"] {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .file-info {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .read-only-content {
+            background-color: #e8f4f8;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
         }
 
         @media print {
-            .controls-container,
-            .btn-action {
-                display: none;
-            }
-            
             body {
                 background: white;
                 padding: 0;
             }
             
+            .controls-container,
+            .btn-action,
+            .upload-area,
+            .help-text {
+                display: none !important;
+            }
+            
             .container {
                 box-shadow: none;
-                padding: 20px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-            
-            .header {
-                flex-direction: column;
-            }
-            
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .btn-action {
-                min-width: 100%;
+                max-width: 100%;
+                padding: 20mm;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Messages de succès/erreur -->
-    <div id="successMessage" class="message success-message">
-        ✅ Fiche enregistrée avec succès dans Firebase !
-    </div>
-    <div id="errorMessage" class="message error-message">
-        ❌ Erreur lors de l'enregistrement : <span id="errorText"></span>
-    </div>
-
-    <!-- Contenu de la fiche -->
     <div class="container" id="ficheContent">
+        <!-- En-tête -->
         <div class="header">
             <div class="header-left">
-                <div class="college-title">Collège Moulin à Vent</div>
-                <div class="logo-upload">
-                    <input type="file" id="logoUpload" accept="image/*">
-                    <img id="logoPreview" class="logo-preview" style="display: none;">
+                <div class="info-grid">
+                    <div class="form-group">
+                        <label>Prénom <span class="required">*</span></label>
+                        <input type="text" id="prenom" placeholder="Prénom" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nom <span class="required">*</span></label>
+                        <input type="text" id="nom" placeholder="Nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Classe <span class="required">*</span></label>
+                        <input type="text" id="classe" placeholder="Ex: 5èmeA" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date <span class="required">*</span></label>
+                        <input type="date" id="date" required>
+                    </div>
                 </div>
-            </div>
-            <div class="header-right">
-                <h1>🤖 Machine vs Robot 🔧</h1>
-                <p style="color: #7f8c8d; font-style: italic;">Fiche d'activité technologique</p>
             </div>
         </div>
 
-        <!-- Informations élève -->
-        <div class="info-grid">
-            <div class="form-group">
-                <label for="prenom">Prénom :</label>
-                <input type="text" id="prenom" placeholder="Ton prénom">
-            </div>
-            <div class="form-group">
-                <label for="nom">Nom :</label>
-                <input type="text" id="nom" placeholder="Ton nom">
-            </div>
-            <div class="form-group">
-                <label for="classe">Classe :</label>
-                <input type="text" id="classe" placeholder="Ex: 3ème A">
-            </div>
-            <div class="form-group">
-                <label for="date">Date :</label>
-                <input type="date" id="date">
-            </div>
+        <h1>Fiche d'Activité - Technologie</h1>
+
+        <!-- Objet Système Technique -->
+        <div class="read-only-content">
+            <label style="margin-bottom: 5px;">🔧 Objet Système Technique</label>
+            <p><strong>Machines et Robots</strong> (lave-linge, aspirateur autonome, bras robotique, drone...)</p>
         </div>
 
         <!-- Problématique -->
+        <div class="read-only-content" style="background-color: #e8f4f8;">
+            <label style="margin-bottom: 5px;">❓ Problématique</label>
+            <p style="font-size: 18px; font-weight: 600; color: #2c3e50;">
+                Quelles sont les différences entre une machine et un robot ?
+            </p>
+        </div>
+
+        <!-- Activité 1 -->
         <div class="section">
-            <div class="section-title">🎯 Problématique</div>
+            <div class="section-title">
+                📝 Activité 1 : Découverte et observation
+            </div>
+            
             <div class="content-box">
-                <h3>Quelles sont les différences entre une machine et un robot ?</h3>
+                <h3>Exemples de machines et de robots</h3>
+                <p><strong>Machines :</strong></p>
+                <ul>
+                    <li>Lave-linge : effectue des cycles programmés de lavage</li>
+                    <li>Perceuse électrique : transforme l'énergie électrique en mouvement de rotation</li>
+                    <li>Four micro-ondes : chauffe les aliments selon un programme</li>
+                    <li>Ventilateur : fait circuler l'air à différentes vitesses</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>Robots :</strong></p>
+                <ul>
+                    <li>Aspirateur autonome : se déplace seul, évite les obstacles, retourne à sa base</li>
+                    <li>Bras robotique industriel : effectue des tâches complexes avec précision</li>
+                    <li>Drone : vole de manière autonome ou pilotée, évite les collisions</li>
+                    <li>Robot tondeuse : tond la pelouse en naviguant de manière autonome</li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label>À toi de jouer ! Cite 2 machines et 2 robots que tu connais <span class="required">*</span></label>
+                <textarea id="exemples_machines_robots" placeholder="Exemples :
+Machines : ...
+Robots : ..." required></textarea>
+                <div class="help-text">Donne des exemples concrets que tu utilises ou que tu as déjà vus</div>
             </div>
         </div>
 
-        <!-- Section 1 -->
+        <!-- Activité 2 -->
         <div class="section">
-            <div class="section-title">📝 Phase 1 : Recherche</div>
+            <div class="section-title">
+                🔍 Activité 2 : Comparaison et analyse
+            </div>
+            
             <div class="content-box">
-                <h3>Donne 3 exemples de machines et 3 exemples de robots :</h3>
-                <textarea id="exemples_machines_robots" placeholder="Écris tes exemples ici..."></textarea>
+                <h3>Tableau comparatif à compléter</h3>
+                <p style="margin-bottom: 15px;">Voici un tableau qui compare les machines et les robots sur différents critères. Lis-le attentivement pour répondre aux questions suivantes.</p>
+                
+                <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                    <thead>
+                        <tr style="background-color: #3498db; color: white;">
+                            <th style="padding: 12px; text-align: left;">Critère</th>
+                            <th style="padding: 12px; text-align: left;">Machine</th>
+                            <th style="padding: 12px; text-align: left;">Robot</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background-color: #f8f9fa;">
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>Autonomie</strong></td>
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;">Nécessite une action humaine</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;">Peut fonctionner de manière autonome</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>Capteurs</strong></td>
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;">Peu ou pas de capteurs</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;">Équipé de nombreux capteurs</td>
+                        </tr>
+                        <tr style="background-color: #f8f9fa;">
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>Programmation</strong></td>
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;">Programme fixe et simple</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;">Programme complexe, peut s'adapter</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>Interaction</strong></td>
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;">Limitée ou inexistante</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;">Perçoit et réagit à l'environnement</td>
+                        </tr>
+                        <tr style="background-color: #f8f9fa;">
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>Prise de décision</strong></td>
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;">Aucune, suit des instructions</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #ddd;">Peut prendre des décisions</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-group">
+                <label>Question : Selon toi, un lave-vaisselle est-il une machine ou un robot ? Justifie ta réponse <span class="required">*</span></label>
+                <textarea id="question_lave_vaisselle" placeholder="C'est une machine / un robot parce que..." required></textarea>
+                <div class="help-text">Utilise les critères du tableau pour justifier ton choix</div>
+            </div>
+
+            <div class="form-group">
+                <label>Donne un autre exemple d'objet et dis si c'est une machine ou un robot en justifiant <span class="required">*</span></label>
+                <textarea id="exemple_supplementaire" placeholder="Exemple : L'aspirateur Roomba est un robot car..." required></textarea>
             </div>
         </div>
 
-        <!-- Section 2 -->
-        <div class="section">
-            <div class="section-title">🔍 Phase 2 : Observation</div>
-            <div class="content-box">
-                <h3>Observe ces 3 systèmes techniques</h3>
-                <p><strong>Système 1 : Aspirateur automatique</strong></p>
-                <div class="image-upload">
-                    <input type="file" id="schema1Upload" accept="image/*">
-                    <img id="schema1Preview" class="image-preview">
-                </div>
+        <!-- Conclusion -->
+        <div class="section" style="border-left-color: #27ae60;">
+            <div class="section-title">
+                ✅ Conclusion : Ce qu'il faut retenir
+            </div>
+            
+            <div class="content-box" style="background-color: #d4edda; border-left: 5px solid #28a745;">
+                <p><strong>Définition d'une MACHINE :</strong></p>
+                <p>Une machine est un système technique qui transforme une forme d'énergie en une autre pour réaliser une tâche spécifique. Elle nécessite généralement une intervention humaine pour fonctionner et suit un programme fixe.</p>
+                
+                <p style="margin-top: 15px;"><strong>Définition d'un ROBOT :</strong></p>
+                <p>Un robot est un système automatique capable de percevoir son environnement grâce à des capteurs, de traiter des informations et de prendre des décisions. Il peut fonctionner de manière autonome et s'adapter à différentes situations.</p>
+                
+                <p style="margin-top: 15px;"><strong>Les 3 caractéristiques essentielles d'un robot :</strong></p>
+                <ul>
+                    <li><strong>🔍 PERCEVOIR</strong> : il possède des capteurs pour analyser son environnement</li>
+                    <li><strong>🧠 TRAITER</strong> : il possède un système de traitement qui analyse les données</li>
+                    <li><strong>⚡ AGIR</strong> : il possède des actionneurs qui lui permettent d'agir de manière autonome</li>
+                </ul>
+            </div>
 
-                <p style="margin-top: 20px;"><strong>Système 2 : Lave-vaisselle</strong></p>
-                <div class="image-upload">
-                    <input type="file" id="schema2Upload" accept="image/*">
-                    <img id="schema2Preview" class="image-preview">
-                </div>
-
-                <p style="margin-top: 20px;"><strong>Système 3 : Bras robotique industriel</strong></p>
-                <div class="image-upload">
-                    <input type="file" id="schema3Upload" accept="image/*">
-                    <img id="schema3Preview" class="image-preview">
-                </div>
+            <div class="form-group">
+                <label>Synthèse personnelle : Explique avec tes propres mots la différence principale entre une machine et un robot <span class="required">*</span></label>
+                <textarea id="synthese_personnelle" placeholder="La différence principale est..." required style="min-height: 120px;"></textarea>
+                <div class="help-text">Exprime ce que tu as compris avec tes propres mots</div>
             </div>
         </div>
 
-        <!-- Section 3 -->
-        <div class="section">
-            <div class="section-title">💡 Phase 3 : Analyse</div>
-            <div class="content-box">
-                <h3>Question : Le lave-vaisselle est-il une machine ou un robot ? Justifie ta réponse.</h3>
-                <textarea id="question_lave_vaisselle" placeholder="Écris ta réponse argumentée ici..."></textarea>
-            </div>
+        <!-- Boutons de contrôle -->
+        <div class="controls-container">
+        <button type="button" id="saveBtn" class="btn-action btn-save">
+          💾 Enregistrer
+        </button>
+        <button type="button" id="exportPdfBtn" class="btn-action btn-pdf">
+          📄 Télécharger
+        </button>
+        <button type="button" id="exportJsonBtn" class="btn-action btn-json">
+          📦 Exporter
+        </button>
+        <button type="button" id="resetBtn" class="btn-action btn-reset">
+          🔄 Réinitialiser
+        </button>
         </div>
 
-        <!-- Section 4 -->
-        <div class="section">
-            <div class="section-title">🚀 Phase 4 : Approfondissement</div>
-            <div class="content-box">
-                <h3>Trouve un exemple supplémentaire et explique s'il s'agit d'une machine ou d'un robot :</h3>
-                <textarea id="exemple_supplementaire" placeholder="Décris ton exemple et justifie ton choix..."></textarea>
-            </div>
+        <!-- Messages de feedback -->
+        <div id="successMessage" class="success-message">
+            ✅ <strong>Succès !</strong> Ta fiche a été enregistrée avec succès dans la base de données.
+        </div>
+        <div id="errorMessage" class="error-message">
+            ❌ <strong>Erreur !</strong> <span id="errorText"></span>
         </div>
 
-        <!-- Section 5 -->
-        <div class="section">
-            <div class="section-title">📚 Phase 5 : Synthèse</div>
-            <div class="content-box">
-                <h3>Rédige une synthèse personnelle sur les différences entre machine et robot :</h3>
-                <textarea id="synthese_personnelle" placeholder="Rédige ta synthèse ici (minimum 5 lignes)..."></textarea>
-            </div>
+        <div style="text-align: center; margin-top: 30px; color: #7f8c8d; font-size: 12px;">
+            Collège Moulin à vent – Technologie au collège<br>
+            Compétences travaillées : Analyser des systèmes techniques • Comprendre les flux d'information
         </div>
-    </div>
-        <!-- Boutons d'action -->
-    <div class="controls-container">
-        <button id="saveBtn" class="btn-action btn-save">💾 Enregistrer</button>
-        <button id="exportJsonBtn" class="btn-action btn-json">📋 Exporter</button>
-        <button id="resetBtn" class="btn-action btn-reset">🔄 Réinitialiser</button>
     </div>
 
     <script>
+
+        // Protection par mot de passe
+        (function() {
+            const MOT_DE_PASSE = 'techno2025'; // ← Changez ici
+            let tentatives = 3;
+            
+            while (tentatives > 0) {
+                const saisie = prompt('🔒 Mot de passe requis pour accéder au formulaire :');
+                
+                if (saisie === null) {
+                    document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès annulé</h1>';
+                    throw new Error('Accès annulé');
+                }
+                
+                if (saisie === MOT_DE_PASSE) {
+                    return; // ✅ Mot de passe correct
+                }
+                
+                tentatives--;
+                if (tentatives > 0) {
+                    alert('❌ Mot de passe incorrect ! Il vous reste ' + tentatives + ' tentative(s).');
+                }
+            }
+            
+            alert('🚫 Nombre de tentatives dépassé !');
+            document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès refusé</h1>';
+            throw new Error('Accès refusé');
+        })();
+        
+        // ============================================
+        // CONFIRMATION AVANT FERMETURE
+        // ============================================
+        let formModified = false;
+
+        document.getElementById('dnbForm').addEventListener('input', function() {
+            formModified = true;
+        });
+
+        window.addEventListener('beforeunload', function(e) {
+            if (formModified) {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+        
         // ============================================
         // CONFIGURATION FIREBASE
         // ============================================
-        
-        // ⚠️ IMPORTANT : Remplacez ces valeurs par votre configuration Firebase
         const firebaseConfig = {
-            apiKey: "VOTRE_API_KEY",
-            authDomain: "VOTRE_PROJECT_ID.firebaseapp.com",
-            projectId: "VOTRE_PROJECT_ID",
-            storageBucket: "VOTRE_PROJECT_ID.appspot.com",
-            messagingSenderId: "VOTRE_MESSAGING_SENDER_ID",
-            appId: "VOTRE_APP_ID"
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
         };
 
-        // Initialisation Firebase
-        let db, storage;
-        try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
-            storage = firebase.storage();
-            console.log('✅ Firebase initialisé avec succès');
-        } catch (error) {
-            console.error('❌ Erreur initialisation Firebase:', error);
-            alert('⚠️ Erreur de configuration Firebase. Vérifiez votre firebaseConfig dans le code.');
-        }
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        console.log('✅ Firebase initialisé');
+
+        // Définir la date par défaut
+        document.getElementById('date').valueAsDate = new Date();
 
         // ============================================
         // GESTION DES IMAGES
@@ -471,21 +607,27 @@
             schema3: null
         };
 
-        // Fonction pour gérer l'upload d'une image
-        function setupImageUpload(inputId, previewId, storageKey) {
+        // Fonction pour prévisualiser une image
+        function previewImage(inputId, previewId, storageKey) {
             const input = document.getElementById(inputId);
             const preview = document.getElementById(previewId);
-
+            
             input.addEventListener('change', function(e) {
                 const file = e.target.files[0];
-                if (file && file.type.startsWith('image/')) {
+                if (file) {
+                    // Vérifier la taille (5 Mo max)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('⚠️ Le fichier est trop volumineux (max 5 Mo)');
+                        return;
+                    }
+
                     const reader = new FileReader();
-                    reader.onload = function(e) {
-                        preview.src = e.target.result;
+                    reader.onload = function(event) {
+                        preview.src = event.target.result;
                         preview.style.display = 'block';
                         uploadedImages[storageKey] = {
                             file: file,
-                            dataUrl: e.target.result
+                            dataUrl: event.target.result
                         };
                     };
                     reader.readAsDataURL(file);
@@ -493,38 +635,46 @@
             });
         }
 
-        // Configuration des uploads
-        setupImageUpload('logoUpload', 'logoPreview', 'logo');
-        setupImageUpload('schema1Upload', 'schema1Preview', 'schema1');
-        setupImageUpload('schema2Upload', 'schema2Preview', 'schema2');
-        setupImageUpload('schema3Upload', 'schema3Preview', 'schema3');
+        // Initialiser les prévisualisations
+        previewImage('logoUpload', 'logoPreview', 'logo');
+        previewImage('schema1Upload', 'schema1Preview', 'schema1');
+        previewImage('schema2Upload', 'schema2Preview', 'schema2');
+        previewImage('schema3Upload', 'schema3Preview', 'schema3');
 
         // ============================================
-        // FONCTION D'UPLOAD VERS FIREBASE STORAGE
+        // FONCTION UPLOAD VERS FIREBASE STORAGE
         // ============================================
         async function uploadImageToStorage(file, path) {
-            const storageRef = storage.ref(path);
-            const snapshot = await storageRef.put(file);
-            const downloadURL = await snapshot.ref.getDownloadURL();
-            return downloadURL;
+            if (!file) return null;
+            
+            const storageRef = storage.ref();
+            const fileRef = storageRef.child(path);
+            
+            try {
+                const snapshot = await fileRef.put(file);
+                const downloadURL = await snapshot.ref.getDownloadURL();
+                return downloadURL;
+            } catch (error) {
+                console.error('Erreur upload image:', error);
+                throw error;
+            }
         }
 
         // ============================================
-        // INITIALISATION
-        // ============================================
-        document.getElementById('date').valueAsDate = new Date();
-
-        // ============================================
-        // SAUVEGARDE FIREBASE
+        // SAUVEGARDE DANS FIREBASE
         // ============================================
         document.getElementById('saveBtn').addEventListener('click', async function() {
-            // Validation des champs obligatoires
-            const prenom = document.getElementById('prenom').value.trim();
-            const nom = document.getElementById('nom').value.trim();
-
-            if (!prenom || !nom) {
-                alert('⚠️ Veuillez remplir au moins le prénom et le nom');
-                return;
+            // Validation des champs requis
+            const requiredFields = ['prenom', 'nom', 'classe', 'date', 'exemples_machines_robots', 
+                                   'question_lave_vaisselle', 'exemple_supplementaire', 'synthese_personnelle'];
+            
+            for (let field of requiredFields) {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    alert('⚠️ Veuillez remplir tous les champs obligatoires (*)');
+                    element.focus();
+                    return;
+                }
             }
 
             // Désactiver le bouton pendant le traitement
@@ -604,45 +754,6 @@
                 btn.disabled = false;
                 btn.textContent = originalText;
             }
-        });
-
-        // ============================================
-        // EXPORT PDF
-        // ============================================
-        document.getElementById('exportPdfBtn').addEventListener('click', function() {
-            const btn = this;
-            const originalText = btn.textContent;
-            btn.disabled = true;
-            btn.textContent = '⏳ Génération du PDF...';
-
-            const element = document.getElementById('ficheContent');
-            
-            const opt = {
-                margin: 10,
-                filename: `fiche-machine-robot-${document.getElementById('nom').value || 'sans-nom'}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { 
-                    scale: 2,
-                    useCORS: true,
-                    logging: false
-                },
-                jsPDF: { 
-                    unit: 'mm', 
-                    format: 'a4', 
-                    orientation: 'portrait' 
-                }
-            };
-
-            html2pdf().set(opt).from(element).save().then(() => {
-                btn.disabled = false;
-                btn.textContent = originalText;
-                console.log('✅ PDF généré avec succès');
-            }).catch(error => {
-                console.error('❌ Erreur génération PDF:', error);
-                alert('Erreur lors de la génération du PDF');
-                btn.disabled = false;
-                btn.textContent = originalText;
-            });
         });
 
         // ============================================
