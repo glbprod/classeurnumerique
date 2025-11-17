@@ -565,6 +565,12 @@
                 <button type="button" id="sendToFirebase" class="submit-btn" style="flex: 1;">
                     📤 Envoyer mes réponses
                 </button>
+                <button type="button" id="saveBtn" class="submit-btn" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); flex: 0.5;">
+                    💾 Sauvegarder
+                </button>
+                <button type="button" id="printBtn" class="submit-btn" style="background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%); flex: 0.5;">
+                    🖨️ Imprimer
+                </button>
                 <button type="reset" class="submit-btn" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); flex: 0.3;">
                     🔄 Réinitialiser
                 </button>
@@ -597,17 +603,10 @@
                 return '';
             }
         });
-
-        // Désactiver le flag après sauvegarde
-        document.getElementById('saveBtn').addEventListener('click', () => {
-            setTimeout(() => {
-                formModified = false;
-            }, 1000);
-        });
             
         // Protection par mot de passe
         (function() {
-            const MOT_DE_PASSE = 'dnb'; // ← Changez ici
+            const MOT_DE_PASSE = 'techno2025'; // ← Changez ici
             let tentatives = 3;
             
             while (tentatives > 0) {
@@ -632,21 +631,6 @@
             document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès refusé</h1>';
             throw new Error('Accès refusé');
         })();
-        
-        // Confirmation avant fermeture
-        let formModified = false;
-
-        document.getElementById('robotForm').addEventListener('input', function() {
-            formModified = true;
-        });
-
-        window.addEventListener('beforeunload', function(e) {
-            if (formModified) {
-                e.preventDefault();
-                e.returnValue = '';
-                return '';
-            }
-        });
            
         // Configuration Firebase
         const firebaseConfig = {
@@ -676,4 +660,75 @@
             this.disabled = true;
             this.textContent = '⏳ Envoi en cours...';
             
+            try {
+                const formData = new FormData(form);
+                const data = {};
+                
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                });
+                
+                // Ajout de métadonnées
+                data.timestamp = firebase.firestore.FieldValue.serverTimestamp();
+                data.date = new Date().toISOString();
+                data.formulaire = 'Programmation Robotique - mBot 2';
+                
+                // Envoi à Firestore
+                await db.collection('formulaires').add(data);
+                
+                this.textContent = '✅ Envoyé avec succès !';
+                this.style.backgroundColor = '#4CAF50';
+                
+                alert('✅ Vos réponses ont été enregistrées avec succès !');
+                
+                formModified = false;
+                
+                setTimeout(() => {
+                    this.disabled = false;
+                    this.textContent = originalText;
+                    this.style.backgroundColor = '';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Erreur lors de l\'envoi:', error);
+                this.textContent = '❌ Erreur d\'envoi';
+                this.style.backgroundColor = '#f44336';
+                alert('❌ Erreur lors de l\'envoi : ' + error.message);
+                
+                setTimeout(() => {
+                    this.disabled = false;
+                    this.textContent = originalText;
+                    this.style.backgroundColor = '';
+                }, 3000);
+            }
+        });
+        
+        // Bouton de sauvegarde locale
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            const form = document.getElementById('robotForm');
+            const formData = new FormData(form);
+            const data = {};
             
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'robotique_' + new Date().toISOString().split('T')[0] + '.json';
+            link.click();
+            
+            formModified = false; // Réinitialiser le flag après sauvegarde
+            alert('✅ Sauvegarde locale effectuée !');
+        });
+        
+        // Bouton d'impression
+        document.getElementById('printBtn').addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+</body>
+</html>
