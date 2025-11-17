@@ -386,6 +386,15 @@
       "addedDate": "2025-11-17T06:50:42.925Z",
       "lastModified": "2025-11-17T06:50:42.925Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763366886463",
+      "title": "Fiche Activité Machine vs Robot",
+      "githubPath": "src/Pages/Robotique/Fiche-Activité-Machine-vs-Robot.html",
+      "description": "",
+      "addedDate": "2025-11-17T08:08:06.463Z",
+      "lastModified": "2025-11-17T08:08:06.465Z",
+      "favorite": false
     }
   ]
 }
