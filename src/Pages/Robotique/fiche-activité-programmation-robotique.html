@@ -579,21 +579,30 @@
 
     <script>
 
-      // ============================================
+        // ============================================
         // CONFIRMATION AVANT FERMETURE
         // ============================================
         let formModified = false;
-    
-        document.getElementById('activitiesForm').addEventListener('input', function() {
-            formModified = true;
+
+        document.querySelectorAll('input, textarea').forEach(element => {
+            element.addEventListener('input', () => {
+                formModified = true;
+            });
         });
-    
+
         window.addEventListener('beforeunload', function(e) {
             if (formModified) {
                 e.preventDefault();
                 e.returnValue = '';
                 return '';
             }
+        });
+
+        // Désactiver le flag après sauvegarde
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            setTimeout(() => {
+                formModified = false;
+            }, 1000);
         });
             
         // Protection par mot de passe
