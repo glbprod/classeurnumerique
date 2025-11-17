@@ -8,6 +8,7 @@
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     
     <!-- html2pdf.js pour l'export PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -530,52 +531,6 @@ Robots : ..." required></textarea>
     </div>
 
     <script>
-
-        // Protection par mot de passe
-        (function() {
-            const MOT_DE_PASSE = 'techno2025'; // ← Changez ici
-            let tentatives = 3;
-            
-            while (tentatives > 0) {
-                const saisie = prompt('🔒 Mot de passe requis pour accéder au formulaire :');
-                
-                if (saisie === null) {
-                    document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès annulé</h1>';
-                    throw new Error('Accès annulé');
-                }
-                
-                if (saisie === MOT_DE_PASSE) {
-                    return; // ✅ Mot de passe correct
-                }
-                
-                tentatives--;
-                if (tentatives > 0) {
-                    alert('❌ Mot de passe incorrect ! Il vous reste ' + tentatives + ' tentative(s).');
-                }
-            }
-            
-            alert('🚫 Nombre de tentatives dépassé !');
-            document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès refusé</h1>';
-            throw new Error('Accès refusé');
-        })();
-        
-        // ============================================
-        // CONFIRMATION AVANT FERMETURE
-        // ============================================
-        let formModified = false;
-
-        document.getElementById('dnbForm').addEventListener('input', function() {
-            formModified = true;
-        });
-
-        window.addEventListener('beforeunload', function(e) {
-            if (formModified) {
-                e.preventDefault();
-                e.returnValue = '';
-                return '';
-            }
-        });
-        
         // ============================================
         // CONFIGURATION FIREBASE
         // ============================================
@@ -754,6 +709,45 @@ Robots : ..." required></textarea>
                 btn.disabled = false;
                 btn.textContent = originalText;
             }
+        });
+
+        // // ============================================
+        // // EXPORT PDF
+        // // ============================================
+        // document.getElementById('exportPdfBtn').addEventListener('click', function() {
+        //     const btn = this;
+        //     const originalText = btn.textContent;
+        //     btn.disabled = true;
+        //     btn.textContent = '⏳ Génération du PDF...';
+
+        //     const element = document.getElementById('ficheContent');
+            
+        //     const opt = {
+        //         margin: 10,
+        //         filename: `fiche-machine-robot-${document.getElementById('nom').value || 'sans-nom'}.pdf`,
+        //         image: { type: 'jpeg', quality: 0.98 },
+        //         html2canvas: { 
+        //             scale: 2,
+        //             useCORS: true,
+        //             logging: false
+        //         },
+        //         jsPDF: { 
+        //             unit: 'mm', 
+        //             format: 'a4', 
+        //             orientation: 'portrait' 
+        //         }
+        //     };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                btn.disabled = false;
+                btn.textContent = originalText;
+                console.log('✅ PDF généré avec succès');
+            }).catch(error => {
+                console.error('❌ Erreur génération PDF:', error);
+                alert('Erreur lors de la génération du PDF');
+                btn.disabled = false;
+                btn.textContent = originalText;
+            });
         });
 
         // ============================================
