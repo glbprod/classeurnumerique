@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche d'Activité - Évitement d'Obstacles - Collège Moulin à Vent</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .controls-container {
+            max-width: 900px;
+            margin: 0 auto 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-save {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background-color: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn-pdf {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-pdf:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-json {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-json:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-reset {
+            background-color: #95a5a6;
+            color: white;
+            flex: 0.3;
+        }
+
+        .btn-reset:hover {
+            background-color: #7f8c8d;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .header-left {
+            flex: 1;
+        }
+
+        .header-right {
+            text-align: center;
+        }
+
+        .college-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .section {
+            background-color: #ecf0f1;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .content-box h3 {
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .content-box p, .content-box ul, .content-box ol {
+            color: #34495e;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .content-box ul, .content-box ol {
+            margin-left: 25px;
+        }
+
+        .content-box li {
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .help-text {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #28a745;
+            display: none;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #dc3545;
+            display: none;
+        }
+
+        .read-only-content {
+            background-color: #e8f4f8;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .code-block {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .code-block .comment {
+            color: #95a5a6;
+        }
+
+        .code-block .keyword {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .code-block .function {
+            color: #3498db;
+        }
+
+        .code-block .number {
+            color: #f39c12;
+        }
+
+        .algo-step {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .algo-step strong {
+            color: #856404;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .controls-container,
+            .btn-action,
+            .help-text {
+                display: none !important;
+            }
+            
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                padding: 20mm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="ficheContent">
+        <!-- En-tête -->
+        <div class="header">
+            <div class="header-left">
+                <div class="info-grid">
+                    <div class="form-group">
+                        <label>Prénom <span class="required">*</span></label>
+                        <input type="text" id="prenom" placeholder="Prénom" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nom <span class="required">*</span></label>
+                        <input type="text" id="nom" placeholder="Nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Classe <span class="required">*</span></label>
+                        <input type="text" id="classe" placeholder="Ex: 405" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date <span class="required">*</span></label>
+                        <input type="date" id="date" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="college-title">Collège Moulin à Vent</div>
+                <div style="font-size: 4rem; margin-top: 10px;">🏫</div>
+            </div>
+        </div>
+
+        <h1>Fiche d'Activité - Technologie</h1>
+
+        <!-- Objet Système Technique -->
+        <div class="read-only-content">
+            <label style="margin-bottom: 5px;">🔧 Objet Système Technique</label>
+            <p><strong>Robot mobile programmable</strong> (mBot, robot aspirateur, drone, voiture autonome...)</p>
+        </div>
+
+        <!-- Problématique -->
+        <div class="read-only-content" style="background-color: #e8f4f8;">
+            <label style="margin-bottom: 5px;">❓ Problématique</label>
+            <p style="font-size: 18px; font-weight: 600; color: #2c3e50;">
+                Comment programmer un robot pour éviter les obstacles ?
+            </p>
+        </div>
+
+        <!-- Activité 1 -->
+        <div class="section">
+            <div class="section-title">
+                📝 Activité 1 : Comprendre le problème
+            </div>
+            
+            <div class="content-box">
+                <h3>Situation initiale</h3>
+                <p>Tu dois programmer un robot mobile équipé d'un <strong>capteur ultrason</strong> à l'avant pour qu'il se déplace dans une pièce sans percuter les murs et les obstacles.</p>
+                
+                <p style="margin-top: 15px;"><strong>Matériel disponible :</strong></p>
+                <ul>
+                    <li>1 robot mobile avec 2 moteurs (roues gauche et droite)</li>
+                    <li>1 capteur de distance ultrason (détecte les obstacles de 3 cm à 200 cm)</li>
+                    <li>1 carte programmable (Arduino, micro:bit ou mBlock)</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Fonctionnement du capteur ultrason :</strong></p>
+                <div class="algo-step">
+                    Le capteur envoie des <strong>ondes sonores</strong> (inaudibles) qui rebondissent sur les obstacles et reviennent au capteur. En mesurant le <strong>temps de trajet</strong>, on calcule la distance.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Question 1 : Avant de programmer, décris avec tes mots ce que le robot doit faire <span class="required">*</span></label>
+                <textarea id="question_comportement_attendu" placeholder="Le robot doit :
+1. ...
+2. ...
+3. ..." required style="min-height: 100px;"></textarea>
+                <div class="help-text">Décris le comportement attendu en langage naturel (pas de code)</div>
+            </div>
+
+            <div class="form-group">
+                <label>Question 2 : À quelle distance minimum le robot doit-il détecter un obstacle pour avoir le temps de s'arrêter ? Justifie <span class="required">*</span></label>
+                <textarea id="question_distance_securite" placeholder="Je pense que le robot doit détecter l'obstacle à ... cm car..." required></textarea>
+                <div class="help-text">Pense à la vitesse du robot et au temps de réaction</div>
+            </div>
+        </div>
+
+        <!-- Activité 2 -->
+        <div class="section">
+            <div class="section-title">
+                💻 Activité 2 : Écrire l'algorithme
+            </div>
+            
+            <div class="content-box">
+                <h3>Qu'est-ce qu'un algorithme ?</h3>
+                <p>Un <strong>algorithme</strong> est une suite d'instructions ordonnées permettant de résoudre un problème. C'est comme une recette de cuisine, mais pour un robot !</p>
+                
+                <p style="margin-top: 15px;"><strong>Les structures de base :</strong></p>
+                <ol>
+                    <li><strong>Séquence</strong> : Instructions qui s'exécutent les unes après les autres</li>
+                    <li><strong>Condition (SI...ALORS...SINON)</strong> : Le robot prend une décision</li>
+                    <li><strong>Boucle (RÉPÉTER...TANT QUE)</strong> : Le robot répète des actions</li>
+                </ol>
+            </div>
+
+            <div class="content-box">
+                <h3>Exemple d'algorithme simple</h3>
+                <div class="code-block">
+<span class="keyword">RÉPÉTER</span> indéfiniment :<br>
+&nbsp;&nbsp;&nbsp;&nbsp;distance ← <span class="function">mesurer_distance()</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">SI</span> distance < <span class="number">20</span> cm <span class="keyword">ALORS</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">arrêter_moteurs()</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">reculer()</span> pendant <span class="number">1</span> seconde<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">tourner_droite()</span> pendant <span class="number">0.5</span> seconde<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">SINON</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">avancer()</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">FIN SI</span><br>
+<span class="keyword">FIN RÉPÉTER</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Question 3 : Écris ton propre algorithme en langage naturel (pas de code informatique) <span class="required">*</span></label>
+                <textarea id="question_algorithme" placeholder="RÉPÉTER indéfiniment :
+    SI ...
+    ALORS ...
+    SINON ...
+    FIN SI
+FIN RÉPÉTER" required style="min-height: 150px; font-family: 'Courier New', monospace;"></textarea>
+                <div class="help-text">Utilise les mots-clés : RÉPÉTER, SI, ALORS, SINON, FIN SI, FIN RÉPÉTER</div>
+            </div>
+
+            <div class="form-group">
+                <label>Question 4 : Pourquoi utilise-t-on une boucle "RÉPÉTER indéfiniment" dans cet algorithme ? <span class="required">*</span></label>
+                <textarea id="question_boucle" placeholder="On utilise une boucle car..." required></textarea>
+                <div class="help-text">Réfléchis à ce qui se passerait sans boucle</div>
+            </div>
+        </div>
+
+        <!-- Activité 3 -->
+        <div class="section">
+            <div class="section-title">
+                🔧 Activité 3 : Améliorer le programme
+            </div>
+            
+            <div class="content-box">
+                <h3>Problème avec l'algorithme simple</h3>
+                <p>L'algorithme précédent fonctionne, mais il a des limites :</p>
+                <ul>
+                    <li>Le robot tourne toujours <strong>à droite</strong> → il pourrait se bloquer dans un coin</li>
+                    <li>Il tourne toujours du <strong>même angle</strong> → pas optimal</li>
+                    <li>Il ne détecte que les obstacles <strong>devant lui</strong></li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Améliorations possibles :</strong></p>
+                <div class="algo-step">
+                    <strong>Amélioration 1 :</strong> Alterner les directions (une fois à droite, une fois à gauche)
+                </div>
+                <div class="algo-step">
+                    <strong>Amélioration 2 :</strong> Mesurer la distance à gauche ET à droite, puis tourner du côté le plus dégagé
+                </div>
+                <div class="algo-step">
+                    <strong>Amélioration 3 :</strong> Adapter l'angle de rotation selon la distance mesurée
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Question 5 : Choisis UNE amélioration et écris le nouvel algorithme correspondant <span class="required">*</span></label>
+                <textarea id="question_algorithme_ameliore" placeholder="J'ai choisi l'amélioration n°...
+
+Mon algorithme amélioré :
+..." required style="min-height: 150px; font-family: 'Courier New', monospace;"></textarea>
+                <div class="help-text">Modifie l'algorithme de base en ajoutant ta logique d'amélioration</div>
+            </div>
+
+            <div class="form-group">
+                <label>Question 6 : Quels sont les avantages et inconvénients de ton amélioration ? <span class="required">*</span></label>
+                <textarea id="question_avantages_inconvenients" placeholder="Avantages :
+- ...
+
+Inconvénients :
+- ..." required style="min-height: 100px;"></textarea>
+                <div class="help-text">Sois honnête : toute solution a des limites !</div>
+            </div>
+        </div>
+
+        <!-- Activité 4 -->
+        <div class="section">
+            <div class="section-title">
+                🧪 Activité 4 : Tester et déboguer
+            </div>
+            
+            <div class="content-box">
+                <h3>L'importance des tests</h3>
+                <p>Un programme ne fonctionne jamais parfaitement du premier coup ! Il faut :</p>
+                <ol>
+                    <li><strong>Tester</strong> le programme dans différentes situations</li>
+                    <li><strong>Observer</strong> les comportements inattendus (bugs)</li>
+                    <li><strong>Déboguer</strong> en modifiant le code</li>
+                    <li><strong>Retester</strong> pour vérifier la correction</li>
+                </ol>
+
+                <p style="margin-top: 15px;"><strong>Situations de test à prévoir :</strong></p>
+                <ul>
+                    <li>Obstacle droit devant</li>
+                    <li>Coin de pièce (deux murs perpendiculaires)</li>
+                    <li>Couloir étroit</li>
+                    <li>Obstacle en mouvement</li>
+                    <li>Petit obstacle (que le capteur ne détecte pas)</li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label>Question 7 : Imagine que ton robot se bloque dans un coin et tourne sur lui-même sans avancer. Quel est le problème et comment le corriger ? <span class="required">*</span></label>
+                <textarea id="question_debug_coin" placeholder="Le problème vient de...
+
+Pour le corriger, je dois..." required style="min-height: 100px;"></textarea>
+                <div class="help-text">Analyse ce qui se passe étape par étape</div>
+            </div>
+
+            <div class="form-group">
+                <label>Question 8 : Propose un protocole de test pour vérifier que ton programme fonctionne bien <span class="required">*</span></label>
+                <textarea id="question_protocole_test" placeholder="Mon protocole de test :
+
+Test 1 : ...
+Test 2 : ...
+Test 3 : ..." required style="min-height: 120px;"></textarea>
+                <div class="help-text">Décris au moins 3 situations de test différentes</div>
+            </div>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="section" style="border-left-color: #27ae60;">
+            <div class="section-title">
+                ✅ Conclusion : Ce qu'il faut retenir
+            </div>
+            
+            <div class="content-box" style="background-color: #d4edda; border-left: 5px solid #28a745;">
+                <h3>Les points essentiels</h3>
+                <ul>
+                    <li>Un <strong>algorithme</strong> est une suite d'instructions ordonnées pour résoudre un problème</li>
+                    <li>Les <strong>structures de base</strong> sont : séquence, condition (SI/ALORS), boucle (RÉPÉTER)</li>
+                    <li>Un robot utilise ses <strong>capteurs</strong> pour prendre des <strong>décisions</strong></li>
+                    <li>La programmation est un <strong>processus itératif</strong> : écrire → tester → corriger → retester</li>
+                    <li>Il existe toujours <strong>plusieurs solutions</strong> pour résoudre un même problème</li>
+                    <li>Un bon programme doit être <strong>testé dans différentes situations</strong></li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label>Synthèse personnelle : Qu'as-tu appris sur la programmation des robots ? <span class="required">*</span></label>
+                <textarea id="synthese_personnelle" placeholder="J'ai appris que..." required style="min-height: 120px;"></textarea>
+                <div class="help-text">Exprime ce que cette activité t'a appris sur l'algorithmique et la robotique</div>
+            </div>
+        </div>
+      
+        <!-- Boutons de contrôle -->
+        <div class="controls-container">
+            <button type="button" id="saveBtn" class="btn-action btn-save">
+                💾 Enregistrer vos réponses
+            </button>
+            <button type="button" id="exportJsonBtn" class="btn-action btn-json">
+                📦 Exporter
+            </button>
+            <button type="button" id="resetBtn" class="btn-action btn-reset">
+                🔄 Réinitialiser
+            </button>
+        </div>
+
+        <!-- Messages de feedback -->
+        <div id="successMessage" class="success-message">
+            ✅ <strong>Succès !</strong> Ta fiche a été enregistrée avec succès dans la base de données.
+        </div>
+        <div id="errorMessage" class="error-message">
+            ❌ <strong>Erreur !</strong> <span id="errorText"></span>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; color: #7f8c8d; font-size: 12px;">
+            Collège Moulin à vent – Technologie au collège<br>
+            Compétences travaillées : Programmer • Tester des programmes • Analyser des systèmes techniques
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION FIREBASE
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        console.log('✅ Firebase initialisé');
+
+        // Définir la date par défaut
+        document.getElementById('date').valueAsDate = new Date();
+
+        // ============================================
+        // SAUVEGARDE DANS FIREBASE
+        // ============================================
+        document.getElementById('saveBtn').addEventListener('click', async function() {
+            // Validation des champs requis
+            const requiredFields = ['prenom', 'nom', 'classe', 'date', 
+                                   'question_comportement_attendu', 'question_distance_securite',
+                                   'question_algorithme', 'question_boucle',
+                                   'question_algorithme_ameliore', 'question_avantages_inconvenients',
+                                   'question_debug_coin', 'question_protocole_test',
+                                   'synthese_personnelle'];
+            
+            for (let field of requiredFields) {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    alert('⚠️ Veuillez remplir tous les champs obligatoires (*)');
+                    element.focus();
+                    return;
+                }
+            }
+
+            // Désactiver le bouton pendant le traitement
+            const btn = this;
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = '⏳ Enregistrement en cours...';
+
+            try {
+                // Générer un timestamp unique
+                const timestamp = Date.now();
+                const dateStr = new Date().toISOString();
+
+                // Préparer les données
+                const ficheData = {
+                    // Informations élève
+                    prenom: document.getElementById('prenom').value.trim(),
+                    nom: document.getElementById('nom').value.trim(),
+                    classe: document.getElementById('classe').value.trim(),
+                    date: document.getElementById('date').value,
+                    
+                    // Type de fiche
+                    typeFiche: 'evitement-obstacles',
+                    problematique: 'Comment programmer un robot pour éviter les obstacles ?',
+                    
+                    // Réponses de l'élève
+                    questionComportementAttendu: document.getElementById('question_comportement_attendu').value.trim(),
+                    questionDistanceSecurite: document.getElementById('question_distance_securite').value.trim(),
+                    questionAlgorithme: document.getElementById('question_algorithme').value.trim(),
+                    questionBoucle: document.getElementById('question_boucle').value.trim(),
+                    questionAlgorithmeAmeliore: document.getElementById('question_algorithme_ameliore').value.trim(),
+                    questionAvantagesInconvenients: document.getElementById('question_avantages_inconvenients').value.trim(),
+                    questionDebugCoin: document.getElementById('question_debug_coin').value.trim(),
+                    questionProtocoleTest: document.getElementById('question_protocole_test').value.trim(),
+                    synthesePersonnelle: document.getElementById('synthese_personnelle').value.trim(),
+                    
+                    // Métadonnées
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    dateSoumission: dateStr,
+                    timestampLocal: timestamp
+                };
+
+                // Enregistrer dans Firestore
+                const docRef = await db.collection('fiches_evitement_obstacles').add(ficheData);
+                
+                console.log('✅ Fiche enregistrée avec ID:', docRef.id);
+
+                // Afficher le message de succès
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+
+            } catch (error) {
+                console.error('❌ Erreur:', error);
+                document.getElementById('errorText').textContent = error.message;
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            } finally {
+                // Réactiver le bouton
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+
+        // ============================================
+        // EXPORT JSON
+        // ============================================
+        document.getElementById('exportJsonBtn').addEventListener('click', function() {
+            const data = {
+                prenom: document.getElementById('prenom').value,
+                nom: document.getElementById('nom').value,
+                classe: document.getElementById('classe').value,
+                date: document.getElementById('date').value,
+                typeFiche: 'evitement-obstacles',
+                problematique: 'Comment programmer un robot pour éviter les obstacles ?',
+                questionComportementAttendu: document.getElementById('question_comportement_attendu').value,
+                questionDistanceSecurite: document.getElementById('question_distance_securite').value,
+                questionAlgorithme: document.getElementById('question_algorithme').value,
+                questionBoucle: document.getElementById('question_boucle').value,
+                questionAlgorithmeAmeliore: document.getElementById('question_algorithme_ameliore').value,
+                questionAvantagesInconvenients: document.getElementById('question_avantages_inconvenients').value,
+                questionDebugCoin: document.getElementById('question_debug_coin').value,
+                questionProtocoleTest: document.getElementById('question_protocole_test').value,
+                synthesePersonnelle: document.getElementById('synthese_personnelle').value,
+                exportDate: new Date().toISOString(),
+            };
+
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `fiche-evitement-obstacles-${data.nom || 'sans-nom'}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            console.log('✅ JSON exporté');
+        });
+
+        // ============================================
+        // RÉINITIALISATION
+        // ============================================
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm('⚠️ Êtes-vous sûr de vouloir réinitialiser le formulaire ? Toutes les données non sauvegardées seront perdues.')) {
+                // Réinitialiser tous les champs
+                document.querySelectorAll('input[type="text"], input[type="number"], input[type="date"], textarea').forEach(field => {
+                    if (field.id !== 'date') {
+                        field.value = '';
+                    }
+                });
+                
+                // Remettre la date du jour
+                document.getElementById('date').valueAsDate = new Date();
+                
+                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                console.log('✅ Formulaire réinitialisé');
+            }
+        });
+
+        // ============================================
+        // CONFIRMATION AVANT FERMETURE
+        // ============================================
+        let formModified = false;
+
+        document.querySelectorAll('input, textarea').forEach(element => {
+            element.addEventListener('input', () => {
+                formModified = true;
+            });
+        });
+
+        window.addEventListener('beforeunload', function(e) {
+            if (formModified) {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+
+        // Désactiver le flag après sauvegarde
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            setTimeout(() => {
+                formModified = false;
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
