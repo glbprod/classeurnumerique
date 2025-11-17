@@ -8,10 +8,6 @@
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-    
-    <!-- html2pdf.js pour l'export PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
         * {
@@ -550,73 +546,6 @@ Robots : ..." required></textarea>
         document.getElementById('date').valueAsDate = new Date();
 
         // ============================================
-        // GESTION DES IMAGES
-        // ============================================
-        let uploadedImages = {
-            logo: null,
-            schema1: null,
-            schema2: null,
-            schema3: null
-        };
-
-        // Fonction pour prévisualiser une image
-        function previewImage(inputId, previewId, storageKey) {
-            const input = document.getElementById(inputId);
-            const preview = document.getElementById(previewId);
-            
-            // Vérifier que les éléments existent avant d'ajouter l'event listener
-            if (!input || !preview) {
-                console.warn(`⚠️ Éléments non trouvés: ${inputId} ou ${previewId}`);
-                return;
-            }
-            
-            input.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    // Vérifier la taille (5 Mo max)
-                    if (file.size > 5 * 1024 * 1024) {
-                        alert('⚠️ Le fichier est trop volumineux (max 5 Mo)');
-                        return;
-                    }
-
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        preview.src = event.target.result;
-                        preview.style.display = 'block';
-                        uploadedImages[storageKey] = {
-                            file: file,
-                            dataUrl: event.target.result
-                        };
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
-
-        // Initialiser les prévisualisations (seulement pour les éléments qui existent)
-        previewImage('schema1Upload', 'schema1Preview', 'schema1');
-        previewImage('schema2Upload', 'schema2Preview', 'schema2');
-
-        // ============================================
-        // FONCTION UPLOAD VERS FIREBASE STORAGE
-        // ============================================
-        async function uploadImageToStorage(file, path) {
-            if (!file) return null;
-            
-            const storageRef = storage.ref();
-            const fileRef = storageRef.child(path);
-            
-            try {
-                const snapshot = await fileRef.put(file);
-                const downloadURL = await snapshot.ref.getDownloadURL();
-                return downloadURL;
-            } catch (error) {
-                console.error('Erreur upload image:', error);
-                throw error;
-            }
-        }
-
-        // ============================================
         // SAUVEGARDE DANS FIREBASE
         // ============================================
         document.getElementById('saveBtn').addEventListener('click', async function() {
@@ -728,12 +657,6 @@ Robots : ..." required></textarea>
                 exempleSupplementaire: document.getElementById('exemple_supplementaire').value,
                 synthesePersonnelle: document.getElementById('synthese_personnelle').value,
                 exportDate: new Date().toISOString(),
-                images: {
-                    logo: uploadedImages.logo ? 'Présent' : 'Non uploadé',
-                    schema1: uploadedImages.schema1 ? 'Présent' : 'Non uploadé',
-                    schema2: uploadedImages.schema2 ? 'Présent' : 'Non uploadé',
-                    schema3: uploadedImages.schema3 ? 'Présent' : 'Non uploadé'
-                }
             };
 
             const dataStr = JSON.stringify(data, null, 2);
@@ -773,13 +696,6 @@ Robots : ..." required></textarea>
                     img.style.display = 'none';
                     img.src = '';
                 });
-                
-                uploadedImages = {
-                    logo: null,
-                    schema1: null,
-                    schema2: null,
-                    schema3: null
-                };
                 
                 document.getElementById('successMessage').style.display = 'none';
                 document.getElementById('errorMessage').style.display = 'none';
