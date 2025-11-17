@@ -350,6 +350,15 @@
       "addedDate": "2025-11-17T00:31:31.103Z",
       "lastModified": "2025-11-17T00:31:31.120Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763342791192",
+      "title": "correction énergie",
+      "githubPath": "src/components/correction-énergie.html",
+      "description": "",
+      "addedDate": "2025-11-17T01:26:31.192Z",
+      "lastModified": "2025-11-17T01:26:31.193Z",
+      "favorite": false
     }
   ]
 }
