@@ -360,19 +360,6 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="header-right">
-                <div class="college-title">Collège Moulin à Vent</div>
-                <div class="logo-upload">
-                    <label for="logoUpload" class="upload-area" style="cursor: pointer; padding: 10px;">
-                        <div class="upload-icon">🏫</div>
-                        <div>Logo du collège</div>
-                        <div class="file-info">Cliquez pour uploader</div>
-                    </label>
-                    <input type="file" id="logoUpload" accept="image/*">
-                    <img id="logoPreview" class="logo-preview" style="display: none;">
-                </div>
-            </div>
         </div>
 
         <h1>Fiche d'Activité - Technologie</h1>
@@ -574,11 +561,12 @@ Robots : ..." required></textarea>
             appId: "1:662462446647:web:0fe6315cc0c189185513b2"
         };
 
+        // Initialiser Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
         console.log('✅ Firebase initialisé');
+
 
         // Définir la date par défaut
         document.getElementById('date').valueAsDate = new Date();
