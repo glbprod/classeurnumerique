@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORRECTION - Énergies et Objets Techniques</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: white;
+            margin: 0;
+            font-size: 2em;
+        }
+        .subtitle {
+            margin-top: 10px;
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-left: 5px solid #f39c12;
+            border-radius: 5px;
+        }
+        h3 {
+            color: #2c3e50;
+            margin-top: 25px;
+            font-size: 1.3em;
+        }
+        .question {
+            margin: 25px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        .answer {
+            background-color: #d5f4e6;
+            border: 2px solid #27ae60;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .answer-title {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .answer-content {
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        .explanation {
+            background-color: #fff3cd;
+            border: 2px solid #f39c12;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .explanation-title {
+            color: #d68910;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .explanation-content {
+            color: #5d4e37;
+            line-height: 1.6;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 2px solid #34495e;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #34495e;
+            color: white;
+            font-weight: bold;
+        }
+        .correct {
+            background-color: #d5f4e6;
+            font-weight: bold;
+            color: #27ae60;
+        }
+        .highlight {
+            background-color: #fffacd;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        ul {
+            line-height: 1.8;
+        }
+        li {
+            margin: 8px 0;
+        }
+        .competence-box {
+            background-color: #d1ecf1;
+            padding: 15px;
+            border-left: 4px solid #17a2b8;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .intro {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .image-card {
+            text-align: center;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #27ae60;
+        }
+        .image-card h4 {
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+        .image-card p {
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        .energy-flow {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border: 3px solid #f39c12;
+            margin: 20px 0;
+        }
+        .flow-box {
+            background-color: white;
+            border: 2px solid #34495e;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .flow-arrow {
+            text-align: center;
+            font-size: 28px;
+            color: #f39c12;
+            margin: 10px 0;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .badge-energy {
+            background-color: #f39c12;
+            color: white;
+        }
+        .badge-correct {
+            background-color: #27ae60;
+            color: white;
+        }
+        .print-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+        }
+        .print-btn:hover {
+            background-color: #2980b9;
+        }
+        .key-concepts {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-concepts-title {
+            color: #2e7d32;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .print-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✅ CORRECTION DÉTAILLÉE</h1>
+            <div class="subtitle">⚡ Énergies et Objets Techniques</div>
+            <div class="subtitle">Séquence 6 - Activité 3</div>
+        </div>
+
+        <button onclick="window.print()" class="print-btn">🖨️ Imprimer cette correction</button>
+
+        <div class="competence-box">
+            <h3>📚 Compétence travaillée</h3>
+            <p><strong>MMEI 3.1 :</strong> Reconnaître les situations où l'énergie est stockée, transformée, utilisée. La fabrication et le fonctionnement d'un objet technique nécessitent de l'énergie.</p>
+        </div>
+
+        <div class="intro">
+            <h3>🎯 Objectifs de l'activité</h3>
+            <ul>
+                <li>Comprendre la notion de <strong>conversion d'énergie</strong></li>
+                <li>Identifier les éléments qui composent la <strong>chaîne d'énergie</strong> d'un objet technique</li>
+            </ul>
+        </div>
+
+        <!-- PARTIE 1: ENTRÉE-SORTIE -->
+        <div class="question">
+            <h2>Partie 1 - Entrée-Sortie : Fonction technique des objets</h2>
+            <p><strong>Consigne :</strong> Pour chaque objet technique, identifier sa fonction principale ainsi que l'énergie d'entrée et l'énergie de sortie.</p>
+        </div>
+
+        <div class="answer">
+            <div class="answer-title">✅ Tableau complété</div>
+            <div class="answer-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Objet technique</th>
+                            <th>Fonction technique</th>
+                            <th>Énergie d'entrée</th>
+                            <th>Énergie de sortie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>🚴 Bicyclette</strong></td>
+                            <td class="correct">Se déplacer / Avancer</td>
+                            <td class="correct">Énergie musculaire / Mécanique (pédalage)</td>
+                            <td class="correct">Énergie mécanique (mouvement des roues)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>💡 Lampe</strong></td>
+                            <td class="correct">Éclairer / Produire de la lumière</td>
+                            <td class="correct">Énergie électrique</td>
+                            <td class="correct">Énergie lumineuse (+ thermique)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>🌀 Ventilateur</strong></td>
+                            <td class="correct">Brasser l'air / Rafraîchir / Ventiler</td>
+                            <td class="correct">Énergie électrique</td>
+                            <td class="correct">Énergie mécanique (rotation) + mouvement d'air</td>
+                        </tr>
+                        <tr>
+                            <td><strong>☕ Bouilloire électrique</strong></td>
+                            <td class="correct">Chauffer / Faire bouillir de l'eau</td>
+                            <td class="correct">Énergie électrique</td>
+                            <td class="correct">Énergie thermique (chaleur)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Explications</div>
+            <div class="explanation-content">
+                <p><strong>Principe de conversion d'énergie :</strong></p>
+                <p>Tous les objets techniques <strong>transforment une forme d'énergie en une autre</strong> pour accomplir leur fonction. Cette transformation s'appelle une <span class="highlight">conversion d'énergie</span>.</p>
+                
+                <p><strong>Les différentes formes d'énergie :</strong></p>
+                <ul>
+                    <li><strong>Énergie mécanique :</strong> énergie liée au mouvement ou à la position (pédalage, rotation, chute...)</li>
+                    <li><strong>Énergie électrique :</strong> énergie liée au déplacement des électrons dans un conducteur</li>
+                    <li><strong>Énergie thermique :</strong> énergie liée à la chaleur (agitation des molécules)</li>
+                    <li><strong>Énergie lumineuse :</strong> énergie transportée par la lumière</li>
+                    <li><strong>Énergie chimique :</strong> énergie contenue dans les liaisons chimiques (batterie, essence...)</li>
+                    <li><strong>Énergie musculaire :</strong> énergie produite par les muscles (conversion chimique → mécanique)</li>
+                </ul>
+
+                <p><strong>Points d'attention :</strong></p>
+                <ul>
+                    <li>Une partie de l'énergie est souvent perdue sous forme de <strong>chaleur</strong> (rendement &lt; 100%)</li>
+                    <li>La fonction technique décrit <strong>ce que fait l'objet</strong> (verbe d'action)</li>
+                    <li>L'énergie d'entrée est celle qui est <strong>consommée</strong> par l'objet</li>
+                    <li>L'énergie de sortie est celle qui est <strong>produite/utilisée</strong> pour réaliser la fonction</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PARTIE 2: CONVERSION ET STOCKAGE -->
+        <div class="question">
+            <h2>Partie 2 - Conversion et stockage de l'énergie</h2>
+            <p><strong>Consigne :</strong> Comparer le système de déplacement à énergie musculaire (humain) et le système à moteur thermique (voiture).</p>
+        </div>
+
+        <div class="answer">
+            <div class="answer-title">✅ Tableau comparatif complété</div>
+            <div class="answer-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Critère</th>
+                            <th>🚶 Système à énergie musculaire<br>(Humain marchant)</th>
+                            <th>🚗 Système à moteur thermique<br>(Voiture)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Énergie d'entrée</strong></td>
+                            <td class="correct">Énergie chimique (aliments / nourriture)</td>
+                            <td class="correct">Énergie chimique (carburant : essence, diesel)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Énergie de sortie</strong></td>
+                            <td class="correct">Énergie mécanique (mouvement des jambes)</td>
+                            <td class="correct">Énergie mécanique (rotation des roues)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Se déplacer</strong></td>
+                            <td class="correct">Muscles des jambes qui se contractent</td>
+                            <td class="correct">Moteur thermique qui entraîne les roues</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Guider</strong></td>
+                            <td class="correct">Cerveau (système nerveux) qui contrôle les mouvements</td>
+                            <td class="correct">Volant relié aux roues directrices (avant)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Stocker l'énergie</strong></td>
+                            <td class="correct">Graisse corporelle / Glycogène dans les muscles</td>
+                            <td class="correct">Réservoir de carburant (essence ou diesel)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Distribuer</strong></td>
+                            <td class="correct">Vaisseaux sanguins qui apportent nutriments et oxygène</td>
+                            <td class="correct">Circuit de carburant (pompe, durites, injecteurs)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Convertir</strong></td>
+                            <td class="correct">Cellules musculaires (chimique → mécanique)</td>
+                            <td class="correct">Moteur (combustion : chimique → thermique → mécanique)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Transmettre</strong></td>
+                            <td class="correct">Squelette (os, articulations) et tendons</td>
+                            <td class="correct">Transmission (boîte de vitesses, arbre de transmission, différentiel)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Explications</div>
+            <div class="explanation-content">
+                <p><strong>Analogie humain / voiture :</strong></p>
+                <p>Cette comparaison met en évidence que le corps humain et la voiture fonctionnent selon les <strong>mêmes principes</strong> de conversion et de gestion de l'énergie.</p>
+
+                <p><strong>Les 6 fonctions de la chaîne d'énergie :</strong></p>
+                <ol>
+                    <li><strong>STOCKER :</strong> Conserver l'énergie pour une utilisation ultérieure</li>
+                    <li><strong>DISTRIBUER :</strong> Acheminer l'énergie du stockage vers le convertisseur</li>
+                    <li><strong>CONVERTIR :</strong> Transformer l'énergie d'une forme à une autre</li>
+                    <li><strong>TRANSMETTRE :</strong> Transférer l'énergie mécanique vers l'organe effecteur</li>
+                    <li><strong>GUIDER :</strong> Contrôler et orienter le mouvement</li>
+                    <li><strong>SE DÉPLACER :</strong> Réaliser la fonction attendue (mouvement)</li>
+                </ol>
+
+                <p><strong>Points clés :</strong></p>
+                <ul>
+                    <li>Le corps humain est une <strong>machine biologique</strong> très performante</li>
+                    <li>Les deux systèmes convertissent de l'<strong>énergie chimique</strong> en <strong>énergie mécanique</strong></li>
+                    <li>Le rendement du moteur thermique est d'environ 25-30% (beaucoup de chaleur perdue)</li>
+                    <li>Le rendement musculaire humain est d'environ 20-25%</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PARTIE 3: STOCKAGE D'ÉNERGIE -->
+        <div class="question">
+            <h2>Partie 3 - Identifier les systèmes de stockage d'énergie</h2>
+            <p><strong>Consigne :</strong> Identifier l'énergie stockée pour chaque système.</p>
+        </div>
+
+        <div class="answer">
+            <div class="answer-title">✅ Réponses pour les 4 images</div>
+            <div class="answer-content">
+                <div class="image-grid">
+                    <div class="image-card">
+                        <h4>Image 1 : Barrage hydraulique</h4>
+                        <p class="correct">Énergie potentielle de pesanteur</p>
+                        <p style="color: #7f8c8d; font-weight: normal; margin-top: 10px;">
+                            L'eau en hauteur stocke de l'énergie grâce à sa position. Quand elle tombe, cette énergie est convertie en électricité par les turbines.
+                        </p>
+                    </div>
+
+                    <div class="image-card">
+                        <h4>Image 2 : Batterie</h4>
+                        <p class="correct">Énergie chimique</p>
+                        <p style="color: #7f8c8d; font-weight: normal; margin-top: 10px;">
+                            L'énergie est stockée sous forme de réactions chimiques réversibles. Elle est convertie en énergie électrique lors de l'utilisation.
+                        </p>
+                    </div>
+
+                    <div class="image-card">
+                        <h4>Image 3 : Arc tendu</h4>
+                        <p class="correct">Énergie élastique / Énergie potentielle élastique</p>
+                        <p style="color: #7f8c8d; font-weight: normal; margin-top: 10px;">
+                            La corde et les branches de l'arc tendus stockent de l'énergie. Au relâchement, elle est transférée à la flèche (énergie cinétique).
+                        </p>
+                    </div>
+
+                    <div class="image-card">
+                        <h4>Image 4 : Bois de chauffage</h4>
+                        <p class="correct">Énergie chimique</p>
+                        <p style="color: #7f8c8d; font-weight: normal; margin-top: 10px;">
+                            Le bois contient de l'énergie chimique issue de la photosynthèse. La combustion libère cette énergie sous forme de chaleur et de lumière.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Explications</div>
+            <div class="explanation-content">
+                <p><strong>Les différents types d'énergie stockée :</strong></p>
+                
+                <p><strong>1. Énergie potentielle de pesanteur :</strong></p>
+                <ul>
+                    <li>Dépend de la <strong>hauteur</strong> et de la <strong>masse</strong> de l'objet</li>
+                    <li>Formule : E = m × g × h (m=masse, g=gravité, h=hauteur)</li>
+                    <li>Exemples : eau de barrage, ski en haut d'une pente, montgolfière</li>
+                </ul>
+
+                <p><strong>2. Énergie chimique :</strong></p>
+                <ul>
+                    <li>Stockée dans les <strong>liaisons entre atomes</strong></li>
+                    <li>Libérée lors de réactions chimiques (combustion, digestion...)</li>
+                    <li>Exemples : batterie, essence, nourriture, bois, charbon, gaz naturel</li>
+                </ul>
+
+                <p><strong>3. Énergie élastique :</strong></p>
+                <ul>
+                    <li>Stockée dans un matériau <strong>déformé</strong> qui peut reprendre sa forme initiale</li>
+                    <li>Dépend de la <strong>déformation</strong> et de la <strong>rigidité</strong> du matériau</li>
+                    <li>Exemples : ressort comprimé, arc bandé, élastique tendu, trampoline</li>
+                </ul>
+
+                <p><strong>Principe fondamental :</strong></p>
+                <p>L'énergie peut être <strong>stockée sous différentes formes</strong> et <strong>convertie</strong> quand on en a besoin. C'est la base du fonctionnement de tous nos objets techniques.</p>
+            </div>
+        </div>
+
+        <!-- PARTIE 4: LA CHAÎNE D'ÉNERGIE -->
+        <div class="question">
+            <h2>Partie 4 - La chaîne d'énergie</h2>
+            <p><strong>Consigne :</strong> Compléter les phrases pour décrire la chaîne d'énergie complète d'un objet technique.</p>
+        </div>
+
+        <div class="answer">
+            <div class="answer-title">✅ Texte à compléter - Phrases corrigées</div>
+            <div class="answer-content">
+                <div class="energy-flow">
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        La <span class="highlight">chaîne d'énergie</span> d'un objet technique regroupe tous les éléments qui permettent de 
+                        <strong class="correct">stocker</strong>, <strong class="correct">distribuer</strong> et <strong class="correct">transformer</strong> 
+                        l'énergie pour réaliser la fonction attendue.
+                    </p>
+
+                    <div class="flow-arrow">↓</div>
+
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        L'énergie peut être <strong class="correct">stockée</strong> sous différentes formes : 
+                        <strong>chimique</strong> (batterie, essence), <strong>potentielle</strong> (eau en hauteur), 
+                        <strong>élastique</strong> (ressort), etc.
+                    </p>
+
+                    <div class="flow-arrow">↓</div>
+
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Elle est ensuite <strong class="correct">distribuée</strong> vers le convertisseur par un système de 
+                        <strong class="correct">distribution</strong> (fils électriques, tuyaux, engrenages...).
+                    </p>
+
+                    <div class="flow-arrow">↓</div>
+
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Le convertisseur <strong class="correct">transforme</strong> l'énergie d'entrée en 
+                        <strong class="correct">énergie de sortie</strong> adaptée à la fonction (moteur, ampoule, résistance chauffante...).
+                    </p>
+
+                    <div class="flow-arrow">↓</div>
+
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Enfin, l'énergie convertie permet de réaliser l'<strong class="correct">action</strong> voulue : 
+                        se déplacer, éclairer, chauffer, etc.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Schéma de la chaîne d'énergie</div>
+            <div class="explanation-content">
+                <div class="energy-flow">
+                    <div class="flow-box" style="background-color: #fff3cd;">
+                        <span class="badge badge-energy">1</span> STOCKER
+                        <p style="font-size: 0.9em; margin: 5px 0 0 0;">Batterie, réservoir, condensateur...</p>
+                    </div>
+                    
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="flow-box" style="background-color: #d1ecf1;">
+                        <span class="badge badge-energy">2</span> DISTRIBUER
+                        <p style="font-size: 0.9em; margin: 5px 0 0 0;">Câbles, tuyaux, courroies...</p>
+                    </div>
+                    
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="flow-box" style="background-color: #f8d7da;">
+                        <span class="badge badge-energy">3</span> CONVERTIR
+                        <p style="font-size: 0.9em; margin: 5px 0 0 0;">Moteur, résistance, ampoule...</p>
+                    </div>
+                    
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="flow-box" style="background-color: #d4edda;">
+                        <span class="badge badge-energy">4</span> TRANSMETTRE
+                        <p style="font-size: 0.9em; margin: 5px 0 0 0;">Engrenages, courroies, chaînes...</p>
+                    </div>
+                    
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="flow-box" style="background-color: #e2e3e5;">
+                        <span class="badge badge-correct">✓</span> ACTION RÉALISÉE
+                        <p style="font-size: 0.9em; margin: 5px 0 0 0;">Avancer, éclairer, chauffer...</p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 20px;"><strong>Exemples concrets :</strong></p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Objet</th>
+                            <th>Stocker</th>
+                            <th>Distribuer</th>
+                            <th>Convertir</th>
+                            <th>Transmettre</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Vélo électrique</strong></td>
+                            <td>Batterie</td>
+                            <td>Câbles électriques</td>
+                            <td>Moteur électrique</td>
+                            <td>Chaîne, pignons</td>
+                            <td>Avancer</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lampe de poche</strong></td>
+                            <td>Piles</td>
+                            <td>Fils conducteurs</td>
+                            <td>Ampoule LED</td>
+                            <td>-</td>
+                            <td>Éclairer</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Voiture thermique</strong></td>
+                            <td>Réservoir</td>
+                            <td>Circuit carburant</td>
+                            <td>Moteur thermique</td>
+                            <td>Boîte vitesses, arbre</td>
+                            <td>Se déplacer</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sèche-cheveux</strong></td>
+                            <td>-</td>
+                            <td>Câble électrique</td>
+                            <td>Résistance + moteur</td>
+                            <td>Hélice</td>
+                            <td>Chauffer et souffler</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CONCEPTS CLÉS -->
+        <h2>🔑 Concepts clés à retenir</h2>
+        
+        <div class="key-concepts">
+            <div class="key-concepts-title">📝 L'essentiel à retenir</div>
+            
+            <h3>1. La conversion d'énergie</h3>
+            <ul>
+                <li>Tous les objets techniques <strong>convertissent</strong> une forme d'énergie en une autre</li>
+                <li>L'énergie d'<strong>entrée</strong> est transformée en énergie de <strong>sortie</strong></li>
+                <li>Une partie de l'énergie est toujours perdue (souvent sous forme de <strong>chaleur</strong>)</li>
+                <li>Le <strong>rendement</strong> = (énergie utile / énergie consommée) × 100</li>
+            </ul>
+
+            <h3>2. Les formes d'énergie</h3>
+            <ul>
+                <li><strong>Mécanique :</strong> mouvement, position (cinétique, potentielle)</li>
+                <li><strong>Électrique :</strong> déplacement d'électrons</li>
+                <li><strong>Thermique :</strong> chaleur</li>
+                <li><strong>Chimique :</strong> liaisons moléculaires (batterie, essence, nourriture)</li>
+                <li><strong>Lumineuse :</strong> rayonnement lumineux</li>
+                <li><strong>Nucléaire :</strong> liaisons atomiques</li>
+            </ul>
+
+            <h3>3. La chaîne d'énergie (4 fonctions principales)</h3>
+            <ul>
+                <li><strong>STOCKER :</strong> Conserver l'énergie (batterie, réservoir, condensateur)</li>
+                <li><strong>DISTRIBUER :</strong> Acheminer l'énergie (câbles, tuyaux, courroies)</li>
+                <li><strong>CONVERTIR :</strong> Transformer l'énergie (moteur, résistance, ampoule)</li>
+                <li><strong>TRANSMETTRE :</strong> Transférer l'énergie mécanique (engrenages, chaîne)</li>
+            </ul>
+
+            <h3>4. Conservation de l'énergie</h3>
+            <ul>
+                <li><strong>Principe :</strong> L'énergie ne se crée pas, ne se détruit pas, elle se <strong>transforme</strong></li>
+                <li>Énergie totale d'entrée = Énergie utile + Énergie perdue</li>
+                <li>Les pertes sont principalement sous forme de <strong>chaleur et de bruit</strong></li>
+            </ul>
+        </div>
+
+        <!-- CONSEILS -->
+        <h2>💡 Conseils méthodologiques</h2>
+        
+        <div class="explanation">
+            <div class="explanation-content">
+                <p><strong>Pour bien réussir ce type d'activité :</strong></p>
+                <ul>
+                    <li>🔍 <strong>Identifier la fonction principale</strong> de l'objet technique (que fait-il ?)</li>
+                    <li>⚡ <strong>Repérer l'énergie d'entrée</strong> : quelle énergie l'objet consomme-t-il ?</li>
+                    <li>✨ <strong>Identifier l'énergie de sortie</strong> : quelle énergie est produite pour réaliser la fonction ?</li>
+                    <li>🔄 <strong>Tracer la chaîne d'énergie</strong> : suivre le parcours de l'énergie étape par étape</li>
+                    <li>📚 <strong>Utiliser le vocabulaire technique</strong> précis (stocker, distribuer, convertir, transmettre)</li>
+                </ul>
+                
+                <p><strong>Erreurs à éviter :</strong></p>
+                <ul>
+                    <li>❌ Confondre chaîne d'énergie et chaîne d'information</li>
+                    <li>❌ Oublier que l'énergie se transforme (elle ne disparaît pas)</li>
+                    <li>❌ Négliger les pertes d'énergie (rendement &lt; 100%)</li>
+                    <li>❌ Confondre stockage et conversion</li>
+                </ul>
+
+                <p><strong>Notions à réviser :</strong></p>
+                <ul>
+                    <li>Les 6 formes d'énergie principales</li>
+                    <li>Les 4 fonctions de la chaîne d'énergie</li>
+                    <li>Le principe de conservation de l'énergie</li>
+                    <li>La notion de rendement énergétique</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div style="text-align: center; margin-top: 50px; padding-top: 30px; border-top: 2px solid #ecf0f1; color: #7f8c8d;">
+            <p><strong>Collège Moulin à Vent - Technologie</strong></p>
+            <p>Correction Fiche Activité - Énergies et Objets Techniques</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">
+                ⚡ Séquence 6 : Comment produire et convertir des énergies
+            </p>
+        </div>
+    </div>
+</body>
+</html>
