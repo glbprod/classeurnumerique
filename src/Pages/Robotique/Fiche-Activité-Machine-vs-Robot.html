@@ -410,17 +410,6 @@ Machines : ...
 Robots : ..." required></textarea>
                 <div class="help-text">Donne des exemples concrets que tu utilises ou que tu as déjà vus</div>
             </div>
-
-            <div class="form-group">
-                <label>Photo ou schéma de tes exemples (optionnel)</label>
-                <label for="schema1Upload" class="upload-area">
-                    <div class="upload-icon">🖼️</div>
-                    <div>Ajouter une photo ou un schéma</div>
-                    <div class="file-info">Format: JPG, PNG (max 5 Mo)</div>
-                </label>
-                <input type="file" id="schema1Upload" accept="image/*">
-                <img id="schema1Preview" class="image-preview" style="display: none;">
-            </div>
         </div>
 
         <!-- Activité 2 -->
@@ -480,17 +469,6 @@ Robots : ..." required></textarea>
             <div class="form-group">
                 <label>Donne un autre exemple d'objet et dis si c'est une machine ou un robot en justifiant <span class="required">*</span></label>
                 <textarea id="exemple_supplementaire" placeholder="Exemple : L'aspirateur Roomba est un robot car..." required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Schéma ou illustration (optionnel)</label>
-                <label for="schema2Upload" class="upload-area">
-                    <div class="upload-icon">📊</div>
-                    <div>Ajouter un schéma explicatif</div>
-                    <div class="file-info">Format: JPG, PNG (max 5 Mo)</div>
-                </label>
-                <input type="file" id="schema2Upload" accept="image/*">
-                <img id="schema2Preview" class="image-preview" style="display: none;">
             </div>
         </div>
 
@@ -586,6 +564,12 @@ Robots : ..." required></textarea>
             const input = document.getElementById(inputId);
             const preview = document.getElementById(previewId);
             
+            // Vérifier que les éléments existent avant d'ajouter l'event listener
+            if (!input || !preview) {
+                console.warn(`⚠️ Éléments non trouvés: ${inputId} ou ${previewId}`);
+                return;
+            }
+            
             input.addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {
@@ -609,11 +593,9 @@ Robots : ..." required></textarea>
             });
         }
 
-        // Initialiser les prévisualisations
-        previewImage('logoUpload', 'logoPreview', 'logo');
+        // Initialiser les prévisualisations (seulement pour les éléments qui existent)
         previewImage('schema1Upload', 'schema1Preview', 'schema1');
         previewImage('schema2Upload', 'schema2Preview', 'schema2');
-        previewImage('schema3Upload', 'schema3Preview', 'schema3');
 
         // ============================================
         // FONCTION UPLOAD VERS FIREBASE STORAGE
