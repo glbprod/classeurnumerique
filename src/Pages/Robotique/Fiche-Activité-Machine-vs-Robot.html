@@ -573,19 +573,6 @@ Robots : ..." required></textarea>
                 const timestamp = Date.now();
                 const dateStr = new Date().toISOString();
 
-                // Upload des images vers Firebase Storage
-                const logoUrl = uploadedImages.logo ? 
-                    await uploadImageToStorage(uploadedImages.logo.file, `fiches/machine-robot/${timestamp}/logo.jpg`) : null;
-                
-                const schema1Url = uploadedImages.schema1 ? 
-                    await uploadImageToStorage(uploadedImages.schema1.file, `fiches/machine-robot/${timestamp}/schema1.jpg`) : null;
-                
-                const schema2Url = uploadedImages.schema2 ? 
-                    await uploadImageToStorage(uploadedImages.schema2.file, `fiches/machine-robot/${timestamp}/schema2.jpg`) : null;
-                
-                const schema3Url = uploadedImages.schema3 ? 
-                    await uploadImageToStorage(uploadedImages.schema3.file, `fiches/machine-robot/${timestamp}/schema3.jpg`) : null;
-
                 // Préparer les données
                 const ficheData = {
                     // Informations élève
@@ -603,12 +590,6 @@ Robots : ..." required></textarea>
                     questionLaveVaisselle: document.getElementById('question_lave_vaisselle').value.trim(),
                     exempleSupplementaire: document.getElementById('exemple_supplementaire').value.trim(),
                     synthesePersonnelle: document.getElementById('synthese_personnelle').value.trim(),
-                    
-                    // URLs des images
-                    logoUrl: logoUrl,
-                    schema1Url: schema1Url,
-                    schema2Url: schema2Url,
-                    schema3Url: schema3Url,
                     
                     // Métadonnées
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
