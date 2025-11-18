@@ -222,6 +222,38 @@
     gap: 6px;
   }
 
+/* Bouton tout effacer - DANGER ZONE */
+.btn-delete-all {
+  background: #000000;
+  color: #ff0000;
+  padding: 6px 12px;
+  border: 3px solid #ff0000;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  transition: all 0.3s;
+  text-shadow: 0 0 8px #ff0000;
+  font-weight: 700;
+  animation: dangerPulse 2s infinite;
+}
+
+.btn-delete-all:hover {
+  background: #ff0000;
+  color: #000000;
+  box-shadow: 0 0 30px rgba(255, 0, 0, 1);
+  text-shadow: none;
+  animation: none;
+}
+
+@keyframes dangerPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+  }
+}
+  
   .btn-delete {
     background: #000000;
     color: #ff0000;
@@ -467,6 +499,7 @@
       <button type="button" class="btn" onclick="loadPages()">[ REFRESH ]</button>
       <!-- <button type="button" class="btn" onclick="checkAllPages()">[ 🔍 VÉRIFIER LIENS ]</button>
       <button type="button" class="btn btn-delete" onclick="cleanBrokenLinks()">[ 🧹 NETTOYER ]</button> -->
+      <button type="button" class="btn btn-delete-all" onclick="deleteAllPages()">[ ⚠️ TOUT EFFACER ]</button>
     </form>
 
     <!-- Navigateur de fichiers -->
@@ -1048,7 +1081,58 @@ async function loadPages() {
         showMessage(`[ ✗ ERREUR : ${error.message} ]`, 'error');
       }
     }
+    // ==========================================
+// ⚠️ FONCTION DANGER : TOUT EFFACER
+// ==========================================
+async function deleteAllPages() {
+  // PREMIÈRE CONFIRMATION
+  const firstConfirm = confirm(
+    '[ ⚠️ ATTENTION ⚠️ ]\n\n' +
+    'Vous êtes sur le point de SUPPRIMER TOUTES LES PAGES !\n\n' +
+    'Cette action est IRRÉVERSIBLE.\n\n' +
+    'Voulez-vous continuer ?'
+  );
+  
+  if (!firstConfirm) {
+    return;
+  }
+  
+  // DEUXIÈME CONFIRMATION avec texte à saisir
+  const confirmText = prompt(
+    '[ ⚠️ CONFIRMATION FINALE ⚠️ ]\n\n' +
+    `Vous allez supprimer ${allPages.length} page(s).\n\n` +
+    'Pour confirmer, tapez exactement : EFFACER'
+  );
+  
+  if (confirmText !== 'EFFACER') {
+    showMessage('[ ✗ ANNULÉ - Texte incorrect ]', 'error');
+    return;
+  }
+  
+  // SUPPRESSION
+  try {
+    showMessage('[ 🔥 SUPPRESSION EN COURS... ]', 'error');
     
+    const response = await fetch(`${API_BASE}/delete-all-pages`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: true })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      showMessage(`[ ✓ TOUTES LES PAGES ONT ÉTÉ SUPPRIMÉES ]`, 'success');
+      allPages = [];
+      displayPages(allPages); // Afficher la liste vide
+    } else {
+      throw new Error(data.error || 'Erreur inconnue');
+    }
+    
+  } catch (error) {
+    showMessage(`[ ✗ ERREUR : ${error.message} ]`, 'error');
+  }
+}
     // Charger les pages au démarrage
     loadPages();
   </script>
