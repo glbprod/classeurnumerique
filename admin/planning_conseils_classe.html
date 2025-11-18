@@ -259,6 +259,48 @@
         #file-input {
             display: none;
         }
+
+        .btn-edit {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .btn-edit:hover {
+            background: #f57c00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+        }
+        
+        .btn-edit.active {
+            background: #f57c00;
+            box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.3);
+        }
+        
+        .delete-btn {
+            display: none;
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .delete-btn:hover {
+            background: #d32f2f;
+            transform: scale(1.05);
+        }
+        
+        .edit-mode .delete-btn {
+            display: inline-block;
+        }
+        
+        .conseil-card.hidden-class {
+            display: none;
+        }
         
     </style>
 </head>
@@ -269,6 +311,8 @@
         <div id="planning-container"></div>
 
         <div class="buttons-container">
+            <button class="btn btn-edit" id="edit-btn" onclick="toggleEditMode()">✏️ Gérer les classes</button>
+            <button class="btn btn-import" onclick="restoreAllClasses()">🔄 Restaurer classes</button>
             <button class="btn btn-export" onclick="exportData()">📥 Exporter CSV</button>
             <button class="btn btn-import" onclick="document.getElementById('file-input').click()">📤 Importer CSV</button>
             <button class="btn btn-reset" onclick="resetData()">🗑️ Réinitialiser tout</button>
@@ -328,42 +372,47 @@
             document.getElementById('progress-percentage').textContent = percentage + '%';
         }
 
-        function createConseilCard(conseil, index) {
-            const savedData = loadSavedData();
-            const conseilId = `conseil-${index}`;
-            const conseilData = savedData[conseilId] || { completed: false, appreciation: '' };
-
-            const card = document.createElement('div');
-            card.className = `conseil-card ${conseilData.completed ? 'completed' : ''}`;
-            card.id = conseilId;
-
-            card.innerHTML = `
-                <div class="conseil-header">
-                    <div class="classe-info">
-                        <div class="classe-name">Classe ${conseil.classe}</div>
-                        <span class="horaire">${conseil.horaire}</span>
-                        <span class="salle">${conseil.salle}</span>
+            function createConseilCard(conseil, index) {
+                const savedData = loadSavedData();
+                const conseilId = `conseil-${index}`;
+                const conseilData = savedData[conseilId] || { completed: false, appreciation: '' };
+                
+                const hiddenClasses = getHiddenClasses();
+                const isHidden = hiddenClasses.includes(conseil.classe);
+            
+                const card = document.createElement('div');
+                card.className = `conseil-card ${conseilData.completed ? 'completed' : ''} ${isHidden ? 'hidden-class' : ''}`;
+                card.id = conseilId;
+                card.dataset.classe = conseil.classe;
+            
+                card.innerHTML = `
+                    <div class="conseil-header">
+                        <div class="classe-info">
+                            <div class="classe-name">Classe ${conseil.classe}</div>
+                            <span class="horaire">${conseil.horaire}</span>
+                            <span class="salle">${conseil.salle}</span>
+                            <button class="delete-btn" onclick="deleteClasse('${conseil.classe}')">🗑️ Supprimer</button>
+                        </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" 
+                                   id="check-${conseilId}" 
+                                   ${conseilData.completed ? 'checked' : ''}
+                                   onchange="toggleCompleted('${conseilId}')">
+                            <label for="check-${conseilId}" class="checkbox-label">Appréciations remplies</label>
+                        </div>
                     </div>
-                    <div class="checkbox-container">
-                        <input type="checkbox" 
-                               id="check-${conseilId}" 
-                               ${conseilData.completed ? 'checked' : ''}
-                               onchange="toggleCompleted('${conseilId}')">
-                        <label for="check-${conseilId}" class="checkbox-label">Appréciations remplies</label>
+                    <div class="appreciation-container">
+                        <label for="text-${conseilId}" class="appreciation-label">Notes / Appréciation générale :</label>
+                        <textarea 
+                            id="text-${conseilId}" 
+                            placeholder=""
+                            onchange="saveAppreciation('${conseilId}')"
+                            onblur="saveAppreciation('${conseilId}')">${conseilData.appreciation}</textarea>
                     </div>
-                </div>
-                <div class="appreciation-container">
-                    <label for="text-${conseilId}" class="appreciation-label">Notes / Appréciation générale :</label>
-                    <textarea 
-                        id="text-${conseilId}" 
-                        placeholder=""
-                        onchange="saveAppreciation('${conseilId}')"
-                        onblur="saveAppreciation('${conseilId}')">${conseilData.appreciation}</textarea>
-                </div>
-            `;
-
-            return card;
-        }
+                `;
+            
+                return card;
+            }
 
         function toggleCompleted(conseilId) {
             const savedData = loadSavedData();
@@ -502,6 +551,48 @@
             };
             reader.readAsText(file);
             event.target.value = '';
+        }
+
+        function getHiddenClasses() {
+            const saved = localStorage.getItem('hiddenClasses');
+            return saved ? JSON.parse(saved) : [];
+        }
+        
+        function saveHiddenClasses(hiddenClasses) {
+            localStorage.setItem('hiddenClasses', JSON.stringify(hiddenClasses));
+        }
+        
+        function toggleEditMode() {
+            const container = document.getElementById('planning-container');
+            const editBtn = document.getElementById('edit-btn');
+            
+            container.classList.toggle('edit-mode');
+            editBtn.classList.toggle('active');
+            
+            if (editBtn.classList.contains('active')) {
+                editBtn.textContent = '✅ Terminer';
+            } else {
+                editBtn.textContent = '✏️ Gérer les classes';
+            }
+        }
+        
+        function deleteClasse(classe) {
+            if (confirm(`Voulez-vous vraiment masquer la classe ${classe} ?\n\nVous pourrez la restaurer plus tard.`)) {
+                const hiddenClasses = getHiddenClasses();
+                if (!hiddenClasses.includes(classe)) {
+                    hiddenClasses.push(classe);
+                    saveHiddenClasses(hiddenClasses);
+                    renderPlanning();
+                }
+            }
+        }
+        
+        function restoreAllClasses() {
+            if (confirm('Voulez-vous restaurer toutes les classes masquées ?')) {
+                localStorage.removeItem('hiddenClasses');
+                renderPlanning();
+                alert('✅ Toutes les classes ont été restaurées.');
+            }
         }
 
         // Initialisation
