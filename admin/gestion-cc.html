@@ -517,9 +517,13 @@
 
         function exportData() {
             const savedData = loadSavedData();
+            const hiddenClasses = getHiddenClasses();
             let csvContent = 'Jour,Date,Horaire,Classe,Salle,Appreciations_Remplies,Notes\n';
         
             conseilsData.forEach((conseil, index) => {
+                // Ne pas exporter les classes masquées
+                if (hiddenClasses.includes(conseil.classe)) return;
+                
                 const conseilId = `conseil-${index}`;
                 const data = savedData[conseilId] || { completed: false, appreciation: '' };
                 
