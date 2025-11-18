@@ -275,6 +275,24 @@
     </div>
 
     <script>
+
+        // ============================================
+        // CONFIRMATION AVANT FERMETURE
+        // ============================================
+        let formModified = false;
+
+        document.getElementById('dnbForm').addEventListener('input', function() {
+            formModified = true;
+        });
+
+        window.addEventListener('beforeunload', function(e) {
+            if (formModified) {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+        
         const conseilsData = [
             {jour: "Lundi", date: "24 novembre", horaire: "16h05-17h15", classe: "602", salle: "B24"},
             {jour: "Lundi", date: "24 novembre", horaire: "16h05-17h15", classe: "502", salle: "B24"},
@@ -352,7 +370,7 @@
                     <label for="text-${conseilId}" class="appreciation-label">Notes / Appréciation générale :</label>
                     <textarea 
                         id="text-${conseilId}" 
-                        placeholder="Saisissez vos notes ou une appréciation générale pour cette classe..."
+                        placeholder="Appréciation générale pour cette classe..."
                         onchange="saveAppreciation('${conseilId}')"
                         onblur="saveAppreciation('${conseilId}')">${conseilData.appreciation}</textarea>
                 </div>
