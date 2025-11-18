@@ -306,9 +306,6 @@
 </head>
 <body>
     <div class="container">
-        <h1>📋 Planning des Conseils de Classe</h1>
-
-        <div id="planning-container"></div>
 
         <div class="buttons-container">
             <button class="btn btn-edit" id="edit-btn" onclick="toggleEditMode()">✏️ Gérer les classes</button>
@@ -318,6 +315,10 @@
             <button class="btn btn-reset" onclick="resetData()">🗑️ Réinitialiser tout</button>
             <input type="file" id="file-input" accept=".csv" onchange="importData(event)">
         </div>
+        
+        <h1>📋 Planning des Conseils de Classe</h1>
+
+        <div id="planning-container"></div>
     </div>
 
     <script>
