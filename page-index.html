@@ -940,7 +940,14 @@ async function loadPages() {
         container.innerHTML = '<p class="loading">[ AUCUNE PAGE TROUVÉE ]</p>';
         return;
       }
-    
+
+      // ✅ AJOUTER CES LIGNES ICI : Trier par date - plus récent en premier
+      const sortedPages = [...pages].sort((a, b) => {
+        const dateA = new Date(a.addedDate || a.lastModified);
+        const dateB = new Date(b.addedDate || b.lastModified);
+        return dateB - dateA; // Ordre décroissant (récent → ancien)
+      });
+      
       // Créer la grille de cards
       const grid = document.createElement('div');
       grid.className = 'pages-grid';
