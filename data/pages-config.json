@@ -1,3 +1,13 @@
 {
-  "pages": []
+  "pages": [
+    {
+      "id": "page-1763487712056",
+      "title": "index",
+      "githubPath": "index.html",
+      "description": "",
+      "addedDate": "2025-11-18T17:41:52.057Z",
+      "lastModified": "2025-11-18T17:41:52.058Z",
+      "favorite": false
+    }
+  ]
 }
