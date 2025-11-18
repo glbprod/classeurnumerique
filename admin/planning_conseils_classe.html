@@ -245,6 +245,21 @@
             padding: 40px;
             color: #999;
         }
+        .btn-import {
+            background: #2196f3;
+            color: white;
+        }
+        
+        .btn-import:hover {
+            background: #1976d2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+        
+        #file-input {
+            display: none;
+        }
+        
     </style>
 </head>
 <body>
@@ -254,8 +269,10 @@
         <div id="planning-container"></div>
 
         <div class="buttons-container">
-            <button class="btn btn-export" onclick="exportData()">📥 Exporter les données</button>
+            <button class="btn btn-export" onclick="exportData()">📥 Exporter CSV</button>
+            <button class="btn btn-import" onclick="document.getElementById('file-input').click()">📤 Importer CSV</button>
             <button class="btn btn-reset" onclick="resetData()">🗑️ Réinitialiser tout</button>
+            <input type="file" id="file-input" accept=".csv" onchange="importData(event)">
         </div>
     </div>
 
@@ -424,31 +441,67 @@
 
         function exportData() {
             const savedData = loadSavedData();
-            let exportText = 'SUIVI DES CONSEILS DE CLASSE\n';
-            exportText += '================================\n\n';
-
+            let csvContent = 'Jour,Date,Horaire,Classe,Salle,Appreciations_Remplies,Notes\n';
+        
             conseilsData.forEach((conseil, index) => {
                 const conseilId = `conseil-${index}`;
                 const data = savedData[conseilId] || { completed: false, appreciation: '' };
                 
-                exportText += `Classe ${conseil.classe} - ${conseil.jour} ${conseil.date} (${conseil.horaire})\n`;
-                exportText += `Salle : ${conseil.salle}\n`;
-                exportText += `Appréciations remplies : ${data.completed ? 'Oui ✓' : 'Non ✗'}\n`;
-                if (data.appreciation) {
-                    exportText += `Notes : ${data.appreciation}\n`;
-                }
-                exportText += '\n---\n\n';
+                const appreciationEscaped = data.appreciation.replace(/"/g, '""').replace(/\n/g, ' ');
+                
+                csvContent += `"${conseil.jour}","${conseil.date}","${conseil.horaire}","${conseil.classe}","${conseil.salle}","${data.completed ? 'Oui' : 'Non'}","${appreciationEscaped}"\n`;
             });
-
-            const blob = new Blob([exportText], { type: 'text/plain;charset=utf-8' });
+        
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `conseils_classe_export_${new Date().toISOString().split('T')[0]}.txt`;
+            a.download = `conseils_classe_export_${new Date().toISOString().split('T')[0]}.csv`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+        
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const csv = e.target.result;
+                    const lines = csv.split('\n');
+                    const savedData = {};
+        
+                    for (let i = 1; i < lines.length; i++) {
+                        if (!lines[i].trim()) continue;
+        
+                        const match = lines[i].match(/(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|([^\",]+))(?:,|$)/g);
+                        if (!match || match.length < 7) continue;
+        
+                        const values = match.map(m => m.replace(/^"|",?$/g, '').replace(/""/g, '"'));
+                        const classe = values[3];
+                        const completed = values[5] === 'Oui';
+                        const appreciation = values[6] || '';
+        
+                        const index = conseilsData.findIndex(c => c.classe === classe);
+                        if (index !== -1) {
+                            const conseilId = `conseil-${index}`;
+                            savedData[conseilId] = { completed, appreciation };
+                        }
+                    }
+        
+                    localStorage.setItem('conseilsProgress', JSON.stringify(savedData));
+                    renderPlanning();
+                    alert('✅ Données importées avec succès !');
+                } catch (error) {
+                    alert('❌ Erreur lors de l\'import du fichier CSV. Vérifiez le format.');
+                    console.error(error);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
         }
 
         // Initialisation
