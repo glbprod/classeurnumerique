@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning des Conseils de Classe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .stats {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .day-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .day-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .conseil-card {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .conseil-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .conseil-card.completed {
+            background: #e8f5e9;
+            border-left-color: #4caf50;
+        }
+
+        .conseil-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .classe-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .classe-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .horaire {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .salle {
+            background: #764ba2;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #4caf50;
+        }
+
+        .checkbox-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .appreciation-container {
+            margin-top: 15px;
+        }
+
+        .appreciation-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95em;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reset {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+        }
+
+        .btn-export {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-export:hover {
+            background: #388e3c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .conseil-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .classe-info {
+                width: 100%;
+            }
+
+            .checkbox-container {
+                width: 100%;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Planning des Conseils de Classe</h1>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="total-conseils">0</div>
+                <div class="stat-label">Total conseils</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="completed-conseils">0</div>
+                <div class="stat-label">Appréciations remplies</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="progress-percentage">0%</div>
+                <div class="stat-label">Progression</div>
+            </div>
+        </div>
+
+        <div id="planning-container"></div>
+
+        <div class="buttons-container">
+            <button class="btn btn-export" onclick="exportData()">📥 Exporter les données</button>
+            <button class="btn btn-reset" onclick="resetData()">🗑️ Réinitialiser tout</button>
+        </div>
+    </div>
+
+    <script>
+        const conseilsData = [
+            {jour: "Lundi", date: "24 novembre", horaire: "16h05-17h15", classe: "602", salle: "B24"},
+            {jour: "Lundi", date: "24 novembre", horaire: "16h05-17h15", classe: "502", salle: "B24"},
+            {jour: "Lundi", date: "24 novembre", horaire: "17h15-18h30", classe: "302", salle: "B24"},
+            {jour: "Lundi", date: "24 novembre", horaire: "17h15-18h30", classe: "503", salle: "B24"},
+            {jour: "Mardi", date: "25 novembre", horaire: "16h05-17h15", classe: "603", salle: "REUNION"},
+            {jour: "Mardi", date: "25 novembre", horaire: "16h05-17h15", classe: "505", salle: "B24"},
+            {jour: "Mardi", date: "25 novembre", horaire: "17h15-18h30", classe: "303", salle: "REUNION"},
+            {jour: "Mardi", date: "25 novembre", horaire: "17h15-18h30", classe: "504", salle: "B24"},
+            {jour: "Mardi", date: "25 novembre", horaire: "17h15-18h30", classe: "401", salle: "F30"},
+            {jour: "Jeudi", date: "27 novembre", horaire: "16h05-17h15", classe: "604", salle: "REUNION"},
+            {jour: "Jeudi", date: "27 novembre", horaire: "16h05-17h15", classe: "506", salle: "B24"},
+            {jour: "Jeudi", date: "27 novembre", horaire: "17h15-18h30", classe: "306", salle: "REUNION"},
+            {jour: "Jeudi", date: "27 novembre", horaire: "17h15-18h30", classe: "507", salle: "B24"},
+            {jour: "Lundi", date: "1er décembre", horaire: "16h05-17h15", classe: "606", salle: "REUNION"},
+            {jour: "Lundi", date: "1er décembre", horaire: "16h05-17h15", classe: "402", salle: "B24"},
+            {jour: "Lundi", date: "1er décembre", horaire: "17h15-18h30", classe: "308", salle: "REUNION"},
+            {jour: "Lundi", date: "1er décembre", horaire: "17h15-18h30", classe: "404", salle: "B24"},
+            {jour: "Mardi", date: "2 décembre", horaire: "16h05-17h15", classe: "605", salle: "REUNION"},
+            {jour: "Mardi", date: "2 décembre", horaire: "16h05-17h15", classe: "405", salle: "B24"},
+            {jour: "Mardi", date: "2 décembre", horaire: "17h15-18h30", classe: "307", salle: "REUNION"},
+            {jour: "Mardi", date: "2 décembre", horaire: "17h15-18h30", classe: "406", salle: "B24"},
+            {jour: "Jeudi", date: "4 décembre", horaire: "16h05-17h15", classe: "607", salle: "REUNION"},
+            {jour: "Jeudi", date: "4 décembre", horaire: "16h05-17h15", classe: "407", salle: "B24"},
+            {jour: "Jeudi", date: "4 décembre", horaire: "17h15-18h30", classe: "304", salle: "REUNION"},
+            {jour: "Jeudi", date: "4 décembre", horaire: "17h15-18h30", classe: "403", salle: "B24"}
+        ];
+
+        function loadSavedData() {
+            const saved = localStorage.getItem('conseilsProgress');
+            return saved ? JSON.parse(saved) : {};
+        }
+
+        function saveData(data) {
+            localStorage.setItem('conseilsProgress', JSON.stringify(data));
+            updateStats();
+        }
+
+        function updateStats() {
+            const savedData = loadSavedData();
+            const total = conseilsData.length;
+            const completed = Object.values(savedData).filter(item => item.completed).length;
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            document.getElementById('total-conseils').textContent = total;
+            document.getElementById('completed-conseils').textContent = completed;
+            document.getElementById('progress-percentage').textContent = percentage + '%';
+        }
+
+        function createConseilCard(conseil, index) {
+            const savedData = loadSavedData();
+            const conseilId = `conseil-${index}`;
+            const conseilData = savedData[conseilId] || { completed: false, appreciation: '' };
+
+            const card = document.createElement('div');
+            card.className = `conseil-card ${conseilData.completed ? 'completed' : ''}`;
+            card.id = conseilId;
+
+            card.innerHTML = `
+                <div class="conseil-header">
+                    <div class="classe-info">
+                        <div class="classe-name">Classe ${conseil.classe}</div>
+                        <span class="horaire">${conseil.horaire}</span>
+                        <span class="salle">${conseil.salle}</span>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" 
+                               id="check-${conseilId}" 
+                               ${conseilData.completed ? 'checked' : ''}
+                               onchange="toggleCompleted('${conseilId}')">
+                        <label for="check-${conseilId}" class="checkbox-label">Appréciations remplies</label>
+                    </div>
+                </div>
+                <div class="appreciation-container">
+                    <label for="text-${conseilId}" class="appreciation-label">Notes / Appréciation générale :</label>
+                    <textarea 
+                        id="text-${conseilId}" 
+                        placeholder="Saisissez vos notes ou une appréciation générale pour cette classe..."
+                        onchange="saveAppreciation('${conseilId}')"
+                        onblur="saveAppreciation('${conseilId}')">${conseilData.appreciation}</textarea>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function toggleCompleted(conseilId) {
+            const savedData = loadSavedData();
+            const checkbox = document.getElementById(`check-${conseilId}`);
+            
+            if (!savedData[conseilId]) {
+                savedData[conseilId] = { completed: false, appreciation: '' };
+            }
+            
+            savedData[conseilId].completed = checkbox.checked;
+            saveData(savedData);
+
+            const card = document.getElementById(conseilId);
+            if (checkbox.checked) {
+                card.classList.add('completed');
+            } else {
+                card.classList.remove('completed');
+            }
+        }
+
+        function saveAppreciation(conseilId) {
+            const savedData = loadSavedData();
+            const textarea = document.getElementById(`text-${conseilId}`);
+            
+            if (!savedData[conseilId]) {
+                savedData[conseilId] = { completed: false, appreciation: '' };
+            }
+            
+            savedData[conseilId].appreciation = textarea.value;
+            saveData(savedData);
+        }
+
+        function renderPlanning() {
+            const container = document.getElementById('planning-container');
+            container.innerHTML = '';
+
+            // Grouper par jour et date
+            const groupedByDay = {};
+            conseilsData.forEach((conseil, index) => {
+                const key = `${conseil.jour} ${conseil.date}`;
+                if (!groupedByDay[key]) {
+                    groupedByDay[key] = [];
+                }
+                groupedByDay[key].push({ ...conseil, index });
+            });
+
+            // Créer les sections par jour
+            Object.keys(groupedByDay).forEach(dayKey => {
+                const daySection = document.createElement('div');
+                daySection.className = 'day-section';
+
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'day-header';
+                dayHeader.textContent = dayKey;
+                daySection.appendChild(dayHeader);
+
+                groupedByDay[dayKey].forEach(conseil => {
+                    const card = createConseilCard(conseil, conseil.index);
+                    daySection.appendChild(card);
+                });
+
+                container.appendChild(daySection);
+            });
+
+            updateStats();
+        }
+
+        function resetData() {
+            if (confirm('⚠️ Êtes-vous sûr de vouloir réinitialiser toutes les données ? Cette action est irréversible.')) {
+                localStorage.removeItem('conseilsProgress');
+                renderPlanning();
+                alert('✅ Toutes les données ont été réinitialisées.');
+            }
+        }
+
+        function exportData() {
+            const savedData = loadSavedData();
+            let exportText = 'SUIVI DES CONSEILS DE CLASSE\n';
+            exportText += '================================\n\n';
+
+            conseilsData.forEach((conseil, index) => {
+                const conseilId = `conseil-${index}`;
+                const data = savedData[conseilId] || { completed: false, appreciation: '' };
+                
+                exportText += `Classe ${conseil.classe} - ${conseil.jour} ${conseil.date} (${conseil.horaire})\n`;
+                exportText += `Salle : ${conseil.salle}\n`;
+                exportText += `Appréciations remplies : ${data.completed ? 'Oui ✓' : 'Non ✗'}\n`;
+                if (data.appreciation) {
+                    exportText += `Notes : ${data.appreciation}\n`;
+                }
+                exportText += '\n---\n\n';
+            });
+
+            const blob = new Blob([exportText], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `conseils_classe_export_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPlanning();
+        });
+    </script>
+</body>
+</html>
