@@ -380,10 +380,19 @@
 
         function updateStats() {
             const savedData = loadSavedData();
-            const total = conseilsData.length;
-            const completed = Object.values(savedData).filter(item => item.completed).length;
+            const hiddenClasses = getHiddenClasses();
+            
+            // Filtrer les conseils pour ne compter que les classes visibles
+            const visibleConseils = conseilsData.filter(c => !hiddenClasses.includes(c.classe));
+            const total = visibleConseils.length;
+            
+            const completed = visibleConseils.filter((conseil, index) => {
+                const conseilId = `conseil-${conseilsData.indexOf(conseil)}`;
+                return savedData[conseilId]?.completed;
+            }).length;
+            
             const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-
+        
             document.getElementById('total-conseils').textContent = total;
             document.getElementById('completed-conseils').textContent = completed;
             document.getElementById('progress-percentage').textContent = percentage + '%';
