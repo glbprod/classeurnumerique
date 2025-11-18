@@ -302,6 +302,186 @@
         .conseil-card.hidden-class {
             display: none;
         }
+
+        .help-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .help-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(102, 126, 234, 0.6);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+            position: relative;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        
+        .close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 28px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .help-section {
+            margin-bottom: 30px;
+        }
+        
+        .help-section h3 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .help-section p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .help-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .help-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .help-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .help-list li strong {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .tip-box {
+            background: #e8f4fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .tip-box strong {
+            color: #1976d2;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .help-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                max-height: 90vh;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+        }
         
     </style>
 </head>
@@ -335,9 +515,68 @@
                 <div class="stat-label">Progression</div>
             </div>
         </div>
-        
     </div>
 
+    <button class="help-btn" onclick="openHelp()">❓</button>
+
+    <div id="help-modal" class="modal" onclick="closeHelp(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>📖 Mode d'emploi</h2>
+                <button class="close-btn" onclick="closeHelp()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="help-section">
+                    <h3>🎯 Présentation</h3>
+                    <p>Cet outil vous permet de suivre facilement l'avancement de vos conseils de classe. Cochez les appréciations complétées, ajoutez vos notes et exportez vos données en CSV.</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>✅ Fonctionnalités principales</h3>
+                    <ul class="help-list">
+                        <li><strong>📝 Suivi des appréciations :</strong> Cochez la case "Appréciations remplies" pour chaque classe une fois terminée. La carte devient verte automatiquement.</li>
+                        <li><strong>💬 Zone de notes :</strong> Saisissez vos observations ou appréciations générales pour chaque classe. Tout est sauvegardé automatiquement.</li>
+                        <li><strong>✏️ Gérer les classes :</strong> Cliquez sur ce bouton pour afficher les options de suppression. Masquez les classes dont vous n'êtes pas responsable.</li>
+                        <li><strong>🔄 Restaurer classes :</strong> Récupérez toutes les classes précédemment masquées en un clic.</li>
+                        <li><strong>📥 Exporter CSV :</strong> Téléchargez vos données au format CSV (Excel) pour les partager ou les archiver.</li>
+                        <li><strong>📤 Importer CSV :</strong> Importez un fichier CSV précédemment exporté pour restaurer vos données.</li>
+                        <li><strong>🗑️ Réinitialiser tout :</strong> Efface toutes les données (appréciations et notes) en conservant les classes visibles.</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3>📊 Statistiques</h3>
+                    <p>En haut de page, vous retrouvez en temps réel :</p>
+                    <ul class="help-list">
+                        <li><strong>Total conseils :</strong> Nombre de classes visibles</li>
+                        <li><strong>Appréciations remplies :</strong> Nombre de conseils complétés</li>
+                        <li><strong>Progression :</strong> Pourcentage d'avancement</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3>💾 Sauvegarde des données</h3>
+                    <p>Toutes vos données sont sauvegardées automatiquement dans votre navigateur (localStorage). Elles persistent même après fermeture de l'onglet.</p>
+                    <div class="tip-box">
+                        <strong>💡 Conseil :</strong>
+                        Pensez à exporter régulièrement vos données en CSV pour avoir une sauvegarde externe, surtout avant de vider le cache de votre navigateur.
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <h3>🔄 Import/Export</h3>
+                    <ul class="help-list">
+                        <li><strong>Pour exporter :</strong> Cliquez sur "Exporter CSV" - un fichier sera téléchargé automatiquement</li>
+                        <li><strong>Pour importer :</strong> Cliquez sur "Importer CSV" et sélectionnez un fichier précédemment exporté</li>
+                    </ul>
+                    <div class="tip-box">
+                        <strong>⚠️ Attention :</strong>
+                        L'import remplace toutes vos données actuelles. Pensez à exporter avant si vous souhaitez les conserver.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         const conseilsData = [
             {jour: "Lundi", date: "24 novembre", horaire: "16h05-17h15", classe: "602", salle: "B24"},
@@ -629,6 +868,25 @@
         // Initialisation
         document.addEventListener('DOMContentLoaded', () => {
             renderPlanning();
+        });
+
+        function openHelp() {
+            document.getElementById('help-modal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeHelp(event) {
+            if (!event || event.target.id === 'help-modal') {
+                document.getElementById('help-modal').classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        }
+        
+        // Fermer la modale avec la touche Échap
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeHelp();
+            }
         });
     </script>
 </body>
