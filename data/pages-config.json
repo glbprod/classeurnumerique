@@ -53,6 +53,15 @@
       "addedDate": "2025-11-19T10:58:48.694Z",
       "lastModified": "2025-11-19T10:58:48.695Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763549961695",
+      "title": "correction llm cybersécurité",
+      "githubPath": "src/Pages/Corrections/correction_llm_cybersécurité.html",
+      "description": "Correcteur en dev",
+      "addedDate": "2025-11-19T10:59:21.695Z",
+      "lastModified": "2025-11-19T10:59:21.695Z",
+      "favorite": false
     }
   ]
 }
