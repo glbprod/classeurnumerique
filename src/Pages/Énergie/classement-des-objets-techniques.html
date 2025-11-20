@@ -463,20 +463,6 @@
                         <input type="text" id="classe" placeholder="Ex: 6èmeA">
                     </div>
                 </div>
-                <div class="info-grid" style="margin-top: 15px;">
-                    <div class="form-group">
-                        <label>Séquence n° :</label>
-                        <input type="number" id="sequence" placeholder="1" value="1">
-                    </div>
-                    <div class="form-group">
-                        <label>Séance n° :</label>
-                        <input type="number" id="seance" placeholder="1" value="1">
-                    </div>
-                    <div class="form-group">
-                        <label>Date :</label>
-                        <input type="text" id="date" placeholder="JJ/MM/AAAA">
-                    </div>
-                </div>
             </div>
         </header>
 
@@ -973,34 +959,6 @@
     </div>
 
     <script>
-
-        // Protection par mot de passe
-        (function() {
-            const MOT_DE_PASSE = 'techno'; // ← Changez ici
-            let tentatives = 3;
-            
-            while (tentatives > 0) {
-                const saisie = prompt('🔒 Mot de passe requis pour accéder au formulaire :');
-                
-                if (saisie === null) {
-                    document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès annulé</h1>';
-                    throw new Error('Accès annulé');
-                }
-                
-                if (saisie === MOT_DE_PASSE) {
-                    return; // ✅ Mot de passe correct
-                }
-                
-                tentatives--;
-                if (tentatives > 0) {
-                    alert('❌ Mot de passe incorrect ! Il vous reste ' + tentatives + ' tentative(s).');
-                }
-            }
-            
-            alert('🚫 Nombre de tentatives dépassé !');
-            document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès refusé</h1>';
-            throw new Error('Accès refusé');
-        })();
         
         // ============================================
         // CONFIGURATION FIREBASE
@@ -1052,9 +1010,6 @@
                 nom: document.getElementById('nom').value.trim(),
                 prenom: document.getElementById('prenom').value.trim(),
                 classe: document.getElementById('classe').value.trim(),
-                sequence: parseInt(document.getElementById('sequence').value) || null,
-                seance: parseInt(document.getElementById('seance').value) || null,
-                date: document.getElementById('date').value.trim(),
                 
                 // Activité 1 - Fonctions d'usage
                 fonction_velo: document.getElementById('fonction_velo').value.trim(),
