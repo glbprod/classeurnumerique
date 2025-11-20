@@ -47,7 +47,8 @@
   },
   "scripts": {
     "build": "react-scripts build",
-    "start": "react-scripts start"
+    "dev": "vite dev",
+    "start": "vite preview"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
