@@ -98,6 +98,15 @@
       "addedDate": "2025-11-20T19:20:38.552Z",
       "lastModified": "2025-11-20T19:20:38.568Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763675108512",
+      "title": "formulaire capteurs mbot2",
+      "githubPath": "src/Pages/Robotique/formulaire-capteurs-mbot2.html",
+      "description": "",
+      "addedDate": "2025-11-20T21:45:08.512Z",
+      "lastModified": "2025-11-20T21:45:08.530Z",
+      "favorite": false
     }
   ]
 }
