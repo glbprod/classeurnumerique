@@ -782,17 +782,14 @@
         <!-- BOUTONS D'ACTION -->
         <div class="controls-container">
             <button id="saveBtn" class="btn-action btn-save">
-                💾 Envoyer
+                💾 Envoyer vos réponses
             </button>
-            <button id="exportPdfBtn" class="btn-action btn-pdf">
-                📄 Exporter en PDF
-            </button>
-            <!-- <button id="exportJsonBtn" class="btn-action btn-json">
-                📦 Exporter en JSON
+            <button id="exportJsonBtn" class="btn-action btn-json">
+                📦 Exporter
             </button>
             <button id="resetBtn" class="btn-action btn-reset">
                 🔄 Réinitialiser
-            </button> -->
+            </button>
         </div>
 
         <!-- SYNTHÈSE -->
@@ -1077,9 +1074,6 @@
             if (data.nom) document.getElementById('nom').value = data.nom;
             if (data.prenom) document.getElementById('prenom').value = data.prenom;
             if (data.classe) document.getElementById('classe').value = data.classe;
-            if (data.sequence) document.getElementById('sequence').value = data.sequence;
-            if (data.seance) document.getElementById('seance').value = data.seance;
-            if (data.date) document.getElementById('date').value = data.date;
             
             // Activité 1
             if (data.fonction_velo) document.getElementById('fonction_velo').value = data.fonction_velo;
