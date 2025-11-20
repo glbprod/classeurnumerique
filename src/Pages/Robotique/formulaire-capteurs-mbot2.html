@@ -663,6 +663,22 @@
             </div>
         </div>
 
+        <!-- Boutons de contrôle -->
+        <div class="controls-container">
+            <button type="button" id="saveBtn" class="btn-action btn-save">
+                💾 Envoyez vos réponses
+            </button>
+            <button type="button" id="exportJsonBtn" class="btn-action btn-json">
+                📦 Enregistrez vos réponses
+            </button>
+            <button type="button" id="importJsonBtn" class="btn-action btn-import">
+                📥 Chargez vos réponses
+            </button>
+            <button type="button" id="resetBtn" class="btn-action btn-reset">
+                🔄 Réinitialiser
+            </button>
+        </div>
+
         <!-- Messages de feedback -->
         <div id="successMessage" class="success-message">
             ✅ <strong>Succès !</strong> Votre fiche a été enregistrée avec succès dans Firebase.
@@ -836,22 +852,6 @@
                         type: document.getElementById('bonus_3_type').value.trim()
                     }
                 },
-
-                <!-- Boutons de contrôle -->
-                <div class="controls-container">
-                    <button type="button" id="saveBtn" class="btn-action btn-save">
-                        💾 Envoyez vos réponses
-                    </button>
-                    <button type="button" id="exportJsonBtn" class="btn-action btn-json">
-                        📦 Enregistrez vos réponses
-                    </button>
-                    <button type="button" id="importJsonBtn" class="btn-action btn-import">
-                        📥 Chargez vos réponses enregistrées
-                    </button>
-                    <button type="button" id="resetBtn" class="btn-action btn-reset">
-                        🔄 Réinitialiser
-                    </button>
-                </div>
 
                 // Métadonnées
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
