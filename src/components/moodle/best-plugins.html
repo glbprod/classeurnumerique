@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meilleurs Plugins Quiz pour Moodle 5.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .intro {
+            background: linear-gradient(135deg, #e8f4f8, #d4e8f5);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            border-left: 5px solid #667eea;
+        }
+
+        .intro p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .plugin-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .plugin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .plugin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .plugin-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-compatible {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-recommended {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .badge-free {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .badge-paid {
+            background: #ffeaa7;
+            color: #856404;
+        }
+
+        .plugin-description {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .features-list {
+            margin: 20px 0;
+        }
+
+        .features-list h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .features-list ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .features-list li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .features-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .cons-list li::before {
+            content: "✗";
+            color: #dc3545;
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info-box.success {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+
+        .info-box.danger {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+
+        .info-box.info {
+            background: #d1ecf1;
+            border-left-color: #17a2b8;
+        }
+
+        .plugin-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .meta-item strong {
+            color: #667eea;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .check-icon {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .cross-icon {
+            color: #dc3545;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .plugin-header {
+                flex-direction: column;
+            }
+
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Meilleurs Plugins Quiz pour Moodle 5.0</h1>
+
+        <div class="intro">
+            <p><strong>📅 Mise à jour : Janvier 2025</strong></p>
+            <p>Ce guide recense les meilleurs plugins de quiz compatibles avec <strong>Moodle 5.0</strong>, testés et recommandés pour une intégration optimale dans votre plateforme éducative.</p>
+            <p>⚠️ <strong>Important :</strong> Moodle 5.0 étant récent, certains plugins sont en cours d'adaptation. Vérifiez toujours la compatibilité avant installation.</p>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- PLUGINS NATIFS MOODLE -->
+        <!-- ====================================== -->
+        
+        <h2>🏆 Activités Quiz Natives Moodle</h2>
+
+        <div class="plugin-card">
+            <div class="plugin-header">
+                <div class="plugin-title">📝 Quiz Activity (Core Moodle)</div>
+                <span class="badge badge-compatible">✓ Moodle 5.0</span>
+                <span class="badge badge-free">Gratuit</span>
+                <span class="badge badge-recommended">Recommandé</span>
+            </div>
+
+            <p class="plugin-description">
+                L'activité Quiz native de Moodle est la solution la plus robuste et complète pour créer des évaluations. Intégration parfaite avec la banque de questions, support de tous les types de questions, et options avancées de notation.
+            </p>
+
+            <div class="features-list">
+                <h4>✅ Avantages :</h4>
+                <ul>
+                    <li>Intégration native parfaite avec Moodle 5.0</li>
+                    <li>Banque de questions centralisée et réutilisable</li>
+                    <li>15+ types de questions (QCM, VRAI/FAUX, Cloze, essai, etc.)</li>
+                    <li>Questions aléatoires et pools de questions</li>
+                    <li>Notation automatique et manuelle</li>
+                    <li>Feedback conditionnel et personnalisé</li>
+                    <li>Restriction d'accès (dates, notes préalables, groupes)</li>
+                    <li>Sécurité renforcée (navigation sécurisée, Safe Exam Browser)</li>
+                    <li>Rapports détaillés et statistiques avancées</li>
+                    <li>Compatible avec tous les plugins question types</li>
+                </ul>
+
+                <h4 style="margin-top: 20px;">❌ Limites :</h4>
+                <ul class="cons-list">
+                    <li>Interface moins moderne que certains plugins tiers</li>
+                    <li>Courbe d'apprentissage pour les fonctionnalités avancées</li>
+                    <li>Moins adapté aux quiz interactifs en classe</li>
+                </ul>
+            </div>
+
+            <div class="info-box success">
+                <strong>💡 Recommandation :</strong> Utilisez l'activité Quiz native pour les évaluations formelles, examens, et contrôles continus. C'est la solution la plus fiable et sécurisée.
+            </div>
+
+            <div class="plugin-meta">
+                <div class="meta-item"><strong>Version Moodle :</strong> 5.0+</div>
+                <div class="meta-item"><strong>Support :</strong> Communauté Moodle officielle</div>
+                <div class="meta-item"><strong>Documentation :</strong> Extensive</div>
+            </div>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- H5P -->
+        <!-- ====================================== -->
+
+        <h2>🎨 Plugins Interactifs et Multimédias</h2>
+
+        <div class="plugin-card">
+            <div class="plugin-header">
+                <div class="plugin-title">🎬 H5P Interactive Content</div>
+                <span class="badge badge-warning">⚠️ En test Moodle 5.0</span>
+                <span class="badge badge-free">Gratuit</span>
+                <span class="badge badge-recommended">Populaire</span>
+            </div>
+
+            <p class="plugin-description">
+                H5P permet de créer du contenu interactif riche incluant des vidéos interactives, présentations, quiz et jeux. Idéal pour rendre l'apprentissage plus engageant.
+            </p>
+
+            <div class="features-list">
+                <h4>✅ Avantages :</h4>
+                <ul>
+                    <li>50+ types de contenus interactifs</li>
+                    <li>Vidéos interactives avec questions intégrées</li>
+                    <li>Question Set pour séquences de quiz</li>
+                    <li>Présentations de cours interactives</li>
+                    <li>Drag & Drop, Fill in the blanks, Flashcards</li>
+                    <li>Responsive et mobile-friendly</li>
+                    <li>Export/Import facile (.h5p)</li>
+                    <li>Intégration gradebook Moodle</li>
+                    <li>Communauté active et contenu partageable</li>
+                </ul>
+
+                <h4 style="margin-top: 20px;">❌ Limites :</h4>
+                <ul class="cons-list">
+                    <li>⚠️ Compatibilité Moodle 5.0 en cours de test (problèmes signalés)</li>
+                    <li>Possibilité de triche pour utilisateurs techniques</li>
+                    <li>Non recommandé pour examens officiels</li>
+                    <li>Certaines bibliothèques H5P peuvent bugger</li>
+                    <li>Pas d'intégration native avec banque de questions Moodle</li>
+                </ul>
+            </div>
+
+            <div class="info-box danger">
+                <strong>⚠️ Attention Moodle 5.0 :</strong> Des utilisateurs ont signalé des problèmes d'affichage (écran blanc) lors de l'installation sur Moodle 5.0+. Testez sur un environnement de développement avant déploiement.
+            </div>
+
+            <div class="info-box">
+                <strong>🔒 Sécurité :</strong> H5P n'est PAS recommandé pour les examens ou évaluations à forts enjeux (DNB, contrôles notés). Utilisez l'activité Quiz native de Moodle pour ces cas.
+            </div>
+
+            <div class="plugin-meta">
+                <div class="meta-item"><strong>Plugin :</strong> mod_hvp</div>
+                <div class="meta-item"><strong>Compatibilité :</strong> Moodle 4.5 officiellement, 5.0 en test</div>
+                <div class="meta-item"><strong>Site :</strong> <a href="https://h5p.org" target="_blank">h5p.org</a></div>
+            </div>
+
+            <a href="https://moodle.org/plugins/mod_hvp" class="download-btn" target="_blank">📥 Télécharger sur Moodle.org</a>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- JAZZQUIZ -->
+        <!-- ====================================== -->
+
+        <div class="plugin-card">
+            <div class="plugin-header">
+                <div class="plugin-title">🎺 JazzQuiz (ex-Realtime Quiz)</div>
+                <span class="badge badge-compatible">✓ Moodle 5.0</span>
+                <span class="badge badge-free">Gratuit</span>
+            </div>
+
+            <p class="plugin-description">
+                JazzQuiz est la réécriture moderne du plugin Realtime Quiz, spécialement conçu pour les quiz en classe en temps réel avec improvisation possible. Parfait pour les évaluations formatives face-à-face.
+            </p>
+
+            <div class="features-list">
+                <h4>✅ Avantages :</h4>
+                <ul>
+                    <li>Quiz synchronisé en temps réel pour toute la classe</li>
+                    <li>Utilise la banque de questions Moodle</li>
+                    <li>Support QCM, Vrai/Faux, Réponse courte</li>
+                    <li>Improvisation : ajout de questions spontanées</li>
+                    <li>Visualisation instantanée des réponses étudiants</li>
+                    <li>Discussions en classe basées sur les résultats</li>
+                    <li>Export rapport de présence (CSV)</li>
+                    <li>Questions pré-planifiées ou improvisées</li>
+                    <li>Feedback immédiat pour chaque question</li>
+                </ul>
+
+                <h4 style="margin-top: 20px;">❌ Limites :</h4>
+                <ul class="cons-list">
+                    <li>Uniquement pour sessions en présentiel</li>
+                    <li>Nécessite connexion internet stable</li>
+                    <li>Limité à certains types de questions</li>
+                    <li>Interface moins riche que H5P</li>
+                </ul>
+            </div>
+
+            <div class="info-box success">
+                <strong>💡 Cas d'usage idéal :</strong> Évaluations formatives rapides en classe, vérification de compréhension en direct, discussions pédagogiques basées sur les résultats.
+            </div>
+
+            <div class="plugin-meta">
+                <div class="meta-item"><strong>Plugin :</strong> mod_jazzquiz</div>
+                <div class="meta-item"><strong>Compatibilité :</strong> Moodle 4.x et 5.0</div>
+                <div class="meta-item"><strong>Développeur :</strong> Université de Wisconsin</div>
+            </div>
+
+            <a href="https://moodle.org/plugins/mod_jazzquiz" class="download-btn" target="_blank">📥 Télécharger sur Moodle.org</a>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- ADAPTIVE QUIZ -->
+        <!-- ====================================== -->
+
+        <h2>🧠 Plugins d'Évaluation Adaptative</h2>
+
+        <div class="plugin-card">
+            <div class="plugin-header">
+                <div class="plugin-title">🎯 Adaptive Quiz (CAT)</div>
+                <span class="badge badge-warning">⚠️ Non testé Moodle 5.0</span>
+                <span class="badge badge-free">Gratuit</span>
+            </div>
+
+            <p class="plugin-description">
+                Quiz adaptatif basé sur la théorie de réponse à l'item (IRT) : les questions s'adaptent au niveau de l'étudiant en temps réel. Plus l'étudiant réussit, plus les questions deviennent difficiles.
+            </p>
+
+            <div class="features-list">
+                <h4>✅ Avantages :</h4>
+                <ul>
+                    <li>Questions adaptées au niveau de l'étudiant</li>
+                    <li>Mesure précise des compétences (ability measure)</li>
+                    <li>Réduction du temps de test</li>
+                    <li>Questions taggées par difficulté</li>
+                    <li>Algorithme CAT (Computer-Adaptive Testing)</li>
+                    <li>Utilise la banque de questions Moodle</li>
+                </ul>
+
+                <h4 style="margin-top: 20px;">❌ Limites :</h4>
+                <ul class="cons-list">
+                    <li>⚠️ Non officiellement testé sur Moodle 5.0</li>
+                    <li>Erreurs signalées sur Moodle 5.0 (colonne 'parent')</li>
+                    <li>Pas de note traditionnelle (uniquement ability measure)</li>
+                    <li>Pas de limite de temps par défaut</li>
+                    <li>Configuration complexe (tagging des questions)</li>
+                </ul>
+            </div>
+
+            <div class="info-box danger">
+                <strong>⚠️ Incompatibilité Moodle 5.0 :</strong> Des erreurs SQL ont été rapportées sur Moodle 5.0. Attendez une mise à jour officielle avant utilisation en production.
+            </div>
+
+            <div class="plugin-meta">
+                <div class="meta-item"><strong>Plugin :</strong> mod_adaptivequiz</div>
+                <div class="meta-item"><strong>Compatibilité :</strong> Moodle 4.x officiellement</div>
+            </div>
+
+            <a href="https://moodle.org/plugins/mod_adaptivequiz" class="download-btn" target="_blank">📥 Voir sur Moodle.org</a>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- PLUGINS GÉNÉRATION IA -->
+        <!-- ====================================== -->
+
+        <h2>🤖 Plugins avec Intelligence Artificielle</h2>
+
+        <div class="plugin-card">
+            <div class="plugin-header">
+                <div class="plugin-title">✨ Generative AI Question Bank</div>
+                <span class="badge badge-compatible">✓ Moodle 5.0</span>
+                <span class="badge badge-paid">Payant (API OpenAI)</span>
+            </div>
+
+            <p class="plugin-description">
+                Plugin révolutionnaire qui utilise GPT-4 pour générer automatiquement des questions QCM à partir des ressources du cours (PDF, documents). Gain de temps considérable pour les enseignants.
+            </p>
+
+            <div class="features-list">
+                <h4>✅ Avantages :</h4>
+                <ul>
+                    <li>Génération automatique de 10 questions QCM</li>
+                    <li>Basé sur le contenu du cours (fichiers PDF, textes)</li>
+                    <li>Questions ajoutées directement à la banque</li>
+                    <li>Auto-tagging des questions existantes</li>
+                    <li>Édition manuelle post-génération</li>
+                    <li>Utilise GPT-4o (OpenAI)</li>
+                    <li>Compatible Moodle 5.0 (mise à jour récente)</li>
+                </ul>
+
+                <h4 style="margin-top: 20px;">❌ Limites :</h4>
+                <ul class="cons-list">
+                    <li>💰 Nécessite une clé API OpenAI (payante)</li>
+                    <li>Coûts d'utilisation à surveiller</li>
+                    <li>Qualité dépendante de la qualité du contenu source</li>
+                    <li>Prompt non personnalisable (pour l'instant)</li>
+                    <li>Envoi de données à OpenAI (tiers externe)</li>
+                    <li>Génère parfois des questions dans la mauvaise langue</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <strong>💰 Coût :</strong> L'utilisation de ce plugin génère des coûts via l'API OpenAI. Surveillez votre consommation ! Les clés API font ~165 caractères.
+            </div>
+
+            <div class="info-box info">
+                <strong>🔒 Confidentialité :</strong> Le contenu des fichiers est envoyé à OpenAI pour traitement. Assurez-vous que cela est conforme à vos politiques de confidentialité.
+            </div>
+
+            <div class="plugin-meta">
+                <div class="meta-item"><strong>Plugin :</strong> qbank_genai</div>
+                <div class="meta-item"><strong>Compatibilité :</strong> Moodle 5.0 et 5.1</div>
+                <div class="meta-item"><strong>API :</strong> OpenAI GPT-4o</div>
+            </div>
+
+            <a href="https://moodle.org/plugins/qbank_genai" class="download-btn" target="_blank">📥 Télécharger sur Moodle.org</a>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- PLUGINS QUESTION TYPES -->
+        <!-- ====================================== -->
+
+        <h2>📐 Plugins Types de Questions Spécialisés</h2>
+
+        <div class="plugin-card">
+            <div class="plugin-header">
+                <div class="plugin-title">🔢 Formulas Question Type</div>
+                <span class="badge badge-compatible">✓ Moodle 5.0</span>
+                <span class="badge badge-free">Gratuit</span>
+            </div>
+
+            <p class="plugin-description">
+                Type de question spécialisé pour les mathématiques et sciences. Permet de créer des questions avec variables aléatoires et calculs automatiques.
+            </p>
+
+            <div class="features-list">
+                <h4>✅ Avantages :</h4>
+                <ul>
+                    <li>Questions mathématiques avec variables aléatoires</li>
+                    <li>Calculs automatiques complexes</li>
+                    <li>Feedback détaillé avec solutions</li>
+                    <li>Questions différentes pour chaque étudiant</li>
+                    <li>Support notation scientifique</li>
+                    <li>Idéal pour physique, chimie, mathématiques</li>
+                </ul>
+
+                <h4 style="margin-top: 20px;">❌ Limites :</h4>
+                <ul class="cons-list">
+                    <li>Courbe d'apprentissage importante</li>
+                    <li>Complexité de création des formules</li>
+                    <li>Limité aux contenus mathématiques</li>
+                    <li>Peut être gourmand en ressources serveur</li>
+                </ul>
+            </div>
+
+            <div class="plugin-meta">
+                <div class="meta-item"><strong>Type :</strong> qtype_formulas</div>
+                <div class="meta-item"><strong>Compatibilité :</strong> Moodle 5.0</div>
+            </div>
+        </div>
+
+        <div class="plugin-card">
+            <div class="plugin-header">
+                <div class="plugin-title">🎯 H5P Content Types (Import)</div>
+                <span class="badge badge-compatible">✓ Moodle 5.0</span>
+                <span class="badge badge-free">Gratuit</span>
+            </div>
+
+            <p class="plugin-description">
+                Plugin permettant d'importer des contenus H5P dans la banque de questions Moodle, et de convertir des questions Moodle en contenu H5P.
+            </p>
+
+            <div class="features-list">
+                <h4>✅ Avantages :</h4>
+                <ul>
+                    <li>Conversion bidirectionnelle Moodle ↔ H5P</li>
+                    <li>Import de Quiz Set H5P vers banque de questions</li>
+                    <li>Conversion QCM Moodle → H5P Multiple Choice</li>
+                    <li>Support 10+ types de questions H5P</li>
+                    <li>Réutilisation de contenu facilitée</li>
+                </ul>
+            </div>
+
+            <div class="plugin-meta">
+                <div class="meta-item"><strong>Plugin :</strong> qformat_h5p</div>
+                <div class="meta-item"><strong>Compatibilité :</strong> Moodle 5.0 et 5.1</div>
+            </div>
+
+            <a href="https://moodle.org/plugins/qformat_h5p" class="download-btn" target="_blank">📥 Télécharger sur Moodle.org</a>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- PLUGINS GESTION -->
+        <!-- ====================================== -->
+
+        <h2>⚙️ Plugins de Gestion et Amélioration</h2>
+
+        <div class="plugin-card">
+            <div class="plugin-header">
+                <div class="plugin-title">📋 Ungraded Activities (Assignment/Quiz)</div>
+                <span class="badge badge-compatible">✓ Moodle 5.0</span>
+                <span class="badge badge-free">Gratuit</span>
+            </div>
+
+            <p class="plugin-description">
+                Block pour tableau de bord affichant tous les devoirs et quiz non notés nécessitant votre attention. Gain de temps pour les enseignants.
+            </p>
+
+            <div class="features-list">
+                <h4>✅ Avantages :</h4>
+                <ul>
+                    <li>Vue centralisée des quiz à corriger</li>
+                    <li>Accès direct à la page de notation</li>
+                    <li>Actualisation automatique</li>
+                    <li>Compatible quiz avec questions manuelles (essai)</li>
+                    <li>Disparaît après notation</li>
+                </ul>
+            </div>
+
+            <div class="plugin-meta">
+                <div class="meta-item"><strong>Type :</strong> block_ungraded_activities</div>
+                <div class="meta-item"><strong>Compatibilité :</strong> Moodle 5.0</div>
+            </div>
+
+            <a href="https://moodle.org/plugins/block_ungraded_assignments" class="download-btn" target="_blank">📥 Télécharger</a>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- TABLEAU COMPARATIF -->
+        <!-- ====================================== -->
+
+        <h2>📊 Tableau Comparatif des Plugins</h2>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Plugin</th>
+                    <th>Moodle 5.0</th>
+                    <th>Gratuit</th>
+                    <th>Interactif</th>
+                    <th>Classe</th>
+                    <th>Examens</th>
+                    <th>Difficulté</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Quiz Activity (Core)</strong></td>
+                    <td class="check-icon">✓</td>
+                    <td class="check-icon">✓</td>
+                    <td class="cross-icon">✗</td>
+                    <td class="cross-icon">✗</td>
+                    <td class="check-icon">✓✓</td>
+                    <td>⭐⭐⭐</td>
+                </tr>
+                <tr>
+                    <td><strong>H5P Interactive</strong></td>
+                    <td>⚠️</td>
+                    <td class="check-icon">✓</td>
+                    <td class="check-icon">✓✓</td>
+                    <td class="cross-icon">✗</td>
+                    <td class="cross-icon">✗</td>
+                    <td>⭐⭐</td>
+                </tr>
+                <tr>
+                    <td><strong>JazzQuiz</strong></td>
+                    <td class="check-icon">✓</td>
+                    <td class="check-icon">✓</td>
+                    <td class="check-icon">✓</td>
+                    <td class="check-icon">✓✓</td>
+                    <td class="cross-icon">✗</td>
+                    <td>⭐⭐</td>
+                </tr>
+                <tr>
+                    <td><strong>Adaptive Quiz</strong></td>
+                    <td class="cross-icon">✗</td>
+                    <td class="check-icon">✓</td>
+                    <td class="cross-icon">✗</td>
+                    <td class="cross-icon">✗</td>
+                    <td class="check-icon">✓</td>
+                    <td>⭐⭐⭐⭐</td>
+                </tr>
+                <tr>
+                    <td><strong>AI Question Bank</strong></td>
+                    <td class="check-icon">✓</td>
+                    <td class="cross-icon">✗</td>
+                    <td class="cross-icon">✗</td>
+                    <td class="cross-icon">✗</td>
+                    <td class="check-icon">✓</td>
+                    <td>⭐</td>
+                </tr>
+                <tr>
+                    <td><strong>Formulas</strong></td>
+                    <td class="check-icon">✓</td>
+                    <td class="check-icon">✓</td>
+                    <td class="cross-icon">✗</td>
+                    <td class="cross-icon">✗</td>
+                    <td class="check-icon">✓</td>
+                    <td>⭐⭐⭐⭐</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 15px; font-size: 0.9rem; color: #666;">
+            <strong>Légende :</strong> ✓ = Oui | ✗ = Non | ⚠️ = En test | ✓✓ = Excellent | Difficulté : ⭐ = Facile, ⭐⭐⭐⭐⭐ = Complexe
+        </p>
+
+        <!-- ====================================== -->
+        <!-- RECOMMANDATIONS -->
+        <!-- ====================================== -->
+
+        <h2>💡 Recommandations par Cas d'Usage</h2>
+
+        <div class="plugin-card">
+            <h3 style="color: #667eea; margin-bottom: 15px;">🎓 Pour les Examens et DNB</h3>
+            <p><strong>Recommandation :</strong> <span style="color: #28a745; font-weight: bold;">Quiz Activity (Core Moodle)</span></p>
+            <p>Sécurité maximale, compatibilité totale, support Safe Exam Browser, navigation sécurisée.</p>
+        </div>
+
+        <div class="plugin-card">
+            <h3 style="color: #667eea; margin-bottom: 15px;">👥 Pour les Quiz en Classe</h3>
+            <p><strong>Recommandation :</strong> <span style="color: #28a745; font-weight: bold;">JazzQuiz</span></p>
+            <p>Interaction en temps réel, feedback immédiat, improvisation possible, discussion collective.</p>
+        </div>
+
+        <div class="plugin-card">
+            <h3 style="color: #667eea; margin-bottom: 15px;">🎬 Pour le Contenu Interactif</h3>
+            <p><strong>Recommandation :</strong> <span style="color: #ffc107; font-weight: bold;">H5P Interactive</span> (avec précaution)</p>
+            <p>Vidéos interactives, présentations engageantes, activités ludiques. ⚠️ Testez d'abord sur Moodle 5.0.</p>
+        </div>
+
+        <div class="plugin-card">
+            <h3 style="color: #667eea; margin-bottom: 15px;">🔢 Pour les Mathématiques/Sciences</h3>
+            <p><strong>Recommandation :</strong> <span style="color: #28a745; font-weight: bold;">Formulas Question Type</span></p>
+            <p>Variables aléatoires, calculs automatiques, questions différentes pour chaque élève.</p>
+        </div>
+
+        <div class="plugin-card">
+            <h3 style="color: #667eea; margin-bottom: 15px;">⚡ Pour Gagner du Temps</h3>
+            <p><strong>Recommandation :</strong> <span style="color: #28a745; font-weight: bold;">Generative AI Question Bank</span></p>
+            <p>Génération automatique de questions à partir de vos documents. Attention aux coûts API OpenAI.</p>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- CONSEILS D'INSTALLATION -->
+        <!-- ====================================== -->
+
+        <h2>⚙️ Conseils d'Installation et Bonnes Pratiques</h2>
+
+        <div class="info-box info">
+            <h3 style="margin-bottom: 10px;">📝 Avant d'installer un plugin :</h3>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li>✅ Vérifiez la compatibilité officielle Moodle 5.0</li>
+                <li>✅ Testez TOUJOURS sur un environnement de développement</li>
+                <li>✅ Lisez les commentaires et issues sur Moodle.org</li>
+                <li>✅ Sauvegardez votre base de données avant installation</li>
+                <li>✅ Vérifiez les prérequis (PHP, MySQL, extensions)</li>
+                <li>✅ Consultez la documentation du plugin</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h3 style="margin-bottom: 10px;">🔒 Sécurité et Évaluations :</h3>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li>⚠️ N'utilisez PAS H5P pour les examens officiels</li>
+                <li>✅ Privilégiez Quiz Activity pour DNB et contrôles notés</li>
+                <li>✅ Activez la navigation sécurisée pour les examens</li>
+                <li>✅ Utilisez Safe Exam Browser si disponible</li>
+                <li>✅ Configurez les restrictions d'accès (IP, délais, groupes)</li>
+            </ul>
+        </div>
+
+        <div class="info-box success">
+            <h3 style="margin-bottom: 10px;">💡 Pour votre Classeur Numérique de Technologie :</h3>
+            <p><strong>Configuration recommandée :</strong></p>
+            <ul style="margin-left: 20px; line-height: 2; margin-top: 10px;">
+                <li><strong>Quiz Activity (Core)</strong> - Pour évaluations DNB et contrôles</li>
+                <li><strong>JazzQuiz</strong> - Pour vérifications rapides en classe</li>
+                <li><strong>H5P</strong> (si stable sur votre 5.0) - Pour activités interactives formatives</li>
+                <li><strong>AI Question Bank</strong> - Pour générer rapidement des questions à partir de vos fiches</li>
+            </ul>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- FOOTER -->
+        <!-- ====================================== -->
+
+        <div class="footer">
+            <p><strong>📚 Classeur Numérique de Technologie - Version 5.0</strong></p>
+            <p>Collège Moulin à Vent • Janvier 2025</p>
+            <p style="margin-top: 15px; font-size: 0.9rem;">
+                Pour plus d'informations : 
+                <a href="https://moodle.org/plugins" target="_blank">Moodle Plugins Directory</a> • 
+                <a href="https://docs.moodle.org" target="_blank">Documentation Moodle</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
