@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capteurs, Détecteurs et Signaux - Collège Moulin à Vent</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <!-- html2pdf.js pour l'export PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .controls-container {
+            max-width: 1100px;
+            margin: 0 auto 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-save {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background-color: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn-pdf {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-pdf:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-json {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-json:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-reset {
+            background-color: #95a5a6;
+            color: white;
+            flex: 0.3;
+        }
+
+        .btn-reset:hover {
+            background-color: #7f8c8d;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        /* En-tête */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .college-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .competences {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+
+        /* Informations élève */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Sections d'exercices */
+        .section {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 15px;
+        }
+
+        .bareme {
+            font-size: 13px;
+            color: #e67e22;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        /* Tableau */
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        th {
+            background-color: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .table-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* Code block */
+        .code-block {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .question-list {
+            margin-top: 15px;
+        }
+
+        .question-item {
+            margin-bottom: 15px;
+        }
+
+        .question-label {
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
+        /* Messages */
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #28a745;
+            display: none;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #dc3545;
+            display: none;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .help-text {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* Section bonus */
+        .section-bonus {
+            border-left-color: #f39c12;
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe6cc 100%);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls-container {
+                flex-direction: column;
+            }
+
+            .btn-action {
+                min-width: 100%;
+            }
+        }
+
+        /* Style pour l'impression PDF */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .controls-container,
+            .btn-action,
+            .help-text {
+                display: none !important;
+            }
+            
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                padding: 20mm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Boutons de contrôle -->
+    <div class="controls-container">
+        <button type="button" id="saveBtn" class="btn-action btn-save">
+            💾 Enregistrer dans Firebase
+        </button>
+        <button type="button" id="exportPdfBtn" class="btn-action btn-pdf">
+            📄 Télécharger en PDF
+        </button>
+        <button type="button" id="exportJsonBtn" class="btn-action btn-json">
+            📦 Exporter JSON
+        </button>
+        <button type="button" id="resetBtn" class="btn-action btn-reset">
+            🔄 Réinitialiser
+        </button>
+    </div>
+
+    <div class="container" id="ficheContent">
+        <!-- En-tête -->
+        <div class="header">
+            <div class="college-title">Collège Moulin à Vent - Technologie Cycle 4</div>
+            <div class="competences">Compétences : CT 1.2 | MSOST 1.6</div>
+            <h1>🔬 Capteurs, Détecteurs et Signaux</h1>
+            <p class="subtitle">Exercices sur le mBot2</p>
+        </div>
+
+        <!-- Informations élève -->
+        <div class="info-grid">
+            <div class="form-group">
+                <label>Prénom <span class="required">*</span></label>
+                <input type="text" id="prenom" placeholder="Prénom" required>
+            </div>
+            <div class="form-group">
+                <label>Nom <span class="required">*</span></label>
+                <input type="text" id="nom" placeholder="Nom" required>
+            </div>
+            <div class="form-group">
+                <label>Classe <span class="required">*</span></label>
+                <input type="text" id="classe" placeholder="Ex: 4èmeA" required>
+            </div>
+            <div class="form-group">
+                <label>Date <span class="required">*</span></label>
+                <input type="text" id="date" placeholder="JJ/MM/AAAA" required>
+            </div>
+        </div>
+
+        <!-- ===== EXERCICE 1 ===== -->
+        <div class="section">
+            <div class="section-title">
+                📝 Partie 1 : Identification des types de capteurs
+            </div>
+            <div class="section-subtitle">Exercice 1 : Associer les capteurs à leur fonction</div>
+            <div class="bareme">Barème : /24 points (4 points par ligne - 1 pt par colonne)</div>
+            
+            <p style="margin-bottom: 15px;">
+                Complète le tableau en indiquant pour chaque capteur : son type (détecteur/capteur/codeur), 
+                le type d'information (logique/analogique) et le type de signal (numérique/analogique).
+            </p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Capteur/Détecteur</th>
+                            <th>Type</th>
+                            <th>Information</th>
+                            <th>Signal</th>
+                            <th>Grandeur mesurée</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="table-label">Capteur de luminosité (photorésistance)</td>
+                            <td><input type="text" id="ex1_1_type" placeholder="Type"></td>
+                            <td><input type="text" id="ex1_1_info" placeholder="Information"></td>
+                            <td><input type="text" id="ex1_1_signal" placeholder="Signal"></td>
+                            <td><input type="text" id="ex1_1_grandeur" placeholder="Grandeur"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Détecteur de présence PIR</td>
+                            <td><input type="text" id="ex1_2_type" placeholder="Type"></td>
+                            <td><input type="text" id="ex1_2_info" placeholder="Information"></td>
+                            <td><input type="text" id="ex1_2_signal" placeholder="Signal"></td>
+                            <td><input type="text" id="ex1_2_grandeur" placeholder="Grandeur"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Potentiomètre rotatif</td>
+                            <td><input type="text" id="ex1_3_type" placeholder="Type"></td>
+                            <td><input type="text" id="ex1_3_info" placeholder="Information"></td>
+                            <td><input type="text" id="ex1_3_signal" placeholder="Signal"></td>
+                            <td><input type="text" id="ex1_3_grandeur" placeholder="Grandeur"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Capteur d'humidité DHT11</td>
+                            <td><input type="text" id="ex1_4_type" placeholder="Type"></td>
+                            <td><input type="text" id="ex1_4_info" placeholder="Information"></td>
+                            <td><input type="text" id="ex1_4_signal" placeholder="Signal"></td>
+                            <td><input type="text" id="ex1_4_grandeur" placeholder="Grandeur"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Fin de course mécanique</td>
+                            <td><input type="text" id="ex1_5_type" placeholder="Type"></td>
+                            <td><input type="text" id="ex1_5_info" placeholder="Information"></td>
+                            <td><input type="text" id="ex1_5_signal" placeholder="Signal"></td>
+                            <td><input type="text" id="ex1_5_grandeur" placeholder="Grandeur"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Capteur de pression barométrique</td>
+                            <td><input type="text" id="ex1_6_type" placeholder="Type"></td>
+                            <td><input type="text" id="ex1_6_info" placeholder="Information"></td>
+                            <td><input type="text" id="ex1_6_signal" placeholder="Signal"></td>
+                            <td><input type="text" id="ex1_6_grandeur" placeholder="Grandeur"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== EXERCICE 2 ===== -->
+        <div class="section">
+            <div class="section-title">
+                🤖 Partie 2 : Capteurs sur le mBot2
+            </div>
+            <div class="section-subtitle">Exercice 2 : Identifier les capteurs du mBot2</div>
+            <div class="bareme">Barème : /20 points (4 points par ligne - 1 pt par colonne, 2 pts pour l'utilisation)</div>
+            
+            <p style="margin-bottom: 15px;">
+                D'après la fiche d'activité, complète les informations suivantes :
+            </p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Module du mBot2</th>
+                            <th>Type (capteur/détecteur)</th>
+                            <th>Information fournie</th>
+                            <th>Utilisation possible</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="table-label">Luminosité</td>
+                            <td><input type="text" id="ex2_1_type" placeholder="Type"></td>
+                            <td><input type="text" id="ex2_1_info" placeholder="Information"></td>
+                            <td><input type="text" id="ex2_1_usage" placeholder="Utilisation"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Suiveur de ligne (gauche)</td>
+                            <td><input type="text" id="ex2_2_type" placeholder="Type"></td>
+                            <td><input type="text" id="ex2_2_info" placeholder="Information"></td>
+                            <td><input type="text" id="ex2_2_usage" placeholder="Utilisation"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Suiveur de ligne (droit)</td>
+                            <td><input type="text" id="ex2_3_type" placeholder="Type"></td>
+                            <td><input type="text" id="ex2_3_info" placeholder="Information"></td>
+                            <td><input type="text" id="ex2_3_usage" placeholder="Utilisation"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Ultrason</td>
+                            <td><input type="text" id="ex2_4_type" placeholder="Type"></td>
+                            <td><input type="text" id="ex2_4_info" placeholder="Information"></td>
+                            <td><input type="text" id="ex2_4_usage" placeholder="Utilisation"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Bouton poussoir</td>
+                            <td><input type="text" id="ex2_5_type" placeholder="Type"></td>
+                            <td><input type="text" id="ex2_5_info" placeholder="Information"></td>
+                            <td><input type="text" id="ex2_5_usage" placeholder="Utilisation"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== EXERCICE 3 ===== -->
+        <div class="section">
+            <div class="section-title">
+                🎯 Partie 3 : Situation problème
+            </div>
+            <div class="section-subtitle">Exercice 3 : Choisir le bon capteur</div>
+            <div class="bareme">Barème : /20 points (4 points par situation - 2 pts pour le choix, 2 pts pour la justification)</div>
+            
+            <p style="margin-bottom: 15px;">
+                Pour chaque situation, indique quel type de capteur tu utiliserais et justifie :
+            </p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Situation</th>
+                            <th>Capteur choisi</th>
+                            <th>Justification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="table-label">Détecter si une porte est ouverte ou fermée</td>
+                            <td><input type="text" id="ex3_1_capteur" placeholder="Capteur"></td>
+                            <td><textarea id="ex3_1_justif" placeholder="Justification" rows="2"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Mesurer la vitesse précise d'un robot</td>
+                            <td><input type="text" id="ex3_2_capteur" placeholder="Capteur"></td>
+                            <td><textarea id="ex3_2_justif" placeholder="Justification" rows="2"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Savoir si une pièce est occupée</td>
+                            <td><input type="text" id="ex3_3_capteur" placeholder="Capteur"></td>
+                            <td><textarea id="ex3_3_justif" placeholder="Justification" rows="2"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Réguler l'arrosage selon l'humidité du sol</td>
+                            <td><input type="text" id="ex3_4_capteur" placeholder="Capteur"></td>
+                            <td><textarea id="ex3_4_justif" placeholder="Justification" rows="2"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Compter le nombre de tours d'une roue</td>
+                            <td><input type="text" id="ex3_5_capteur" placeholder="Capteur"></td>
+                            <td><textarea id="ex3_5_justif" placeholder="Justification" rows="2"></textarea></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== EXERCICE 4 ===== -->
+        <div class="section">
+            <div class="section-title">
+                🔬 Partie 4 : Analyse d'un programme
+            </div>
+            <div class="section-subtitle">Exercice 4 : Comprendre le code mBlock</div>
+            <div class="bareme">Barème : /12 points (3 points par question)</div>
+            
+            <p style="margin-bottom: 15px;">Voici un extrait de programme pour le mBot2 :</p>
+
+            <div class="code-block">
+répéter indéfiniment<br>
+&nbsp;&nbsp;&nbsp;&nbsp;faire : lire valeur analogique sur A.2 et stocker dans Variable_Lumiere<br>
+&nbsp;&nbsp;&nbsp;&nbsp;si Variable_Lumiere > 500<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sortie B.6 désactivée<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sinon<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sortie B.6 activée
+            </div>
+
+            <div class="question-list">
+                <div class="question-item">
+                    <div class="question-label">1. Quel type de capteur est connecté sur A.2 ?</div>
+                    <input type="text" id="ex4_q1" placeholder="Votre réponse">
+                </div>
+
+                <div class="question-item">
+                    <div class="question-label">2. Que contrôle la sortie B.6 ?</div>
+                    <input type="text" id="ex4_q2" placeholder="Votre réponse">
+                </div>
+
+                <div class="question-item">
+                    <div class="question-label">3. Que se passe-t-il quand il fait très sombre ?</div>
+                    <textarea id="ex4_q3" placeholder="Votre réponse" rows="2"></textarea>
+                </div>
+
+                <div class="question-item">
+                    <div class="question-label">4. Quelle est la valeur seuil utilisée ?</div>
+                    <input type="text" id="ex4_q4" placeholder="Votre réponse">
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== EXERCICE 5 ===== -->
+        <div class="section">
+            <div class="section-title">
+                💡 Partie 5 : Mini-projet
+            </div>
+            <div class="section-subtitle">Exercice 5 : Concevoir un système</div>
+            <div class="bareme">Barème : /15 points (3 points par ligne - 1,5 pt pour le choix, 1,5 pt pour la justification)</div>
+            
+            <p style="margin-bottom: 15px;">
+                <strong>Situation :</strong> Tu dois créer un système qui allume automatiquement les lumières d'un couloir 
+                quand quelqu'un passe, mais seulement s'il fait sombre.
+            </p>
+
+            <p style="margin-bottom: 15px;"><strong>Complète le cahier des charges :</strong></p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Élément</th>
+                            <th>Choix</th>
+                            <th>Justification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="table-label">Capteur 1 (détection de présence)</td>
+                            <td><input type="text" id="ex5_1_choix" placeholder="Choix"></td>
+                            <td><textarea id="ex5_1_justif" placeholder="Justification" rows="2"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Capteur 2 (luminosité)</td>
+                            <td><input type="text" id="ex5_2_choix" placeholder="Choix"></td>
+                            <td><textarea id="ex5_2_justif" placeholder="Justification" rows="2"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Type d'information capteur 1</td>
+                            <td><input type="text" id="ex5_3_choix" placeholder="Choix"></td>
+                            <td><textarea id="ex5_3_justif" placeholder="Justification" rows="2"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Type d'information capteur 2</td>
+                            <td><input type="text" id="ex5_4_choix" placeholder="Choix"></td>
+                            <td><textarea id="ex5_4_justif" placeholder="Justification" rows="2"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td class="table-label">Condition d'allumage</td>
+                            <td><input type="text" id="ex5_5_choix" placeholder="Choix"></td>
+                            <td><textarea id="ex5_5_justif" placeholder="Justification" rows="2"></textarea></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== BONUS ===== -->
+        <div class="section section-bonus">
+            <div class="section-title">
+                🎓 Bonus : Question de réflexion
+            </div>
+            <div class="bareme">Barème : /5 points (1,5 point par exemple - 0,5 pt pour l'objet, 0,5 pt pour le capteur, 0,5 pt pour le type)</div>
+            
+            <p style="margin-bottom: 15px;">
+                <strong>Dans la vie quotidienne, cite 3 objets connectés ou systèmes automatisés que tu utilises 
+                et identifie quel(s) type(s) de capteur(s) ils pourraient contenir :</strong>
+            </p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Objet/Système</th>
+                            <th>Capteur(s) identifié(s)</th>
+                            <th>Type d'information</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" id="bonus_1_objet" placeholder="Objet/Système"></td>
+                            <td><input type="text" id="bonus_1_capteur" placeholder="Capteur(s)"></td>
+                            <td><input type="text" id="bonus_1_type" placeholder="Type d'info"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" id="bonus_2_objet" placeholder="Objet/Système"></td>
+                            <td><input type="text" id="bonus_2_capteur" placeholder="Capteur(s)"></td>
+                            <td><input type="text" id="bonus_2_type" placeholder="Type d'info"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" id="bonus_3_objet" placeholder="Objet/Système"></td>
+                            <td><input type="text" id="bonus_3_capteur" placeholder="Capteur(s)"></td>
+                            <td><input type="text" id="bonus_3_type" placeholder="Type d'info"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Messages de feedback -->
+        <div id="successMessage" class="success-message">
+            ✅ <strong>Succès !</strong> Votre fiche a été enregistrée avec succès dans Firebase.
+        </div>
+        <div id="errorMessage" class="error-message">
+            ❌ <strong>Erreur !</strong> <span id="errorText"></span>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>🎯 Compétences travaillées :</strong></p>
+            <p>CT 1.2 : Mesurer des grandeurs de manière directe ou indirecte</p>
+            <p>MSOST 1.6 : Analyser le comportement attendu d'un système réel</p>
+            <p style="margin-top: 10px;">Collège Moulin à vent – Technologie au collège</p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION FIREBASE
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIvzEk0xKVdRC0r9D_tBGnKPX29Fqkem4",
+            authDomain: "form-results-b285b.firebaseapp.com",
+            projectId: "form-results-b285b",
+            storageBucket: "form-results-b285b.firebasestorage.app",
+            messagingSenderId: "662462446647",
+            appId: "1:662462446647:web:0fe6315cc0c189185513b2"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        console.log('✅ Firebase initialisé');
+
+        // ============================================
+        // FONCTION DE COLLECTE DES DONNÉES
+        // ============================================
+        function collectFormData() {
+            return {
+                // Informations élève
+                prenom: document.getElementById('prenom').value.trim(),
+                nom: document.getElementById('nom').value.trim(),
+                classe: document.getElementById('classe').value.trim(),
+                date: document.getElementById('date').value.trim(),
+                
+                // Exercice 1 - Identification des capteurs (6 lignes × 4 colonnes)
+                exercice1: {
+                    ligne1: {
+                        capteur: "Capteur de luminosité (photorésistance)",
+                        type: document.getElementById('ex1_1_type').value.trim(),
+                        information: document.getElementById('ex1_1_info').value.trim(),
+                        signal: document.getElementById('ex1_1_signal').value.trim(),
+                        grandeur: document.getElementById('ex1_1_grandeur').value.trim()
+                    },
+                    ligne2: {
+                        capteur: "Détecteur de présence PIR",
+                        type: document.getElementById('ex1_2_type').value.trim(),
+                        information: document.getElementById('ex1_2_info').value.trim(),
+                        signal: document.getElementById('ex1_2_signal').value.trim(),
+                        grandeur: document.getElementById('ex1_2_grandeur').value.trim()
+                    },
+                    ligne3: {
+                        capteur: "Potentiomètre rotatif",
+                        type: document.getElementById('ex1_3_type').value.trim(),
+                        information: document.getElementById('ex1_3_info').value.trim(),
+                        signal: document.getElementById('ex1_3_signal').value.trim(),
+                        grandeur: document.getElementById('ex1_3_grandeur').value.trim()
+                    },
+                    ligne4: {
+                        capteur: "Capteur d'humidité DHT11",
+                        type: document.getElementById('ex1_4_type').value.trim(),
+                        information: document.getElementById('ex1_4_info').value.trim(),
+                        signal: document.getElementById('ex1_4_signal').value.trim(),
+                        grandeur: document.getElementById('ex1_4_grandeur').value.trim()
+                    },
+                    ligne5: {
+                        capteur: "Fin de course mécanique",
+                        type: document.getElementById('ex1_5_type').value.trim(),
+                        information: document.getElementById('ex1_5_info').value.trim(),
+                        signal: document.getElementById('ex1_5_signal').value.trim(),
+                        grandeur: document.getElementById('ex1_5_grandeur').value.trim()
+                    },
+                    ligne6: {
+                        capteur: "Capteur de pression barométrique",
+                        type: document.getElementById('ex1_6_type').value.trim(),
+                        information: document.getElementById('ex1_6_info').value.trim(),
+                        signal: document.getElementById('ex1_6_signal').value.trim(),
+                        grandeur: document.getElementById('ex1_6_grandeur').value.trim()
+                    }
+                },
+
+                // Exercice 2 - Capteurs mBot2 (5 modules)
+                exercice2: {
+                    luminosite: {
+                        module: "Luminosité",
+                        type: document.getElementById('ex2_1_type').value.trim(),
+                        information: document.getElementById('ex2_1_info').value.trim(),
+                        utilisation: document.getElementById('ex2_1_usage').value.trim()
+                    },
+                    suiveurGauche: {
+                        module: "Suiveur de ligne (gauche)",
+                        type: document.getElementById('ex2_2_type').value.trim(),
+                        information: document.getElementById('ex2_2_info').value.trim(),
+                        utilisation: document.getElementById('ex2_2_usage').value.trim()
+                    },
+                    suiveurDroit: {
+                        module: "Suiveur de ligne (droit)",
+                        type: document.getElementById('ex2_3_type').value.trim(),
+                        information: document.getElementById('ex2_3_info').value.trim(),
+                        utilisation: document.getElementById('ex2_3_usage').value.trim()
+                    },
+                    ultrason: {
+                        module: "Ultrason",
+                        type: document.getElementById('ex2_4_type').value.trim(),
+                        information: document.getElementById('ex2_4_info').value.trim(),
+                        utilisation: document.getElementById('ex2_4_usage').value.trim()
+                    },
+                    bouton: {
+                        module: "Bouton poussoir",
+                        type: document.getElementById('ex2_5_type').value.trim(),
+                        information: document.getElementById('ex2_5_info').value.trim(),
+                        utilisation: document.getElementById('ex2_5_usage').value.trim()
+                    }
+                },
+
+                // Exercice 3 - Choix de capteurs (5 situations)
+                exercice3: {
+                    situation1: {
+                        situation: "Détecter si une porte est ouverte ou fermée",
+                        capteur: document.getElementById('ex3_1_capteur').value.trim(),
+                        justification: document.getElementById('ex3_1_justif').value.trim()
+                    },
+                    situation2: {
+                        situation: "Mesurer la vitesse précise d'un robot",
+                        capteur: document.getElementById('ex3_2_capteur').value.trim(),
+                        justification: document.getElementById('ex3_2_justif').value.trim()
+                    },
+                    situation3: {
+                        situation: "Savoir si une pièce est occupée",
+                        capteur: document.getElementById('ex3_3_capteur').value.trim(),
+                        justification: document.getElementById('ex3_3_justif').value.trim()
+                    },
+                    situation4: {
+                        situation: "Réguler l'arrosage selon l'humidité du sol",
+                        capteur: document.getElementById('ex3_4_capteur').value.trim(),
+                        justification: document.getElementById('ex3_4_justif').value.trim()
+                    },
+                    situation5: {
+                        situation: "Compter le nombre de tours d'une roue",
+                        capteur: document.getElementById('ex3_5_capteur').value.trim(),
+                        justification: document.getElementById('ex3_5_justif').value.trim()
+                    }
+                },
+
+                // Exercice 4 - Analyse de code (4 questions)
+                exercice4: {
+                    question1: document.getElementById('ex4_q1').value.trim(),
+                    question2: document.getElementById('ex4_q2').value.trim(),
+                    question3: document.getElementById('ex4_q3').value.trim(),
+                    question4: document.getElementById('ex4_q4').value.trim()
+                },
+
+                // Exercice 5 - Mini-projet (5 éléments)
+                exercice5: {
+                    capteur1: {
+                        element: "Capteur 1 (détection de présence)",
+                        choix: document.getElementById('ex5_1_choix').value.trim(),
+                        justification: document.getElementById('ex5_1_justif').value.trim()
+                    },
+                    capteur2: {
+                        element: "Capteur 2 (luminosité)",
+                        choix: document.getElementById('ex5_2_choix').value.trim(),
+                        justification: document.getElementById('ex5_2_justif').value.trim()
+                    },
+                    typeInfo1: {
+                        element: "Type d'information capteur 1",
+                        choix: document.getElementById('ex5_3_choix').value.trim(),
+                        justification: document.getElementById('ex5_3_justif').value.trim()
+                    },
+                    typeInfo2: {
+                        element: "Type d'information capteur 2",
+                        choix: document.getElementById('ex5_4_choix').value.trim(),
+                        justification: document.getElementById('ex5_4_justif').value.trim()
+                    },
+                    conditionAllumage: {
+                        element: "Condition d'allumage",
+                        choix: document.getElementById('ex5_5_choix').value.trim(),
+                        justification: document.getElementById('ex5_5_justif').value.trim()
+                    }
+                },
+
+                // Bonus - Objets connectés (3 exemples)
+                bonus: {
+                    exemple1: {
+                        objet: document.getElementById('bonus_1_objet').value.trim(),
+                        capteur: document.getElementById('bonus_1_capteur').value.trim(),
+                        type: document.getElementById('bonus_1_type').value.trim()
+                    },
+                    exemple2: {
+                        objet: document.getElementById('bonus_2_objet').value.trim(),
+                        capteur: document.getElementById('bonus_2_capteur').value.trim(),
+                        type: document.getElementById('bonus_2_type').value.trim()
+                    },
+                    exemple3: {
+                        objet: document.getElementById('bonus_3_objet').value.trim(),
+                        capteur: document.getElementById('bonus_3_capteur').value.trim(),
+                        type: document.getElementById('bonus_3_type').value.trim()
+                    }
+                },
+
+                // Métadonnées
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                dateSoumission: new Date().toISOString(),
+                timestampLocal: Date.now()
+            };
+        }
+
+        // ============================================
+        // SAUVEGARDE DANS FIREBASE
+        // ============================================
+        document.getElementById('saveBtn').addEventListener('click', async function() {
+            // Validation des champs obligatoires
+            const requiredFields = ['prenom', 'nom', 'classe', 'date'];
+            
+            for (let field of requiredFields) {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    alert('⚠️ Veuillez remplir tous les champs obligatoires (*)');
+                    element.focus();
+                    return;
+                }
+            }
+
+            // Désactiver le bouton pendant le traitement
+            const btn = this;
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = '⏳ Enregistrement en cours...';
+
+            try {
+                // Collecter les données
+                const formData = collectFormData();
+
+                // Enregistrer dans Firestore
+                const docRef = await db.collection('capteurs_mbot2').add(formData);
+                
+                console.log('✅ Fiche enregistrée avec ID:', docRef.id);
+
+                // Afficher le message de succès
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+
+            } catch (error) {
+                console.error('❌ Erreur:', error);
+                document.getElementById('errorText').textContent = error.message;
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            } finally {
+                // Réactiver le bouton
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+
+        // ============================================
+        // EXPORT PDF
+        // ============================================
+        document.getElementById('exportPdfBtn').addEventListener('click', function() {
+            const btn = this;
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = '⏳ Génération du PDF...';
+
+            const element = document.getElementById('ficheContent');
+            
+            const opt = {
+                margin: 10,
+                filename: `capteurs-mbot2-${document.getElementById('nom').value || 'sans-nom'}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2,
+                    useCORS: true,
+                    logging: false
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait' 
+                }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                btn.disabled = false;
+                btn.textContent = originalText;
+                console.log('✅ PDF généré avec succès');
+            }).catch(error => {
+                console.error('❌ Erreur génération PDF:', error);
+                alert('Erreur lors de la génération du PDF');
+                btn.disabled = false;
+                btn.textContent = originalText;
+            });
+        });
+
+        // ============================================
+        // EXPORT JSON
+        // ============================================
+        document.getElementById('exportJsonBtn').addEventListener('click', function() {
+            const data = collectFormData();
+            
+            // Ajouter la date d'export
+            data.exportDate = new Date().toISOString();
+
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `capteurs-mbot2-${data.nom || 'sans-nom'}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            console.log('✅ JSON exporté');
+        });
+
+        // ============================================
+        // RÉINITIALISATION
+        // ============================================
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm('⚠️ Êtes-vous sûr de vouloir réinitialiser le formulaire ? Toutes les données non sauvegardées seront perdues.')) {
+                // Réinitialiser tous les champs
+                document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(field => {
+                    field.value = '';
+                });
+                
+                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                console.log('✅ Formulaire réinitialisé');
+            }
+        });
+
+        // ============================================
+        // CONFIRMATION AVANT FERMETURE
+        // ============================================
+        let formModified = false;
+
+        document.querySelectorAll('input, textarea').forEach(element => {
+            element.addEventListener('input', () => {
+                formModified = true;
+            });
+        });
+
+        window.addEventListener('beforeunload', function(e) {
+            if (formModified) {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+
+        // Désactiver le flag après sauvegarde
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            setTimeout(() => {
+                formModified = false;
+            }, 1000);
+        });
+
+        // ============================================
+        // AUTO-REMPLISSAGE DE LA DATE
+        // ============================================
+        window.addEventListener('load', function() {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('date').value = `${day}/${month}/${year}`;
+        });
+    </script>
+</body>
+</html>
