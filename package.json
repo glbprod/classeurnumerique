@@ -46,7 +46,7 @@
     "node-fetch": "^2.6.7"
   },
   "scripts": {
-    "build": "react-scripts build",
+    "build": "vite build",
     "dev": "vite dev",
     "start": "vite preview"
   },
