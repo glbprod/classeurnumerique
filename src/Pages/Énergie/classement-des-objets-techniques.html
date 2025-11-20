@@ -8,10 +8,6 @@
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-    
-    <!-- html2pdf.js pour l'export PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
         * {
@@ -1192,33 +1188,6 @@
                 btn.textContent = originalText;
             }
         });
-
-        // ============================================
-        // EXPORT PDF
-        // ============================================
-        document.getElementById('exportPdfBtn').addEventListener('click', function() {
-            const btn = this;
-            const originalText = btn.textContent;
-            btn.disabled = true;
-            btn.textContent = '⏳ Génération du PDF...';
-
-            const element = document.getElementById('ficheContent');
-            
-            const opt = {
-                margin: 10,
-                filename: `classification-objets-${document.getElementById('nom').value || 'sans-nom'}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { 
-                    scale: 2,
-                    useCORS: true,
-                    logging: false
-                },
-                jsPDF: { 
-                    unit: 'mm', 
-                    format: 'a4', 
-                    orientation: 'portrait' 
-                }
-            };
 
             html2pdf().set(opt).from(element).save().then(() => {
                 btn.disabled = false;
