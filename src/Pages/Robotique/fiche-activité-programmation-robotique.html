@@ -561,17 +561,17 @@
                 <textarea name="ethique_reaction" placeholder="Votre ressenti..." required></textarea>
             </div>
 
-            <div style="display: flex; gap: 15px; margin-top: 30px;">
-                <button type="button" id="sendToFirebase" class="submit-btn" style="flex: 1;">
-                    📤 Envoyer mes réponses
+            <div class="controls-container">
+                <button type="button" id="saveBtn" class="btn-action btn-save">
+                    💾 Envoyez vos réponses
                 </button>
-                <button type="button" id="saveBtn" class="submit-btn" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); flex: 0.5;">
-                    💾 Sauvegarder
+                <button type="button" id="exportJsonBtn" class="btn-action btn-json">
+                    📦 Enregistrez vos réponses
                 </button>
-                <button type="button" id="printBtn" class="submit-btn" style="background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%); flex: 0.5;">
-                    🖨️ Imprimer
+                <button type="button" id="importJsonBtn" class="btn-action btn-import">
+                    📥 Chargez vos réponses
                 </button>
-                <button type="reset" class="submit-btn" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); flex: 0.3;">
+                <button type="button" id="resetBtn" class="btn-action btn-reset">
                     🔄 Réinitialiser
                 </button>
             </div>
@@ -603,34 +603,6 @@
                 return '';
             }
         });
-            
-        // Protection par mot de passe
-        (function() {
-            const MOT_DE_PASSE = 'techno2025'; // ← Changez ici
-            let tentatives = 3;
-            
-            while (tentatives > 0) {
-                const saisie = prompt('🔒 Mot de passe requis pour accéder au formulaire :');
-                
-                if (saisie === null) {
-                    document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès annulé</h1>';
-                    throw new Error('Accès annulé');
-                }
-                
-                if (saisie === MOT_DE_PASSE) {
-                    return; // ✅ Mot de passe correct
-                }
-                
-                tentatives--;
-                if (tentatives > 0) {
-                    alert('❌ Mot de passe incorrect ! Il vous reste ' + tentatives + ' tentative(s).');
-                }
-            }
-            
-            alert('🚫 Nombre de tentatives dépassé !');
-            document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">❌ Accès refusé</h1>';
-            throw new Error('Accès refusé');
-        })();
            
         // Configuration Firebase
         const firebaseConfig = {
@@ -647,9 +619,112 @@
 
         console.log('✅ Firebase initialisé');
 
-        // Bouton d'envoi
+        // ============================================
+        // SAUVEGARDE SÉCURISÉE DANS FIREBASE
+        // ============================================
+        let isSaving = false;
+        
         document.getElementById('sendToFirebase').addEventListener('click', async function() {
+            // Empêcher les clics multiples
+            if (isSaving) {
+                alert('⏳ Enregistrement déjà en cours, veuillez patienter...');
+                return;
+            }
+        
             const form = document.getElementById('robotForm');
+        
+            // Validation du formulaire
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+        
+            // Vérifier que nom, prénom et classe sont remplis
+            const nom = form.querySelector('[name="nom"]')?.value.trim();
+            const prenom = form.querySelector('[name="prenom"]')?.value.trim();
+            const classe = form.querySelector('[name="classe"]')?.value.trim();
+        
+            if (!nom || !prenom || !classe) {
+                alert('⚠️ Veuillez remplir au minimum : Nom, Prénom et Classe');
+                return;
+            }
+        
+            // Désactiver le bouton
+            isSaving = true;
+            const originalText = this.textContent;
+            const originalBg = this.style.backgroundColor;
+            this.disabled = true;
+            this.textContent = '⏳ Envoi en cours...';
+            this.style.cursor = 'not-allowed';
+            this.style.opacity = '0.6';
+        
+            try {
+                // Collecter les données du formulaire
+                const formData = new FormData(form);
+                const data = {};
+        
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                });
+        
+                // Ajout de métadonnées
+                data.timestamp = firebase.firestore.FieldValue.serverTimestamp();
+                data.dateSoumission = new Date().toISOString();
+                data.formulaire = 'Programmation Robotique - mBot 2';
+                data.nombreModifications = firebase.firestore.FieldValue.increment(1);
+        
+                // Créer un ID unique basé sur nom, prénom, classe
+                const uniqueId = `${nom}_${prenom}_${classe}`
+                    .toLowerCase()
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Enlever les accents
+                    .replace(/[^a-z0-9_]/g, '_'); // Remplacer les caractères spéciaux
+        
+                // Utiliser set() avec merge pour éviter les doublons
+                await db.collection('formulaires_robotique').doc(uniqueId).set(data, { merge: true });
+        
+                console.log('✅ Formulaire enregistré/mis à jour avec ID:', uniqueId);
+        
+                // Succès
+                this.textContent = '✅ Envoyé avec succès !';
+                this.style.backgroundColor = '#4CAF50';
+                this.style.opacity = '1';
+        
+                alert('✅ Vos réponses ont été enregistrées avec succès !\n\nLes modifications futures écraseront cette version.');
+        
+                formModified = false;
+        
+                // Réinitialiser après 3 secondes
+                setTimeout(() => {
+                    this.disabled = false;
+                    this.textContent = originalText;
+                    this.style.backgroundColor = originalBg;
+                    this.style.cursor = 'pointer';
+                    this.style.opacity = '1';
+                    isSaving = false;
+                }, 3000);
+        
+            } catch (error) {
+                console.error('❌ Erreur lors de l\'envoi:', error);
+                
+                this.textContent = '❌ Erreur d\'envoi';
+                this.style.backgroundColor = '#f44336';
+                this.style.opacity = '1';
+                
+                alert('❌ Erreur lors de l\'envoi : ' + error.message);
+        
+                // Réactiver immédiatement en cas d'erreur
+                setTimeout(() => {
+                    this.disabled = false;
+                    this.textContent = originalText;
+                    this.style.backgroundColor = originalBg;
+                    this.style.cursor = 'pointer';
+                    this.style.opacity = '1';
+                    isSaving = false;
+                }, 3000);
+            }
+        });
+        
+        const form = document.getElementById('robotForm');
             
             if (!form.checkValidity()) {
                 form.reportValidity();
@@ -702,32 +777,242 @@
                 }, 3000);
             }
         });
-        
-        // Bouton de sauvegarde locale
-        document.getElementById('saveBtn').addEventListener('click', function() {
-            const form = document.getElementById('robotForm');
-            const formData = new FormData(form);
-            const data = {};
+
+          // ============================================
+        // EXPORT JSON
+        // ============================================
+        document.getElementById('exportJsonBtn').addEventListener('click', function() {
+            const data = collectFormData();
             
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
-            
+            // Ajouter la date d'export
+            data.exportDate = new Date().toISOString();
+
             const dataStr = JSON.stringify(data, null, 2);
-            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
             const url = URL.createObjectURL(dataBlob);
+            
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'robotique_' + new Date().toISOString().split('T')[0] + '.json';
+            link.download = `capteurs-mbot2-${data.nom || 'sans-nom'}.json`;
             link.click();
             
-            formModified = false; // Réinitialiser le flag après sauvegarde
-            alert('✅ Sauvegarde locale effectuée !');
+            URL.revokeObjectURL(url);
+            console.log('✅ JSON exporté');
+        });
+
+        // ============================================
+        // RÉINITIALISATION
+        // ============================================
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm('⚠️ Êtes-vous sûr de vouloir réinitialiser le formulaire ? Toutes les données non sauvegardées seront perdues.')) {
+                // Réinitialiser tous les champs
+                document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(field => {
+                    field.value = '';
+                });
+                
+                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                console.log('✅ Formulaire réinitialisé');
+            }
+        });
+
+        // ============================================
+        // IMPORT JSON
+        // ============================================
+        document.getElementById('importJsonBtn').addEventListener('click', function() {
+            document.getElementById('jsonFileInput').click();
         });
         
-        // Bouton d'impression
-        document.getElementById('printBtn').addEventListener('click', function() {
-            window.print();
+        document.getElementById('jsonFileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+        
+            // Vérifier que c'est bien un fichier JSON
+            if (!file.name.endsWith('.json')) {
+                alert('⚠️ Veuillez sélectionner un fichier JSON valide');
+                return;
+            }
+        
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    
+                    // Confirmation avant d'écraser les données
+                    if (confirm('⚠️ Cette action va remplacer toutes les données actuelles du formulaire. Continuer ?')) {
+                        // Remplir les informations élève
+                        if (data.prenom) document.getElementById('prenom').value = data.prenom;
+                        if (data.nom) document.getElementById('nom').value = data.nom;
+                        if (data.classe) document.getElementById('classe').value = data.classe;
+                        if (data.date) document.getElementById('date').value = data.date;
+        
+                        // Exercice 1 - Identification des capteurs
+                        if (data.exercice1) {
+                            if (data.exercice1.ligne1) {
+                                document.getElementById('ex1_1_type').value = data.exercice1.ligne1.type || '';
+                                document.getElementById('ex1_1_info').value = data.exercice1.ligne1.information || '';
+                                document.getElementById('ex1_1_signal').value = data.exercice1.ligne1.signal || '';
+                                document.getElementById('ex1_1_grandeur').value = data.exercice1.ligne1.grandeur || '';
+                            }
+                            if (data.exercice1.ligne2) {
+                                document.getElementById('ex1_2_type').value = data.exercice1.ligne2.type || '';
+                                document.getElementById('ex1_2_info').value = data.exercice1.ligne2.information || '';
+                                document.getElementById('ex1_2_signal').value = data.exercice1.ligne2.signal || '';
+                                document.getElementById('ex1_2_grandeur').value = data.exercice1.ligne2.grandeur || '';
+                            }
+                            if (data.exercice1.ligne3) {
+                                document.getElementById('ex1_3_type').value = data.exercice1.ligne3.type || '';
+                                document.getElementById('ex1_3_info').value = data.exercice1.ligne3.information || '';
+                                document.getElementById('ex1_3_signal').value = data.exercice1.ligne3.signal || '';
+                                document.getElementById('ex1_3_grandeur').value = data.exercice1.ligne3.grandeur || '';
+                            }
+                            if (data.exercice1.ligne4) {
+                                document.getElementById('ex1_4_type').value = data.exercice1.ligne4.type || '';
+                                document.getElementById('ex1_4_info').value = data.exercice1.ligne4.information || '';
+                                document.getElementById('ex1_4_signal').value = data.exercice1.ligne4.signal || '';
+                                document.getElementById('ex1_4_grandeur').value = data.exercice1.ligne4.grandeur || '';
+                            }
+                            if (data.exercice1.ligne5) {
+                                document.getElementById('ex1_5_type').value = data.exercice1.ligne5.type || '';
+                                document.getElementById('ex1_5_info').value = data.exercice1.ligne5.information || '';
+                                document.getElementById('ex1_5_signal').value = data.exercice1.ligne5.signal || '';
+                                document.getElementById('ex1_5_grandeur').value = data.exercice1.ligne5.grandeur || '';
+                            }
+                            if (data.exercice1.ligne6) {
+                                document.getElementById('ex1_6_type').value = data.exercice1.ligne6.type || '';
+                                document.getElementById('ex1_6_info').value = data.exercice1.ligne6.information || '';
+                                document.getElementById('ex1_6_signal').value = data.exercice1.ligne6.signal || '';
+                                document.getElementById('ex1_6_grandeur').value = data.exercice1.ligne6.grandeur || '';
+                            }
+                        }
+        
+                        // Exercice 2 - Capteurs mBot2
+                        if (data.exercice2) {
+                            if (data.exercice2.luminosite) {
+                                document.getElementById('ex2_1_type').value = data.exercice2.luminosite.type || '';
+                                document.getElementById('ex2_1_info').value = data.exercice2.luminosite.information || '';
+                                document.getElementById('ex2_1_usage').value = data.exercice2.luminosite.utilisation || '';
+                            }
+                            if (data.exercice2.suiveurGauche) {
+                                document.getElementById('ex2_2_type').value = data.exercice2.suiveurGauche.type || '';
+                                document.getElementById('ex2_2_info').value = data.exercice2.suiveurGauche.information || '';
+                                document.getElementById('ex2_2_usage').value = data.exercice2.suiveurGauche.utilisation || '';
+                            }
+                            if (data.exercice2.suiveurDroit) {
+                                document.getElementById('ex2_3_type').value = data.exercice2.suiveurDroit.type || '';
+                                document.getElementById('ex2_3_info').value = data.exercice2.suiveurDroit.information || '';
+                                document.getElementById('ex2_3_usage').value = data.exercice2.suiveurDroit.utilisation || '';
+                            }
+                            if (data.exercice2.ultrason) {
+                                document.getElementById('ex2_4_type').value = data.exercice2.ultrason.type || '';
+                                document.getElementById('ex2_4_info').value = data.exercice2.ultrason.information || '';
+                                document.getElementById('ex2_4_usage').value = data.exercice2.ultrason.utilisation || '';
+                            }
+                            if (data.exercice2.bouton) {
+                                document.getElementById('ex2_5_type').value = data.exercice2.bouton.type || '';
+                                document.getElementById('ex2_5_info').value = data.exercice2.bouton.information || '';
+                                document.getElementById('ex2_5_usage').value = data.exercice2.bouton.utilisation || '';
+                            }
+                        }
+        
+                        // Exercice 3 - Choix de capteurs
+                        if (data.exercice3) {
+                            if (data.exercice3.situation1) {
+                                document.getElementById('ex3_1_capteur').value = data.exercice3.situation1.capteur || '';
+                                document.getElementById('ex3_1_justif').value = data.exercice3.situation1.justification || '';
+                            }
+                            if (data.exercice3.situation2) {
+                                document.getElementById('ex3_2_capteur').value = data.exercice3.situation2.capteur || '';
+                                document.getElementById('ex3_2_justif').value = data.exercice3.situation2.justification || '';
+                            }
+                            if (data.exercice3.situation3) {
+                                document.getElementById('ex3_3_capteur').value = data.exercice3.situation3.capteur || '';
+                                document.getElementById('ex3_3_justif').value = data.exercice3.situation3.justification || '';
+                            }
+                            if (data.exercice3.situation4) {
+                                document.getElementById('ex3_4_capteur').value = data.exercice3.situation4.capteur || '';
+                                document.getElementById('ex3_4_justif').value = data.exercice3.situation4.justification || '';
+                            }
+                            if (data.exercice3.situation5) {
+                                document.getElementById('ex3_5_capteur').value = data.exercice3.situation5.capteur || '';
+                                document.getElementById('ex3_5_justif').value = data.exercice3.situation5.justification || '';
+                            }
+                        }
+        
+                        // Exercice 4 - Analyse de code
+                        if (data.exercice4) {
+                            document.getElementById('ex4_q1').value = data.exercice4.question1 || '';
+                            document.getElementById('ex4_q2').value = data.exercice4.question2 || '';
+                            document.getElementById('ex4_q3').value = data.exercice4.question3 || '';
+                            document.getElementById('ex4_q4').value = data.exercice4.question4 || '';
+                        }
+        
+                        // Exercice 5 - Mini-projet
+                        if (data.exercice5) {
+                            if (data.exercice5.capteur1) {
+                                document.getElementById('ex5_1_choix').value = data.exercice5.capteur1.choix || '';
+                                document.getElementById('ex5_1_justif').value = data.exercice5.capteur1.justification || '';
+                            }
+                            if (data.exercice5.capteur2) {
+                                document.getElementById('ex5_2_choix').value = data.exercice5.capteur2.choix || '';
+                                document.getElementById('ex5_2_justif').value = data.exercice5.capteur2.justification || '';
+                            }
+                            if (data.exercice5.typeInfo1) {
+                                document.getElementById('ex5_3_choix').value = data.exercice5.typeInfo1.choix || '';
+                                document.getElementById('ex5_3_justif').value = data.exercice5.typeInfo1.justification || '';
+                            }
+                            if (data.exercice5.typeInfo2) {
+                                document.getElementById('ex5_4_choix').value = data.exercice5.typeInfo2.choix || '';
+                                document.getElementById('ex5_4_justif').value = data.exercice5.typeInfo2.justification || '';
+                            }
+                            if (data.exercice5.conditionAllumage) {
+                                document.getElementById('ex5_5_choix').value = data.exercice5.conditionAllumage.choix || '';
+                                document.getElementById('ex5_5_justif').value = data.exercice5.conditionAllumage.justification || '';
+                            }
+                        }
+        
+                        // Bonus - Objets connectés
+                        if (data.bonus) {
+                            if (data.bonus.exemple1) {
+                                document.getElementById('bonus_1_objet').value = data.bonus.exemple1.objet || '';
+                                document.getElementById('bonus_1_capteur').value = data.bonus.exemple1.capteur || '';
+                                document.getElementById('bonus_1_type').value = data.bonus.exemple1.type || '';
+                            }
+                            if (data.bonus.exemple2) {
+                                document.getElementById('bonus_2_objet').value = data.bonus.exemple2.objet || '';
+                                document.getElementById('bonus_2_capteur').value = data.bonus.exemple2.capteur || '';
+                                document.getElementById('bonus_2_type').value = data.bonus.exemple2.type || '';
+                            }
+                            if (data.bonus.exemple3) {
+                                document.getElementById('bonus_3_objet').value = data.bonus.exemple3.objet || '';
+                                document.getElementById('bonus_3_capteur').value = data.bonus.exemple3.capteur || '';
+                                document.getElementById('bonus_3_type').value = data.bonus.exemple3.type || '';
+                            }
+                        }
+        
+                        alert('✅ Données importées avec succès !');
+                        console.log('✅ JSON importé:', data);
+                        
+                        // Marquer le formulaire comme modifié
+                        formModified = true;
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Erreur lors de l\'import:', error);
+                    alert('❌ Erreur : Le fichier JSON n\'est pas valide ou est corrompu.');
+                }
+            };
+            
+            reader.onerror = function() {
+                alert('❌ Erreur lors de la lecture du fichier');
+            };
+            
+            reader.readAsText(file);
+            
+            // Réinitialiser l'input pour permettre de réimporter le même fichier
+            e.target.value = '';
         });
     </script>
 </body>
