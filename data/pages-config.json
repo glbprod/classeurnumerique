@@ -107,6 +107,15 @@
       "addedDate": "2025-11-20T21:45:08.512Z",
       "lastModified": "2025-11-20T21:45:08.530Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763676800893",
+      "title": "fiche activité programmation robotique",
+      "githubPath": "src/Pages/Robotique/fiche-activité-programmation-robotique.html",
+      "description": "",
+      "addedDate": "2025-11-20T22:13:20.893Z",
+      "lastModified": "2025-11-20T22:13:20.896Z",
+      "favorite": false
     }
   ]
 }
