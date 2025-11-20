@@ -89,6 +89,15 @@
       "addedDate": "2025-11-20T16:21:43.803Z",
       "lastModified": "2025-11-20T16:21:43.821Z",
       "favorite": false
+    },
+    {
+      "id": "page-1763666438552",
+      "title": "best plugins",
+      "githubPath": "src/components/moodle/best-plugins.html",
+      "description": "",
+      "addedDate": "2025-11-20T19:20:38.552Z",
+      "lastModified": "2025-11-20T19:20:38.568Z",
+      "favorite": false
     }
   ]
 }
